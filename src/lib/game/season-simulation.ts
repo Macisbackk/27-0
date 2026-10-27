@@ -7,21 +7,26 @@
  *
  * The maths (constants and helpers live in ./sim-formula.ts):
  *
- *   1. Draft quality   q = (avg squad rating − TYPICAL[mode]) / (ELITE[mode] − TYPICAL[mode])
- *        Classic: TYPICAL 83.1, ELITE 85.5   Era: TYPICAL 85.6, ELITE 87.5
- *        (mean ratings of a typical draft and of a best-card-every-spin draft, by simulation).
- *        Era cards are rated higher, so raw ratings are never compared across modes.
- *   2. Team strength   S = 80 + 8·q + (chemistry − typical chemistry for the mode: 0 / 0.3)
+ *   1. Draft quality   q = (avg squad rating − TYPICAL[ladder]) / (ELITE[ladder] − TYPICAL[ladder])
+ *        Classic (club choice: 1 of 3 cards from 3 clubs)   TYPICAL 83.05, ELITE 86.0
+ *        Classic spin (Daily / Weekly / Gauntlet on 2026 cards)  TYPICAL 83.1, ELITE 85.5
+ *        Era                                                  TYPICAL 85.6,  ELITE 87.5
+ *        (typical draft and best-card-every-spin draft, by simulation; Classic's elite also
+ *        counts the extra chemistry a top draft builds). Era cards are rated higher, so raw
+ *        ratings are never compared across ladders.
+ *   2. Team strength   S = 80 + 8·q + (chemistry − typical chemistry: Classic 1.0, spin 0)
  *                         + halfway-call delta for that round (0 in rounds 1–14)
+ *                         Chemistry has no effect in Era (v1.40); Era opponents get +0.4.
  *   3. Strength gap    g = S − opponent club rating (Wigan 84 … Wakefield 66) ± 1 home/away
  *   4. Win chance      p = 1 / (1 + e^(−g/3)), clamped to [1%, 99.5%]
  *   5. Result          one seeded draw per match: win if draw < p. Same seed + squad + call ⇒
  *                      same season; the halfway call never touches rounds 1–14.
  *   27-0 chance = product of p over the 27 fixtures — see perfectSeasonChance().
  *
- * Calibration (4,000 seasons per tier, scripts/sim-era-classic-perfect-season.ts), Classic / Era:
- *   best card every spin   26% / 31% 27-0, ~25 wins     one of the best two  3.8% / 5.7%, 20–22 wins
- *   typical (random) draft 0.8% / 3.1%, ~18 wins        weakest card every spin  0% / 0%, ~8 wins
+ * Calibration (4,000 seasons per tier, scripts/sim-era-classic-perfect-season.ts, v1.40),
+ * Classic / Classic spin / Era:
+ *   best card every spin   29% / 25% / 26% 27-0, ~25 wins   one of the best two  3.7% / 3.1% / 5.5%
+ *   typical (random) draft 0.5% / 0.5% / 2.6%, ~18 wins     weakest card every spin  0%, ~8 wins
  * (Era's typical rate sits higher because which club-season you spin matters more there than
  * which card you take — a lucky typical Era draft is as strong as a near-perfect one.)
  * Upsets, blowouts and scorelines are flavour picked from the same gap. The chance is for
@@ -66,6 +71,7 @@ import { computeChemistry } from "./chemistry";
 import {
   getOpponentRating,
   getSimFormulaMode,
+  modeUsesChemistry,
   getStrengthGap,
   getTeamStrength,
   perfectChanceFromProbabilities,
@@ -680,7 +686,7 @@ export interface SimulateSeasonOptions {
   forceUndefeated?: boolean;
   /** Joe Mellor GOAT Mode — all user tries go to Joe. */
   joeMellorMode?: boolean;
-  /** Squad chemistry links add to the effective rating (default true). */
+  /** Squad chemistry links add to the effective rating (default true; never in Era). */
   applyChemistry?: boolean;
   /** Mid-season fork — reshapes rounds 15–27 only. Omit / "none" for no change. */
   halfwayCall?: HalfwayCallChoice;
@@ -690,6 +696,11 @@ export interface SimulateSeasonOptions {
    * average and chemistry in the 27-0 formula only (scorelines still read the squad).
    */
   formulaOverride?: FormulaQualityOverride;
+  /**
+   * The 27-0 formula's draft ladder. Defaults from currentSeasonOnly: "classic" (normal Classic,
+   * club choice) or "era". Daily / Weekly on 2026 cards pass "classic-spin" (club spin).
+   */
+  formulaMode?: SimFormulaMode;
 }
 
 /** A squad's rating + chemistry expressed on a formula mode's ladder (see SimulateSeasonOptions). */
@@ -1287,15 +1298,20 @@ export function simulateSeason(
     ...(allowDraw ? { allowDraw: true } : {}),
     ...(forceUndefeated ? { forceUserWin: true } : {}),
   };
+  const formulaMode = options.formulaMode ?? getSimFormulaMode(currentSeasonOnly);
+  // Era: chemistry has no effect (owner v1.40). One-Club XI keeps its own (formulaOverride).
   const chemistryBonus =
-    options.applyChemistry === false ? 0 : computeChemistry(squad).bonus;
+    options.applyChemistry === false ||
+    (!options.formulaOverride && !modeUsesChemistry(formulaMode))
+      ? 0
+      : computeChemistry(squad).bonus;
   const halfwayCall: HalfwayCallChoice = options.halfwayCall ?? "none";
   // Classic / Era Classic league: the 27-0 formula decides every result (Draft Mode keeps its own).
   const formulaFixtures =
     draftMode || forceUndefeated
       ? null
       : getSeasonFixtureChances(squad, seed, {
-          mode: getSimFormulaMode(currentSeasonOnly),
+          mode: formulaMode,
           forceOpponentClub: forcedClub,
           applyChemistry: options.applyChemistry,
           halfwayCall,
@@ -1443,7 +1459,8 @@ export function getSeasonFixtureChances(
   const chemistry =
     options.applyChemistry === false
       ? 0
-      : options.formulaOverride?.chemistry ?? computeChemistry(squad).bonus;
+      : options.formulaOverride?.chemistry ??
+        (modeUsesChemistry(mode) ? computeChemistry(squad).bonus : 0);
   return schedule.map(({ opponent, isHome }, i) => {
     const round = i + 1;
     const teamStrength = getTeamStrength({
@@ -1488,7 +1505,10 @@ export function perfectSeasonChance(
     getTeamStrength({
       avgRating: getAverageSquadRating(squad),
       mode,
-      chemistry: options.applyChemistry === false ? 0 : computeChemistry(squad).bonus,
+      chemistry:
+        options.applyChemistry === false || !modeUsesChemistry(mode)
+          ? 0
+          : computeChemistry(squad).bonus,
     }),
     options.forceOpponentClub
   );

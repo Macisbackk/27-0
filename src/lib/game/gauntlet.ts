@@ -10,9 +10,11 @@
  * Saints sides in a row; the ten strongest go in, ordered weakest → strongest.
  *
  * Each tie uses the 27-0 formula's curve unchanged (sim-formula.ts winProbability):
- *   your strength      S = getTeamStrength(your squad, Classic or Era ladder, chemistry)
- *   their strength     T = getTeamStrength(their best-XIII rating, Era ladder — Classic for a
- *                          2026 side) − GAUNTLET_FIELD_OFFSET
+ *   your strength      S = getTeamStrength(your squad, "classic-spin" or Era ladder, chemistry —
+ *                          Classic only; it has no effect in Era). The Gauntlet keeps the club
+ *                          spin on 2026 cards too, so it reads the club-spin Classic ladder.
+ *   their strength     T = getTeamStrength(their best-XIII rating, Era ladder — "classic-spin"
+ *                          for a 2026 side) − GAUNTLET_FIELD_OFFSET
  *   win chance         p = winProbability(S − T)   (neutral venue: no home advantage)
  * Champions' best XIIIs sit above even a perfect draft on the raw ladder (q ≈ 1.7–2.4), so the
  * whole field is shifted down by one calibrated constant (scripts/sim-one-club-gauntlet.ts):
@@ -34,6 +36,7 @@ import { eligiblePlayersForSlot, placeSlotRecruitPlayerAtSlot } from "./slot-tea
 import { pickDecisiveScorePair } from "./rl-scores";
 import {
   getTeamStrength,
+  modeUsesChemistry,
   winProbability,
   type SimFormulaMode,
 } from "./sim-formula";
@@ -93,7 +96,7 @@ export function getGauntletCandidates(): GauntletOpponent[] {
     const squad = getTeamYearBestXiii(final.winnerName, year);
     if (squad.filter((s) => s.player).length < 11) continue; // too thin to be "their side"
     const squadRating = getAverageSquadRating(squad);
-    const ladder: SimFormulaMode = final.year === CURRENT_SEASON_YEAR ? "classic" : "era";
+    const ladder: SimFormulaMode = final.year === CURRENT_SEASON_YEAR ? "classic-spin" : "era";
     out.push({
       club: final.winnerName,
       year: final.year,
@@ -149,7 +152,8 @@ export function getGauntletTeamStrength(squad: SquadSlot[], mode: SimFormulaMode
   return getTeamStrength({
     avgRating: getAverageSquadRating(squad),
     mode,
-    chemistry: computeChemistry(squad).bonus,
+    // Era: chemistry has no effect (v1.40).
+    chemistry: modeUsesChemistry(mode) ? computeChemistry(squad).bonus : 0,
   });
 }
 

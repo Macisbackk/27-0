@@ -11,6 +11,41 @@
 import { FORMATION_SLOT_INDICES } from "../positions";
 import type { SquadSlot } from "../types";
 
+/**
+ * Club choice (v1.40): normal Classic (2026 squads) spins for the tapped position and offers
+ * three cards from three different clubs, so club links (chemistry) are something you build.
+ * Era, One-Club XI, the Gauntlet and the seeded Daily / Weekly keep the club spin (one club,
+ * pick one of its cards). A challenge link replays the challenger's flow.
+ */
+export function usesClubChoiceSpin(opts: {
+  slotRecruitMode: boolean;
+  spinVariant: "current" | "era" | "all";
+  dailyChallengeMode: boolean;
+  weeklyChallengeMode: boolean;
+  /** One-Club XI, Gauntlet or a past Daily. */
+  sideMode: boolean;
+  /** Challenge link kind ("classic" replays a normal Classic run). */
+  challengeKind?: "classic" | "daily" | "weekly" | null;
+}): boolean {
+  return (
+    opts.slotRecruitMode &&
+    opts.spinVariant === "current" &&
+    !opts.dailyChallengeMode &&
+    !opts.weeklyChallengeMode &&
+    !opts.sideMode &&
+    (opts.challengeKind == null || opts.challengeKind === "classic")
+  );
+}
+
+/** The 27-0 formula ladder for a league season (see sim-formula.ts). */
+export function getRunFormulaMode(opts: {
+  eraCards: boolean;
+  clubChoice: boolean;
+}): "classic" | "classic-spin" | "era" {
+  if (opts.eraCards) return "era";
+  return opts.clubChoice ? "classic" : "classic-spin";
+}
+
 export interface SpinRequestResolution {
   /** Slot whose spin opens. */
   slotIndex: number;

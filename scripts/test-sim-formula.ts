@@ -3,21 +3,25 @@
  *
  * - winProbability is one increasing logistic curve, never 0 or 1
  * - team strength rises with squad rating, chemistry and the halfway delta
- * - the same draft quality gives the same strength / 27-0 chance in both modes
+ * - chemistry counts in Classic only: it has no effect in Era (v1.40)
+ * - the same draft quality gives the same strength / 27-0 chance on every ladder
+ *   (Classic club choice, Classic club spin, Era)
  * - drafted tiers land in their 27-0 bands (fixed seeds, so deterministic)
  * - seasons are deterministic, the fast record matches simulateSeason, and the halfway call
  *   never changes rounds 1–14; Super Sam Hallas Mode still goes 27-0
  *
  * Run: npm run test:sim   (or: bun scripts/test-sim-formula.ts)
  */
-import { draftSquad, type DraftMode, type DraftStrategy } from "./lib/sim-draft";
+import { draftSquad, type DraftFlow, type DraftMode, type DraftStrategy } from "./lib/sim-draft";
 import {
   getDraftQuality,
   getTeamStrength,
   MAX_WIN_PROBABILITY,
   MIN_WIN_PROBABILITY,
+  modeUsesChemistry,
   SIM_FORMULA_MODE_SCALE,
   winProbability,
+  type SimFormulaMode,
 } from "../src/lib/game/sim-formula";
 import {
   getSeasonFixtureChances,
@@ -88,28 +92,35 @@ const pct = (x: number) => `${(x * 100).toFixed(2)}%`;
   );
 
   let symmetric = true;
+  const ladders: SimFormulaMode[] = ["classic", "classic-spin", "era"];
   for (const q of [-1.5, -0.5, 0, 0.4, 1, 1.5]) {
-    const at = (mode: DraftMode) => {
+    // A draft at quality q with the ladder's typical chemistry; Era opponents carry a small
+    // extra edge (v1.36), added back to compare the ladders.
+    const strengths = ladders.map((mode) => {
       const s = SIM_FORMULA_MODE_SCALE[mode];
-      return s.typicalRating + q * (s.eliteRating - s.typicalRating);
-    };
-    const classic = getTeamStrength({ avgRating: at("classic"), mode: "classic" });
-    // Era opponents carry a small extra edge (v1.36); add it back to compare the ladders.
-    const eraEdge = SIM_FORMULA_MODE_SCALE.era.opponentEdge ?? 0;
-    const era = eraEdge + getTeamStrength({
-      avgRating: at("era"),
-      mode: "era",
-      chemistry: SIM_FORMULA_MODE_SCALE.era.typicalChemistry,
+      const avgRating = s.typicalRating + q * (s.eliteRating - s.typicalRating);
+      if (Math.abs(getDraftQuality(avgRating, mode) - q) > 1e-9) symmetric = false;
+      return (s.opponentEdge ?? 0) + getTeamStrength({ avgRating, mode, chemistry: s.typicalChemistry });
     });
-    if (
-      Math.abs(classic - era) > 1e-9 ||
-      Math.abs(getDraftQuality(at("classic"), "classic") - q) > 1e-9 ||
-      Math.abs(perfectSeasonChanceForStrength(classic) - perfectSeasonChanceForStrength(era)) > 1e-12
-    ) {
-      symmetric = false;
+    for (const strength of strengths) {
+      if (
+        Math.abs(strength - strengths[0]!) > 1e-9 ||
+        Math.abs(perfectSeasonChanceForStrength(strength) - perfectSeasonChanceForStrength(strengths[0]!)) > 1e-12
+      ) {
+        symmetric = false;
+      }
     }
   }
-  assert(symmetric, "same draft quality ⇒ same strength and same 27-0 chance in Classic and Era (before Era's opponent edge)");
+  assert(symmetric, "same draft quality ⇒ same strength and same 27-0 chance on every ladder (before Era's opponent edge)");
+  assert(
+    modeUsesChemistry("classic") && modeUsesChemistry("classic-spin") && !modeUsesChemistry("era"),
+    "chemistry counts in Classic, not in Era"
+  );
+  assert(SIM_FORMULA_MODE_SCALE.era.typicalChemistry === 0, "Era's ladder carries no typical chemistry");
+  assert(
+    SIM_FORMULA_MODE_SCALE.classic.typicalChemistry > 0,
+    "Classic club choice expects some chemistry from a typical draft (links are on offer)"
+  );
   const edge = SIM_FORMULA_MODE_SCALE.era.opponentEdge ?? 0;
   assert(edge > 0 && edge <= 1, "Era opponents are only slightly tougher (edge 0–1)");
   assert(
@@ -132,7 +143,14 @@ const BANDS: Record<DraftStrategy, [number, number]> = {
 };
 const tierChance: Record<string, number> = {};
 const tierMedian: Record<string, number> = {};
-for (const mode of ["classic", "era"] as DraftMode[]) {
+// Classic club choice (normal Classic), Classic club spin (Daily / Weekly / Gauntlet on 2026
+// cards) and Era, each drafted through its own flow and played on its own ladder.
+const LADDERS: { mode: SimFormulaMode; cards: DraftMode; flow: DraftFlow }[] = [
+  { mode: "classic", cards: "classic", flow: "club-choice" },
+  { mode: "classic-spin", cards: "classic", flow: "club-spin" },
+  { mode: "era", cards: "era", flow: "club-spin" },
+];
+for (const { mode, cards, flow } of LADDERS) {
   for (const tier of ["weak", "random", "good", "best"] as DraftStrategy[]) {
     let formula = 0;
     let perfect = 0;
@@ -140,13 +158,13 @@ for (const mode of ["classic", "era"] as DraftMode[]) {
     let minChance = 1;
     const chances: number[] = [];
     for (let i = 0; i < SQUADS; i++) {
-      const squad = draftSquad(`test-sim-${mode}-${tier}-${i}`, mode, tier);
+      const squad = draftSquad(`test-sim-${cards}-${tier}-${i}`, cards, tier, { flow });
       const chance = perfectSeasonChance(squad, mode);
       chances.push(chance);
       formula += chance;
       minChance = Math.min(minChance, chance);
       for (let s = 0; s < SEASONS; s++) {
-        const record = simulateSeasonRecord(squad, `test-sim-season-${mode}-${tier}-${i}-${s}`, { mode });
+        const record = simulateSeasonRecord(squad, `test-sim-season-${cards}-${tier}-${i}-${s}`, { mode });
         const w = record.filter((r) => r === "W").length;
         wins += w;
         if (w === SEASON_GAMES) perfect++;
@@ -177,9 +195,41 @@ for (const mode of ["classic", "era"] as DraftMode[]) {
   );
 }
 assert(
-  Math.abs(tierChance["classic-best"]! - tierChance["era-best"]!) < 0.12,
-  `near-perfect drafts get similar odds in both modes (Classic ${pct(tierChance["classic-best"]!)} vs Era ${pct(tierChance["era-best"]!)})`
+  Math.abs(tierChance["classic-best"]! - tierChance["era-best"]!) < 0.12 &&
+    Math.abs(tierChance["classic-spin-best"]! - tierChance["era-best"]!) < 0.12,
+  `near-perfect drafts get similar odds on every ladder (Classic ${pct(tierChance["classic-best"]!)}, Classic spin ${pct(tierChance["classic-spin-best"]!)}, Era ${pct(tierChance["era-best"]!)})`
 );
+
+// --- Chemistry: Classic only -----------------------------------------------------------------
+{
+  // A Classic draft with links: chemistry moves Classic odds, never Era's.
+  let linked = draftSquad("test-sim-chem-0", "classic", "best");
+  for (let i = 1; i < 30 && computeChemistry(linked).bonus < 1; i++) {
+    linked = draftSquad(`test-sim-chem-${i}`, "classic", "best");
+  }
+  assert(computeChemistry(linked).bonus >= 1, `found a Classic draft with links (+${computeChemistry(linked).bonus.toFixed(1)})`);
+  const seed = "test-sim-chem-season";
+  assert(
+    perfectSeasonChance(linked, "classic") > perfectSeasonChance(linked, "classic", { applyChemistry: false }),
+    "Classic: chemistry raises the 27-0 chance"
+  );
+  assert(
+    perfectSeasonChance(linked, "era") === perfectSeasonChance(linked, "era", { applyChemistry: false }) &&
+      perfectSeasonChance(linked, "era", { seed }) === perfectSeasonChance(linked, "era", { seed, applyChemistry: false }),
+    "Era: chemistry has no effect on the 27-0 chance"
+  );
+  const era = simulateSeason(linked, seed);
+  const eraOff = simulateSeason(linked, seed, { applyChemistry: false });
+  assert(
+    era.gameResults.join("") === eraOff.gameResults.join("") && era.chemistryBonus === 0,
+    "Era: chemistry has no effect on the season (and records 0)"
+  );
+  const classic = simulateSeason(linked, seed, { currentSeasonOnly: true });
+  assert(classic.chemistryBonus === computeChemistry(linked).bonus, "Classic: the season records the squad's chemistry");
+  const spin = simulateSeason(linked, seed, { currentSeasonOnly: true, formulaMode: "classic-spin" });
+  const spinFast = simulateSeasonRecord(linked, seed, { mode: "classic-spin" });
+  assert(spin.gameResults.join("") === spinFast.join(""), "formulaMode picks the ladder (Daily / Weekly on Classic cards)");
+}
 
 // --- Determinism ----------------------------------------------------------------------------
 {

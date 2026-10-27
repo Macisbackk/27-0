@@ -161,6 +161,47 @@ await shot(phone, "35-classic-draft", "/play?e2e=1", async (page) => {
   await tapFirst(page, [/Skip boost|Continue without boost/i]);
   await page.waitForTimeout(800);
 });
+// Classic club choice (v1.40): the three-club spin, then the picker after signing a Left Wing so
+// the Left Centre offer shows a club link. Era's picker for comparison (no chemistry there).
+async function spinSlot(page, label) {
+  await page.getByRole("button", { name: new RegExp(`^${label}: empty`) }).first().click({ timeout: 5000 });
+}
+async function skipSpin(page) {
+  await page.waitForTimeout(400);
+  await page.getByRole("dialog", { name: "Recruitment spin" }).click({ timeout: 3000 }).catch(() => {});
+  await page.getByRole("button", { name: /^Sign / }).first().waitFor({ timeout: 8000 });
+  await page.waitForTimeout(500);
+}
+for (const [ctx, suffix] of [[phone, ""], [null, "-320"]]) {
+  const c = ctx ?? (await browser.newContext({ viewport: { width: 320, height: 640 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true }));
+  await shot(c, `38-classic-choice-spin${suffix}`, "/play?e2e=1", async (page) => {
+    await tapFirst(page, [/Skip boost|Continue without boost/i]);
+    await page.waitForTimeout(600);
+    await spinSlot(page, "Left Wing");
+    await page.waitForTimeout(1500);
+  });
+  await shot(c, `39-classic-choice-picker${suffix}`, "/play?e2e=1", async (page) => {
+    await tapFirst(page, [/Skip boost|Continue without boost/i]);
+    await page.waitForTimeout(600);
+    await spinSlot(page, "Left Wing");
+    await skipSpin(page);
+    await page.getByRole("button", { name: /^Sign / }).first().click({ timeout: 5000 });
+    await page.waitForTimeout(900);
+    await spinSlot(page, "Left Centre");
+    await skipSpin(page);
+  });
+  if (!ctx) await c.close();
+}
+await shot(phone, "39b-era-picker", "/play?era=1&e2e=1", async (page) => {
+  await tapFirst(page, [/Skip boost|Continue without boost/i]);
+  await page.waitForTimeout(600);
+  await spinSlot(page, "Left Wing");
+  await skipSpin(page);
+  await page.getByRole("button", { name: /^Sign / }).first().click({ timeout: 5000 });
+  await page.waitForTimeout(900);
+  await spinSlot(page, "Left Centre");
+  await skipSpin(page);
+});
 {
   const page = await phone.newPage();
   try {

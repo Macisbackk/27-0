@@ -1,5 +1,6 @@
 import seedrandom from "seedrandom";
-import { formatEraDisplayName } from "../players/era-teams";
+import { formatEraDisplayName, resolveEraTeamClubName } from "../players/era-teams";
+import { CHEMISTRY_PAIRS, getChemistryClub } from "./chemistry";
 import { formatShortYear } from "../players/prime-year";
 import { withRunClub } from "../players/run-club";
 import { withEraYear } from "../players/player-age";
@@ -127,6 +128,11 @@ export const MAX_SLOT_RECRUIT_CHOICES = 3;
 
 export interface SlotTeamYearPlayer {
   player: Player;
+  /**
+   * The club-season this card comes from. Set on Classic club-choice offers, where each card
+   * is from a different club; absent when every card comes from the one spun team-year.
+   */
+  target?: SlotRevealTarget;
 }
 
 export function getSlotTeamYearSpinPools(target: SlotRevealTarget): {
@@ -301,6 +307,130 @@ export function prepareSlotTeamYearPlayers(
   }
 
   return chosen;
+}
+
+/** Clubs (chemistry keys) of the signed players this slot links with. */
+export function getChemistryNeighbourClubs(squad: SquadSlot[], slotIndex: number): Set<string> {
+  const clubs = new Set<string>();
+  for (const [a, b] of CHEMISTRY_PAIRS) {
+    const other = a === slotIndex ? b : b === slotIndex ? a : null;
+    if (other === null) continue;
+    const player = squad.find((s) => s.slotIndex === other)?.player;
+    const club = player ? getChemistryClub(player) : null;
+    if (club) clubs.add(club);
+  }
+  return clubs;
+}
+
+export interface SlotClubChoiceOptions {
+  /** Run seed — draws the cards and the other clubs deterministically. */
+  seed?: string;
+  /** The spun club's card must be a legend (falls back to anyone if none is left). */
+  legendOnly?: boolean;
+  /** The spun club's card must match this Quick Mode selection boost (else no offer). */
+  selectionBoostId?: "qm-90-plus-player" | "qm-goat-hall-of-fame";
+  /** Prefer this boosted player for the spun club's card. */
+  guaranteedPlayerId?: string;
+  /** Pools the other clubs are drawn from (default: Classic's 2026 squads). */
+  spinVariant?: SpinPoolVariant;
+}
+
+/**
+ * Classic club-choice offer: up to three cards for the slot, each from a DIFFERENT club, so
+ * the player can steer towards club links (chemistry).
+ *
+ * The spun club-season (`primary`) gives one card — that is where a boost or legend guarantee
+ * lands. If a chemistry neighbour (same line, next slot) is already signed and the spun club
+ * isn't theirs, the second card comes from a neighbour's club, so a link is always on offer;
+ * the rest are drawn uniformly from every club that still has someone who can play the slot.
+ * One card per club, a random eligible player each (never a person already signed, never the
+ * same person twice). Deterministic for the same seed, slot, spun club and squad, so reopening
+ * a locked spin or resuming a run shows the same three.
+ */
+export function prepareSlotClubChoicePlayers(
+  primary: SlotRevealTarget,
+  usedIds: Set<string>,
+  squad: SquadSlot[],
+  slotIndex: number,
+  options: SlotClubChoiceOptions = {}
+): SlotTeamYearPlayer[] {
+  const primaryPool = getTeamYearPoolFromTarget(primary);
+  if (!primaryPool) return [];
+  const slot = squad.find((s) => s.slotIndex === slotIndex);
+  if (!slot || slot.player) return [];
+
+  const seed = options.seed ?? primary.teamYearKey;
+  const rng = seedrandom(`${seed}-club-choice-${slotIndex}-${primary.teamYearKey}`);
+  const pickFrom = (players: Player[]) =>
+    [...players].sort((a, b) => a.id.localeCompare(b.id))[Math.floor(rng() * players.length)]!;
+
+  const eligible = eligiblePlayersForSlot(primaryPool, usedIds, squad, slotIndex);
+  if (eligible.length === 0) return [];
+  let primaryPlayer: Player | undefined;
+  if (options.selectionBoostId) {
+    const match = (p: Player) => playerMatchesSelectionBoost(p, options.selectionBoostId!);
+    const legendPool = options.legendOnly
+      ? eligible.filter((p) => p.category === "legend" && match(p))
+      : [];
+    const boosted = legendPool.length > 0 ? legendPool : eligible.filter(match);
+    if (boosted.length === 0) return [];
+    primaryPlayer =
+      boosted.find((p) => p.id === options.guaranteedPlayerId) ?? pickFrom(boosted);
+  } else {
+    const legends = options.legendOnly
+      ? eligible.filter((p) => p.category === "legend")
+      : [];
+    primaryPlayer = pickFrom(legends.length > 0 ? legends : eligible);
+  }
+
+  const offer: SlotTeamYearPlayer[] = [
+    { player: preparePlayerForTeamYear(primaryPlayer, primary), target: primary },
+  ];
+  const offeredKeys = new Set<string>([normalizePlayerNameKey(primaryPlayer.name)]);
+  if (primaryPlayer.basePlayerId) offeredKeys.add(`base:${primaryPlayer.basePlayerId}`);
+  const isOffered = (p: Player) =>
+    offeredKeys.has(normalizePlayerNameKey(p.name)) ||
+    (p.basePlayerId ? offeredKeys.has(`base:${p.basePlayerId}`) : false);
+
+  const candidatesFor = (pool: TeamYearPool) =>
+    eligiblePlayersForSlot(pool, usedIds, squad, slotIndex).filter((p) => !isOffered(p));
+  let others = getSpinTeamYearPoolsCached(options.spinVariant ?? "current").filter(
+    (pool) => pool.team !== primary.team && candidatesFor(pool).length > 0
+  );
+  // Chemistry: when a neighbour in this line is signed and the spun club isn't theirs, one of
+  // the other cards comes from a neighbour's club, so there is always a link on the table.
+  const linkClubs = getChemistryNeighbourClubs(squad, slotIndex);
+  const linkClubOf = (pool: Pick<TeamYearPool, "team" | "year">) =>
+    resolveEraTeamClubName(formatEraDisplayName(pool.team, pool.year)).trim().toLowerCase();
+  const linkPools =
+    linkClubs.size > 0 && !linkClubs.has(linkClubOf(primary))
+      ? others.filter((pool) => linkClubs.has(linkClubOf(pool)))
+      : [];
+  let linkPending = linkPools.length > 0;
+  while (offer.length < MAX_SLOT_RECRUIT_CHOICES && others.length > 0) {
+    const fromLinks = linkPending;
+    linkPending = false;
+    const { pool } = pickClubUniformTeamYearPool(
+      fromLinks ? linkPools : others,
+      rng,
+      (p) => candidatesFor(p).length > 0,
+      options.spinVariant ?? "current"
+    );
+    if (!pool) {
+      if (fromLinks) continue;
+      break;
+    }
+    const player = pickFrom(candidatesFor(pool));
+    const target = buildSlotRevealTarget(pool.team, pool.year);
+    offer.push({ player: preparePlayerForTeamYear(player, target), target });
+    offeredKeys.add(normalizePlayerNameKey(player.name));
+    if (player.basePlayerId) offeredKeys.add(`base:${player.basePlayerId}`);
+    others = others.filter((p) => p.team !== pool.team);
+  }
+
+  for (const entry of offer) warnTeamYearPoolLeak(entry.player, entry.target!);
+  // Shuffle so the spun club (and any boosted card) isn't always on the top reel.
+  return shuffleSlotRecruitEntries(offer, rng);
 }
 
 /** Find a team/year whose eligible slot pool contains a matching selection boost player. */
