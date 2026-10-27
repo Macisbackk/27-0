@@ -516,7 +516,7 @@ export function PlayerShowcase() {
 
       {filtered.length === 0 ? (
         <p className="rounded-[20px] bg-[color:var(--fl-surface)] px-4 py-10 text-center text-sm text-gray-400">
-          No players match. Try another search or reset the filters.
+          No players match. Try another search.
         </p>
       ) : (
         <>

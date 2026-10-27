@@ -696,7 +696,7 @@ export function GameBoard({
         !isQmSelectionBoostAllowedInMode(resolvedBoostId, normalEraMode)
       ) {
         setBoostNotice(
-          "Legend Player boost can only be used in Era Classic."
+          "The Legend boost only works in Era Classic."
         );
         resolvedBoostId = null;
       }
@@ -745,7 +745,7 @@ export function GameBoard({
           firstPick.failureReason ??
             boostFailureNotice(
               resolvedBoostId,
-              "No valid boosted route for this run — boost not used."
+              "No route for this boost. Boost not used."
             )
         );
         return;
@@ -758,7 +758,7 @@ export function GameBoard({
         setBoostNotice(
           boostFailureNotice(
             resolvedBoostId,
-            "No valid boosted route for this run — boost not used."
+            "No route for this boost. Boost not used."
           )
         );
         return;
@@ -2435,7 +2435,7 @@ export function GameBoard({
 
       if (isDraftMode) {
         if (phase !== "choice" || draftPickIndex === null) {
-          fail("Open a player choice before using a selection boost.");
+          fail("Open a player choice first.");
           return;
         }
         const signedIds = squad
@@ -2613,7 +2613,7 @@ export function GameBoard({
         return;
       }
 
-      fail("Selection boosts are not available in this mode.");
+      fail("Boosts aren't available in this mode.");
     },
     [
       joeMellorMode,
@@ -2749,8 +2749,8 @@ export function GameBoard({
       );
       setBoostNotice(
         slotBoostGuaranteeId === "qm-90-plus-player"
-          ? "90+ boost armed for the next eligible selection."
-          : "Legend boost armed for the next eligible selection."
+          ? "90+ boost ready for your next pick."
+          : "Legend boost ready for your next pick."
       );
     }
     lastScrolledPlayerIdRef.current = null;
@@ -3099,10 +3099,10 @@ export function GameBoard({
             <p className="text-sm text-amber-100">
               {boostNotice ??
                 boostedSpinPlan.failureReason ??
-                "No valid boosted route for this position."}
+                "No route for this boost here."}
             </p>
             <p className={`${TYPO.bodySm} text-amber-100/80`}>
-              Try another position, skip the boost or change it. Boost unused.
+              Try another position or skip the boost.
             </p>
             <div className="flex flex-wrap gap-2">
               <GameButton
@@ -3113,8 +3113,8 @@ export function GameBoard({
                   setBoostedSpinPlan(null);
                   setBoostNotice(
                     slotBoostGuaranteeId === "qm-90-plus-player"
-                      ? "90+ boost still armed — pick another position."
-                      : "Legend boost still armed — pick another position."
+                      ? "90+ boost still ready. Pick another position."
+                      : "Legend boost still ready. Pick another position."
                   );
                 }}
               >
