@@ -2,7 +2,8 @@
 import { buildWorld, createCareer } from "../src/lib/career/world";
 import { playMatchday, repairLineup } from "../src/lib/career/season";
 import { SQUAD_MAX, SQUAD_MIN } from "../src/lib/career/players";
-import { acceptOffer, closeDeadlineDay, deadlineDecisionPending, isDeadlineDay, isWindowOpen, liveOffers, rejectOffer, seasonDeals, tickDeadline, windowBounds } from "../src/lib/career/midseason";
+import { acceptOffer, closeDeadlineDay, deadlineDecisionPending, isDeadlineDay, isWindowOpen, liveOffers, rejectOffer, seasonDeals, tickDeadline, windowBounds, windowStatus } from "../src/lib/career/midseason";
+import { beginOffseason, finishDepartures, finishTransfers } from "../src/lib/career/offseason";
 import type { CareerState } from "../src/lib/career/types";
 
 let passed = 0;
@@ -41,7 +42,9 @@ for (const [n, choice] of choices.filter((_, i) => i % 4 === 0).slice(0, 8).entr
   let sawDeadline = false;
   while (s.phase === "season" && guard++ < 80) {
     if (isDeadlineDay(s)) sawDeadline = true;
-    if (!isDeadlineDay(s) && isWindowOpen(s)) fail(`window open away from Deadline Day (md ${s.matchdayIndex})`);
+    // Open only in pre-season (before Round 1 kicks off) and on Deadline Day.
+    if (!isDeadlineDay(s) && s.matchdayIndex > 0 && isWindowOpen(s)) fail(`window open away from Deadline Day (md ${s.matchdayIndex})`);
+    if (s.matchdayIndex === 0 && windowStatus(s).kind !== "preseason") fail("window not open in pre-season");
     // Deadline Day: run the clock, answering every offer (accept every other one).
     const seenOffers = new Set<string>();
     for (let t = 0; t < 80 && deadlineDecisionPending(s); t++) {
@@ -101,4 +104,76 @@ const a = playOut();
 const b2 = playOut();
 if (a !== b2) fail("deals differ for the same save");
 ok("same save → same deals");
+// The window schedule, three seasons running: open in the summer + pre-season, shut from Round 1,
+// open on Deadline Day, shut after it until the next summer. AI clubs only deal while it's open.
+{
+  let s = createCareer({ clubId: choices[3]!.id, managerName: "T", seed: "windows" });
+  const aiSquads = (st: CareerState) =>
+    JSON.stringify(Object.values(st.clubs).filter((c) => c.id !== st.userClubId).map((c) => [c.id, c.squad]));
+  let summerAiSignings = 0;
+  for (let season = 1; season <= 3; season++) {
+    const year = s.year;
+    const seen = { preseason: 0, shutBefore: 0, deadline: 0, shutAfter: 0 };
+    let guard = 0;
+    while (s.phase === "season" && guard++ < 80) {
+      const w = windowStatus(s);
+      const b = windowBounds(s)!;
+      if (s.matchdayIndex === 0) {
+        if (!(w.open && w.kind === "preseason")) fail(`S${season}: pre-season window not open`);
+        seen.preseason++;
+      } else if (deadlineDecisionPending(s)) {
+        if (!(w.open && w.kind === "deadline")) fail(`S${season}: Deadline Day window not open`);
+        seen.deadline++;
+        s = closeDeadlineDay(s);
+        if (isWindowOpen(s)) fail(`S${season}: window open after Deadline Day shut`);
+      } else if (s.matchdayIndex < b.deadline) {
+        if (w.open || !/Deadline Day/.test(w.detail)) fail(`S${season}: md ${s.matchdayIndex} should be shut until Deadline Day (${w.detail})`);
+        seen.shutBefore++;
+      } else {
+        if (w.open || !/after the season/.test(w.detail)) fail(`S${season}: md ${s.matchdayIndex} should be shut until next season (${w.detail})`);
+        seen.shutAfter++;
+      }
+      // Playing a round never moves a player between AI clubs (the window is shut, or it's pre-season
+      // and nobody but you deals then).
+      const before = aiSquads(s);
+      const dealsBefore = (s.transfers ?? []).length;
+      s = playMatchday(s);
+      if (aiSquads(s) !== before) fail(`S${season}: AI squads changed while playing md ${s.matchdayIndex - 1}`);
+      if ((s.transfers ?? []).length !== dealsBefore) fail(`S${season}: a deal landed while a round was played`);
+      if (s.phase === "season" && s.matchdayIndex > 0 && !deadlineDecisionPending(s) && isWindowOpen(s)) fail(`S${season}: window open mid-season`);
+    }
+    if (!seen.preseason || !seen.shutBefore || !seen.deadline || !seen.shutAfter) fail(`S${season}: missing a window stage ${JSON.stringify(seen)}`);
+    if (windowStatus(s).open) fail(`S${season}: window open at the season review`);
+    s = beginOffseason(s);
+    if (windowStatus(s).open || !/after the summer departures/.test(windowStatus(s).detail)) fail(`S${season}: window open during departures`);
+    s = finishDepartures(s);
+    if (!(windowStatus(s).open && windowStatus(s).kind === "summer")) fail(`S${season}: summer window not open`);
+    s = finishTransfers(s);
+    if (!(windowStatus(s).open && windowStatus(s).kind === "preseason")) fail(`S${season + 1}: pre-season window not open`);
+    // Every AI deal ever logged happened in a window: the summer or Deadline Day.
+    for (const d of s.transfers ?? []) {
+      if (d.user) continue;
+      if (!d.summer && !d.deadlineDay) fail(`AI deal outside a window: ${d.playerName} (${d.year} md ${d.at})`);
+      if (d.summer && d.fee !== 0) fail(`AI summer free-agent signing with a fee: ${d.playerName} ${d.fee}`);
+      if (!d.from && d.fee !== 0) fail(`AI paid a fee for a free agent: ${d.playerName} ${d.fee}`);
+    }
+    summerAiSignings += (s.transfers ?? []).filter((d) => d.summer && !d.user && d.year === year + 1).length;
+    checkWorld(s, `windows S${season}`);
+  }
+  ok(`3 seasons: window open in summer + pre-season and on Deadline Day only; AI deals only in those windows`);
+  if (summerAiSignings === 0) fail("AI clubs never signed a free agent in the summer window");
+  ok(`AI clubs signed ${summerAiSignings} free agents in 3 summer windows, all for £0`);
+}
+
+// Old saves: the window is worked out from phase + round alone (no stored flag needed).
+{
+  const s = createCareer({ clubId: choices[0]!.id, managerName: "T", seed: "old-save" });
+  const legacy = { ...s, deadline: undefined, deadlineClosedYear: undefined } as CareerState;
+  if (windowStatus(legacy).kind !== "preseason") fail("old save in pre-season: window should be open");
+  const mid = playMatchday(playMatchday(legacy));
+  if (windowStatus(mid).open) fail("old save mid-season: window should be shut");
+  if (windowStatus({ ...mid, phase: "transfers" } as CareerState).kind !== "summer") fail("old save in the summer window: should be open");
+  ok("saves from older versions get the right window from their phase and round");
+}
+
 console.log(`\n${passed} passed`);

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
-import { DIVISION_LABEL, boardGoal, currentStage, formatMoney, isWindowOpen, ordinal, seasonProgress, sortTable } from "@/lib/career";
+import { DIVISION_LABEL, boardGoal, currentStage, formatMoney, isWindowOpen, ordinal, seasonProgress, sortTable, windowStatus } from "@/lib/career";
 import { DailyMissionToast } from "@/components/DailyMissionToast";
 import { CareerProvider, useCareer } from "@/lib/career/context";
 import { CareerErrorBoundary } from "./CareerErrorBoundary";
@@ -16,7 +16,7 @@ import { SeasonReview } from "./SeasonReview";
 import { TableTab } from "./TableTab";
 import { TeamTab } from "./TeamTab";
 import { TransferWindow } from "./TransferWindow";
-import { useDeadlineDriver } from "./TransferNews";
+import { WindowStatusLine, useDeadlineDriver } from "./TransferNews";
 import { ClubBadge, ProgressBar, Stars, CAREER_PAGE_CLASS, CareerBackLink } from "./bits";
 import { CareerTutorial } from "./CareerTutorial";
 import { PitchMark } from "@/components/ui/PitchHero";
@@ -96,6 +96,7 @@ function SeasonStrip() {
           {!started ? "New season" : leagueDone ? (goal.onTrack ? "Target met" : "Missed") : goal.onTrack ? "On track" : `${gap} ${gap === 1 ? "place" : "places"} off`}
         </span>
       </div>
+      <WindowStatusLine className="mt-2 border-t border-white/10 pt-2" />
     </section>
   );
 }
@@ -157,9 +158,10 @@ function CareerRouter() {
   if (state.phase === "departures") return <ClubSheetProvider><Departures /></ClubSheetProvider>;
   if (state.phase === "transfers") return <TransferWindow />;
   if (marketOpen && isWindowOpen(state)) {
+    const kind = windowStatus(state).kind;
     return (
       <ClubSheetProvider>
-        <TransferWindow midseason onClose={() => setMarketOpen(false)} />
+        <TransferWindow mode={kind === "deadline" ? "deadline" : "preseason"} onClose={() => setMarketOpen(false)} />
       </ClubSheetProvider>
     );
   }

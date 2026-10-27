@@ -5,17 +5,14 @@
  * counts down by one. When it hits zero at your club you decide: renew (pay a one-off
  * signing-on fee for a fresh 1–3 year deal) or let him go for nothing. AI clubs just renew.
  */
-import { autoPickLineup, formatMoney, playerValue } from "./players";
+import { autoPickLineup, contractYearsLeft, formatMoney, playerValue } from "./players";
 import { rngFor } from "./rng";
 import { repairLineup, squadOf } from "./season";
 import type { CareerPlayer, CareerState } from "./types";
 
 /** Seasons left on a deal, including the current one. Older saves had none: derive a stable 1–3. */
 export function contractOf(p: Pick<CareerPlayer, "id" | "age" | "contract">): number {
-  if (typeof p.contract === "number" && p.contract > 0) return p.contract;
-  const roll = rngFor("contract", p.id)();
-  if (p.age >= 32) return roll < 0.6 ? 1 : 2;
-  return 1 + Math.floor(roll * 3);
+  return contractYearsLeft(p);
 }
 
 /** Length of a new deal: young players commit longer, veterans year to year. */
@@ -34,10 +31,20 @@ export function contractLabel(years: number): string {
   return years <= 1 ? "Final year" : `${years} yrs`;
 }
 
-/** Summer countdown for every club. Returns the user's players whose deals have run out. */
+/** AI squads keep at least this many after letting fringe men go (they're topped back up to 24). */
+const AI_KEEP = 22;
+
+/**
+ * Summer countdown for every club. Returns the user's players whose deals have run out.
+ * AI clubs renew their regulars; fringe players (outside their best 17) and veterans whose deals
+ * end are sometimes let go, and join the free-agent pool with no fee on their heads.
+ */
 export function runDownContracts(state: CareerState): string[] {
   const expiring: string[] = [];
   for (const club of Object.values(state.clubs)) {
+    const ranked = [...club.squad].sort((a, b) => (state.players[b]?.rating ?? 0) - (state.players[a]?.rating ?? 0));
+    const rng = rngFor(state.seed, state.year, "release", club.id);
+    const released: string[] = [];
     for (const id of club.squad) {
       const p = state.players[id];
       if (!p) continue;
@@ -48,7 +55,23 @@ export function runDownContracts(state: CareerState): string[] {
         p.contract = 0;
         expiring.push(id);
       } else {
-        p.contract = newDealLength(p.age);
+        const fringe = ranked.indexOf(id) >= 17;
+        const roll = rng();
+        if (!p.legend && club.squad.length - released.length > AI_KEEP && ((fringe && roll < 0.5) || (p.age >= 32 && roll < 0.35))) {
+          released.push(id);
+        } else {
+          p.contract = newDealLength(p.age);
+        }
+      }
+    }
+    if (released.length) {
+      club.squad = club.squad.filter((id) => !released.includes(id));
+      for (const id of released) {
+        const p = state.players[id]!;
+        p.contract = undefined;
+        p.leftClubId = club.id;
+        p.leftYear = state.year + 1;
+        if (!state.freeAgents.includes(id)) state.freeAgents.push(id);
       }
     }
   }
@@ -91,6 +114,9 @@ export function releaseExpiring(state: CareerState, playerId: string): CareerSta
     delete s.players[playerId];
   } else if (p) {
     p.contract = undefined;
+    // He won't come straight back for nothing: no re-signing him on a free this summer.
+    p.leftClubId = s.userClubId;
+    p.leftYear = s.year;
     s.freeAgents = [...s.freeAgents.filter((id) => id !== playerId), playerId];
   }
   s.departures!.expiring = s.departures!.expiring.filter((id) => id !== playerId);
