@@ -5,18 +5,23 @@ import { GameButton } from "@/components/ui/GameButton";
 import { useArmed } from "@/hooks/useArmed";
 import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
 import {
+  autoPickLineup,
   clubRating,
   currentStage,
   isBigMatchday,
+  lineupRating,
+  nextStop,
   ordinal,
   sortTable,
+  squadOf,
   userFixture,
+  userStreak,
   type CareerState,
   type Fixture,
   type Tactic,
 } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
-import { playCupProgress, playFullTime, playSimulateRound, playTryScored, playUiClick } from "@/lib/sound";
+import { playAutofill, playCupProgress, playFullTime, playSimulateRound, playTryScored, playUiClick } from "@/lib/sound";
 import { LiveMatch } from "./LiveMatch";
 import { ClubLink } from "./ClubSheet";
 import { IncomingBidCard, TransferWindowCard } from "./TransferNews";
@@ -38,52 +43,78 @@ function lastUserFixture(state: CareerState): Fixture | undefined {
   return undefined;
 }
 
-export function ResultCard({ state, fixture, title }: { state: CareerState; fixture: Fixture; title?: string }) {
+const STREAK_WORD = { W: ["win", "wins"], L: ["defeat", "defeats"], D: ["draw", "draws"] } as const;
+
+/** What changed since the last tap: places moved and challenges completed. */
+export interface ResultFlash {
+  moved: number;
+  challenges: string[];
+}
+
+/**
+ * The last result, compact, at the top of the Match tab: score, form run, Player of the Match,
+ * places moved and any challenge it completed. Scorers sit behind "Scorers".
+ */
+export function ResultStrip({ state, fixture, flash }: { state: CareerState; fixture: Fixture; flash?: ResultFlash | null }) {
   const r = fixture.result!;
-  const home = state.clubs[fixture.home]!;
-  const away = state.clubs[fixture.away]!;
   const isHome = fixture.home === state.userClubId;
   const us = isHome ? r.homeScore : r.awayScore;
   const them = isHome ? r.awayScore : r.homeScore;
-  const verdict = us > them ? "Win" : us < them ? "Loss" : "Draw";
-  const tone = us > them ? "text-success" : us < them ? "text-danger" : "text-gray-300";
-  const scorers = (ids: string[]) => {
-    const counts = new Map<string, number>();
-    for (const id of ids) counts.set(id, (counts.get(id) ?? 0) + 1);
-    return [...counts.entries()].map(([id, n]) => `${state.players[id]?.name ?? "?"}${n > 1 ? ` ×${n}` : ""}`).join(", ");
-  };
+  const opp = state.clubs[isHome ? fixture.away : fixture.home]!;
+  const verdict = us > them ? "Won" : us < them ? "Lost" : "Drew";
+  const tone = us > them ? "text-success" : us < them ? "text-danger" : "text-gray-200";
+  const streak = userStreak(state);
   const motm = r.motm ? state.players[r.motm] : undefined;
+  const mine = isHome ? r.homeTries : r.awayTries;
+  const counts = new Map<string, number>();
+  for (const id of mine) counts.set(id, (counts.get(id) ?? 0) + 1);
+  const scorers = [...counts.entries()].map(([id, n]) => `${state.players[id]?.name ?? "?"}${n > 1 ? ` ×${n}` : ""}`).join(", ");
+  const chips: Array<{ text: string; tone: string }> = [];
+  if (streak && streak.length >= 2) {
+    chips.push({
+      text: `${streak.length} ${STREAK_WORD[streak.kind][1]} in a row`,
+      tone: streak.kind === "W" ? "bg-success/15 text-success" : streak.kind === "L" ? "bg-danger/15 text-red-200" : "bg-white/10 text-gray-200",
+    });
+  }
+  if (flash && flash.moved > 0) chips.push({ text: `Up ${flash.moved} ${flash.moved === 1 ? "place" : "places"}`, tone: "bg-success/15 text-success" });
+  if (flash && flash.moved < 0) chips.push({ text: `Down ${-flash.moved} ${flash.moved === -1 ? "place" : "places"}`, tone: "bg-danger/15 text-red-200" });
   return (
-    <Card>
-      <div className="flex items-center justify-between">
-        <Eyebrow>{title ?? fixture.label}</Eyebrow>
-        <span className={`font-display text-sm font-bold ${tone}`}>{verdict}{r.goldenPoint ? " · golden point" : ""}</span>
+    <section aria-label="Last result" className="fl-rise rounded-card bg-pitch-900 p-4 text-left">
+      <div className="flex items-center justify-between gap-2">
+        <Eyebrow>Last result · {fixture.label}</Eyebrow>
+        <ClubBadge club={opp} size="sm" />
       </div>
-      <div className="mt-3 grid grid-cols-[1fr_auto_1fr] items-center gap-2">
-        <div className="flex min-w-0 flex-col items-center gap-1 text-center">
-          <ClubBadge club={home} />
-          <ClubLink clubId={home.id} className="w-full truncate text-center text-xs text-gray-300">{home.name}</ClubLink>
-        </div>
-        <div className="font-display text-4xl font-bold tabular-nums text-white">
-          {r.homeScore}<span className="mx-1 text-gray-500">–</span>{r.awayScore}
-        </div>
-        <div className="flex min-w-0 flex-col items-center gap-1 text-center">
-          <ClubBadge club={away} />
-          <ClubLink clubId={away.id} className="w-full truncate text-center text-xs text-gray-300">{away.name}</ClubLink>
-        </div>
-      </div>
-      <dl className="mt-3 space-y-1 text-xs text-gray-400">
-        {r.homeTries.length ? (
-          <div><dt className="inline font-semibold text-gray-300">{home.short} tries: </dt><dd className="inline">{scorers(r.homeTries)}</dd></div>
-        ) : null}
-        {r.awayTries.length ? (
-          <div><dt className="inline font-semibold text-gray-300">{away.short} tries: </dt><dd className="inline">{scorers(r.awayTries)}</dd></div>
-        ) : null}
-        {motm ? (
-          <div><dt className="inline font-semibold text-accent-gold">Player of the Match: </dt><dd className="inline">{motm.name}</dd></div>
-        ) : null}
-      </dl>
-    </Card>
+      <p className="mt-1.5 text-[17px] font-bold leading-tight text-white">
+        <span className={tone}>{verdict} {us}–{them}</span>{" "}
+        <span className="font-semibold text-gray-300">{isHome ? "v" : "at"} <ClubLink clubId={opp.id}>{opp.name}</ClubLink></span>
+        {r.goldenPoint ? <span className="text-sm font-semibold text-gray-400"> · golden point</span> : null}
+      </p>
+      {chips.length || motm ? (
+        <p className="mt-2 flex flex-wrap items-center gap-1.5 text-[12px]">
+          {chips.map((c) => (
+            <span key={c.text} className={`rounded-full px-2 py-0.5 font-bold ${c.tone}`}>{c.text}</span>
+          ))}
+          {motm ? (
+            <span className="rounded-full bg-accent-gold/15 px-2 py-0.5 font-bold text-accent-gold">Player of the Match: {motm.name}</span>
+          ) : null}
+        </p>
+      ) : null}
+      {flash?.challenges.length ? (
+        <ul className="mt-2 space-y-1">
+          {flash.challenges.map((t) => (
+            <li key={t} className="rounded-control bg-accent-gold/10 px-2.5 py-1.5 text-[13px] font-semibold text-accent-gold">
+              ✓ Challenge done: {t}
+            </li>
+          ))}
+        </ul>
+      ) : null}
+      {scorers ? (
+        <details className="mt-2 text-xs text-gray-400">
+          <summary className="cursor-pointer font-semibold text-gray-300">Scorers</summary>
+          <p className="mt-1">{state.clubs[state.userClubId]!.short} tries: {scorers}</p>
+        </details>
+      ) : null}
+    </section>
   );
 }
 
@@ -108,8 +139,19 @@ function StageBar({ label, onClick }: { label: string; onClick: () => void }) {
   );
 }
 
+/** Short name for the place a sim stops: "Deadline Day", "Cup Round of 16", "league end". */
+function stopShort(label: string): string {
+  if (label === "the end of the league") return "league end";
+  if (label === "the end of the season") return "season end";
+  if (label === "the Grand Final") return "Grand Final";
+  return label.replace(/^Challenge Cup /, "Cup ");
+}
+
 export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
-  const { state, play, playLive, setTactic, passStage } = useCareer();
+  const { state, play, playLive, setTactic, passStage, simToStop, autoPick } = useCareer();
+  // Places moved and challenges completed by the last tap (kept while this tab is open).
+  const before = useRef<{ index: number; pos: number; done: string[] } | null>(null);
+  const [flash, setFlash] = useState<ResultFlash | null>(null);
   const [busy, setBusy] = useState(false);
   const [live, setLive] = useState(false);
   const lastPlayedIndex = useRef<number | null>(null);
@@ -117,6 +159,24 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
   const md = s.calendar[s.matchdayIndex];
   const fixture = userFixture(md, s.userClubId);
   const last = lastUserFixture(s);
+
+  const myDivision = s.clubs[s.userClubId]!.division;
+  const myPos = sortTable(s.tables[myDivision]).findIndex((r) => r.clubId === s.userClubId) + 1;
+  const myPlayed = s.tables[myDivision].find((r) => r.clubId === s.userClubId)?.p ?? 0;
+  const doneIds = s.challenges.filter((c) => c.done).map((c) => c.id).join(",");
+  useEffect(() => {
+    const prev = before.current;
+    // A position only means something once a league game has been played.
+    const now = { index: s.matchdayIndex, pos: myPlayed > 0 ? myPos : 0, done: doneIds ? doneIds.split(",") : [] };
+    before.current = now;
+    if (!prev || prev.index === now.index) return;
+    if (now.index < prev.index) {
+      setFlash(null);
+      return;
+    }
+    const fresh = s.challenges.filter((c) => c.done && !prev.done.includes(c.id)).map((c) => c.title);
+    setFlash({ moved: prev.pos && now.pos ? prev.pos - now.pos : 0, challenges: fresh });
+  }, [s.matchdayIndex, myPos, myPlayed, doneIds, s.challenges]);
 
   // Sound + celebration on the result of a match the user just played.
   useEffect(() => {
@@ -168,6 +228,12 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
   // double tap can't start a match that's just appeared under the finger.
   const fixtureArmed = useArmed(450, `${stage}:${s.matchdayIndex}`, { armedOnMount: true });
 
+  // Sim to the next decision: only offered on a league week with more than one game before the stop.
+  const stopRaw = fixture?.kind === "league" ? nextStop(s) : null;
+  const stop = stopRaw && stopRaw.games >= 2 ? stopRaw : null;
+  // A better XIII is sitting in the squad (after a signing, a sale or a renewal).
+  const bestGain = fixture ? lineupRating(autoPickLineup(squadOf(s, s.userClubId)), s.players) - myRating : 0;
+
   if (live && fixture) {
     return (
       <LiveMatch
@@ -205,7 +271,7 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
       <div className="flex flex-col gap-4">
         <IncomingBidCard />
         <TransferWindowCard onOpenMarket={onOpenMarket} />
-        {last ? <ResultCard state={s} fixture={last} title={`Last result · ${last.label}`} /> : null}
+        {last ? <ResultStrip state={s} fixture={last} /> : null}
       </div>
     );
   }
@@ -232,8 +298,27 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
 
   return (
     <div className="flex flex-col gap-4">
+      {last ? <ResultStrip state={s} fixture={last} flash={flash} /> : null}
+      {s.matchdayIndex === 0 ? <PreseasonResults /> : null}
       <IncomingBidCard />
       <TransferWindowCard onOpenMarket={onOpenMarket} />
+      {fixture && bestGain >= 0.1 ? (
+        <section aria-label="Stronger XIII available" className="flex items-center gap-3 rounded-card bg-pitch-900 p-3 ring-1 ring-theme-primary/40">
+          <p className="min-w-0 flex-1 text-[13px] text-gray-300">
+            Your best XIII is <span className="font-bold text-theme-primary">+{bestGain.toFixed(1)}</span> stronger.
+          </p>
+          <GameButton
+            size="sm"
+            fullWidth={false}
+            onClick={() => {
+              playAutofill();
+              autoPick();
+            }}
+          >
+            Pick best XIII
+          </GameButton>
+        </section>
+      ) : null}
       <Card className={big ? "border-accent-gold/60" : ""}>
         <div className="flex items-center justify-between gap-2">
           <Eyebrow>{md ? md.label : "Season complete"}</Eyebrow>
@@ -297,9 +382,19 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
               >
                 Play match
               </GameButton>
-              <GameButton size="sm" variant="secondary" disabled={busy || !fixtureArmed} onClick={() => run(play)}>
-                {busy ? "Simulating…" : "Quick sim"}
-              </GameButton>
+              <div className={stop ? "grid grid-cols-2 gap-2" : ""}>
+                <GameButton size="sm" variant="secondary" disabled={busy || !fixtureArmed} onClick={() => run(play)}>
+                  {busy ? "Simulating…" : "Quick sim"}
+                </GameButton>
+                {stop ? (
+                  <GameButton size="sm" variant="secondary" disabled={busy || !fixtureArmed} onClick={() => run(simToStop)}>
+                    <span className="flex flex-col items-center leading-tight">
+                      <span>Sim to {stopShort(stop.label)}</span>
+                      <span className="text-[11px] font-semibold opacity-75">{stop.games} games</span>
+                    </span>
+                  </GameButton>
+                ) : null}
+              </div>
             </>
           ) : (
             <GameButton size="lg" disabled={busy || !md || !fixtureArmed} onClick={() => run(play)}>
@@ -309,7 +404,6 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
         </div>
       </div>
 
-      {last ? <ResultCard state={s} fixture={last} title={`Last result · ${last.label}`} /> : null}
     </div>
   );
 }

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { MobileModal } from "@/components/ui/MobileOverlay";
-import { formatMoney, prestigeRatingCap } from "@/lib/career";
+import { TROPHY_LABEL, formatMoney, ordinal, prestigeRatingCap } from "@/lib/career";
 import type { SeasonChallenge } from "@/lib/career/types";
 import { useCareer } from "@/lib/career/context";
 import { playUiClick, playWarning } from "@/lib/sound";
@@ -75,6 +75,35 @@ export function ClubTab({ onOpenVault, onOpenRecords }: { onOpenVault: () => voi
           })}
         </ul>
       </Card>
+
+      {s.history.length ? (
+        <Card>
+          <Eyebrow>Your career · {s.history.length} {s.history.length === 1 ? "season" : "seasons"}</Eyebrow>
+          {(() => {
+            const w = s.history.reduce((t, h) => t + h.won, 0);
+            const l = s.history.reduce((t, h) => t + h.lost, 0);
+            const trophies = s.history.flatMap((h) => h.trophies).filter((t) => t !== "promotion");
+            const best = s.history.reduce((b, h) => (h.division === "super-league" && (!b || h.position < b.position) ? h : b), undefined as (typeof s.history)[number] | undefined);
+            return (
+              <>
+                <p className="mt-1 text-sm text-gray-300">
+                  <span className="font-display text-xl font-bold text-white">{w}W {l}L</span>
+                  {best ? ` · best Super League finish ${ordinal(best.position)}` : ""}
+                </p>
+                {trophies.length ? (
+                  <ul className="mt-2 flex flex-wrap gap-1.5">
+                    {trophies.map((t, i) => (
+                      <li key={`${t}-${i}`} className="rounded-full bg-accent-gold/15 px-2 py-0.5 text-[11px] font-semibold text-accent-gold">🏆 {TROPHY_LABEL[t]}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="mt-1 text-xs text-gray-400">No silverware yet.</p>
+                )}
+              </>
+            );
+          })()}
+        </Card>
+      ) : null}
 
       <Card>
         <Eyebrow>The club</Eyebrow>

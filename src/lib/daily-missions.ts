@@ -7,6 +7,7 @@
  *   reportMissionEvent({ kind: "playoffs", ... }) — GameBoard, after the play-off bracket
  *   reportMissionEvent({ kind: "wordle", ... })   — WordleGame settle
  *   reportMissionEvent({ kind: "grid", ... })     — GridGame settle
+ *   reportMissionEvent({ kind: "manager", ... })  — Manager Mode, once per game of yours played
  * (Season events are built from the squad by seasonMissionEvent in daily-missions-season.ts, which
  * keeps the player database out of this module so the home card stays light.)
  *
@@ -27,6 +28,8 @@ export const DAILY_MISSIONS_STORAGE_KEY = "27-0-daily-missions";
 export const DAILY_MISSIONS_CHANGED_EVENT = "27-0-daily-missions-changed";
 export const DAILY_MISSIONS_PER_DAY = 3;
 export const DAILY_MISSIONS_ALL_BONUS = 40_000;
+/** The Manager Mode mission joins the pool from this UK day. */
+export const MANAGER_MISSIONS_FROM = "2026-11-01";
 
 /** Classic squad slot indices (positions.ts SLOT_DEFINITIONS): fullback, stand off, scrum half, hooker. */
 export const SPINE_SLOT_INDICES = [0, 5, 6, 8] as const;
@@ -65,6 +68,11 @@ export type MissionEvent =
     }
   | { kind: "wordle"; won: boolean }
   | {
+      /** One of your games in a Manager Mode career finished (live or simmed). */
+      kind: "manager";
+      won: boolean;
+    }
+  | {
       /** A grid finished. Only today's daily grid counts. */
       kind: "grid";
       daily: boolean;
@@ -98,6 +106,8 @@ export interface DailyMissionTemplate {
   /** Progress this event earns (null when the event is irrelevant). */
   measure: (event: MissionEvent, param: MissionParam) => number | null;
   enabled?: boolean;
+  /** First UK date key (YYYY-MM-DD) the template can be picked, so adding one never reshuffles a day already running. */
+  from?: string;
 }
 
 const num = (p: MissionParam) => (typeof p === "number" ? p : 0);
@@ -310,6 +320,17 @@ export const DAILY_MISSION_TEMPLATES: readonly DailyMissionTemplate[] = [
     accumulate: "sum",
     measure: (e) => (countedSeason(e) ? 1 : null),
   },
+  {
+    id: "manager-wins",
+    category: "play",
+    params: [1, 3],
+    title: (p) => (num(p) === 1 ? "Win a Manager Mode match" : `Win ${num(p)} Manager Mode matches`),
+    reward: (p) => (num(p) >= 3 ? 20_000 : 15_000),
+    target: (p) => num(p),
+    accumulate: "sum",
+    measure: (e) => (e.kind === "manager" ? flag(e.won) : null),
+    from: MANAGER_MISSIONS_FROM,
+  },
 ];
 
 // ---------------------------------------------------------------------------------------------
@@ -379,7 +400,7 @@ function shuffle<T>(items: readonly T[], rng: () => number): T[] {
  */
 export function getDailyMissions(dateKey: string = getLocalDateKey()): DailyMission[] {
   const rng = rngFor(dateKey);
-  const enabled = DAILY_MISSION_TEMPLATES.filter((t) => t.enabled !== false);
+  const enabled = DAILY_MISSION_TEMPLATES.filter((t) => t.enabled !== false && (!t.from || dateKey >= t.from));
   const categories = shuffle(
     [...new Set(enabled.map((t) => t.category))],
     rng

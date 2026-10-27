@@ -138,6 +138,8 @@ export interface SeasonOutcome {
   legacyEarned: number;
   challengesDone: number;
   topTryScorer?: { name: string; tries: number };
+  /** The board's league target for the season (finish this place or better), when one was set. */
+  boardTarget?: number;
   /** Set once this season has been banked into the cross-career legacy. */
   banked?: boolean;
 }
@@ -216,6 +218,8 @@ export interface CareerState {
   stagesSeen?: string[];
   /** The summer's comings and goings, shown before the transfer window opens. */
   departures?: Departures;
+  /** The board's league target for `year` (finish `target`th or better). Older saves derive it. */
+  board?: { year: number; target: number };
 }
 
 export interface Departures {

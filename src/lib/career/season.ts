@@ -4,6 +4,7 @@ import { autoPickLineup, lineupRating, formatMoney, wageBill } from "./players";
 import { rngFor, shuffle } from "./rng";
 import { CUP_ROUND_LABELS, buildCalendar } from "./schedule";
 import { DIVISION_LABEL } from "./clubs";
+import { boardTargetForRank } from "./board";
 import type {
   CareerState,
   ChallengeKind,
@@ -87,7 +88,7 @@ export function loserOf(f: Fixture): string | null {
 }
 
 /** Strongest-first ranking of a division by current XIII rating. */
-function expectedRanking(state: CareerState, division: Division): string[] {
+export function expectedRanking(state: CareerState, division: Division): string[] {
   return clubsIn(state, division)
     .map((id) => ({ id, r: clubRating(state, id) }))
     .sort((a, b) => b.r - a.r)
@@ -209,6 +210,11 @@ export function startSeason(state: CareerState): CareerState {
     cupRoundReached: 0,
   };
   next.challenges = buildChallenges(next);
+  {
+    const division = userClub(next).division;
+    const ranking = expectedRanking(next, division);
+    next.board = { year: next.year, target: boardTargetForRank(division, ranking.indexOf(next.userClubId) + 1, ranking.length) };
+  }
   next.phase = "season";
   next.lastOutcome = undefined;
   const income = seasonIncome(next);
@@ -628,6 +634,7 @@ function finishSeason(state: CareerState): CareerState {
     legacyEarned,
     challengesDone: s.challenges.filter((c) => c.done).length,
     topTryScorer: top && top.tries > 0 ? { name: top.name, tries: top.tries } : undefined,
+    boardTarget: s.board?.year === s.year ? s.board.target : undefined,
   };
   if (trophies.includes("grand-final") && s.firstGrandFinalSeason == null) s.firstGrandFinalSeason = s.seasonNumber;
   s.lastOutcome = outcome;

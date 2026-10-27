@@ -36,6 +36,16 @@ import {
   markStageSeen,
   promotionPicture,
   leagueOverPicture,
+  boardGoal,
+  boardTargetForRank,
+  nextStop,
+  simToNextStop,
+  skipIdleWeeks,
+  seasonProgress,
+  userStreak,
+  userFixture,
+  recommendedRenewals,
+  buildWorld,
   type CareerState,
 } from "../src/lib/career";
 
@@ -272,6 +282,74 @@ for (const clubId of ["london-broncos", "leeds-rhinos", "north-wales-crusaders"]
   check(s.phase === "review", "stages: Grand Final ends the season");
   for (const id of pic.up) check(s.clubs[id]!.division === "super-league", "stages: promotion picture matches the real outcome (up)");
   for (const id of pic.down) check(s.clubs[id]!.division === "championship", "stages: promotion picture matches the real outcome (down)");
+}
+
+// --- The season loop: board target, Sim to the next decision, idle weeks, progress.
+{
+  // Board targets: sensible bands, never better than expected, always a real place.
+  for (const [div, size] of [["super-league", 14], ["championship", 22]] as const) {
+    for (let r = 1; r <= size; r++) {
+      const t = boardTargetForRank(div, r, size);
+      check(t >= 1 && t <= size, `board: ${div} rank ${r} target in range (${t})`);
+      check(t >= Math.min(r, size - 2), `board: ${div} rank ${r} target not harder than expected (${t})`);
+    }
+  }
+  for (const seed of ["loop-a", "loop-b", "loop-c", "loop-d"]) {
+    for (const division of ["super-league", "championship"] as const) {
+      const choice = buildWorld(seed).choices.filter((c) => c.division === division)[seed.charCodeAt(5) % 5]!;
+      let s = createCareer({ clubId: choice.id, managerName: "Loop", seed });
+      check(s.board?.year === s.year && s.board.target >= 1, `${seed}/${division}: board target set at the start`);
+      const goal = boardGoal(s);
+      check(goal.target === s.board!.target && goal.label.length > 0 && goal.played === 0, `${seed}/${division}: board goal readable`);
+      // Older saves without a board target still get one.
+      const old = { ...s, board: undefined } as CareerState;
+      check(boardGoal(old).target === goal.target, `${seed}/${division}: old save derives the same target`);
+      s = playFriendlies(s, []);
+      check(seasonProgress(s).label === "Round 1 of " + seasonProgress(s).total, `${seed}/${division}: progress reads Round 1 of N`);
+      // Sim to each stop; the calendar preview says where it stops and how many games it plays.
+      let guard = 0;
+      let sims = 0;
+      while (s.phase === "season" && guard++ < 80) {
+        const st = currentStage(s);
+        if (st === "deadline") { s = skipIdleWeeks(closeDeadlineDay(s)); continue; }
+        if (st === "league-over" || st === "promotion") { s = skipIdleWeeks(markStageSeen(s, st)); continue; }
+        check(st === "fixture", `${seed}/${division}: only fixture stage left (${st})`);
+        const f = userFixture(s.calendar[s.matchdayIndex], s.userClubId);
+        check(!!f, `${seed}/${division}: idle weeks are skipped (md ${s.matchdayIndex})`);
+        const stop = f?.kind === "league" ? nextStop(s) : null;
+        if (stop && stop.games >= 2) {
+          const before = s;
+          const after = simToNextStop(s);
+          let games = 0;
+          for (let i = before.matchdayIndex; i < after.matchdayIndex; i++) if (userFixture(after.calendar[i], s.userClubId)?.result) games++;
+          check(games === stop.games, `${seed}/${division}: sim to ${stop.label} played ${games}, preview said ${stop.games}`);
+          const stAfter = after.phase === "season" ? currentStage(after) : "done";
+          const fAfter = after.phase === "season" ? userFixture(after.calendar[after.matchdayIndex], s.userClubId) : undefined;
+          check(stAfter !== "fixture" || (fAfter && fAfter.kind !== "league") || after.phase !== "season", `${seed}/${division}: sim stopped at a decision (${stop.label})`);
+          s = skipIdleWeeks(after);
+          sims++;
+        } else {
+          s = skipIdleWeeks(playMatchday(s));
+        }
+      }
+      check(s.phase === "review", `${seed}/${division}: season finishes through sims and stops`);
+      check(sims >= 2, `${seed}/${division}: Sim to… offered at least twice (${sims})`);
+      check(s.lastOutcome?.boardTarget === s.board?.target, `${seed}/${division}: review keeps the board target`);
+      const streak = userStreak(s);
+      check(!!streak && streak.length >= 1, `${seed}/${division}: a form run is readable`);
+      // Summer: suggested renewals are affordable and all expiring.
+      s = beginOffseason(s);
+      const keep = recommendedRenewals(s);
+      const fees = keep.reduce((t, id) => t + renewalFee(s.players[id]!), 0);
+      check(fees <= s.budget, `${seed}/${division}: suggested renewals fit the budget`);
+      check(keep.every((id) => s.departures!.expiring.includes(id)), `${seed}/${division}: suggestions are out-of-contract players`);
+      for (const id of keep) {
+        const r = renewContract(s, id);
+        check(!r.error, `${seed}/${division}: suggested renewal goes through`);
+        s = r.state;
+      }
+    }
+  }
 }
 
 const avg = (xs: number[]) => xs.reduce((a, b) => a + b, 0) / xs.length;
