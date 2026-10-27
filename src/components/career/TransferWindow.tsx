@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { useArmed } from "@/hooks/useArmed";
 import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
@@ -48,6 +48,10 @@ const wagesText = (n: number) => `${formatMoney(n)}/yr wages`;
  */
 export function TransferWindow({ mode = "summer", onClose }: { mode?: "summer" | "preseason" | "deadline"; onClose?: () => void } = {}) {
   const midseason = mode === "deadline";
+  // Opened from the hub (pre-season or Deadline Day): start at the top, not where the hub was scrolled.
+  useEffect(() => {
+    if (mode !== "summer") window.scrollTo(0, 0);
+  }, [mode]);
   const { state, market, buy, sell, finishTransfers } = useCareer();
   const armed = useArmed();
   const [tab, setTab] = useState<"buy" | "sell">("buy");

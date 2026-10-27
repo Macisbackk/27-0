@@ -257,7 +257,7 @@ try {
         await page.getByRole("tab", { name: "Club" }).click();
         const status = await page.getByTestId("window-status").first().innerText().catch(() => "");
         if (!/Window shut/.test(status) || !/after the season/.test(status)) fail(`after Deadline Day the Club tab says "${status}"`);
-        await page.getByTestId("window-status").first().scrollIntoViewIfNeeded().catch(() => {});
+        await page.getByTestId("window-status").first().evaluate((el) => el.scrollIntoView({ block: "center" })).catch(() => {});
         await page.waitForTimeout(700);
         await shot("window-after-deadline-club");
         await page.getByRole("tab", { name: "Match" }).click();
