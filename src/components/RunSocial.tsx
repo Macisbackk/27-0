@@ -29,6 +29,7 @@ import { getEffectivePeakRating } from "@/lib/squad-analysis";
 import { buildPickRarity, findRarestPick, formatPickPercent, pickRarityLabel, type SlotRarity } from "@/lib/pick-rarity";
 import { fetchDailyPickRarity } from "@/lib/storage/daily-pick-rarity";
 import { ShareResultButton } from "./ShareResultButton";
+import { SHOW_CHALLENGE_MATE_UI } from "@/lib/feature-flags";
 import { TYPO } from "@/lib/ui/typography";
 
 export interface RunOutcome {
@@ -313,7 +314,7 @@ export function RunSocialPanel({
     <div className="flex w-full flex-col gap-3">
       {challenge ? <ChallengeComparison challenge={challenge} squad={squad} outcome={outcome} /> : null}
       <DailyPickRarityPanel squad={squad} rarity={rarity ?? null} />
-      {canChallenge ? <ChallengeMatePanel seed={seed} era={era} squad={squad} outcome={outcome} /> : null}
+      {canChallenge && SHOW_CHALLENGE_MATE_UI ? <ChallengeMatePanel seed={seed} era={era} squad={squad} outcome={outcome} /> : null}
     </div>
   );
 }

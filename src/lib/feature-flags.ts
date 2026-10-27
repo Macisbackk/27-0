@@ -12,8 +12,11 @@ export const SHOW_DAILY_CHALLENGE_UI = true;
 export const SHOW_WEEKLY_CHALLENGE_UI = false;
 
 /** v1.31: "Share result" (emoji grid) and "Share as image" on review screens are hidden (little used).
- * Challenge a mate stays. Flip to true to bring them back. */
+ * Flip to true to bring them back. */
 export const SHOW_SHARE_RESULT_UI = false;
+
+/** v1.32: the "Challenge a mate" card on review screens is hidden. Links already shared still open. */
+export const SHOW_CHALLENGE_MATE_UI = false;
 /**
  * Auto-fill squad is a Daily Challenge / hidden-mode shortcut only: in ranked Classic (Current, Era,
  * Ball Knower) every player is spun for, so the leaderboard isn't flooded with one-tap seasons.
