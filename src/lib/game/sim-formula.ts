@@ -29,11 +29,13 @@ export interface SimFormulaModeScale {
   eliteRating: number;
   /** Mean chemistry bonus of a typical draft (Era cards can link on shared card years). */
   typicalChemistry: number;
+  /** Extra strength every opponent has in this mode (Era: a touch harder, owner v1.36). */
+  opponentEdge?: number;
 }
 
 export const SIM_FORMULA_MODE_SCALE: Record<SimFormulaMode, SimFormulaModeScale> = {
   classic: { typicalRating: 83.1, eliteRating: 85.5, typicalChemistry: 0 },
-  era: { typicalRating: 85.6, eliteRating: 87.5, typicalChemistry: 0.3 },
+  era: { typicalRating: 85.6, eliteRating: 87.5, typicalChemistry: 0.3, opponentEdge: 0.4 },
 };
 
 /** League-scale strength of a typical draft (opponent club ratings run 66–84). */
@@ -74,7 +76,8 @@ export function getTeamStrength(input: TeamStrengthInput): number {
     TEAM_STRENGTH_TYPICAL +
     TEAM_STRENGTH_SPREAD * getDraftQuality(input.avgRating, input.mode) +
     ((input.chemistry ?? 0) - scale.typicalChemistry) +
-    (input.ratingDelta ?? 0)
+    (input.ratingDelta ?? 0) -
+    (scale.opponentEdge ?? 0)
   );
 }
 
