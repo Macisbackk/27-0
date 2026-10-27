@@ -161,7 +161,7 @@ function RugbyPitchInner({
           }
         >
           <div
-            className={`relative w-full overflow-hidden ${
+            className={`rugby-pitch relative w-full overflow-hidden ${
               formationOnly
                 ? "team-sheet-pitch aspect-[5/7.2] min-h-[400px] max-h-[min(520px,calc(100dvh-330px))] rounded-card"
                 : "rugby-pitch-pro rounded-control border border-white/10 shadow-[0_14px_34px_rgba(0,0,0,0.28)]"

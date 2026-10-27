@@ -46,7 +46,7 @@ const ACCENT_IDLE: Record<LeaderboardTabAccent, string> = {
 const CHIP_IDLE = "border-transparent bg-pitch-900 text-white hover:bg-pitch-800";
 
 /** The dark well tab groups sit in. */
-const TRACK = "rounded-control bg-black/40 p-1 shadow-[inset_0_0_0_1px_var(--fl-line)]";
+const TRACK = "rounded-control bg-pitch-950 p-1";
 
 const PLAY_STYLE_DEFAULT_ACCENT: Record<string, LeaderboardTabAccent> = {
   manager: "gold",
