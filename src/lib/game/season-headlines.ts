@@ -25,7 +25,8 @@ export interface SeasonHeadline {
 const FORWARDS = new Set<Position>(["PROP", "HOOKER", "SECOND_ROW", "LOOSE_FORWARD"]);
 
 function plural(n: number, word: string): string {
-  return `${n} ${word}${n === 1 ? "" : "s"}`;
+  if (n === 1) return `${n} ${word}`;
+  return `${n} ${word.endsWith("y") ? `${word.slice(0, -1)}ies` : `${word}s`}`;
 }
 
 function ordinal(n: number): string {
