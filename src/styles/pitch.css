@@ -93,6 +93,19 @@
   text-align: left;
 }
 
+/* Result heroes (season / play-off review): the grade sits centred at every width. */
+.pitch-hero.pitch-hero--centred,
+.pitch-hero.pitch-hero--centred .pitch-title,
+.pitch-hero.pitch-hero--centred .pitch-sub,
+.pitch-hero.pitch-hero--centred .pitch-eyebrow {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.pitch-hero.pitch-hero--centred .pitch-eyebrow {
+  justify-content: center;
+}
+
 /* Page heroes (PitchHero): a compact header band, left-aligned like the home card. */
 .pitch-hero {
   padding: 1rem;

@@ -342,6 +342,7 @@ export function PlayoffReview({
         >
           <PitchHero
             size="feature"
+            className="pitch-hero--centred"
             titleAs="h1"
             icon={<CupGlyph />}
             eyebrow={
