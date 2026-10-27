@@ -72,7 +72,10 @@ export function legendCatalog(): LegendCard[] {
       ...tier(peak, r.tier === "great"),
     });
   }
-  cache = [...byName.values()].sort((a, b) => b.peak - a.peak || a.name.localeCompare(b.name));
+  // Legends first, then Greats; strongest first within each.
+  cache = [...byName.values()].sort(
+    (a, b) => Number(a.tier === "great") - Number(b.tier === "great") || b.peak - a.peak || a.name.localeCompare(b.name)
+  );
   return cache;
 }
 

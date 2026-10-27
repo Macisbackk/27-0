@@ -91,6 +91,14 @@
   "nationality": "Australia"
  },
  {
+  "name": "Luke Gale",
+  "peakRating": 97,
+  "position": "Scrum-half",
+  "club": "Castleford Tigers",
+  "nationality": "England",
+  "tier": "great"
+ },
+ {
   "name": "Paul Wellens",
   "peakRating": 97,
   "position": "Fullback",
@@ -131,6 +139,14 @@
   "peakRating": 96,
   "position": "SECOND_ROW",
   "club": "Leeds Rhinos",
+  "nationality": "England",
+  "tier": "great"
+ },
+ {
+  "name": "Garry Connolly",
+  "peakRating": 96,
+  "position": "CENTRE",
+  "club": "Wigan Warriors",
   "nationality": "England",
   "tier": "great"
  },
@@ -214,6 +230,46 @@
   "nationality": "England"
  },
  {
+  "name": "Ali Lauitiiti",
+  "peakRating": 94,
+  "position": "SECOND_ROW",
+  "club": "Leeds Rhinos",
+  "nationality": "Samoa",
+  "tier": "great"
+ },
+ {
+  "name": "Anthony Sullivan",
+  "peakRating": 94,
+  "position": "WING",
+  "club": "St Helens",
+  "nationality": "Wales",
+  "tier": "great"
+ },
+ {
+  "name": "Danny Houghton",
+  "peakRating": 94,
+  "position": "HOOKER",
+  "club": "Hull FC",
+  "nationality": "England",
+  "tier": "great"
+ },
+ {
+  "name": "Jamie Jones-Buchanan",
+  "peakRating": 94,
+  "position": "Second-row",
+  "club": "Leeds Rhinos",
+  "nationality": "England",
+  "tier": "great"
+ },
+ {
+  "name": "Keith Senior",
+  "peakRating": 94,
+  "position": "CENTRE",
+  "club": "Leeds Rhinos",
+  "nationality": "England",
+  "tier": "great"
+ },
+ {
   "name": "Martin Offiah",
   "peakRating": 94,
   "position": "Wing",
@@ -221,10 +277,210 @@
   "nationality": "England"
  },
  {
+  "name": "Martin Gleeson",
+  "peakRating": 93,
+  "position": "CENTRE",
+  "club": "St Helens",
+  "nationality": "England",
+  "tier": "great"
+ },
+ {
+  "name": "Ryan Hall",
+  "peakRating": 93,
+  "position": "WING",
+  "club": "Leeds Rhinos",
+  "nationality": "England",
+  "tier": "great"
+ },
+ {
+  "name": "Terry O'connor",
+  "peakRating": 93,
+  "position": "PROP",
+  "club": "Wigan Warriors",
+  "nationality": "England",
+  "tier": "great"
+ },
+ {
+  "name": "Eorl Crabtree",
+  "peakRating": 92,
+  "position": "PROP",
+  "club": "Huddersfield Giants",
+  "nationality": "England",
+  "tier": "great"
+ },
+ {
   "name": "Paul Newlove",
   "peakRating": 92,
   "position": "Centre",
   "club": "Bradford Bulls",
   "nationality": "England"
+ },
+ {
+  "name": "Thomas Leuluai",
+  "peakRating": 92,
+  "position": "Hooker",
+  "club": "Wigan Warriors",
+  "nationality": "New Zealand",
+  "tier": "great"
+ },
+ {
+  "name": "Danny Tickle",
+  "peakRating": 91,
+  "position": "Second row",
+  "club": "Hull FC",
+  "nationality": "England",
+  "tier": "great"
+ },
+ {
+  "name": "Jon Wilkin",
+  "peakRating": 91,
+  "position": "Second-row",
+  "club": "St Helens",
+  "nationality": "England",
+  "tier": "great"
+ },
+ {
+  "name": "Kylie Leuluai",
+  "peakRating": 91,
+  "position": "PROP",
+  "club": "Leeds Rhinos",
+  "nationality": "New Zealand",
+  "tier": "great"
+ },
+ {
+  "name": "Michael Shenton",
+  "peakRating": 91,
+  "position": "CENTRE",
+  "club": "Castleford Tigers",
+  "nationality": "England",
+  "tier": "great"
+ },
+ {
+  "name": "Ryan Atkins",
+  "peakRating": 91,
+  "position": "Centre",
+  "club": "Warrington Wolves",
+  "nationality": "England",
+  "tier": "great"
+ },
+ {
+  "name": "Stefan Ratchford",
+  "peakRating": 91,
+  "position": "FULLBACK",
+  "club": "Warrington Wolves",
+  "nationality": "England",
+  "tier": "great"
+ },
+ {
+  "name": "Ben Westwood",
+  "peakRating": 90,
+  "position": "SECOND_ROW",
+  "club": "Warrington Wolves",
+  "nationality": "England",
+  "tier": "great"
+ },
+ {
+  "name": "Leroy Cudjoe",
+  "peakRating": 90,
+  "position": "Centre",
+  "club": "Huddersfield Giants",
+  "nationality": "England",
+  "tier": "great"
+ },
+ {
+  "name": "Michael Dobson",
+  "peakRating": 90,
+  "position": "SCRUM_HALF",
+  "club": "Hull KR",
+  "nationality": "Australia",
+  "tier": "great"
+ },
+ {
+  "name": "Paul Deacon",
+  "peakRating": 90,
+  "position": "Scrum-half",
+  "club": "Bradford Bulls",
+  "nationality": "England",
+  "tier": "great"
+ },
+ {
+  "name": "Remi Casty",
+  "peakRating": 90,
+  "position": "Prop",
+  "club": "Catalans Dragons",
+  "nationality": "France",
+  "tier": "great"
+ },
+ {
+  "name": "Chris Hill",
+  "peakRating": 88,
+  "position": "PROP",
+  "club": "Warrington Wolves",
+  "nationality": "England",
+  "tier": "great"
+ },
+ {
+  "name": "Francis Cummins",
+  "peakRating": 88,
+  "position": "WING",
+  "club": "Leeds Rhinos",
+  "nationality": "England",
+  "tier": "great"
+ },
+ {
+  "name": "Jermaine McGillvary",
+  "peakRating": 88,
+  "position": "WING",
+  "club": "Huddersfield Giants",
+  "nationality": "England",
+  "tier": "great"
+ },
+ {
+  "name": "Paul Wood",
+  "peakRating": 88,
+  "position": "PROP",
+  "club": "Warrington Wolves",
+  "nationality": "England",
+  "tier": "great"
+ },
+ {
+  "name": "James Lowes",
+  "peakRating": 87,
+  "position": "HOOKER",
+  "club": "Bradford Bulls",
+  "nationality": "England",
+  "tier": "great"
+ },
+ {
+  "name": "Richard Horne",
+  "peakRating": 87,
+  "position": "SCRUM_HALF",
+  "club": "Hull FC",
+  "nationality": "England",
+  "tier": "great"
+ },
+ {
+  "name": "Danny Orr",
+  "peakRating": 86,
+  "position": "STAND_OFF",
+  "club": "Castleford Tigers",
+  "nationality": "England",
+  "tier": "great"
+ },
+ {
+  "name": "Kevin Brown",
+  "peakRating": 86,
+  "position": "LOOSE_FORWARD",
+  "club": "Huddersfield Giants",
+  "nationality": "England",
+  "tier": "great"
+ },
+ {
+  "name": "Josh Charnley",
+  "peakRating": 85,
+  "position": "WING",
+  "club": "Wigan Warriors",
+  "nationality": "England",
+  "tier": "great"
  }
 ]

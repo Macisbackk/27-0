@@ -37208,6 +37208,7 @@
   },
   {
     "id": "bradford-hist-james-lowes-1997",
+    "great": true,
     "name": "James Lowes",
     "position": "HOOKER",
     "club": "Bradford Bulls",
@@ -44373,6 +44374,7 @@
   },
   {
     "id": "warrington-hist-chris-hill-2016",
+    "great": true,
     "name": "Chris Hill",
     "position": "PROP",
     "club": "Warrington Wolves",
@@ -55906,6 +55908,7 @@
   },
   {
     "id": "catalans-hist-remi-casty-2012",
+    "great": true,
     "name": "Remi Casty",
     "position": "Prop",
     "club": "Catalans Dragons",
@@ -61031,6 +61034,7 @@
   },
   {
     "id": "st-helens-hist-jon-wilkin-2006",
+    "great": true,
     "name": "Jon Wilkin",
     "position": "Second-row",
     "club": "St Helens",
@@ -61336,6 +61340,7 @@
   },
   {
     "id": "hull-fc-hist-danny-tickle-2013",
+    "great": true,
     "name": "Danny Tickle",
     "position": "Second row",
     "club": "Hull FC",
@@ -61858,6 +61863,7 @@
   },
   {
     "id": "huddersfield-hist-leroy-cudjoe-2013",
+    "great": true,
     "name": "Leroy Cudjoe",
     "position": "Centre",
     "club": "Huddersfield Giants",
@@ -64362,6 +64368,7 @@
   },
   {
     "id": "bradford-hist-paul-deacon-2009",
+    "great": true,
     "name": "Paul Deacon",
     "position": "Scrum-half",
     "club": "Bradford Bulls",
@@ -65067,6 +65074,7 @@
   },
   {
     "id": "wigan-hist-thomas-leuluai",
+    "great": true,
     "name": "Thomas Leuluai",
     "position": "Hooker",
     "club": "Wigan Warriors",
@@ -65445,6 +65453,7 @@
   },
   {
     "id": "warrington-hist-ryan-atkins-2016",
+    "great": true,
     "name": "Ryan Atkins",
     "position": "Centre",
     "club": "Warrington Wolves",
@@ -66383,6 +66392,7 @@
   },
   {
     "id": "leeds-hist-jamie-jones-buchanan-2013",
+    "great": true,
     "name": "Jamie Jones-Buchanan",
     "position": "Second-row",
     "club": "Leeds Rhinos",
@@ -71007,6 +71017,7 @@
   },
   {
     "id": "luke-gale",
+    "great": true,
     "name": "Luke Gale",
     "position": "Scrum-half",
     "club": "Castleford Tigers",
@@ -74418,6 +74429,7 @@
   },
   {
     "id": "hull-fc-hist-danny-houghton-2016",
+    "great": true,
     "name": "Danny Houghton",
     "position": "HOOKER",
     "club": "Hull FC",
@@ -96727,6 +96739,7 @@
   },
   {
     "id": "st-helens-hist-anthony-sullivan-1998",
+    "great": true,
     "name": "Anthony Sullivan",
     "position": "WING",
     "primaryPosition": "WING",
@@ -99859,6 +99872,7 @@
   },
   {
     "id": "wigan-hist-garry-connolly-1999",
+    "great": true,
     "name": "Garry Connolly",
     "position": "CENTRE",
     "primaryPosition": "CENTRE",
@@ -110543,6 +110557,7 @@
   },
   {
     "id": "castleford-hist-danny-orr-2002",
+    "great": true,
     "name": "Danny Orr",
     "position": "STAND_OFF",
     "primaryPosition": "STAND_OFF",
@@ -112683,6 +112698,7 @@
   },
   {
     "id": "leeds-hist-francis-cummins-2003",
+    "great": true,
     "name": "Francis Cummins",
     "position": "WING",
     "primaryPosition": "WING",
@@ -113271,6 +113287,7 @@
   },
   {
     "id": "wigan-hist-terry-o-connor-2003",
+    "great": true,
     "name": "Terry O'connor",
     "position": "PROP",
     "primaryPosition": "PROP",
@@ -116234,6 +116251,7 @@
   },
   {
     "id": "leeds-hist-keith-senior-2004",
+    "great": true,
     "name": "Keith Senior",
     "position": "CENTRE",
     "primaryPosition": "CENTRE",
@@ -116850,6 +116868,7 @@
   },
   {
     "id": "hull-fc-hist-richard-horne-2004",
+    "great": true,
     "name": "Richard Horne",
     "position": "SCRUM_HALF",
     "primaryPosition": "SCRUM_HALF",
@@ -120566,6 +120585,7 @@
   },
   {
     "id": "st-helens-hist-martin-gleeson-2005",
+    "great": true,
     "name": "Martin Gleeson",
     "position": "CENTRE",
     "primaryPosition": "CENTRE",
@@ -120891,6 +120911,7 @@
   },
   {
     "id": "leeds-hist-ali-lauitiiti-2005",
+    "great": true,
     "name": "Ali Lauitiiti",
     "position": "SECOND_ROW",
     "primaryPosition": "SECOND_ROW",
@@ -137398,6 +137419,7 @@
   },
   {
     "id": "leeds-hist-kylie-leuluai-2010",
+    "great": true,
     "name": "Kylie Leuluai",
     "position": "PROP",
     "primaryPosition": "PROP",
@@ -142483,6 +142505,7 @@
   },
   {
     "id": "hull-kr-hist-michael-dobson-2011",
+    "great": true,
     "name": "Michael Dobson",
     "position": "SCRUM_HALF",
     "primaryPosition": "SCRUM_HALF",
@@ -145696,6 +145719,7 @@
   },
   {
     "id": "warrington-hist-ben-westwood-2012",
+    "great": true,
     "name": "Ben Westwood",
     "position": "SECOND_ROW",
     "primaryPosition": "SECOND_ROW",
@@ -147337,6 +147361,7 @@
   },
   {
     "id": "huddersfield-hist-kevin-brown-2012",
+    "great": true,
     "name": "Kevin Brown",
     "position": "LOOSE_FORWARD",
     "primaryPosition": "LOOSE_FORWARD",
@@ -149528,6 +149553,7 @@
   },
   {
     "id": "warrington-hist-paul-wood-2013",
+    "great": true,
     "name": "Paul Wood",
     "position": "PROP",
     "primaryPosition": "PROP",
@@ -149895,6 +149921,7 @@
   },
   {
     "id": "wigan-hist-josh-charnley-2013",
+    "great": true,
     "name": "Josh Charnley",
     "position": "WING",
     "primaryPosition": "WING",
@@ -153916,6 +153943,7 @@
   },
   {
     "id": "huddersfield-hist-eorl-crabtree-2014",
+    "great": true,
     "name": "Eorl Crabtree",
     "position": "PROP",
     "primaryPosition": "PROP",
@@ -157231,6 +157259,7 @@
   },
   {
     "id": "huddersfield-hist-jermaine-mcgillvary-2015",
+    "great": true,
     "name": "Jermaine McGillvary",
     "position": "WING",
     "primaryPosition": "WING",
@@ -161409,6 +161438,7 @@
   },
   {
     "id": "castleford-hist-michael-shenton-2017",
+    "great": true,
     "name": "Michael Shenton",
     "position": "CENTRE",
     "primaryPosition": "CENTRE",
@@ -171345,6 +171375,7 @@
   },
   {
     "id": "warrington-hist-stefan-ratchford-2019",
+    "great": true,
     "name": "Stefan Ratchford",
     "position": "FULLBACK",
     "primaryPosition": "FULLBACK",
@@ -197763,6 +197794,7 @@
   },
   {
     "id": "leeds-hist-ryan-hall-2015",
+    "great": true,
     "name": "Ryan Hall",
     "position": "WING",
     "primaryPosition": "WING",
