@@ -112,8 +112,8 @@ export function SeasonReview() {
             <dd className="font-display text-xl font-bold text-accent-gold">{legacy.legacyPoints}</dd>
           </div>
         </dl>
-        {o.promoted ? <p className="mt-3 text-sm text-success">Next season: Super League. Promotion bonus included above.</p> : null}
-        {o.relegated ? <p className="mt-3 text-sm text-danger">Next season: Championship. Win it to come straight back up.</p> : null}
+        {o.promoted ? <p className="mt-3 text-sm text-success">Up to Super League. Promotion bonus included.</p> : null}
+        {o.relegated ? <p className="mt-3 text-sm text-danger">Down to the Championship. Win it to bounce back.</p> : null}
       </Card>
 
       {recordBreaks && (recordBreaks.bestSeason || recordBreaks.biggestWin || recordBreaks.fastestGlory || recordBreaks.perfect) ? (

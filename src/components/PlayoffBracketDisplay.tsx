@@ -104,8 +104,8 @@ export function PlayoffBracketDisplay({
             />
             <p className={`mt-3 text-center ${TYPO.label}`}>
               {tournamentComplete
-                ? "Select a completed tie for details"
-                : `${getPlayoffRoundLabel(activeRound)} in progress — select finished ties for details`}
+                ? "Tap a tie for details"
+                : `${getPlayoffRoundLabel(activeRound)} in progress`}
             </p>
           </div>
         )}
@@ -130,7 +130,7 @@ export function PlayoffBracketDisplay({
           </div>
           {viewRound < activeRound && (
             <p className={`mt-3 text-center ${TYPO.label}`}>
-              Round complete — use the tabs above to review earlier ties
+              Round done. Use the tabs to see other rounds.
             </p>
           )}
         </div>

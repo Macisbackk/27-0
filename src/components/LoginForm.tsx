@@ -92,7 +92,7 @@ export function LoginForm() {
             setCooldownUntil(Date.now() + result.cooldownSeconds * 1000);
           }
         } else if (result.emailSent) {
-          setSuccess("Confirmation email sent. Please check your inbox.");
+          setSuccess("Check your inbox to confirm your email.");
           if (result.cooldownSeconds) {
             setCooldownUntil(Date.now() + result.cooldownSeconds * 1000);
           }
@@ -116,14 +116,14 @@ export function LoginForm() {
     setError(null);
     setSuccess(null);
     if (!emailInput.trim()) {
-      setError("Enter your email above, then tap Forgot password.");
+      setError("Enter your email first.");
       return;
     }
     setBusy(true);
     try {
       const result = await sendPasswordResetEmail(emailInput);
       if (!result.ok) setError(result.error ?? "Could not send reset email.");
-      else setSuccess("If there's an account for that email, a reset link is on its way. Check your inbox and spam.");
+      else setSuccess("Reset link sent if the account exists. Check your inbox and spam.");
     } finally {
       setBusy(false);
     }
@@ -164,8 +164,7 @@ export function LoginForm() {
       </div>
 
       <p className={`mt-3 text-center ${TYPO.bodySm}`}>
-        Played as a guest? Your Club Funds, Store items, stats, Daily streak, Squad Book and Manager
-        career on this device move into your account when you {mode === "signup" ? "sign up" : "log in"}.
+        Played as a guest? Your progress comes with you.
       </p>
 
       <div className={`mt-5 ${SPACING.stackMd}`}>
@@ -241,8 +240,7 @@ export function LoginForm() {
               className={FILTER.input}
             />
             <p className={TYPO.bodySm}>
-              Coach name {COACH_NAME_MIN_LENGTH}–{COACH_NAME_MAX_LENGTH}{" "}
-              characters · letters, numbers, underscores
+              {COACH_NAME_MIN_LENGTH}–{COACH_NAME_MAX_LENGTH} letters, numbers or underscores
             </p>
           </>
         )}
@@ -270,7 +268,7 @@ export function LoginForm() {
 
       {signupBlocked && (
         <p className={`mt-2 text-center ${TYPO.bodySm}`}>
-          Please wait {cooldownSeconds}s before signing up again.
+          Wait {cooldownSeconds}s to try again.
         </p>
       )}
 
@@ -292,7 +290,7 @@ export function LoginForm() {
         <Link href="/" className="font-semibold text-theme-primary hover:underline">
           Keep playing as a guest
         </Link>
-        <span className="block">Progress stays on this device until you log in.</span>
+        <span className="block">Progress stays on this device.</span>
       </p>
     </section>
   );

@@ -33,6 +33,7 @@ import { mergeClubFundsFromCloud, syncClubFundsLeaderboardOnLoad } from "./stora
 import { grantLoginWelcome } from "./storage/login-welcome";
 import { syncTrophyCabinetLeaderboardOnLoad } from "./storage/trophy-cabinet-leaderboard";
 import { mergeUiThemeStoreFromCloud } from "./storage/ui-theme-store";
+import { mergeDarkModeFromCloud } from "./storage/dark-mode-store";
 import { mergeCosmeticsFromCloud } from "./storage/cosmetics-store";
 import { mergeHiddenCoachesFromCloud } from "./storage/hidden-coaches";
 import { refreshBoostInventoryFromCloud } from "./boosts/boostInventory";
@@ -238,6 +239,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         hydrateCareerFromCloud(),
         hydrateSquadBookFromCloud(),
         mergeHiddenCoachesFromCloud(),
+        mergeDarkModeFromCloud(),
       ]);
       for (const r of [statsHydrate, fundsHydrate, themeHydrate, ...otherHydrates]) {
         if (r.status === "rejected") console.error("[auth] cloud hydrate step failed:", r.reason);

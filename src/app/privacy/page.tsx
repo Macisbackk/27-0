@@ -68,17 +68,21 @@ export default function PrivacyPage() {
 
         <Section title="Coach names, reports and hiding coaches">
           <p>
-            Coach names are public, so names with swearing, slurs or sexual content are blocked when you choose one,
-            and any that get through are shown as &ldquo;Coach #1234&rdquo;.
+            Coach names are public. Names with swearing, slurs or sexual content are blocked. Any that get through
+            show as &ldquo;Coach #1234&rdquo;.
           </p>
           <p>
             Tap <strong>⋯</strong> next to a coach on any leaderboard to <strong>report</strong> them (offensive name,
-            cheating or something else) or <strong>hide</strong> them from your own leaderboards. A report stores your
-            account id, the coach reported, the reason and the time; only we can read reports. A name reported by
-            several players is hidden from everyone until we&rsquo;ve reviewed it. We review reports within 24 hours and
-            remove offending names and, where needed, the accounts behind them. Coaches you hide are saved with your
-            account and can be shown again from Settings.
+            cheating or something else) or <strong>hide</strong> them from your own leaderboards.
           </p>
+          <p>
+            A report stores your account id, the coach reported, the reason and the time. Only we can read reports. A
+            name reported by several players is hidden from everyone until we&rsquo;ve reviewed it.
+          </p>
+          <p>
+            We review reports within 24 hours. We remove offending names and, where needed, the accounts behind them.
+          </p>
+          <p>Coaches you hide are saved with your account. You can show them again in Settings.</p>
           <p>
             To report anything else or something urgent, email{" "}
             <a href={`mailto:${CONTACT}`} className="font-semibold text-theme-primary underline-offset-2 hover:underline">
@@ -103,11 +107,14 @@ export default function PrivacyPage() {
 
         <Section title="Your rights and deleting your data">
           <p>
-            You can delete your account and everything stored with it at any time from{" "}
+            Delete your account and everything stored with it at any time from{" "}
             <Link href="/delete-account" className="font-semibold text-theme-primary underline-offset-2 hover:underline">
               Delete account
             </Link>{" "}
-            (also in Settings). You can also ask us for a copy of your data, to correct it or to delete it by emailing{" "}
+            (also in Settings).
+          </p>
+          <p>
+            To get a copy of your data, correct it or delete it, email{" "}
             <a href={`mailto:${CONTACT}`} className="font-semibold text-theme-primary underline-offset-2 hover:underline">
               {CONTACT}
             </a>
@@ -118,8 +125,8 @@ export default function PrivacyPage() {
 
         <Section title="Children">
           <p>
-            27-0 is suitable for all ages but isn&rsquo;t aimed at children under 13, and we don&rsquo;t knowingly
-            collect their data. If you think a child has made an account, email us and we&rsquo;ll delete it.
+            27-0 suits all ages but isn&rsquo;t aimed at children under 13. We don&rsquo;t knowingly collect their
+            data. If you think a child has made an account, email us and we&rsquo;ll delete it.
           </p>
         </Section>
 

@@ -117,6 +117,21 @@ await shot(phone, "41-squad-book", "/squad-book");
 await shot(phone, "42-modes", "/modes");
 await shot(phone, "43-settings", "/settings");
 await shot(phone, "44-quiz", "/quiz");
+await shot(phone, "45-how-to-play", "/", async (page) => {
+  await page.locator("summary", { hasText: "How to play" }).first().click({ timeout: 5000 });
+  await page.waitForTimeout(500);
+  await page.locator("#how-to-play").scrollIntoViewIfNeeded();
+}, true);
+
+// Narrowest phones (320px): text wrapping and clipping.
+{
+  const narrow = await browser.newContext({ viewport: { width: 320, height: 640 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+  await shot(narrow, "46-320-home", "/", null, true);
+  await shot(narrow, "47-320-store", "/store");
+  await shot(narrow, "48-320-manager", "/manager");
+  await shot(narrow, "49-320-settings", "/settings", null, true);
+  await narrow.close();
+}
 
 // Classic: the draft screen, then a full auto-filled run to the season review (test build: ?e2e=1).
 async function tapFirst(page, patterns) {
@@ -185,5 +200,59 @@ for (const id of ["cherry", "chalk", "neon"]) {
   }
   await ctx.close();
 }
+
+// Settings → Dark mode (v1.24): black page, one coloured pitch surface per screen. The preference
+// is a localStorage key read by the <head> bootstrap script, so set it, then reload.
+async function darkContext(themeId) {
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+  await ctx.addInitScript((id) => {
+    localStorage.setItem("27-0-dark-mode", JSON.stringify({ on: true, updatedAt: 1 }));
+    if (id) {
+      localStorage.setItem(
+        "27-0-ui-theme-store",
+        JSON.stringify({ selectedThemeId: id, unlockedThemeIds: ["default", id], purchaseIds: [] }),
+      );
+    }
+  }, themeId ?? null);
+  return ctx;
+}
+{
+  const ctx = await darkContext();
+  await shot(ctx, "60-dark-home", "/");
+  await shot(ctx, "61-dark-home-full", "/", null, true);
+  await shot(ctx, "62-dark-store", "/store");
+  await shot(ctx, "63-dark-draft", "/play?e2e=1", async (page) => {
+    await tapFirst(page, [/Skip boost|Continue without boost/i]);
+    await page.waitForTimeout(800);
+  });
+  await shot(ctx, "64-dark-manager", "/manager");
+  await shot(ctx, "65-dark-leaderboard", "/leaderboard");
+  await shot(ctx, "66-dark-settings", "/settings", async (page) => {
+    await page.getByRole("switch", { name: "Dark mode" }).scrollIntoViewIfNeeded({ timeout: 5000 });
+    await page.waitForTimeout(300);
+  });
+  await shot(ctx, "67-dark-puzzles", "/mini-games");
+  await shot(ctx, "68-dark-profile", "/profile");
+  await ctx.close();
+}
+{
+  const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
+  await ctx.addInitScript(() => localStorage.setItem("27-0-dark-mode", JSON.stringify({ on: true, updatedAt: 1 })));
+  await shot(ctx, "69-dark-desktop-home", "/");
+  await ctx.close();
+}
+{
+  const ctx = await darkContext("cherry");
+  await shot(ctx, "70-dark-cherry-home", "/");
+  await shot(ctx, "71-dark-cherry-store", "/store");
+  await ctx.close();
+}
+// The toggle itself: light page, flip it on in Settings (the page turns dark straight away).
+await shot(phone, "72-settings-toggle-on", "/settings", async (page) => {
+  const sw = page.getByRole("switch", { name: "Dark mode" });
+  await sw.scrollIntoViewIfNeeded({ timeout: 5000 });
+  await sw.click({ timeout: 5000 });
+  await page.waitForTimeout(500);
+});
 
 await browser.close();

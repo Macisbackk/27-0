@@ -101,6 +101,7 @@
     "test:chemistry": "tsx scripts/test-chemistry.ts",
     "test:weekly": "tsx scripts/test-weekly.ts",
     "test:store": "bun scripts/test-store.ts",
+    "test:dark-mode": "bun scripts/test-dark-mode.ts",
     "test:share": "tsx scripts/test-share-result.ts",
     "test:social": "tsx scripts/test-social.ts",
     "test:squadbook": "bun scripts/test-squad-book.ts",

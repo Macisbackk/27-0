@@ -23,7 +23,7 @@ export function mapAuthError(
     return {
       ok: false,
       error:
-        "Too many email requests. Please wait a few minutes before trying again.",
+        "Too many emails sent. Wait a few minutes and try again.",
       rateLimited: true,
       cooldownSeconds: RATE_LIMIT_COOLDOWN_SECONDS,
     };

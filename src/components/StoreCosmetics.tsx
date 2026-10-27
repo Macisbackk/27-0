@@ -93,7 +93,7 @@ export function KitAndPitchStore({ balance }: { balance: number }) {
   return (
     <div className="flex flex-col gap-3">
       {message ? <p className="text-center text-sm text-theme-primary" role="status">{message}</p> : null}
-      <Section title="Kit designer" intro="Design your own shirt. Turn it on and your whole Classic team sheet wears it instead of club kits.">
+      <Section title="Kit designer" intro="Design your own shirt. Your Classic team wears it.">
         <div className="flex items-center gap-4">
           <span className="flex h-28 w-28 shrink-0 items-center justify-center rounded-tile bg-pitch-950">
             <ClubShirt kit={kit} label="27" size={92} />
@@ -214,7 +214,7 @@ export function TitlesStore({ balance }: { balance: number }) {
   const c = useCosmetics();
   const { message, buy } = useBuy(balance);
   return (
-    <Section title="Coach titles" intro="Shown on your Coach Profile and next to your name on every leaderboard. Wear one at a time.">
+    <Section title="Coach titles" intro="Shown next to your name on every leaderboard.">
       {message ? <p className="mb-2 text-sm text-theme-primary" role="status">{message}</p> : null}
       <ul className="divide-y divide-[color:var(--fl-line)]">
         {items("title").map((item) => {
@@ -253,7 +253,7 @@ export function FramesStore({ balance }: { balance: number }) {
   const c = useCosmetics();
   const { message, buy } = useBuy(balance);
   return (
-    <Section title="Leaderboard frames" intro="Frame your whole row on every leaderboard. Everyone sees it.">
+    <Section title="Leaderboard frames" intro="Frame your row on every leaderboard.">
       {message ? <p className="mb-2 text-sm text-theme-primary" role="status">{message}</p> : null}
       <ul className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
         {items("frame").map((item) => {
@@ -301,7 +301,7 @@ export function ModesStore({ balance }: { balance: number }) {
   const item = COSMETICS.find((i) => i.id === BALL_KNOWER_ID)!;
   const owned = c.owned.includes(item.id);
   return (
-    <Section title="Ball Knower mode" intro="Classic with every rating hidden, on the spins, the choices and the team sheet, and no respins. Pick on what you know. Ball Knower runs aren't ranked on the leaderboard.">
+    <Section title="Ball Knower mode" intro="Classic with every rating hidden and no respins. Unranked.">
       {message ? <p className="mb-2 text-sm text-theme-primary" role="status">{message}</p> : null}
       {owned ? (
         <div className="grid grid-cols-2 gap-2">

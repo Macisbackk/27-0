@@ -85,10 +85,10 @@ export function PlayoffBracketProgressStrip({
         }`}
       >
         <span className="playoff-bracket-tag">
-          1st & 2nd receive a semi-final bye
+          1st and 2nd go straight to the semis
         </span>
         <span className="playoff-bracket-tag playoff-bracket-tag--muted">
-          3rd v 6th and 4th v 5th; winners reach the semis
+          3rd v 6th, 4th v 5th
         </span>
       </div>
     </div>
@@ -110,8 +110,8 @@ export function PlayoffBracketHeader({
   const resolvedSubtitle =
     subtitle ??
     (tournamentComplete
-      ? "Play-offs complete — review the path to the trophy"
-      : "Simulate matches to advance");
+      ? "Play-offs done. Tap a tie for details."
+      : "Play each tie to advance");
 
   return (
     <div className="playoff-bracket-header game-panel overflow-hidden p-4 text-center sm:p-5">

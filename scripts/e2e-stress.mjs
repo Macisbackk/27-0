@@ -151,7 +151,7 @@ try {
   where = "login";
   await page.goto(`${BASE}/login`, { waitUntil: "networkidle" });
   await page.getByRole("button", { name: "Forgot password?" }).click({ timeout });
-  await page.getByText(/Enter your email above/).waitFor({ timeout: 3000 }).catch(() => fail("Forgot password with no email gave no guidance"));
+  await page.getByText(/Enter your email (above|first)/).waitFor({ timeout: 3000 }).catch(() => fail("Forgot password with no email gave no guidance"));
   await page.getByRole("tab", { name: "Create account" }).click();
   await page.getByRole("button", { name: "Create account" }).last().click();
   await noSideways(page, "login @320");

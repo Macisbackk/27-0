@@ -164,7 +164,7 @@ export function StatsPanel() {
 
       {!hasAnyRuns && (
         <div className="game-panel game-panel--elevated p-6 text-center text-[color:var(--fl-muted)]">
-          No runs yet. Play a game to start tracking your stats.
+          No runs yet. Play a season to start.
         </div>
       )}
 
@@ -228,7 +228,7 @@ export function StatsPanel() {
       <p className="text-center text-xs text-[color:var(--fl-muted)]">
         {isLoggedIn
           ? "Stats sync when logged in."
-          : "Saved on this device until you log in."}
+          : "Saved on this device."}
       </p>
     </div>
   );

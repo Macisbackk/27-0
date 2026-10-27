@@ -501,7 +501,7 @@ export function HomeModeSelector() {
           ) : null}
       {/* Weekly + missions: two compact tiles side by side; missions open into a list. */}
       {SHOW_DAILY_CHALLENGE_UI || missions ? (
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 gap-2 min-[360px]:grid-cols-2">
           {SHOW_DAILY_CHALLENGE_UI ? (
             <div className="relative min-w-0 rounded-tile bg-pitch-900">
               <Link
@@ -583,7 +583,7 @@ export function HomeModeSelector() {
       ) : null}
 
       {/* Smaller games. */}
-      <nav aria-label="More games" className="grid grid-cols-6 gap-3">
+      <nav aria-label="More games" className="grid grid-cols-3 gap-2 min-[360px]:grid-cols-6 min-[360px]:gap-3">
         <ModeTile
           wide
           href="/mini-games"

@@ -8,7 +8,7 @@ import { TYPO } from "@/lib/ui/typography";
 import { useMountDiagnostic } from "@/lib/ui/use-mount-diagnostic";
 
 const DISCLAIMER =
-  "27-0 is an unofficial fan-made rugby league game. It is not affiliated with, endorsed by, sponsored by or connected to the Rugby Football League, Super League, RL Commercial, any rugby league club, broadcaster, player or governing body. All names, clubs and references are used for fan entertainment purposes only.";
+  "27-0 is an unofficial fan-made game. It isn't affiliated with, endorsed by, sponsored by or connected to the Rugby Football League, Super League, RL Commercial, any club, broadcaster, player or governing body. Names are used for fan entertainment only.";
 
 const MINIMAL_CHROME_PATHS = ["/login", "/auth/reset-password", "/auth/callback"];
 /** Full-chrome immersive modes — site footer collides with fixed bottom UI. */

@@ -243,7 +243,7 @@ export function QuizModeApp() {
           </h2>
           <p className={TYPO.body}>
             Walk away with{" "}
-            {formatClubFundsExact(getCurrentPrize(run ? countCorrectAnswers(run) : 0))}? You only bank what beats today&rsquo;s best run.
+            {formatClubFundsExact(getCurrentPrize(run ? countCorrectAnswers(run) : 0))}? You only bank what beats today&rsquo;s best.
           </p>
           <div className="grid gap-2 sm:grid-cols-2">
             <GameButton
@@ -278,7 +278,7 @@ function QuizLanding({ onStart }: { onStart: () => void }) {
         size="feature"
         eyebrow="Puzzles"
         title={QUIZ_GAME_NAME}
-        description={<>15 questions, four lifelines, {formatClubFundsExact(QUIZ_TOP_PRIZE)} top prize. Bank at Q5 and Q10.</>}
+        description={<>15 questions, 4 lifelines, {formatClubFundsExact(QUIZ_TOP_PRIZE)} top prize. Safe at Q5 and Q10.</>}
         icon={<TilesGlyph />}
         aside={
           <Link href="/mini-games" className="pitch-chip">
@@ -292,10 +292,10 @@ function QuizLanding({ onStart }: { onStart: () => void }) {
       </PitchHero>
       <p className={`mt-3 px-1 text-left ${TYPO.bodySm}`} data-testid="quiz-day-reward">
         {ledger === null || ledger.runs === 0
-          ? `Your first run today pays in full. Later runs pay ${repeatPct}% of their prize.`
+          ? `Your first run today pays in full. Later runs pay ${repeatPct}%.`
           : capReached
-            ? "You've banked today's quiz maximum. Later runs are practice until tomorrow."
-            : `Today's full-price run is used. Runs now pay ${repeatPct}% of their prize (${formatClubFundsExact(
+            ? "Today's max is banked. Runs are practice until tomorrow."
+            : `Runs now pay ${repeatPct}% (${formatClubFundsExact(
                 Math.max(0, QUIZ_DAILY_CAP - ledger.paid)
               )} left today).`}
       </p>
@@ -548,7 +548,7 @@ function QuizResultScreen({
       <h1 className={`mt-2 ${TYPO.pageTitle}`}>{title}</h1>
       {run.phase === "quiz_complete" ? (
         <p className={`mt-3 ${TYPO.pageSubtitle}`}>
-          You answered all 15 questions correctly — top prize.
+          15 out of 15. Top prize!
         </p>
       ) : (
         <p className={`mt-3 ${TYPO.pageSubtitle}`}>
@@ -564,7 +564,7 @@ function QuizResultScreen({
       </p>
       {run.rewardPractice && (
         <p className={`mt-2 ${TYPO.body}`}>
-          You&apos;ve already banked today&apos;s {club ? club.name : "Team Challenge"} reward. Try another club, or come back tomorrow.
+          Today&apos;s {club ? club.name : "Team Challenge"} reward is already banked. Try another club.
         </p>
       )}
       {!run.rewardPractice && partiallyPaid && (
@@ -572,8 +572,8 @@ function QuizResultScreen({
           {run.rewardPaid! > 0
             ? `Repeat run: you banked ${formatClubFundsExact(run.rewardPaid!)} (${Math.round(
                 QUIZ_REPEAT_RUN_SHARE * 100
-              )}% of the prize). Your first run each day pays in full.`
-            : "You've banked today's quiz maximum. Come back tomorrow for a full-price run."}
+              )}% of the prize).`
+            : "Today's max is banked. Come back tomorrow."}
         </p>
       )}
       {run.phase === "quiz_walked_away" && !run.rewardPractice && !partiallyPaid && (

@@ -69,12 +69,13 @@ export default function PastDailiesPage() {
             icon={<FixtureGlyph />}
           />
           <p className="text-left text-sm text-[color:var(--fl-muted)] px-1">
-            The last {DAILY_ARCHIVE_DAYS} days: same rule, same spins, same season as on the day. Practice only: no
-            streak, Daily board, missions or Club Funds.
+            The last {DAILY_ARCHIVE_DAYS} days, same rule and spins.
+            <br />
+            Practice only: no streak, board or Club Funds.
           </p>
           {SHOW_DAILY_CHALLENGE_UI ? (
             <Link href={getDailyChallengeHref()} onClick={() => playUiClick()} className="mt-2 inline-flex min-h-[44px] items-center text-sm font-bold text-theme-primary">
-              Today&apos;s Daily is on the home screen ›
+              Play today&apos;s Daily ›
             </Link>
           ) : null}
         </header>

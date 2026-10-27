@@ -696,7 +696,7 @@ export function GameBoard({
         !isQmSelectionBoostAllowedInMode(resolvedBoostId, normalEraMode)
       ) {
         setBoostNotice(
-          "Legend Player boost can only be used in Era Classic."
+          "The Legend boost only works in Era Classic."
         );
         resolvedBoostId = null;
       }
@@ -745,7 +745,7 @@ export function GameBoard({
           firstPick.failureReason ??
             boostFailureNotice(
               resolvedBoostId,
-              "No valid boosted route for this run — boost not used."
+              "No route for this boost. Boost not used."
             )
         );
         return;
@@ -758,7 +758,7 @@ export function GameBoard({
         setBoostNotice(
           boostFailureNotice(
             resolvedBoostId,
-            "No valid boosted route for this run — boost not used."
+            "No route for this boost. Boost not used."
           )
         );
         return;
@@ -2435,7 +2435,7 @@ export function GameBoard({
 
       if (isDraftMode) {
         if (phase !== "choice" || draftPickIndex === null) {
-          fail("Open a player choice before using a selection boost.");
+          fail("Open a player choice first.");
           return;
         }
         const signedIds = squad
@@ -2613,7 +2613,7 @@ export function GameBoard({
         return;
       }
 
-      fail("Selection boosts are not available in this mode.");
+      fail("Boosts aren't available in this mode.");
     },
     [
       joeMellorMode,
@@ -2749,8 +2749,8 @@ export function GameBoard({
       );
       setBoostNotice(
         slotBoostGuaranteeId === "qm-90-plus-player"
-          ? "90+ boost armed for the next eligible selection."
-          : "Legend boost armed for the next eligible selection."
+          ? "90+ boost ready for your next pick."
+          : "Legend boost ready for your next pick."
       );
     }
     lastScrolledPlayerIdRef.current = null;
@@ -2978,8 +2978,8 @@ export function GameBoard({
                 {dailyScenario.ruleSummary}
                 <span className="pitch-sub__meta">
                   {dailyAttemptCounts
-                    ? `Top the table +${formatClubFunds(dailyScenario.leagueLeadersBonus)} · Win the Grand Final +${formatClubFunds(dailyScenario.playoffTitleBonus)}`
-                    : "Practice run — today's Daily attempt is used"}
+                    ? `Top the table +${formatClubFunds(dailyScenario.leagueLeadersBonus)} · Grand Final +${formatClubFunds(dailyScenario.playoffTitleBonus)}`
+                    : "Practice run. Today's Daily is used."}
                 </span>
               </>
             ) : weeklyScenario ? (
@@ -2987,8 +2987,8 @@ export function GameBoard({
                 {weeklyScenario.ruleSummary}
                 <span className="pitch-sub__meta">
                   {weeklyAttemptCounts
-                    ? `Ranked attempt · Win ${WEEKLY_SCORE.regularWin} · Play-off win ${WEEKLY_SCORE.playoffWin} · Grand Final +${WEEKLY_SCORE.grandFinal} · League Leaders +${WEEKLY_SCORE.leagueLeaders}`
-                    : "Practice run — this week's ranked attempt is used"}
+                    ? `Ranked · Win ${WEEKLY_SCORE.regularWin} · Play-off win ${WEEKLY_SCORE.playoffWin} · Grand Final +${WEEKLY_SCORE.grandFinal} · League Leaders +${WEEKLY_SCORE.leagueLeaders}`
+                    : "Practice run. This week's ranked run is used."}
                 </span>
               </>
             ) : challenge ? (
@@ -3003,7 +3003,7 @@ export function GameBoard({
               <>
                 {archiveScenario.ruleSummary}
                 <span className="pitch-sub__meta">
-                  Practice: same spins as on the day. No streak, board, missions or Club Funds.
+                  Practice: same spins as on the day.
                 </span>
               </>
             ) : subtitle ? (
@@ -3039,8 +3039,8 @@ export function GameBoard({
             role="status"
           >
             <span>
-              Welcome back — your run is restored ({filledCount}/{TOTAL_SLOTS} signed
-              {pendingSpin ? `, ${squad.find((x) => x.slotIndex === pendingSpin.slotIndex)?.label ?? "a"} spin waiting` : ""}).
+              Welcome back. {filledCount}/{TOTAL_SLOTS} signed
+              {pendingSpin ? `, ${squad.find((x) => x.slotIndex === pendingSpin.slotIndex)?.label ?? "a"} spin waiting` : ""}.
             </span>
             {!dailyChallengeMode && !weeklyChallengeMode ? (
               <button
@@ -3099,10 +3099,10 @@ export function GameBoard({
             <p className="text-sm text-amber-100">
               {boostNotice ??
                 boostedSpinPlan.failureReason ??
-                "No valid boosted route for this position."}
+                "No route for this boost here."}
             </p>
             <p className={`${TYPO.bodySm} text-amber-100/80`}>
-              Try another position, skip the boost or change it. Boost unused.
+              Try another position or skip the boost.
             </p>
             <div className="flex flex-wrap gap-2">
               <GameButton
@@ -3113,8 +3113,8 @@ export function GameBoard({
                   setBoostedSpinPlan(null);
                   setBoostNotice(
                     slotBoostGuaranteeId === "qm-90-plus-player"
-                      ? "90+ boost still armed — pick another position."
-                      : "Legend boost still armed — pick another position."
+                      ? "90+ boost still ready. Pick another position."
+                      : "Legend boost still ready. Pick another position."
                   );
                 }}
               >
@@ -3208,12 +3208,10 @@ export function GameBoard({
           <div className="mt-4 flex flex-wrap items-center justify-center gap-1">
             <p className={`w-full text-center ${TYPO.bodySm} font-semibold text-white`}>
               {pendingSpin
-                ? `Your ${suggestedSlotLabel ?? "last"} spin is locked in — tap it to sign`
+                ? `Your ${suggestedSlotLabel ?? "last"} spin is waiting. Tap it to sign.`
                 : filledCount === 0
-                  ? "Tap any position to spin for a player"
-                  : `Tap an empty position · ${TOTAL_SLOTS - filledCount} to go${
-                      suggestedSlotLabel ? ` · next up: ${suggestedSlotLabel}` : ""
-                    }`}
+                  ? "Tap a position to spin"
+                  : `${TOTAL_SLOTS - filledCount} to go${suggestedSlotLabel ? ` · next: ${suggestedSlotLabel}` : ""}`}
             </p>
             {difficulty !== "HARD" && filledCount > 0 && chemistry.links.length > 0 ? (
               <p className="w-full text-center text-xs text-lime-300">
@@ -3512,7 +3510,7 @@ export function GameBoard({
                 disabled={choosing || hideActionBar}
                 className="min-h-[var(--mobile-tap-target)] shrink-0 px-3 text-xs"
               >
-                Auto-fill squad
+                Auto-fill<span className="sr-only"> squad</span>
               </GameButton>
             )}
             {phase === "pitch" && !squadComplete && suggestedSlotIndex !== null && (
@@ -3575,7 +3573,7 @@ export function GameBoard({
                     oneClubOutcome.record.titles > 0 ? ` · ${oneClubOutcome.record.titles} Grand Final${oneClubOutcome.record.titles === 1 ? "" : "s"}` : ""
                   } · `
                 : ""}
-              Unranked: no leaderboard or Club Funds.
+              Unranked. No Club Funds.
             </p>
           </div>
         ) : null}
@@ -3693,9 +3691,9 @@ export function GameBoard({
               </h2>
               <p id="leave-run-body" className={`mt-2 ${TYPO.bodySm} text-gray-300`}>
                 {resumeModeKey
-                  ? `${filledCount}/${TOTAL_SLOTS} signed. Your squad is saved on this device — open ${
+                  ? `${filledCount}/${TOTAL_SLOTS} signed. Your squad is saved. Open ${
                       dailyChallengeMode ? "today's Daily" : weeklyChallengeMode ? "this week's Weekly" : normalEraMode ? "Era Classic" : "Classic"
-                    } again to pick up where you left off.`
+                    } to carry on.`
                   : `${filledCount}/${TOTAL_SLOTS} signed. This run won't be saved.`}
               </p>
               <div className="mt-4 flex gap-2">

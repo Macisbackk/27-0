@@ -161,7 +161,7 @@ export async function signUp(
       return {
         ok: false,
         error:
-          "There's already an account with this email. Log in instead, or use Forgot password if you can't remember it.",
+          "There's already an account with this email. Log in instead.",
       };
     }
 

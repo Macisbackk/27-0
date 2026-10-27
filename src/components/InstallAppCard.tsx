@@ -33,7 +33,7 @@ function InstallAppCardInner({ dismissible = false }: { dismissible?: boolean })
     <section aria-label="Get the app" className="rounded-card bg-pitch-900 p-4 text-center">
       <p className="text-[15px] font-bold text-white">Get the 27-0 app</p>
       <p className="mx-auto mt-1 max-w-xs text-[13px] text-[color:var(--fl-muted)]">
-        Add it to your home screen: opens full screen and works offline.
+        Add it to your home screen. Works offline.
       </p>
       {mode === "prompt" ? (
         <button

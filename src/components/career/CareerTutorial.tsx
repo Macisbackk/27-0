@@ -18,27 +18,27 @@ function steps(s: CareerState): Step[] {
     {
       title: `Welcome to ${club.name}, gaffer`,
       body: sl
-        ? `You're in ${DIVISION_LABEL[club.division]} with ${formatMoney(s.budget)} to spend. Win games, win trophies, and build a legacy that unlocks legends for this and every future career.`
-        : `You're in the ${DIVISION_LABEL[club.division]} with ${formatMoney(s.budget)} to spend. Finish top to go straight up, or finish 2nd and win the Million Pound Game to reach Super League.`,
+        ? `You're in ${DIVISION_LABEL[club.division]} with ${formatMoney(s.budget)} to spend. Win trophies to unlock legends for every career.`
+        : `You're in the ${DIVISION_LABEL[club.division]} with ${formatMoney(s.budget)} to spend. Finish 1st to go up. 2nd plays the Million Pound Game.`,
     },
     {
       title: "Match day",
-      body: "Play match lets you make the big calls as it happens. Quick sim plays it in a second. Your game plan (attack, balanced, defend) changes how the game goes.",
+      body: "Play match to make the big calls live. Quick sim plays it in a second. Your game plan changes how it goes.",
       tab: "match",
     },
     {
       title: "Pick your XIII",
-      body: "The Team tab is your squad. Tap a shirt to swap a player in, or let Auto-pick choose your strongest side.",
+      body: "Tap a shirt to swap a player in. Or tap Auto-pick best.",
       tab: "team",
     },
     {
       title: "Pre-season and transfers",
-      body: "Before Round 1 you can arrange up to two friendlies for match sharpness and gate money. In the season, transfers happen on one day only: Deadline Day, before Round 16. The season waits until it\u2019s over.",
+      body: "Play up to 2 friendlies before Round 1 for sharpness and cash. In the season you can only trade on Deadline Day, before Round 16.",
       tab: "match",
     },
     {
       title: "Table and club",
-      body: "Table shows the league. Club has your season challenges, finances, records and the Legend Vault. That's it: good luck!",
+      body: "Table shows the league. Club has your challenges, money, records and the Legend Vault. Good luck!",
       tab: "club",
     },
   ];

@@ -25,8 +25,8 @@ export function LegendVaultSheet({ open, onClose }: { open: boolean; onClose: ()
       headerExtra={<span className="pitch-pill mt-1.5 !text-[14px] !text-accent-gold">{legacy.legacyPoints} Legacy pts</span>}
     >
       <p className="text-sm text-gray-300">
-        Spend Legacy points (earned from trophies and challenges in any career). Unlocked legends turn up in your transfer window in
-        <span className="font-semibold text-white"> every </span>career, and they'll join any club.
+        Earn Legacy points from trophies and challenges. Unlocked legends join your transfer window in
+        <span className="font-semibold text-white"> every </span>career.
       </p>
       {message ? <p className="mt-2 text-sm text-theme-primary" role="status">{message}</p> : null}
       <ul className="mt-3 divide-y divide-pitch-800">
@@ -57,7 +57,7 @@ export function LegendVaultSheet({ open, onClose }: { open: boolean; onClose: ()
                       setMessage(err === "points" ? "Not enough Legacy points yet." : "Couldn't unlock that legend.");
                     } else {
                       playAchievementUnlock();
-                      setMessage(`${l.name} unlocked! Look for him in your next transfer window.`);
+                      setMessage(`${l.name} unlocked! He's in your next transfer window.`);
                     }
                   }}
                 >

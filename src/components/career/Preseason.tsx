@@ -52,13 +52,10 @@ export function PreseasonCard() {
       <p className="text-[13px] font-semibold text-theme-primary">Pre-season</p>
       <h2 className="mt-0.5 text-[18px] font-bold text-white">Pick your friendlies</h2>
       <div className="mt-1 text-sm text-[color:var(--fl-muted)]">
-        Up to {MAX_FRIENDLIES} warm-ups: sharpness for the first three rounds, plus gate money.{" "}
+        Up to {MAX_FRIENDLIES}. Each adds +{SHARPNESS_PER_FRIENDLY} rating for 3 rounds, plus cash.{" "}
         <details className="inline">
           <summary className="inline cursor-pointer font-semibold text-gray-300 underline-offset-2 hover:underline">More</summary>
-          <span className="mt-1 block">
-            Each friendly gives your XIII +{SHARPNESS_PER_FRIENDLY} rating of match sharpness for the first three
-            rounds, and brings in gate money at home or an appearance fee away. A big test is tougher but pays more.
-          </span>
+          <span className="mt-1 block">Home games pay gate money. Away games pay a fee. Big tests pay more.</span>
         </details>
       </div>
       {!changing ? (
@@ -179,7 +176,7 @@ export function PreseasonResults() {
         })}
       </ul>
       <p className="mt-2 text-xs text-[color:var(--fl-muted)]">
-        Match sharpness: +{(pre.results.length * SHARPNESS_PER_FRIENDLY).toFixed(1)} rating for your first three games.
+        Sharpness: +{(pre.results.length * SHARPNESS_PER_FRIENDLY).toFixed(1)} rating for your first 3 games.
       </p>
     </section>
   );

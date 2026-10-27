@@ -73,12 +73,12 @@ export function TransferWindow({ midseason = false, onClose }: { midseason?: boo
       )}
       <PitchHero
         icon={<ShirtGlyph />}
-        eyebrow={midseason ? `Deadline Day · window shuts before Round ${WINDOW_CLOSES_BEFORE_ROUND}` : <>Transfer window · before {s.year}</>}
+        eyebrow={midseason ? `Deadline Day · before Round ${WINDOW_CLOSES_BEFORE_ROUND}` : <>Transfer window · before {s.year}</>}
         title={midseason ? "Last chance" : "Build your squad"}
       />
 
       {midseason && deadlineDecisionPending(s) ? (
-        <section aria-label="Deadline Day clock" className="flex flex-col gap-3 rounded-card bg-amber-400/10 p-3 ring-2 ring-amber-300/60">
+        <section aria-label="Deadline Day clock" className="flex flex-col gap-3 rounded-card bg-pitch-900 p-3 ring-2 ring-amber-300/60">
           <DeadlineClockFace compact />
           <DeadlineOffers />
         </section>
@@ -98,7 +98,7 @@ export function TransferWindow({ midseason = false, onClose }: { midseason?: boo
           <p className="mt-1"><Stars value={s.prestige} /></p>
         </div>
         <p className="col-span-3 text-xs text-gray-400">
-          Players at other clubs rated up to <span className="font-semibold text-white">{prestigeRatingCap(s.prestige)}</span> will leave their clubs for one of your prestige. Free agents and unlocked legends always will.
+          Players rated up to <span className="font-semibold text-white">{prestigeRatingCap(s.prestige)}</span> will join you. Free agents and legends always will.
         </p>
       </Card>
 
@@ -180,7 +180,7 @@ export function TransferWindow({ midseason = false, onClose }: { midseason?: boo
                         ? `Sold ${p.name}${fee}. He goes back to the Legend Vault.`
                         : to
                           ? `${p.name} joins ${to}${fee}. They were ${r.reason ?? "after him"}.`
-                          : `Sold ${p.name}${fee}. No club had room, so he's a free agent.`
+                          : `Sold ${p.name}${fee}. He's now a free agent.`
                     );
                   }
                 }}

@@ -24,13 +24,13 @@ export const BALL_KNOWER_ID = "mode-ball-knower";
 export const CHALK_FRAME_ID = "frame-chalk";
 
 export const COSMETICS: CosmeticItem[] = [
-  { id: KIT_DESIGNER_ID, kind: "kit", name: "Kit designer", blurb: "Design your own shirt and wear it on your Classic team sheet.", price: 1_500_000 },
+  { id: KIT_DESIGNER_ID, kind: "kit", name: "Kit designer", blurb: "Your own shirt on your Classic team.", price: 1_500_000 },
 
   // Starter rung: within reach of a first run or two.
-  { id: "pitch-training", kind: "pitch", name: "Training ground", blurb: "Fresh-cut, lighter grass from the training paddock.", price: 75_000, tier: "starter" },
-  { id: "pitch-dusk", kind: "pitch", name: "Dusk", blurb: "Blue-grey evening light before the floodlights come on.", price: 100_000, tier: "starter" },
+  { id: "pitch-training", kind: "pitch", name: "Training ground", blurb: "Fresh-cut training grass.", price: 75_000, tier: "starter" },
+  { id: "pitch-dusk", kind: "pitch", name: "Dusk", blurb: "Evening light before kick-off.", price: 100_000, tier: "starter" },
   { id: "pitch-floodlit", kind: "pitch", name: "Floodlit night", blurb: "Big-match lights over a dark pitch.", price: 750_000 },
-  { id: "pitch-winter", kind: "pitch", name: "Winter mud", blurb: "A heavy, churned-up February pitch.", price: 750_000 },
+  { id: "pitch-winter", kind: "pitch", name: "Winter mud", blurb: "A churned-up February pitch.", price: 750_000 },
   { id: "pitch-snow", kind: "pitch", name: "Snow game", blurb: "Lines cleared, snow on the touchline.", price: 750_000 },
   { id: "pitch-retro", kind: "pitch", name: "Retro", blurb: "Faded grass and chalk lines, 1990s style.", price: 750_000 },
 
@@ -46,12 +46,12 @@ export const COSMETICS: CosmeticItem[] = [
   { id: "title-invincible", kind: "title", name: "The Invincible", blurb: "Shown next to your name.", price: 5_000_000 },
   { id: "title-27-0-legend", kind: "title", name: "27-0 Legend", blurb: "The rarest title in the game.", price: 10_000_000 },
 
-  { id: CHALK_FRAME_ID, kind: "frame", name: "Chalk frame", blurb: "A thin chalk-white line round your whole row on every leaderboard.", price: 150_000, tier: "starter" },
-  { id: "frame-gold", kind: "frame", name: "Gold frame", blurb: "A gold border round your whole row on every leaderboard.", price: 1_000_000 },
-  { id: "frame-foil", kind: "frame", name: "Foil frame", blurb: "A shimmering foil border round your whole row on every leaderboard.", price: 1_500_000 },
-  { id: "frame-programme", kind: "frame", name: "Matchday programme", blurb: "Your whole row in cream and ink, like an old matchday programme.", price: 1_000_000 },
+  { id: CHALK_FRAME_ID, kind: "frame", name: "Chalk frame", blurb: "A chalk-white line round your row.", price: 150_000, tier: "starter" },
+  { id: "frame-gold", kind: "frame", name: "Gold frame", blurb: "A gold border round your row.", price: 1_000_000 },
+  { id: "frame-foil", kind: "frame", name: "Foil frame", blurb: "A shiny foil border round your row.", price: 1_500_000 },
+  { id: "frame-programme", kind: "frame", name: "Matchday programme", blurb: "Your row in cream and ink, like an old programme.", price: 1_000_000 },
 
-  { id: BALL_KNOWER_ID, kind: "mode", name: "Ball Knower mode", blurb: "Classic with every rating hidden and no respins. Pick on knowledge alone.", price: 2_000_000 },
+  { id: BALL_KNOWER_ID, kind: "mode", name: "Ball Knower mode", blurb: "Classic with ratings hidden and no respins.", price: 2_000_000 },
 ];
 
 export function cosmeticById(id: string): CosmeticItem | undefined {

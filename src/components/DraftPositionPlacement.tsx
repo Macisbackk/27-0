@@ -38,9 +38,9 @@ export function DraftPositionPlacement({
         >
           <p className={TYPO.sectionTitle}>Draft Mode</p>
           <p className="mt-1 text-gray-400">
-            Pick a player from the pair offered, then choose where they play.
-            Natural position = no penalty; out of position = −5 OVR. Scrum
-            Half ↔ Stand Off and other compatible swaps are penalty-free.
+            Pick a player, then pick his position.
+            <br />
+            Out of position costs −5 OVR. Similar positions are free.
           </p>
         </div>
       )}

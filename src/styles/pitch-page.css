@@ -12,6 +12,11 @@
  * How text knows where it is: every dark surface re-declares the "on-dark" colour variables, and
  * the shared text utilities read those variables. So `.text-white` is ink on the pitch and white in
  * a card, `.text-theme-primary` is ink on the pitch (never lime-on-lime) and the accent in a card.
+ *
+ * Dark mode (Settings, v1.24): every rule here is scoped to `html:not([data-mode="dark"])` through a
+ * zero-specificity `:where(…)`, so the cascade is unchanged in the default mode, and in dark mode the
+ * page falls back to the pre-v1.23 black ground with one pitch surface per screen (src/styles/pitch.css).
+ * Keep the prefix on any rule added here.
  */
 
 :root {
@@ -19,12 +24,12 @@
 }
 
 /* ── The ground ───────────────────────────────────────────────────────── */
-html,
-body,
-body.app-shell {
+html:where(:not([data-mode="dark"])),
+:where(html:not([data-mode="dark"])) body,
+:where(html:not([data-mode="dark"])) body.app-shell {
   background-color: var(--theme-primary) !important;
 }
-body.app-shell {
+:where(html:not([data-mode="dark"])) body.app-shell {
   color: var(--pitch-ink);
   background-image:
     linear-gradient(rgb(var(--pitch-mark-rgb) / 0.08), rgb(var(--pitch-mark-rgb) / 0.08)),
@@ -36,17 +41,17 @@ body.app-shell {
   background-repeat: no-repeat, repeat-y, repeat-y, no-repeat !important;
 }
 /* Page shells painted their own black ground: let the pitch through. */
-.matchday-arena,
-.arena-surface,
-.app-main,
-.game-page,
-.site-page-center {
+:where(html:not([data-mode="dark"])) .matchday-arena,
+:where(html:not([data-mode="dark"])) .arena-surface,
+:where(html:not([data-mode="dark"])) .app-main,
+:where(html:not([data-mode="dark"])) .game-page,
+:where(html:not([data-mode="dark"])) .site-page-center {
   background-color: transparent !important;
   background-image: none !important;
 }
 
 /* ── Colour context ───────────────────────────────────────────────────── */
-body {
+:where(html:not([data-mode="dark"])) body {
   --on-fg: var(--pitch-ink);
   --on-fg-muted: var(--pitch-ink-muted);
   --on-accent: var(--pitch-ink);
@@ -54,53 +59,58 @@ body {
   --on-danger: color-mix(in srgb, #7f1d1d 70%, var(--pitch-ink));
   --on-success: var(--pitch-ink);
   --on-line: rgb(var(--pitch-mark-rgb) / 0.18);
+  /* Tints that only read on dark (lime, sky, pale amber/red): ink on the pitch. */
+  --on-lime: var(--pitch-ink);
+  --on-sky: var(--pitch-ink);
+  --on-amber-soft: var(--pitch-ink);
+  --on-danger-soft: color-mix(in srgb, #7f1d1d 70%, var(--pitch-ink));
 }
 
 /* Every dark surface: white text, muted grey, the accent, gold and red as designed. */
-.app-header,
-.fl-bottom-nav,
-.site-footer,
-.sidebar-panel,
-.game-panel,
-.programme-panel,
-.scoreboard-panel,
-.clipboard-panel,
-.card-glass,
-.matchday-panel,
-.mobile-section,
-.home-play-card,
-.game-stat-card,
-.game-modal-panel,
-.mobile-bottom-sheet,
-.mobile-modal-panel,
-.achievement-popup-card,
-.matchday-scoreboard,
-.mini-game-board,
-.playoff-bracket-panel,
-.showcase-row__button,
-.quiz-answer,
-.quiz-ladder,
-.game-input,
-.mode-toggle,
-.tab-group,
-.pitch-seg,
-.pitch-cta,
-.pitch-chip,
-.pitch-pill,
-.game-badge,
-.game-button,
-.fl-pill,
-.recruitment-choice-overlay,
-.mobile-action-bar,
-.bracket-sticky-actions,
-.rugby-pitch,
-[class^="bg-pitch-"],
-[class*=" bg-pitch-"],
-[class^="bg-black"],
-[class*=" bg-black"],
-[class*=" bg-[#0"],
-[class*=" bg-[#1"],
-[class*=" bg-[rgba("] {
+:where(html:not([data-mode="dark"])) .app-header,
+:where(html:not([data-mode="dark"])) .fl-bottom-nav,
+:where(html:not([data-mode="dark"])) .site-footer,
+:where(html:not([data-mode="dark"])) .sidebar-panel,
+:where(html:not([data-mode="dark"])) .game-panel,
+:where(html:not([data-mode="dark"])) .programme-panel,
+:where(html:not([data-mode="dark"])) .scoreboard-panel,
+:where(html:not([data-mode="dark"])) .clipboard-panel,
+:where(html:not([data-mode="dark"])) .card-glass,
+:where(html:not([data-mode="dark"])) .matchday-panel,
+:where(html:not([data-mode="dark"])) .mobile-section,
+:where(html:not([data-mode="dark"])) .home-play-card,
+:where(html:not([data-mode="dark"])) .game-stat-card,
+:where(html:not([data-mode="dark"])) .game-modal-panel,
+:where(html:not([data-mode="dark"])) .mobile-bottom-sheet,
+:where(html:not([data-mode="dark"])) .mobile-modal-panel,
+:where(html:not([data-mode="dark"])) .achievement-popup-card,
+:where(html:not([data-mode="dark"])) .matchday-scoreboard,
+:where(html:not([data-mode="dark"])) .mini-game-board,
+:where(html:not([data-mode="dark"])) .playoff-bracket-panel,
+:where(html:not([data-mode="dark"])) .showcase-row__button,
+:where(html:not([data-mode="dark"])) .quiz-answer,
+:where(html:not([data-mode="dark"])) .quiz-ladder,
+:where(html:not([data-mode="dark"])) .game-input,
+:where(html:not([data-mode="dark"])) .mode-toggle,
+:where(html:not([data-mode="dark"])) .tab-group,
+:where(html:not([data-mode="dark"])) .pitch-seg,
+:where(html:not([data-mode="dark"])) .pitch-cta,
+:where(html:not([data-mode="dark"])) .pitch-chip,
+:where(html:not([data-mode="dark"])) .pitch-pill,
+:where(html:not([data-mode="dark"])) .game-badge,
+:where(html:not([data-mode="dark"])) .game-button,
+:where(html:not([data-mode="dark"])) .fl-pill,
+:where(html:not([data-mode="dark"])) .recruitment-choice-overlay,
+:where(html:not([data-mode="dark"])) .mobile-action-bar,
+:where(html:not([data-mode="dark"])) .bracket-sticky-actions,
+:where(html:not([data-mode="dark"])) .rugby-pitch,
+:where(html:not([data-mode="dark"])) [class^="bg-pitch-"],
+:where(html:not([data-mode="dark"])) [class*=" bg-pitch-"],
+:where(html:not([data-mode="dark"])) [class^="bg-black"],
+:where(html:not([data-mode="dark"])) [class*=" bg-black"],
+:where(html:not([data-mode="dark"])) [class*=" bg-[#0"],
+:where(html:not([data-mode="dark"])) [class*=" bg-[#1"],
+:where(html:not([data-mode="dark"])) [class*=" bg-[rgba("] {
   --on-fg: #ffffff;
   --on-fg-muted: var(--fl-muted);
   --on-accent: var(--theme-primary-on-dark);
@@ -108,78 +118,101 @@ body {
   --on-danger: #f87171;
   --on-success: #4ade80;
   --on-line: var(--fl-line);
+  --on-lime: #bef264;
+  --on-sky: #7dd3fc;
+  --on-amber-soft: #fde68a;
+  --on-danger-soft: #fca5a5;
   color: var(--on-fg);
 }
 
 /* The shared text utilities follow the context. */
-.text-white,
-.text-gray-50,
-.text-gray-100,
-.text-gray-200 {
+:where(html:not([data-mode="dark"])) .text-white,
+:where(html:not([data-mode="dark"])) .text-gray-50,
+:where(html:not([data-mode="dark"])) .text-gray-100,
+:where(html:not([data-mode="dark"])) .text-gray-200 {
   color: var(--on-fg) !important;
 }
-.text-gray-300,
-.text-gray-400,
-.text-gray-500,
-.text-gray-600,
-.text-pitch-300,
-.text-pitch-400,
-.text-pitch-500,
-.text-\[color\:var\(--fl-muted\)\],
-.text-\[color\:var\(--mobile-text-muted\)\] {
+:where(html:not([data-mode="dark"])) .text-gray-300,
+:where(html:not([data-mode="dark"])) .text-gray-400,
+:where(html:not([data-mode="dark"])) .text-gray-500,
+:where(html:not([data-mode="dark"])) .text-gray-600,
+:where(html:not([data-mode="dark"])) .text-pitch-300,
+:where(html:not([data-mode="dark"])) .text-pitch-400,
+:where(html:not([data-mode="dark"])) .text-pitch-500,
+:where(html:not([data-mode="dark"])) .text-\[color\:var\(--fl-muted\)\],
+:where(html:not([data-mode="dark"])) .text-\[color\:var\(--mobile-text-muted\)\] {
   color: var(--on-fg-muted) !important;
 }
-.text-theme-primary {
+:where(html:not([data-mode="dark"])) .text-theme-primary {
   color: var(--on-accent) !important;
 }
-.text-accent-gold,
-.text-amber-300,
-.text-yellow-400 {
+:where(html:not([data-mode="dark"])) .text-accent-gold,
+:where(html:not([data-mode="dark"])) .text-amber-300,
+:where(html:not([data-mode="dark"])) .text-yellow-400 {
   color: var(--on-gold) !important;
 }
-.text-danger,
-.text-accent-red,
-.text-red-400 {
+:where(html:not([data-mode="dark"])) .text-danger,
+:where(html:not([data-mode="dark"])) .text-accent-red,
+:where(html:not([data-mode="dark"])) .text-red-400 {
   color: var(--on-danger) !important;
 }
-.text-success {
+:where(html:not([data-mode="dark"])) .text-success,
+:where(html:not([data-mode="dark"])) .text-emerald-300 {
   color: var(--on-success) !important;
 }
+:where(html:not([data-mode="dark"])) .text-lime-300 {
+  color: var(--on-lime) !important;
+}
+:where(html:not([data-mode="dark"])) .text-sky-200,
+:where(html:not([data-mode="dark"])) .text-sky-300 {
+  color: var(--on-sky) !important;
+}
+:where(html:not([data-mode="dark"])) .text-amber-100,
+:where(html:not([data-mode="dark"])) .text-amber-200 {
+  color: var(--on-amber-soft) !important;
+}
+:where(html:not([data-mode="dark"])) .text-red-200,
+:where(html:not([data-mode="dark"])) .text-red-300 {
+  color: var(--on-danger-soft) !important;
+}
 /* Muted page copy that used design tokens rather than utilities. */
-:where(main) :where(p, span, li, h1, h2, h3, h4, label, small) {
+:where(html:not([data-mode="dark"])) :where(main) :where(p, span, li, h1, h2, h3, h4, label, small) {
   color: inherit;
 }
-.border-white\/10,
-.border-pitch-700\/45,
-.divide-\[var\(--fl-line\)\] > * + * {
+:where(html:not([data-mode="dark"])) .border-white\/10,
+:where(html:not([data-mode="dark"])) .border-pitch-700\/45,
+:where(html:not([data-mode="dark"])) .divide-\[var\(--fl-line\)\] > * + * {
   border-color: var(--on-line) !important;
 }
 
 /* ── Panels: near-black, rounded ──────────────────────────────────────── */
-.game-panel,
-.programme-panel,
-.scoreboard-panel,
-.clipboard-panel,
-.card-glass,
-.matchday-panel,
-.mobile-section,
-.home-play-card,
-.matchday-scoreboard,
-.mini-game-board,
-.playoff-bracket-panel {
+:where(html:not([data-mode="dark"])) .game-panel,
+:where(html:not([data-mode="dark"])) .programme-panel,
+:where(html:not([data-mode="dark"])) .scoreboard-panel,
+:where(html:not([data-mode="dark"])) .clipboard-panel,
+:where(html:not([data-mode="dark"])) .card-glass,
+:where(html:not([data-mode="dark"])) .matchday-panel,
+:where(html:not([data-mode="dark"])) .mobile-section,
+:where(html:not([data-mode="dark"])) .home-play-card,
+:where(html:not([data-mode="dark"])) .matchday-scoreboard,
+:where(html:not([data-mode="dark"])) .mini-game-board,
+:where(html:not([data-mode="dark"])) .playoff-bracket-panel {
   background: #121314 !important;
 }
-.mobile-section--flush {
+:where(html:not([data-mode="dark"])) .mobile-section--flush {
   background: transparent !important;
   --on-fg: var(--pitch-ink);
   --on-fg-muted: var(--pitch-ink-muted);
   --on-accent: var(--pitch-ink);
   --on-gold: var(--pitch-ink);
+  --on-lime: var(--pitch-ink);
+  --on-sky: var(--pitch-ink);
+  --on-amber-soft: var(--pitch-ink);
   color: var(--pitch-ink);
 }
 
 /* ── Chrome: dark floating bars on the pitch ─────────────────────────── */
-.app-header {
+:where(html:not([data-mode="dark"])) .app-header {
   top: 8px !important;
   margin: 8px 8px 0;
   width: calc(100% - 16px) !important;
@@ -188,18 +221,18 @@ body {
   background: #0e0f10 !important;
   box-shadow: 0 8px 24px rgb(0 0 0 / 0.22);
 }
-.app-header .bg-pitch-900 {
+:where(html:not([data-mode="dark"])) .app-header .bg-pitch-900 {
   background: #1d1f21 !important;
 }
-.fl-bottom-nav {
+:where(html:not([data-mode="dark"])) .fl-bottom-nav {
   background: #0e0f10;
   box-shadow: 0 10px 30px rgb(0 0 0 / 0.3);
 }
-.fl-bottom-nav a[aria-current="page"] {
+:where(html:not([data-mode="dark"])) .fl-bottom-nav a[aria-current="page"] {
   background: var(--theme-primary);
   color: var(--pitch-ink);
 }
-.site-footer {
+:where(html:not([data-mode="dark"])) .site-footer {
   margin: 16px 8px calc(8px + env(safe-area-inset-bottom, 0px));
   width: calc(100% - 16px) !important;
   border: 0 !important;
@@ -207,14 +240,14 @@ body {
   background: #0e0f10 !important;
 }
 @media (min-width: 1024px) {
-  .app-header,
-  .site-footer {
+  :where(html:not([data-mode="dark"])) .app-header,
+  :where(html:not([data-mode="dark"])) .site-footer {
     margin-left: auto;
     margin-right: auto;
     width: min(calc(100% - 16px), 1180px) !important;
   }
 }
-.sidebar-panel {
+:where(html:not([data-mode="dark"])) .sidebar-panel {
   background: #0e0f10 !important;
 }
 
@@ -223,7 +256,7 @@ body {
    on the pitch the main action is the big black button with the accent ▸, secondary is a soft
    darker patch of the pitch, small row actions are black; inside a dark panel or bar they flip:
    accent fill for the main action, raised grey for secondary, white for small row actions. */
-body {
+:where(html:not([data-mode="dark"])) body {
   --btn-bg: var(--pitch-dark);
   --btn-bg-hover: var(--pitch-dark-hover);
   --btn-fg: #ffffff;
@@ -234,26 +267,26 @@ body {
   --btn-sm-bg: var(--pitch-dark);
   --btn-sm-fg: #ffffff;
 }
-.game-panel,
-.programme-panel,
-.scoreboard-panel,
-.clipboard-panel,
-.mobile-section:not(.mobile-section--flush),
-.home-play-card,
-.matchday-scoreboard,
-.mini-game-board,
-.playoff-bracket-panel,
-.game-modal-panel,
-.mobile-bottom-sheet,
-.mobile-modal-panel,
-.achievement-popup-card,
-.bracket-sticky-actions,
-.app-header,
-.sidebar-panel,
-[class^="bg-pitch-"],
-[class*=" bg-pitch-"],
-[class*=" bg-[rgba("],
-[class*=" bg-black"] {
+:where(html:not([data-mode="dark"])) .game-panel,
+:where(html:not([data-mode="dark"])) .programme-panel,
+:where(html:not([data-mode="dark"])) .scoreboard-panel,
+:where(html:not([data-mode="dark"])) .clipboard-panel,
+:where(html:not([data-mode="dark"])) .mobile-section:not(.mobile-section--flush),
+:where(html:not([data-mode="dark"])) .home-play-card,
+:where(html:not([data-mode="dark"])) .matchday-scoreboard,
+:where(html:not([data-mode="dark"])) .mini-game-board,
+:where(html:not([data-mode="dark"])) .playoff-bracket-panel,
+:where(html:not([data-mode="dark"])) .game-modal-panel,
+:where(html:not([data-mode="dark"])) .mobile-bottom-sheet,
+:where(html:not([data-mode="dark"])) .mobile-modal-panel,
+:where(html:not([data-mode="dark"])) .achievement-popup-card,
+:where(html:not([data-mode="dark"])) .bracket-sticky-actions,
+:where(html:not([data-mode="dark"])) .app-header,
+:where(html:not([data-mode="dark"])) .sidebar-panel,
+:where(html:not([data-mode="dark"])) [class^="bg-pitch-"],
+:where(html:not([data-mode="dark"])) [class*=" bg-pitch-"],
+:where(html:not([data-mode="dark"])) [class*=" bg-[rgba("],
+:where(html:not([data-mode="dark"])) [class*=" bg-black"] {
   --btn-bg: var(--theme-primary);
   --btn-bg-hover: var(--theme-secondary);
   --btn-fg: var(--pitch-ink);
@@ -265,7 +298,7 @@ body {
   --btn-sm-fg: var(--pitch-dark);
 }
 @media (max-width: 639px) {
-  .mobile-action-bar__inner {
+  :where(html:not([data-mode="dark"])) .mobile-action-bar__inner {
     --btn-bg: var(--theme-primary);
     --btn-bg-hover: var(--theme-secondary);
     --btn-fg: var(--pitch-ink);
@@ -281,20 +314,20 @@ body {
     --on-accent: var(--theme-primary-on-dark);
   }
 }
-a.game-button--theme,
-button.game-button--theme,
-.game-button--theme {
+:where(html:not([data-mode="dark"])) a.game-button--theme,
+:where(html:not([data-mode="dark"])) button.game-button--theme,
+:where(html:not([data-mode="dark"])) .game-button--theme {
   background-color: var(--btn-bg) !important;
   color: var(--btn-fg) !important;
   gap: 0.5rem;
 }
-a.game-button--theme:hover:not(:disabled),
-button.game-button--theme:hover:not(:disabled) {
+:where(html:not([data-mode="dark"])) a.game-button--theme:hover:not(:disabled),
+:where(html:not([data-mode="dark"])) button.game-button--theme:hover:not(:disabled) {
   background-color: var(--btn-bg-hover) !important;
   filter: none;
 }
-.game-button--theme.game-button--lg::after,
-.game-button--theme.game-button--md::after {
+:where(html:not([data-mode="dark"])) .game-button--theme.game-button--lg::after,
+:where(html:not([data-mode="dark"])) .game-button--theme.game-button--md::after {
   content: "";
   flex-shrink: 0;
   width: 8px;
@@ -302,47 +335,47 @@ button.game-button--theme:hover:not(:disabled) {
   background: var(--btn-arrow);
   clip-path: polygon(0 0, 100% 50%, 0 100%);
 }
-.game-button--theme:disabled,
-.game-button--theme[aria-disabled="true"] {
+:where(html:not([data-mode="dark"])) .game-button--theme:disabled,
+:where(html:not([data-mode="dark"])) .game-button--theme[aria-disabled="true"] {
   opacity: 0.45 !important;
 }
-a.game-button--secondary,
-button.game-button--secondary,
-.game-button--secondary {
+:where(html:not([data-mode="dark"])) a.game-button--secondary,
+:where(html:not([data-mode="dark"])) button.game-button--secondary,
+:where(html:not([data-mode="dark"])) .game-button--secondary {
   background-color: var(--btn2-bg) !important;
   color: var(--btn2-fg) !important;
   --on-fg: var(--btn2-fg);
 }
-a.game-button--secondary:hover:not(:disabled),
-button.game-button--secondary:hover:not(:disabled) {
+:where(html:not([data-mode="dark"])) a.game-button--secondary:hover:not(:disabled),
+:where(html:not([data-mode="dark"])) button.game-button--secondary:hover:not(:disabled) {
   background-color: var(--btn2-bg-hover) !important;
 }
-a.game-button--theme.game-button--sm,
-button.game-button--theme.game-button--sm,
-.game-button--theme.game-button--sm {
+:where(html:not([data-mode="dark"])) a.game-button--theme.game-button--sm,
+:where(html:not([data-mode="dark"])) button.game-button--theme.game-button--sm,
+:where(html:not([data-mode="dark"])) .game-button--theme.game-button--sm {
   background-color: var(--btn-sm-bg) !important;
   color: var(--btn-sm-fg) !important;
 }
 /* A form's submit (Wordle / Grid "Guess") is the screen's main action: the full primary role. */
-button[type="submit"].game-button--theme.game-button--sm {
+:where(html:not([data-mode="dark"])) button[type="submit"].game-button--theme.game-button--sm {
   background-color: var(--btn-bg) !important;
   color: var(--btn-fg) !important;
 }
 
 /* Sticky phone action bar: a dark floating bar like the bottom nav. */
-.mobile-action-bar {
+:where(html:not([data-mode="dark"])) .mobile-action-bar {
   background: transparent !important;
   border: 0 !important;
   box-shadow: none !important;
 }
-.mobile-action-bar__inner {
+:where(html:not([data-mode="dark"])) .mobile-action-bar__inner {
   border-radius: 20px;
   background: #0e0f10 !important;
   padding: 8px;
   box-shadow: 0 10px 30px rgb(0 0 0 / 0.3);
 }
 @media (min-width: 640px) {
-  .mobile-action-bar__inner {
+  :where(html:not([data-mode="dark"])) .mobile-action-bar__inner {
     background: transparent !important;
     padding: 0;
     box-shadow: none;
@@ -350,103 +383,115 @@ button[type="submit"].game-button--theme.game-button--sm {
 }
 
 /* ── Controls on the pitch ────────────────────────────────────────────── */
-.mode-toggle,
-.tab-group,
-.pitch-seg--on-dark {
+:where(html:not([data-mode="dark"])) .mode-toggle,
+:where(html:not([data-mode="dark"])) .tab-group,
+:where(html:not([data-mode="dark"])) .pitch-seg--on-dark {
   background: rgb(14 15 16 / 0.92) !important;
   box-shadow: none !important;
 }
-.fl-pill {
+:where(html:not([data-mode="dark"])) .fl-pill {
   background: var(--pitch-dark);
   color: #ffffff;
 }
-.game-input {
+:where(html:not([data-mode="dark"])) .game-input {
   background: #0e0f10 !important;
   color: #ffffff;
 }
 
 /* ── Heroes become headings straight on the pitch ─────────────────────── */
-.pitch-surface {
+:where(html:not([data-mode="dark"])) .pitch-surface {
   background: transparent !important;
   border-radius: 0;
   overflow: visible;
 }
-.pitch-hero {
+:where(html:not([data-mode="dark"])) .pitch-hero {
   padding-left: 0.25rem !important;
   padding-right: 0.25rem !important;
 }
-.pitch-hero--page,
-.pitch-hero--slim {
+:where(html:not([data-mode="dark"])) .pitch-hero--page,
+:where(html:not([data-mode="dark"])) .pitch-hero--slim {
   padding-top: 0.25rem !important;
   padding-bottom: 0.25rem !important;
 }
-.pitch-surface__mark {
+:where(html:not([data-mode="dark"])) .pitch-surface__mark {
   color: rgb(var(--pitch-mark-rgb) / 0.1);
 }
 /* The Manager club header keeps a panel feel: it's a card of facts, not a title. */
-header.pitch-surface:not(.pitch-hero) {
+:where(html:not([data-mode="dark"])) header.pitch-surface:not(.pitch-hero) {
   padding-left: 0.25rem;
 }
 /* Sheets: dark panel with a plain title row (no lime strip inside a dark sheet). */
-.pitch-sheet-header {
+:where(html:not([data-mode="dark"])) .pitch-sheet-header {
   color: #ffffff !important;
   --on-fg: #ffffff;
 }
-.pitch-sheet-header .pitch-title {
+:where(html:not([data-mode="dark"])) .pitch-sheet-header .pitch-title {
   color: #ffffff;
 }
-.pitch-sheet-header .pitch-chip {
+:where(html:not([data-mode="dark"])) .pitch-sheet-header .pitch-chip {
   background: var(--fl-raised);
 }
-.pitch-sheet-header .pitch-surface__mark {
+:where(html:not([data-mode="dark"])) .pitch-sheet-header .pitch-surface__mark {
   display: none;
 }
 
 /* ── Modals: dark panel on a dimmed pitch ────────────────────────────── */
-.fl-backdrop,
-.game-modal-overlay {
+:where(html:not([data-mode="dark"])) .fl-backdrop,
+:where(html:not([data-mode="dark"])) .game-modal-overlay {
   background-color: rgb(0 0 0 / 0.62) !important;
 }
-.game-modal-panel,
-.mobile-bottom-sheet,
-.mobile-modal-panel,
-.achievement-popup-card {
+:where(html:not([data-mode="dark"])) .game-modal-panel,
+:where(html:not([data-mode="dark"])) .mobile-bottom-sheet,
+:where(html:not([data-mode="dark"])) .mobile-modal-panel,
+:where(html:not([data-mode="dark"])) .achievement-popup-card {
   background: #121314 !important;
   border: 0 !important;
 }
 
 /* Bottom of every page: the bottom-nav spacer and footer sit on the pitch too. */
-.fl-bottom-nav-spacer {
+:where(html:not([data-mode="dark"])) .fl-bottom-nav-spacer {
   background: transparent;
 }
 
 /* Bottom bar: the active tab is a lime pill with ink (the motion pill follows it). */
-.fl-bottom-nav__pill {
+:where(html:not([data-mode="dark"])) .fl-bottom-nav__pill {
   background: var(--theme-primary) !important;
 }
-.fl-bottom-nav a[aria-current="page"],
-.fl-bottom-nav a[aria-current="page"] * {
+:where(html:not([data-mode="dark"])) .fl-bottom-nav a[aria-current="page"],
+:where(html:not([data-mode="dark"])) .fl-bottom-nav a[aria-current="page"] * {
   color: var(--pitch-ink) !important;
 }
 
 /* See-through dark fills (bg-pitch-900/60 …) turned olive on the lime: on the pitch every dark
    panel is solid, so text inside keeps its contrast. */
-[class*="bg-pitch-950/"]:not([class*="hover:bg-pitch-950/"]) {
+:where(html:not([data-mode="dark"])) [class*="bg-pitch-950/"]:not([class*="hover:bg-pitch-950/"]) {
   background-color: #0e0f10 !important;
 }
-[class*="bg-pitch-900/"]:not([class*="hover:bg-pitch-900/"]) {
+:where(html:not([data-mode="dark"])) [class*="bg-pitch-900/"]:not([class*="hover:bg-pitch-900/"]) {
   background-color: #191a1c !important;
 }
-[class*="bg-pitch-800/"]:not([class*="hover:bg-pitch-800/"]) {
+:where(html:not([data-mode="dark"])) [class*="bg-pitch-800/"]:not([class*="hover:bg-pitch-800/"]) {
   background-color: #232527 !important;
 }
 
 /* Review screens' sticky phone bar (Play again / Play-offs): a dark floating bar on the pitch. */
-.sticky.bottom-0[class*="bg-[rgba("] {
+:where(html:not([data-mode="dark"])) .sticky.bottom-0[class*="bg-[rgba("] {
   margin-left: 8px;
   margin-right: 8px;
   margin-bottom: 8px;
   border: 0 !important;
   border-radius: 20px;
   background: #0e0f10 !important;
+}
+
+/* ── Dark mode only ───────────────────────────────────────────────────── */
+/* The sticky phone bar's small primary (Spin, Kick off…) is the screen's main action: accent fill,
+   as before v1.23, instead of pitch.css's white row-action style. */
+html[data-mode="dark"] .mobile-action-bar__inner a.game-button--theme.game-button--sm,
+html[data-mode="dark"] .mobile-action-bar__inner button.game-button--theme.game-button--sm {
+  background-color: var(--theme-primary) !important;
+  color: var(--pitch-ink) !important;
+}
+html[data-mode="dark"] .mobile-action-bar__inner button.game-button--theme.game-button--sm:hover:not(:disabled) {
+  background-color: var(--theme-secondary) !important;
 }

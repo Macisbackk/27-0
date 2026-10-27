@@ -34,26 +34,25 @@ export function ReviewSubmissionNotice({
 
   if (specialRun) {
     message =
-      "Bonus mode result — this run is kept separate from public records.";
+      "Bonus mode: kept off the public records.";
   } else if (weeklyChallenge && weeklyPractice) {
-    message = `${weeklyScore !== null ? `Weekly score ${weeklyScore}. ` : ""}Practice run: this week's ranked attempt is already used.`;
+    message = `${weeklyScore !== null ? `Weekly score ${weeklyScore}. ` : ""}Practice run. This week's ranked run is used.`;
   } else if (weeklyChallenge) {
     const scoreText = weeklyScore !== null ? `Weekly score ${weeklyScore}. ` : "";
-    message = `${scoreText}This week's ranked attempt: it goes on the Weekly board when you're logged in. Top 10 when the week ends earn Club Funds.`;
+    message = `${scoreText}Your ranked run. Log in to post it. Top 10 earn Club Funds.`;
     positive = true;
   } else if (dailyChallenge && dailyPractice) {
-    message = "Practice run: it doesn't count toward your Daily streak.";
+    message = "Practice run. It doesn't count for your streak.";
   } else if (dailyChallenge) {
-    message =
-      "Today's counted Daily run: finishing it extends your streak, and it scores on today's Daily board (top the table and win the Grand Final for a perfect day). Daily runs aren't on the Classic leaderboard.";
+    message = "Today's Daily is done. Streak extended. Score posted to today's board.";
     positive = true;
   } else if (ballKnower) {
-    message = "Ball Knower runs aren't ranked on the leaderboard.";
+    message = "Ball Knower runs aren't ranked.";
   } else if (submittedOnline) {
-    message = "Submitted to online leaderboard.";
+    message = "Posted to the leaderboard.";
     positive = true;
   } else {
-    message = "Run stored locally — not submitted to online leaderboard.";
+    message = "Saved on this device. Not on the leaderboard.";
   }
 
   return (
