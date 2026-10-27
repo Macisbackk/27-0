@@ -37,7 +37,7 @@ const GAMES: {
     id: "wordle",
     href: "/mini-games/wordle",
     title: "Rugby League Wordle",
-    blurb: "Guess the player from club, position, age and more.",
+    blurb: "Guess the mystery player.",
     reward: `${formatClubFunds(WORDLE_WIN_REWARD)} a day`,
     glyph: "W",
     accent: "from-lime-400/25 to-lime-500/5 text-lime-300 border-lime-400/40",
@@ -82,7 +82,7 @@ export function MiniGamesHub() {
           title="Puzzles"
           icon={<TilesGlyph />}
         />
-        <p className="mt-3 px-1 text-left text-sm text-[color:var(--fl-muted)]">Quick puzzles that pay Club Funds. New each day at midnight.</p>
+        <p className="mt-3 px-1 text-left text-sm text-[color:var(--fl-muted)]">Daily puzzles that pay Club Funds.</p>
 
         <ul className="fl-stagger mt-5 grid w-full gap-3 sm:grid-cols-3">
           {GAMES.map((game) => {

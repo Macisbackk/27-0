@@ -216,7 +216,7 @@ export function SettingsPanel() {
             />
           ) : null}
         </Row>
-        <Row label="Show first" hint="The mode stats and boards open on.">
+        <Row label="Show first" hint="Default for stats and boards.">
           {ready ? (
             <Segmented
               label="Show first"

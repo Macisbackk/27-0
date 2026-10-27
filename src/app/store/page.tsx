@@ -13,7 +13,7 @@ export default function StorePage() {
         <header className="space-y-3">
           <PitchHero eyebrow="Club Funds" title="Store" icon={<ShopGlyph />} />
           <p className="text-left text-sm text-[color:var(--fl-muted)] px-1">
-            Spend Club Funds on themes, kits, pitches, titles and frames.
+            Spend Club Funds on themes, kits and more.
           </p>
         </header>
         <StorePanel />

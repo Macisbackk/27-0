@@ -137,7 +137,7 @@ export default function ProfilePage() {
             title={equippedTitle}
             frame={cosmetics.equipped.frame}
             subline={
-              loading ? null : isLoggedIn ? (memberSince ? `Coach since ${memberSince}` : "Signed in") : "Playing as a guest · saved on this device"
+              loading ? null : isLoggedIn ? (memberSince ? `Coach since ${memberSince}` : "Signed in") : "Saved on this device"
             }
           />
           {!loading && !isLoggedIn ? (

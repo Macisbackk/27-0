@@ -96,7 +96,7 @@ export default function ModesPage() {
         <Section
           id="one-club-title"
           title="One-Club XI"
-          kicker="Pick a club. Every spin is one of its seasons. Build its all-time 13."
+          kicker="Pick a club. Build its all-time 13."
         >
           {clubs === null ? (
             <p className={TYPO.meta}>Loading clubs…</p>

@@ -164,7 +164,7 @@ export function LoginForm() {
       </div>
 
       <p className={`mt-3 text-center ${TYPO.bodySm}`}>
-        Played as a guest? Your progress on this device moves into your account.
+        Played as a guest? Your progress comes with you.
       </p>
 
       <div className={`mt-5 ${SPACING.stackMd}`}>

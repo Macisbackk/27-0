@@ -74,6 +74,7 @@ export function Departures() {
                       </GameButton>
                       <GameButton
                         size="sm"
+                        className="whitespace-nowrap !px-2"
                         disabled={s.budget < fee || !decisionsArmed}
                         onClick={() => {
                           const err = renew(p.id);
