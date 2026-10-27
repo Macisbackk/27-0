@@ -86,7 +86,7 @@ export function leagueOverPicture(state: CareerState): LeagueOverPicture {
       position === 1
         ? "Champions. Promoted to Super League."
         : position === 2
-          ? "Runners-up. The Million Pound Game is next, for a place in Super League."
+          ? "Runners-up. Win the Million Pound Game to go up."
           : "Not enough to go up this time. Your season is over.";
   } else {
     verdict =
@@ -95,7 +95,7 @@ export function leagueOverPicture(state: CareerState): LeagueOverPicture {
         : position === table.length
           ? "Bottom of the table. Relegated to the Championship."
           : position === table.length - 1
-            ? "Second-bottom. The Million Pound Game decides your Super League place."
+            ? "Second-bottom. Win the Million Pound Game to stay up."
             : "Out of the top four. Safe, but the play-offs go on without you.";
   }
   return { division, position, size: table.length, next, verdict };
