@@ -7,7 +7,7 @@ import {
   UI_THEME_CHANGED_EVENT,
 } from "@/lib/storage/ui-theme-store";
 import { useMountDiagnostic } from "@/lib/ui/use-mount-diagnostic";
-import { applyDarkModeAttribute, readLocalDarkModePref } from "@/lib/ui/dark-mode";
+import { applyDarkModeAttribute, isDarkModeOn, readLocalDarkModePref } from "@/lib/ui/dark-mode";
 import { STORAGE_KEYS } from "@/lib/storage/keys";
 
 const useThemeLayoutEffect =
@@ -26,9 +26,9 @@ export function UiThemeProvider() {
 
     // Dark mode: the <head> script already set data-mode before paint; this keeps it right after
     // navigation and when another tab changes it.
-    applyDarkModeAttribute(readLocalDarkModePref()?.on === true);
+    applyDarkModeAttribute(isDarkModeOn(readLocalDarkModePref()));
     const onStorage = (e: StorageEvent) => {
-      if (e.key === STORAGE_KEYS.darkMode) applyDarkModeAttribute(readLocalDarkModePref()?.on === true);
+      if (e.key === STORAGE_KEYS.darkMode) applyDarkModeAttribute(isDarkModeOn(readLocalDarkModePref()));
     };
 
     window.addEventListener(UI_THEME_CHANGED_EVENT, onThemeChange);

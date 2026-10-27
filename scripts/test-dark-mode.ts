@@ -18,6 +18,7 @@ Object.assign(globalThis, { window: new EventTarget(), localStorage: new MemoryS
 
 const {
   parseDarkModePref,
+  isDarkModeOn,
   mergeDarkModePref,
   readLocalDarkModePref,
   writeLocalDarkModePref,
@@ -42,8 +43,10 @@ check("parse junk", parseDarkModePref("not json") === null);
 check("parse null", parseDarkModePref(null) === null);
 check("parse wrong type", parseDarkModePref({ on: "yes" }) === null);
 
-// Default off
-check("default off", readLocalDarkModePref() === null);
+// Nothing stored → dark mode ON (v1.25 default)
+check("nothing stored", readLocalDarkModePref() === null);
+check("default on", isDarkModeOn(null) === true);
+check("explicit off kept", isDarkModeOn({ on: false, updatedAt: 1 }) === false);
 writeLocalDarkModePref({ on: true, updatedAt: 100 });
 check("roundtrip", eq(readLocalDarkModePref(), { on: true, updatedAt: 100 }));
 check("stored under key", localStorage.getItem(STORAGE_KEYS.darkMode) !== null);
@@ -67,8 +70,9 @@ function runBootstrap(stored: string | null): string | null {
 }
 check("bootstrap on", runBootstrap('{"on":true,"updatedAt":1}') === "dark");
 check("bootstrap off", runBootstrap('{"on":false,"updatedAt":1}') === null);
-check("bootstrap unset", runBootstrap(null) === null);
-check("bootstrap junk", runBootstrap("{{") === null);
+check("bootstrap unset → dark (default)", runBootstrap(null) === "dark");
+// Junk JSON throws, so the attribute is left as the server rendered it (data-mode="dark").
+check("bootstrap junk leaves it alone", runBootstrap("{{") === null);
 
 if (failures) {
   console.error(`dark mode: ${failures} failure(s)`);

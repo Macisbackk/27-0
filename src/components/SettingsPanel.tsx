@@ -136,7 +136,7 @@ export function SettingsPanel() {
   const [era, setEra] = useState(false);
   const [quickSpins, setQuickSpinsOn] = useState(false);
   const [themeName, setThemeName] = useState("Default");
-  const [darkMode, setDarkModeOn] = useState(false);
+  const [darkMode, setDarkModeOn] = useState(true);
   const [resetState, setResetState] = useState<"idle" | "confirm" | "busy" | "done" | "error">("idle");
   const [mailState, setMailState] = useState<"idle" | "busy" | "sent" | "error">("idle");
   const hiddenCoaches = useHiddenCoachesList();

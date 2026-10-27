@@ -5,6 +5,7 @@ import {
   DARK_MODE_CHANGED_EVENT,
   mergeDarkModePref,
   parseDarkModePref,
+  isDarkModeOn as isPrefOn,
   readLocalDarkModePref,
   writeLocalDarkModePref,
   type DarkModePref,
@@ -15,7 +16,7 @@ const STAT_MODE = "GLOBAL";
 const STAT_KEY = "ui_dark_mode";
 
 export function isDarkModeOn(): boolean {
-  return readLocalDarkModePref()?.on === true;
+  return isPrefOn(readLocalDarkModePref());
 }
 
 function applyLocal(pref: DarkModePref): void {

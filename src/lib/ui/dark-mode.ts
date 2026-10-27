@@ -2,8 +2,8 @@ import { STORAGE_KEYS } from "../storage/keys";
 
 /**
  * Dark mode (Settings → Appearance): the pre-v1.23 look — black page, dark header / nav / footer,
- * one coloured pitch surface per screen (the home Classic card, a page's hero). Off by default:
- * the whole-page lime pitch stays the default.
+ * one coloured pitch surface per screen (the home Classic card, a page's hero). ON by default
+ * (v1.25): only a player who switches it off gets the whole-page lime pitch.
  *
  * It's an attribute on <html> (`data-mode="dark"`), set before paint by DARK_MODE_BOOTSTRAP_SCRIPT
  * and kept in step by UiThemeProvider. src/styles/pitch-page.css scopes the whole-page pitch to
@@ -14,6 +14,14 @@ import { STORAGE_KEYS } from "../storage/keys";
 
 export const DARK_MODE_ATTRIBUTE = "data-mode";
 export const DARK_MODE_CHANGED_EVENT = "27-0-dark-mode-changed";
+
+/** What a player who never touched the switch gets. */
+export const DARK_MODE_DEFAULT = true;
+
+/** Effective setting: the stored choice, else the default. */
+export function isDarkModeOn(pref: DarkModePref | null): boolean {
+  return pref ? pref.on : DARK_MODE_DEFAULT;
+}
 
 export interface DarkModePref {
   on: boolean;
@@ -74,4 +82,4 @@ export function applyDarkModeAttribute(on: boolean): void {
 /** Inline <head> script: applies the stored preference before first paint (no lime flash). */
 export const DARK_MODE_BOOTSTRAP_SCRIPT = `(function(){try{var v=JSON.parse(localStorage.getItem(${JSON.stringify(
   STORAGE_KEYS.darkMode,
-)})||"null");if(v&&v.on===true)document.documentElement.setAttribute("${DARK_MODE_ATTRIBUTE}","dark");}catch(e){}})();`;
+)})||"null");var on=v&&typeof v.on==="boolean"?v.on:${DARK_MODE_DEFAULT};var r=document.documentElement;if(on)r.setAttribute("${DARK_MODE_ATTRIBUTE}","dark");else r.removeAttribute("${DARK_MODE_ATTRIBUTE}");}catch(e){}})();`;
