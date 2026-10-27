@@ -56,6 +56,9 @@ export function Departures() {
                         <span className="block truncate text-[11px] text-gray-500">
                           Age {p.age} · {p.apps} apps · {p.tries} tries
                         </span>
+                        <span className="block text-[11px] text-gray-500">
+                          New deal: {years} yr{years > 1 ? "s" : ""}
+                        </span>
                       </span>
                       <RatingPill rating={p.rating} />
                     </div>
@@ -74,7 +77,6 @@ export function Departures() {
                       </GameButton>
                       <GameButton
                         size="sm"
-                        className="whitespace-nowrap !px-2"
                         disabled={s.budget < fee || !decisionsArmed}
                         onClick={() => {
                           const err = renew(p.id);
@@ -87,7 +89,7 @@ export function Departures() {
                           }
                         }}
                       >
-                        {`Renew ${years}y · ${formatMoney(fee)}`}
+                        {`Renew · ${formatMoney(fee)}`}
                       </GameButton>
                     </div>
                   </li>
