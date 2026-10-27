@@ -26,7 +26,7 @@ export function LegendVaultSheet({ open, onClose }: { open: boolean; onClose: ()
       headerExtra={<span className="pitch-pill mt-1.5 !text-[14px] !text-accent-gold">{legacy.legacyPoints} Legacy pts</span>}
     >
       <p className="text-sm text-gray-300">
-        Earn Legacy points from trophies and challenges. Unlocked legends join your transfer window in
+        Earn Legacy points from trophies and challenges. Unlocked Legends and Greats join your transfer window in
         <span className="font-semibold text-white"> every </span>career.
       </p>
       {message ? <p className="mt-2 text-sm text-theme-primary" role="status">{message}</p> : null}
@@ -38,7 +38,12 @@ export function LegendVaultSheet({ open, onClose }: { open: boolean; onClose: ()
             <li key={l.id} className="flex items-center gap-3 py-2.5 text-left">
               <RatingPill rating={l.peak} />
               <span className="min-w-0 flex-1">
-                <span className="block truncate font-semibold text-white">{l.name}</span>
+                <span className="block truncate font-semibold text-white">
+                  {l.name}
+                  {l.tier === "great" ? (
+                    <span className="ml-1.5 text-[10px] font-bold uppercase tracking-wide text-accent-gold">Great</span>
+                  ) : null}
+                </span>
                 <span className="text-[11px] text-gray-400">
                   {POS_LABEL[l.pos]} · {l.club} · plays at {legendAsPlayer(l).rating} · signing fee {formatMoney(l.signingFee)}
                 </span>

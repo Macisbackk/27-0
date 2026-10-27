@@ -65906,7 +65906,7 @@
     "nationality": "England",
     "era": "Elite strike runner and pivot",
     "yearsActive": "2006–2006",
-    "category": "legend",
+    "category": "historic",
     "peakRating": 96,
     "value": 563000,
     "appearances": 436,
@@ -65927,7 +65927,8 @@
     "primaryPosition": "Stand-off",
     "availableInGame": true,
     "migratedFromId": "leon-pryce",
-    "migratedAt": "2026-06-24"
+    "migratedAt": "2026-06-24",
+    "great": true
   },
   {
     "id": "bradford-hist-leon-pryce-2001",
@@ -68686,7 +68687,7 @@
     "nationality": "England",
     "era": "Field-kicking master era",
     "yearsActive": "2013–2013",
-    "category": "legend",
+    "category": "historic",
     "peakRating": 96,
     "value": 563000,
     "appearances": 431,
@@ -68706,7 +68707,8 @@
     "primaryPosition": "Scrum-half",
     "availableInGame": true,
     "migratedFromId": "danny-brough",
-    "migratedAt": "2026-06-24"
+    "migratedAt": "2026-06-24",
+    "great": true
   },
   {
     "id": "bradford-hist-lesley-vainikolo-2006",
@@ -90097,7 +90099,7 @@
     "era": "MODERN_ERA",
     "yearsActive": "2007–2007",
     "cardYear": 2007,
-    "category": "legend",
+    "category": "historic",
     "peakRating": 96,
     "value": 552000,
     "year": 2007,
@@ -90113,7 +90115,8 @@
     "superLeagueWinner": true,
     "challengeCupWinner": false,
     "dateOfBirth": "1981-05-03",
-    "birthYear": 1981
+    "birthYear": 1981,
+    "great": true
   },
   {
     "id": "wigan-leg-jason-robinson-1998",
@@ -90240,7 +90243,7 @@
     "nationality": "Australia",
     "era": "MODERN_ERA",
     "yearsActive": "2010–2010",
-    "category": "legend",
+    "category": "historic",
     "peakRating": 96,
     "value": 563000,
     "appearances": 279,
@@ -90259,7 +90262,8 @@
     "primaryPosition": "WING",
     "intlCaps": 0,
     "availableInGame": true,
-    "source": "legend-tier-primes"
+    "source": "legend-tier-primes",
+    "great": true
   },
   {
     "id": "warrington-leg-lee-briers-2011",

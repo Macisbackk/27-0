@@ -68,7 +68,7 @@ function formatPlayerTypeLabel(status: PlayerCategory | "all"): string {
     case "current":
       return "Current ('26)";
     case "historic":
-      return "Historic";
+      return "Past Season";
     case "legend":
       return "Legend";
     default:
@@ -421,7 +421,7 @@ export function PlayerShowcase() {
   const typeOptions: { id: PlayerCategory | "all"; label: string }[] = [
     { id: "all", label: "All" },
     { id: "current", label: "Current" },
-    { id: "historic", label: "Historic" },
+    { id: "historic", label: "Past Season" },
     { id: "legend", label: "Legends" },
   ];
   // The type pills already show the player type, so the Filters count leaves it out.

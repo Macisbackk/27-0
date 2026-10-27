@@ -26,6 +26,7 @@ export type QuickPlayerChoiceTagId =
   | "super-sam"
   | "hall-of-fame"
   | "legend"
+  | "great"
   | "club-legend"
   | "historic"
   | "current"
@@ -45,6 +46,7 @@ const TAG_PRIORITY: QuickPlayerChoiceTagId[] = [
   "super-sam",
   "hall-of-fame",
   "legend",
+  "great",
   "club-legend",
   "historic",
   "current",
@@ -57,6 +59,7 @@ const TAG_TONE: Record<QuickPlayerChoiceTagId, QuickPlayerChoiceTag["tone"]> = {
   "super-sam": "purple",
   "hall-of-fame": "gold",
   legend: "gold",
+  great: "gold",
   "club-legend": "sky",
   historic: "slate",
   current: "slate",
@@ -159,7 +162,7 @@ function collectCandidateTags(
 
   const status = resolveChoicePlayerType(player);
   if (status === "legend") ids.push("legend");
-  else if (status === "historic") ids.push("historic");
+  else if (status === "historic") ids.push(player.great ? "great" : "historic");
   else if (status === "current") ids.push("current");
 
   if (player.clubLegend) ids.push("club-legend");
