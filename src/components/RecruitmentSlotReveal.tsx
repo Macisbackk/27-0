@@ -14,7 +14,6 @@ import {
   getSpinDurationMs,
 } from "@/lib/game/slot-reel";
 import { spinTimingMark } from "@/lib/game/spin-timing";
-import { getClubColors } from "@/lib/clubs";
 import { formatSpinReelTeamName } from "@/lib/clubs/spin-reel-team-name";
 import { formatShortYear } from "@/lib/players/prime-year";
 import { playSlotLand, playSlotSpinStart, playSlotSpinTick } from "@/lib/sound";
@@ -22,7 +21,6 @@ import { triggerHaptic } from "@/lib/haptics";
 import { SPACING } from "@/lib/ui/design-system";
 import { BodyPortal } from "@/components/ui/BodyPortal";
 import { useModalA11y } from "@/hooks/useModalA11y";
-import { TeamColourStrip } from "@/components/ui/TeamColourStrip";
 import { uiLayerClass } from "@/lib/ui/layers";
 import { useScrollLock } from "@/hooks/useScrollLock";
 import { TYPO } from "@/lib/ui/typography";
@@ -63,7 +61,6 @@ export function RecruitmentSlotReveal({
   const yearReelRef = useRef<SlotReelHandle>(null);
   const shellRef = useRef<HTMLDivElement>(null);
   const onCompleteRef = useRef(onComplete);
-  const clubPrimaryRef = useRef(getClubColors(target.team).primary);
   const [isSpinning, setIsSpinning] = useState(true);
   const [landed, setLanded] = useState(false);
   const skipRef = useRef<(() => void) | null>(null);
@@ -74,13 +71,7 @@ export function RecruitmentSlotReveal({
   // Lock while spinning; release once the result has settled.
   useScrollLock(!landed, "quick-mode-spin");
 
-  const clubColors = useMemo(
-    () => getClubColors(target.team),
-    [target.team]
-  );
-
   onCompleteRef.current = onComplete;
-  clubPrimaryRef.current = clubColors.primary;
 
   const { teamPlan, yearPlan } = useMemo(() => {
     const t0 = spinTimingMark("reel-plan-start");
@@ -116,11 +107,7 @@ export function RecruitmentSlotReveal({
         shell.classList.add("slot-reel-lock-flash");
         shell.classList.remove("border-pitch-600/70", "bg-pitch-950/80");
         shell.classList.add("bg-pitch-950/95");
-        // Top edge only — avoid a single-side club colour border.
-        (shell as HTMLElement).style.borderColor = "";
-        (shell as HTMLElement).style.borderTopColor = clubPrimaryRef.current;
-        (shell as HTMLElement).style.borderTopWidth = "2px";
-        (shell as HTMLElement).style.borderTopStyle = "solid";
+        // No club-colour border on the reels once they land (owner, v1.39): it looked awkward.
       }
     };
 
@@ -261,12 +248,8 @@ export function RecruitmentSlotReveal({
             transition: landed ? "border-color 0.35s ease-out" : undefined,
           }}
         >
-          {/* The club's colours only appear once the reels land: showing them during the spin gave the result away. */}
-          {landed ? (
-            <TeamColourStrip club={target.team} className="fl-rise" />
-          ) : (
-            <div aria-hidden className="h-0.5 w-full bg-white/10" />
-          )}
+          {/* No club-colour bar here (owner, v1.39): a neutral top edge before and after the spin. */}
+          <div aria-hidden className="h-0.5 w-full bg-white/10" />
           <div className="border-b border-white/10 px-4 py-2.5 text-center">
             <p className={`${TYPO.sectionLabel} text-pitch-400`}>
               {isSpinning
