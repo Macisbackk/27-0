@@ -23,6 +23,7 @@ import { ExternalLinkGuard } from "@/components/ExternalLinkGuard";
 import { PwaSetup } from "@/components/PwaSetup";
 import { MotionProvider } from "@/components/MotionProvider";
 import { UI_THEME_BOOTSTRAP_SCRIPT } from "@/lib/ui/theme-bootstrap-script";
+import { DARK_MODE_BOOTSTRAP_SCRIPT } from "@/lib/ui/dark-mode";
 import { IS_APP_BUILD, NATIVE_CLASS_BOOTSTRAP_SCRIPT } from "@/lib/native/platform";
 import { OfflineBanner } from "@/components/OfflineBanner";
 import { ToastHost } from "@/components/ui/ToastHost";
@@ -95,6 +96,12 @@ export default function RootLayout({
           id="ui-theme-bootstrap"
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{ __html: UI_THEME_BOOTSTRAP_SCRIPT }}
+        />
+        {/* Settings → Dark mode: sets data-mode="dark" on <html> before paint (pitch-page.css). */}
+        <Script
+          id="dark-mode-bootstrap"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: DARK_MODE_BOOTSTRAP_SCRIPT }}
         />
         {IS_APP_BUILD ? (
           <Script

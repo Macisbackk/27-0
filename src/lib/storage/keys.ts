@@ -22,6 +22,8 @@ export const STORAGE_KEYS = {
   /** One-time local reset marker for squad value leaderboard wipe. */
   squadValueLeaderboardReset: "27-0-squad-value-lb-reset-v1",
   uiThemeStore: "27-0-ui-theme-store",
+  /** Settings → Dark mode: {on, updatedAt} (lib/ui/dark-mode.ts, synced as user_stats ui_dark_mode). */
+  darkMode: "27-0-dark-mode",
   cosmeticsStore: "27-0-cosmetics-store",
   /** Coaches this player hid from their leaderboards (storage/hidden-coaches.ts). */
   hiddenCoaches: "27-0-hidden-coaches",
