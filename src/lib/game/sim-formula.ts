@@ -33,7 +33,7 @@ export interface SimFormulaModeScale {
 
 export const SIM_FORMULA_MODE_SCALE: Record<SimFormulaMode, SimFormulaModeScale> = {
   classic: { typicalRating: 83.1, eliteRating: 85.5, typicalChemistry: 0 },
-  era: { typicalRating: 86.6, eliteRating: 88.5, typicalChemistry: 0.6 },
+  era: { typicalRating: 85.6, eliteRating: 87.5, typicalChemistry: 0.3 },
 };
 
 /** League-scale strength of a typical draft (opponent club ratings run 66–84). */

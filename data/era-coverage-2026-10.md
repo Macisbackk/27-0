@@ -78,6 +78,26 @@ never offered in spins) were superseded by the new card for the same player and 
 - `gateshead-hist-martin-masella` (1998): filed under Gateshead, who were not in Super League until 1999; he played for
   Leeds in 1998, so the card is Leeds Rhinos 1998.
 
+## Calibration after the fill
+
+More club-seasons and own-season cards change what a typical Era Classic draft looks like, so the 27-0 formula
+anchors were re-measured (`RUNS=400 MODES=era bun scripts/sim-era-classic-perfect-season.ts`):
+
+| Era draft tier | Avg rating before → after | Chemistry before → after | 27-0 % with old anchors (after data) |
+|---|---|---|---|
+| weak | 84.71 → 83.78 | 0.61 → 0.24 | 0 |
+| random (typical) | 86.64 → 85.60 | 0.63 → 0.27 | 0.38 (was 3.1 on main) |
+| good | 87.06 → 86.24 | 0.65 → 0.27 | 0.92 (was 5.7) |
+| best (near-perfect) | 88.50 → 87.50 | 0.66 → 0.27 | 7.6 (was 31.0) |
+
+Typical drafts are ~1 point lower (pools now hold that season's card, often below the player's peak card) and
+chemistry is lower (fewer shared card years). `SIM_FORMULA_MODE_SCALE.era` is now typical 85.6 / elite 87.5 /
+chemistry 0.3 (was 86.6 / 88.5 / 0.6), which puts the same draft quality back on the same odds.
+`GAUNTLET_FIELD_OFFSET` 13 → 21: the champion sides now field their own-season cards and sit higher on the Era ladder;
+21 restores the near-perfect clean-sweep rate (Classic 21.6%, Era 30.0% vs 22.0% / 31.8% on main).
+One-Club XI ladders (`one-club-scale.ts`) were regenerated: 18 clubs now (Crusaders, Halifax, Leigh, Sheffield and
+Widnes added), near-perfect 27-0 26.8–31.1% per club.
+
 ## Sources for added line-ups (club-seasons with no verified 17 before)
 
 | Club-season | Match | Source |
