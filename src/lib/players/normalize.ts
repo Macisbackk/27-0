@@ -17,6 +17,7 @@ import { resolveIntlCaps } from "./intl-caps";
 import { resolveDisplayClub } from "../clubs/super-league-display";
 import { resolveCareerTries } from "./career-tries";
 import { resolveCategory } from "./active";
+import { isClubLegendAt, isHallOfFameInductee } from "./honour-tags";
 import { resolveSuperLeagueEligible } from "./super-league-eligibility";
 import {
   resolveDreamTeamYears,
@@ -165,13 +166,15 @@ export function normalizePlayer(raw: Record<string, unknown>): Player {
     (raw.team as string | undefined) ??
     resolveDisplayClub(id, rawClub, name);
 
+  const resolvedClub = resolveDisplayClub(id, rawClub, name);
+
   const player: Player = {
     id,
     baseId: parsedId.baseId !== id ? parsedId.baseId : undefined,
     basePlayerId,
     name,
     team: (raw.team as string | undefined) ?? rawClub,
-    club: resolveDisplayClub(id, rawClub, name),
+    club: resolvedClub,
     displayClub,
     year,
     teamYearId,
@@ -196,12 +199,16 @@ export function normalizePlayer(raw: Record<string, unknown>): Player {
     tries:
       (raw.tries as number | undefined) ?? resolveCareerTries(id, category),
     intlCaps: resolveIntlCaps(id, raw.intlCaps),
-    clubLegend: raw.clubLegend as boolean | undefined,
+    // Card tags come from data/club-legends.json and data/hall-of-fame.json (see honour-tags.ts),
+    // never from per-row flags, so every card of a player agrees.
+    clubLegend: isClubLegendAt(name, birthYear, [resolvedClub, displayClub])
+      ? true
+      : undefined,
     manOfSteel: raw.manOfSteel as boolean | undefined,
     challengeCupWinner: raw.challengeCupWinner as boolean | undefined,
     superLeagueWinner: raw.superLeagueWinner as boolean | undefined,
     lanceToddTrophy: raw.lanceToddTrophy as boolean | undefined,
-    hallOfFame: raw.hallOfFame === true ? true : undefined,
+    hallOfFame: isHallOfFameInductee(name, birthYear) ? true : undefined,
     dreamTeamYears: resolveDreamTeamYears({
       id,
       basePlayerId,

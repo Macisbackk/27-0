@@ -6,6 +6,7 @@ import { formatPlayerPositionLabel } from "@/lib/players/player-positions";
 import { getPlayerColorClub, getPlayerDisplayClub } from "@/lib/players/run-club";
 import { isGoatPlayer } from "@/lib/players/goat";
 import { isSuperSamHallasPlayer } from "@/lib/players/super-sam-hallas";
+import { PLAYER_TIER_LABEL } from "@/lib/players/player-card-colours";
 
 function resolveChoicePlayerType(
   player: Player
@@ -63,14 +64,9 @@ const TAG_TONE: Record<QuickPlayerChoiceTagId, QuickPlayerChoiceTag["tone"]> = {
   "top-rating": "gold",
 };
 
+/** Player tags share their labels with the card badges (PLAYER_TIER_LABEL). */
 const TAG_LABEL: Record<QuickPlayerChoiceTagId, string> = {
-  goat: "GOAT",
-  "super-sam": "SUPER SAM",
-  "hall-of-fame": "Hall of Fame",
-  legend: "Legend",
-  "club-legend": "Club Legend",
-  historic: "Historic",
-  current: "Current",
+  ...PLAYER_TIER_LABEL,
   boosted: "Boosted",
   "top-rating": "Top rating",
 };
