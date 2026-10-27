@@ -20,7 +20,6 @@ import {
   type DailyChallengeScenario,
 } from "@/lib/daily-challenge";
 import { claimDailyBonus, formatCountdown, msUntilUkMidnight } from "@/lib/daily-bonus";
-import type { ClubFundsPayoutResult } from "@/lib/club-funds";
 import { getClubFundsBalance } from "@/lib/storage/club-funds";
 import {
   formatOrdinal,
@@ -248,16 +247,15 @@ function Crest({ primary, secondary, label }: { primary: string; secondary: stri
 
 export function HomeModeSelector() {
   const [hub, setHub] = useState<HubState | null>(null);
-  const [bonus, setBonus] = useState<{ payout: ClubFundsPayoutResult; day: number } | null>(null);
   const [untilReset, setUntilReset] = useState<string | null>(null);
   const [missionsOpen, setMissionsOpen] = useState(false);
   const [era, setEra] = useState(false);
   const missions = useDailyMissions();
   useEffect(() => {
     try {
-      // Daily welcome bonus: once per UK day, grows with consecutive days.
-      const claimed = claimDailyBonus();
-      if (claimed) setBonus(claimed);
+      // Daily welcome bonus: once per UK day, grows with consecutive days. It's paid straight into
+      // Club Funds; the chip just shows the new balance (no "+" badge, owner v1.39).
+      claimDailyBonus();
     } catch {
       /* storage blocked: no bonus today, the hub still shows */
     }
@@ -339,7 +337,7 @@ export function HomeModeSelector() {
     <section className="mx-auto flex w-full max-w-[44rem] flex-col gap-3" aria-labelledby="play-heading">
       {/* Top strip: greeting, then the streak and Club Funds as chips on the same line. */}
       <div className="flex min-h-11 items-center gap-2">
-        <h2 id="play-heading" className="min-w-0 flex-1 truncate !text-left font-cond text-[24px] font-bold leading-none text-white">
+        <h2 id="play-heading" className="min-w-0 flex-1 truncate py-1 !text-left font-cond text-[24px] font-bold leading-tight text-white">
           {hub?.greeting ?? "Welcome, coach"}
         </h2>
         {streak > 0 ? (
@@ -356,7 +354,7 @@ export function HomeModeSelector() {
           <Link
             href="/store"
             onClick={() => playUiClick()}
-            aria-label={`Club Funds ${formatClubFunds(hub.funds)}${bonus ? `, plus ${formatClubFunds(bonus.payout.total)} day ${bonus.day} bonus` : ""}. Open the Store`}
+            aria-label={`Club Funds ${formatClubFunds(hub.funds)}. Open the Store`}
             className={`relative -my-1 inline-flex h-11 shrink-0 items-center gap-1.5 rounded-full bg-pitch-900 pl-2 pr-3.5 font-display text-[16px] leading-none text-theme-primary hover:bg-pitch-800 ${FOCUS}`}
           >
             <span aria-hidden className="flex h-7 w-7 items-center justify-center rounded-full bg-theme-primary/15">
@@ -365,22 +363,9 @@ export function HomeModeSelector() {
               </Glyph>
             </span>
             {formatClubFunds(hub.funds)}
-            {bonus ? (
-              <span
-                aria-hidden
-                className="absolute -right-1 -top-2 rounded-full bg-accent-gold px-1.5 py-0.5 font-cond text-[11px] font-bold leading-none text-pitch-950"
-              >
-                +{formatClubFunds(bonus.payout.total)}
-              </span>
-            ) : null}
           </Link>
         ) : null}
       </div>
-      {bonus ? (
-        <span className="sr-only" role="status">
-          Day {bonus.day} bonus: +{formatClubFunds(bonus.payout.total)} Club Funds
-        </span>
-      ) : null}
 
       {/* The main event: Classic, with a Current / Era switch and one Play button.
           This card is the pitch look the whole site shares (src/styles/pitch.css). */}
