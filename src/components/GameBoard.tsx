@@ -135,6 +135,7 @@ import {
   generateSlotTeamYearTargetForSlot,
   autofillSlotRecruitSquad,
   placeSlotRecruitPlayerAtSlot,
+  prepareSlotClubChoicePlayers,
   prepareSlotTeamYearPlayers,
 } from "@/lib/game/slot-team-year-pick";
 import {
@@ -188,7 +189,9 @@ import { QuickModePreGameBoostSetup } from "./QuickModePreGameBoostSetup";
 import { RunProgress } from "./RunProgress";
 import {
   getNextEmptySlotIndex,
+  getRunFormulaMode,
   resolveSpinRequest,
+  usesClubChoiceSpin,
   type RunProgressStage,
 } from "@/lib/game/draft-flow";
 import {
@@ -324,6 +327,22 @@ export function GameBoard({
   const archiveDateKey = isSideMode && sideMode?.kind === "daily-archive" ? sideMode.dateKey : null;
   // One-Club XI spins a club's whole history: Era seasons and the 2026 squad.
   const spinVariant: SpinPoolVariant = oneClub ? "all" : normalEraMode ? "era" : "current";
+  /** Normal Classic: pick one of three cards from three different clubs (draft-flow.ts). */
+  const clubChoiceSpin = usesClubChoiceSpin({
+    slotRecruitMode: mode === "CLASSIC",
+    spinVariant,
+    dailyChallengeMode,
+    weeklyChallengeMode,
+    sideMode: isSideMode,
+    challengeKind: challenge?.kind ?? null,
+  });
+  /** The 27-0 formula ladder for this run's league season (sim-formula.ts). */
+  const formulaMode = getRunFormulaMode({
+    eraCards: normalEraMode || Boolean(oneClub),
+    clubChoice: clubChoiceSpin,
+  });
+  /** Chemistry has no effect in Era (v1.40), so it isn't shown there. One-Club keeps it. */
+  const showChemistry = !normalEraMode || Boolean(oneClub);
   const isDraftMode = mode === "DRAFT";
   /**
    * Boost ownership is snapshotted per run (refreshed only before the first pick). Reading the
@@ -1124,16 +1143,37 @@ export function GameBoard({
       return [];
     }
 
-    if (
+    const activeBoostPlan =
       boostedSpinPlan &&
       boostedSpinPlan.status !== "failed" &&
       boostedSpinPlan.status !== "consumed" &&
       boostedSpinPlan.selectedTeamId === activeSpinTarget.teamYearKey &&
       boostedSpinPlan.slotIndex === selectedSlotIndex &&
       boostedSpinPlan.playerChoiceIds.length > 0
-    ) {
+        ? boostedSpinPlan
+        : null;
+
+    if (clubChoiceSpin) {
+      // Classic: the spun club gives one card (any boost / legend guarantee lands there) and
+      // two other clubs give one each — one usually a club link with a signed neighbour.
+      return prepareSlotClubChoicePlayers(
+        activeSpinTarget,
+        signedPlayerIds,
+        squad,
+        selectedSlotIndex,
+        {
+          seed,
+          spinVariant,
+          legendOnly: !legendSpinUsed && legendSpinSlotIndex === selectedSlotIndex,
+          selectionBoostId: activeBoostPlan?.boostId ?? slotBoostGuaranteeId ?? undefined,
+          guaranteedPlayerId: activeBoostPlan?.guaranteedPlayerId,
+        }
+      );
+    }
+
+    if (activeBoostPlan) {
       return resolveBoostedSpinPlanPlayers(
-        boostedSpinPlan,
+        activeBoostPlan,
         activeSpinTarget,
         signedPlayerIds,
         squad,
@@ -1168,6 +1208,8 @@ export function GameBoard({
     slotBoostGuaranteeId,
     boostedSpinPlan,
     dailyRuleFilter,
+    clubChoiceSpin,
+    spinVariant,
   ]);
 
   useEffect(() => {
@@ -1222,11 +1264,12 @@ export function GameBoard({
     if (!isSlotRecruitMode || !activeSpinTarget || slotRecruitEntries.length === 0) return;
 
     const mismatched = slotRecruitEntries.find(
-      ({ player }) => !getPlayerTeamYearIds(player.id).includes(activeSpinTarget.teamYearId)
+      ({ player, target }) =>
+        !getPlayerTeamYearIds(player.id).includes((target ?? activeSpinTarget).teamYearId)
     );
     if (mismatched) {
       console.warn("Player pool leak", {
-        spinTeamYearId: activeSpinTarget.teamYearId,
+        spinTeamYearId: (mismatched.target ?? activeSpinTarget).teamYearId,
         playerId: mismatched.player.id,
         playerTeamYearIds: getPlayerTeamYearIds(mismatched.player.id),
       });
@@ -1349,7 +1392,7 @@ export function GameBoard({
       if (gauntletMode) {
         // Gauntlet: ten great sides instead of a league season. Decided (and recorded) now, so
         // leaving mid-reveal can't bin a bad run.
-        const run = runGauntlet(finalSquad, seed, normalEraMode ? "era" : "classic");
+        const run = runGauntlet(finalSquad, seed, formulaMode);
         setGauntletResult(run);
         setGauntletRecord(
           recordGauntletRun({ runId, beaten: run.beaten, era: normalEraMode, total: GAUNTLET_LENGTH })
@@ -1362,6 +1405,7 @@ export function GameBoard({
       const result = simulateSeason(finalSquad, seed, {
         draftMode: isDraftMode,
         currentSeasonOnly: !normalEraMode && !oneClub,
+        formulaMode,
         forceOpponentClub: challengeScenario?.forceOpponentClub ?? undefined,
         forceUndefeated: superSamHallasMode,
         joeMellorMode,
@@ -1388,6 +1432,7 @@ export function GameBoard({
       challengeScenario?.forceOpponentClub,
       gauntletMode,
       oneClub,
+      formulaMode,
     ]
   );
 
@@ -1403,6 +1448,7 @@ export function GameBoard({
       const result = simulateSeason(squad, seed, {
         draftMode: isDraftMode,
         currentSeasonOnly: !normalEraMode && !oneClub,
+        formulaMode,
         forceOpponentClub: challengeScenario?.forceOpponentClub ?? undefined,
         forceUndefeated: superSamHallasMode,
         joeMellorMode,
@@ -1419,6 +1465,7 @@ export function GameBoard({
       isDraftMode,
       normalEraMode,
       oneClub,
+      formulaMode,
       challengeScenario?.forceOpponentClub,
       superSamHallasMode,
       joeMellorMode,
@@ -1891,10 +1938,13 @@ export function GameBoard({
         return;
       }
 
+      // Club choice: each card carries its own club-season.
+      const pickedTarget =
+        slotRecruitEntries.find((e) => e.player.id === player.id)?.target ?? activeSpinTarget;
       const newSquad = placeSlotRecruitPlayerAtSlot(
         squad,
         player,
-        activeSpinTarget,
+        pickedTarget,
         selectedSlotIndex
       );
       if (!newSquad) return;
@@ -1958,7 +2008,7 @@ export function GameBoard({
       setChoosing(false);
       setUsedTeamYearKeys((prev) => {
         const next = new Set(prev);
-        next.add(activeSpinTarget.teamYearKey);
+        next.add(pickedTarget.teamYearKey);
         return next;
       });
       if (
@@ -1977,6 +2027,7 @@ export function GameBoard({
       phase,
       isSlotRecruitMode,
       activeSpinTarget,
+      slotRecruitEntries,
       selectedSlotIndex,
       squad,
       slotBoostGuaranteeId,
@@ -2025,13 +2076,19 @@ export function GameBoard({
 
       if (request.reopenLocked) {
         const locked = lockedSlotTargetsRef.current.get(slotIndex)!;
-        const stillValid =
-          !usedTeamYearKeys.has(locked.target.teamYearKey) &&
-          prepareSlotTeamYearPlayers(locked.target, signedPlayerIds, squad, slotIndex, {
-            seed,
-            legendOnly: requireLegendPlayer,
-            ruleFilter: dailyRuleFilter,
-          }).length > 0;
+        // Club choice repeats clubs on purpose (links), so a used club doesn't void the lock.
+        const stillValid = clubChoiceSpin
+          ? prepareSlotClubChoicePlayers(locked.target, signedPlayerIds, squad, slotIndex, {
+              seed,
+              spinVariant,
+              legendOnly: requireLegendPlayer,
+            }).length > 0
+          : !usedTeamYearKeys.has(locked.target.teamYearKey) &&
+            prepareSlotTeamYearPlayers(locked.target, signedPlayerIds, squad, slotIndex, {
+              seed,
+              legendOnly: requireLegendPlayer,
+              ruleFilter: dailyRuleFilter,
+            }).length > 0;
         if (stillValid) {
           setRecruitNotice(null);
           setPickerNotice(
@@ -2054,6 +2111,8 @@ export function GameBoard({
         setPendingSpin(null);
       }
 
+      // Club choice never steers away from clubs already signed: repeats are how links happen.
+      const spinUsedTeamYearKeys = clubChoiceSpin ? new Set<string>() : usedTeamYearKeys;
       let target: SlotRevealTarget | null = null;
       if (armedBoost) {
         const plan = buildBoostedSpinPlan({
@@ -2064,7 +2123,7 @@ export function GameBoard({
           usedIds: signedPlayerIds,
           squad,
           slotIndex,
-          usedTeamYearKeys,
+          usedTeamYearKeys: spinUsedTeamYearKeys,
           options: {
             requireLegendPlayer,
             spinVariant,
@@ -2099,7 +2158,7 @@ export function GameBoard({
           signedPlayerIds,
           squad,
           slotIndex,
-          usedTeamYearKeys,
+          spinUsedTeamYearKeys,
           { requireLegendPlayer, spinVariant, ruleFilter: dailyRuleFilter }
         );
       }
@@ -2149,6 +2208,7 @@ export function GameBoard({
       slotBoostGuaranteeId,
       selectionBoostsUsedThisRun,
       dailyRuleFilter,
+      clubChoiceSpin,
     ]
   );
 
@@ -2175,10 +2235,16 @@ export function GameBoard({
         ? slotBoostGuaranteeId
         : null;
 
-    // Exclude the offer being respinned so we do not land on the same team-year.
-    const respinUsedTeamYearKeys = new Set(usedTeamYearKeys);
+    // Exclude the offer being respinned so we do not land on the same team-year (club choice:
+    // on any of the offered clubs — signed clubs stay in, repeats are how links happen).
+    const respinUsedTeamYearKeys = new Set<string>(clubChoiceSpin ? [] : usedTeamYearKeys);
     if (activeSpinTarget) {
       respinUsedTeamYearKeys.add(activeSpinTarget.teamYearKey);
+    }
+    if (clubChoiceSpin) {
+      for (const entry of slotRecruitEntries) {
+        if (entry.target) respinUsedTeamYearKeys.add(entry.target.teamYearKey);
+      }
     }
 
     let target: SlotRevealTarget | null = null;
@@ -2279,6 +2345,8 @@ export function GameBoard({
     slotBoostGuaranteeId,
     selectionBoostsUsedThisRun,
     dailyRuleFilter,
+    clubChoiceSpin,
+    slotRecruitEntries,
   ]);
 
   const handleSelectSlot = useCallback(
@@ -3079,6 +3147,7 @@ export function GameBoard({
             averageSquadRating={averageSquadRating}
             chemistryBonus={chemistry.bonus}
             chemistryLinks={chemistry.links.length}
+            showChemistry={showChemistry}
             hardMode={difficulty === "HARD"}
           />
 
@@ -3187,11 +3256,15 @@ export function GameBoard({
                 <>
                   {" "}Rating{" "}
                   <span className="tabular-nums text-theme-primary">{averageSquadRating.toFixed(1)}</span>
-                  {" · "}Chemistry{" "}
-                  <span className="tabular-nums text-lime-300">{formatChemistryBonus(chemistry.bonus)}</span>
-                  <span className="text-[color:var(--fl-muted)]">
-                    {" "}({chemistry.links.length} {chemistry.links.length === 1 ? "link" : "links"})
-                  </span>
+                  {showChemistry ? (
+                    <>
+                      {" · "}Chemistry{" "}
+                      <span className="tabular-nums text-lime-300">{formatChemistryBonus(chemistry.bonus)}</span>
+                      <span className="text-[color:var(--fl-muted)]">
+                        {" "}({chemistry.links.length} {chemistry.links.length === 1 ? "link" : "links"})
+                      </span>
+                    </>
+                  ) : null}
                 </>
               ) : null}
             </p>
@@ -3217,7 +3290,12 @@ export function GameBoard({
                   ? "Tap a position to spin"
                   : `${TOTAL_SLOTS - filledCount} to go${suggestedSlotLabel ? ` · next: ${suggestedSlotLabel}` : ""}`}
             </p>
-            {difficulty !== "HARD" && filledCount > 0 && chemistry.links.length > 0 ? (
+            {clubChoiceSpin && filledCount === 0 && !pendingSpin && difficulty !== "HARD" ? (
+              <p className="w-full text-center text-xs text-[color:var(--fl-muted)]">
+                Pick from 3 clubs. Same club side by side = chemistry.
+              </p>
+            ) : null}
+            {showChemistry && difficulty !== "HARD" && filledCount > 0 && chemistry.links.length > 0 ? (
               <p className="w-full text-center text-xs text-lime-300">
                 Chemistry {formatChemistryBonus(chemistry.bonus)}:{" "}
                 {chemistry.links
@@ -3348,6 +3426,11 @@ export function GameBoard({
             <RecruitmentSlotReveal
               key={revealKey}
               target={slotRecruitTarget}
+              choiceTargets={
+                clubChoiceSpin
+                  ? slotRecruitEntries.flatMap((e) => (e.target ? [e.target] : []))
+                  : undefined
+              }
               spinVariant={spinVariant}
               boostStatus={spinBoostStatus}
               boostDetail={spinBoostDetail}
@@ -3410,6 +3493,8 @@ export function GameBoard({
                       hardMode={difficulty === "HARD"}
                       boosted={Boolean(boostNotice)}
                       eraMode={normalEraMode}
+                      showChemistry={showChemistry}
+                      clubChoice={clubChoiceSpin}
                       hideRatingNote={dailyChallengeMode || difficulty === "HARD"}
                       slot={
                         selectedSlotIndex !== null

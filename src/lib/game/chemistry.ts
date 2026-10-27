@@ -4,12 +4,14 @@ import { resolveEraTeamClubName } from "../players/era-teams";
 import { isCurrentEraSeasonYear } from "../players/current-season";
 
 /**
- * Squad chemistry — Classic mode.
+ * Squad chemistry — Classic only (it has no effect in Era and isn't shown there, v1.40;
+ * One-Club XI keeps its own normalised chemistry, see one-club.ts).
  *
  * Adjacent slots in the same line that share a club OR an era card year form a
- * link worth +0.5 effective team rating, capped at +3.0 for the squad. The sim
- * adds the bonus to the average squad rating when resolving each fixture, so a
- * Wigan wing and centre (or a Bradford '03 half pairing) are worth more than their OVRs.
+ * link worth +0.5 team strength, capped at +3.0 for the squad. The 27-0 formula adds
+ * it (relative to a typical draft's chemistry) to the team strength, so a Wigan wing
+ * and centre are worth more than their OVRs. Classic's club choice (one card from each
+ * of three clubs, one usually a neighbour's club) is what makes links something you build.
  *
  * Lines (slot indices from SLOT_DEFINITIONS in positions.ts):
  *   back line  — Left Wing (1) ↔ Left Centre (3), Right Centre (4) ↔ Right Wing (2)
@@ -126,6 +128,19 @@ export function getNewChemistryLinks(
     squad.map((s) => (s.slotIndex === slotIndex ? { ...s, player } : s))
   );
   return after.links.filter((l) => l.slotA === slotIndex || l.slotB === slotIndex);
+}
+
+/**
+ * What one link is worth on a single card's rating, for weighing a choice (the picker's "Top"
+ * and the calibration drafts). In the 27-0 formula one card moves the squad average by 1/13 of
+ * a point, about a quarter of a strength point; a +0.5 link is half a strength point, so a link
+ * is worth roughly two rating points on the card you sign.
+ */
+export const CHEMISTRY_LINK_CARD_RATING = 2;
+
+/** Rating for the slot plus the chemistry it adds, in card-rating points. */
+export function getChoiceScore(rating: number, chemistryGain: number): number {
+  return rating + (chemistryGain / CHEMISTRY_LINK_BONUS) * CHEMISTRY_LINK_CARD_RATING;
 }
 
 export function formatChemistryBonus(bonus: number): string {

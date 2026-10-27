@@ -12,6 +12,8 @@ interface MatchdayScoreboardProps {
   /** Squad chemistry bonus (+0.5 per linked pair, capped at +3.0). */
   chemistryBonus?: number;
   chemistryLinks?: number;
+  /** False in Era, where chemistry has no effect (v1.40). */
+  showChemistry?: boolean;
   hardMode?: boolean;
 }
 
@@ -21,11 +23,12 @@ export function MatchdayScoreboard({
   averageSquadRating,
   chemistryBonus = 0,
   chemistryLinks = 0,
+  showChemistry: chemistryCounts = true,
   hardMode = false,
 }: MatchdayScoreboardProps) {
   const showRating = !hardMode && filledCount > 0;
-  // Always shown once someone is signed (not in Ball Knower), so links are visible while drafting.
-  const showChemistry = showRating;
+  // Shown once someone is signed (not in Ball Knower or Era), so links are visible while drafting.
+  const showChemistry = showRating && chemistryCounts;
 
   // One compact strip so the whole team sheet fits on a phone screen above the action bar.
   return (

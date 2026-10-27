@@ -3,40 +3,67 @@
  *
  * See the comment block at the top of season-simulation.ts for the plain-English version.
  *
- *   draft quality   q = (squad avg rating − TYPICAL[mode]) / (ELITE[mode] − TYPICAL[mode])
- *                       0 = a typical draft for that mode, 1 = taking the best card on every spin
- *   team strength   S = 80 + 8·q + (chemistry − TYPICAL_CHEMISTRY[mode]) + halfway-call delta
+ *   draft quality   q = (squad avg rating − TYPICAL[ladder]) / (ELITE[ladder] − TYPICAL[ladder])
+ *                       0 = a typical draft on that ladder, 1 = taking the top card on every spin
+ *   team strength   S = 80 + 8·q + (chemistry − TYPICAL_CHEMISTRY[ladder]) + halfway-call delta
+ *                       (chemistry counts in Classic only — it has no effect in Era, v1.40)
  *   strength gap    g = S − opponent club rating ± 1 (home / away)
  *   win chance      p = 1 / (1 + e^(−g / 3)),  kept within [1%, 99.5%]
  *   27-0 chance     = product of p over the 27 fixtures
  *
+ * Each draft flow has its own ladder, because the same squad rating means a different thing
+ * depending on the cards you were offered:
+ *   classic       — normal Classic (2026 squads): tap a position, pick one of three cards from
+ *                   three different clubs, one usually a club link (v1.40)
+ *   classic-spin  — 2026 squads through the club spin (one club, three of its cards): Daily /
+ *                   Weekly on Classic and the Classic Gauntlet keep this flow and these odds
+ *   era           — historic club-seasons through the club spin
  * Era cards are rated a few points higher than current cards, so raw ratings are never compared
- * across modes: each mode's squad rating is placed on its own draft ladder (q) first, and the
- * same q gives the same odds in both modes. The anchors are the mean ratings of simulated drafts
- * through the real spin flow (scripts/sim-era-classic-perfect-season.ts recomputes them).
+ * across ladders: a squad is placed on its own ladder (q) first, and the same q gives the same
+ * odds everywhere (bar Era's small opponent edge). The anchors come from simulated drafts
+ * through the real spin flows (scripts/sim-era-classic-perfect-season.ts recomputes them).
  *
  * Pure: no RNG, no React. The season sim draws one seeded number per match and wins if it is
  * below p, so the same seed + squad + halfway call always gives the same season.
  */
 import { getClubBaseStrength } from "./club-strength";
 
-export type SimFormulaMode = "classic" | "era";
+export type SimFormulaMode = "classic" | "classic-spin" | "era";
 
 export interface SimFormulaModeScale {
   /** Mean squad rating of a typical draft (a random one of the three offered cards per spin). */
   typicalRating: number;
-  /** Mean squad rating of a near-perfect draft (the best offered card on every spin). */
+  /**
+   * Squad rating of a near-perfect draft (the top offered card on every spin). Where chemistry
+   * counts and a near-perfect draft links more than a typical one, the anchor folds that extra
+   * chemistry in, so a near-perfect draft (rating + chemistry) still lands on q ≈ 1.
+   */
   eliteRating: number;
-  /** Mean chemistry bonus of a typical draft (Era cards can link on shared card years). */
+  /** Mean chemistry bonus of a typical draft (0 where chemistry doesn't count). */
   typicalChemistry: number;
   /** Extra strength every opponent has in this mode (Era: a touch harder, owner v1.36). */
   opponentEdge?: number;
+  /** Squad chemistry has no effect in this mode (Era, owner v1.40). */
+  noChemistry?: boolean;
 }
 
+/**
+ * Classic (club choice, 400 drafts per tier, v1.40): typical draft 83.05 rating / +1.0
+ * chemistry, top card every spin 85.86 / +1.73. Elite 86.0 is the rating that puts the top-card
+ * draft on q ≈ 1 with its extra +0.7 chemistry counted: 8·(85.86 − 83.05)/(86.0 − 83.05) + 0.7.
+ * Classic spin and Era: mean ratings of the typical and top-card drafts (unchanged in v1.40;
+ * Era's typical chemistry was 0.3 before chemistry stopped counting there).
+ */
 export const SIM_FORMULA_MODE_SCALE: Record<SimFormulaMode, SimFormulaModeScale> = {
-  classic: { typicalRating: 83.1, eliteRating: 85.5, typicalChemistry: 0 },
-  era: { typicalRating: 85.6, eliteRating: 87.5, typicalChemistry: 0.3, opponentEdge: 0.4 },
+  classic: { typicalRating: 83.05, eliteRating: 86.0, typicalChemistry: 1 },
+  "classic-spin": { typicalRating: 83.1, eliteRating: 85.5, typicalChemistry: 0 },
+  era: { typicalRating: 85.6, eliteRating: 87.5, typicalChemistry: 0, opponentEdge: 0.4, noChemistry: true },
 };
+
+/** Whether squad chemistry counts towards team strength in this mode (Classic yes, Era no). */
+export function modeUsesChemistry(mode: SimFormulaMode): boolean {
+  return !SIM_FORMULA_MODE_SCALE[mode].noChemistry;
+}
 
 /** League-scale strength of a typical draft (opponent club ratings run 66–84). */
 export const TEAM_STRENGTH_TYPICAL = 80;
@@ -49,6 +76,7 @@ export const WIN_CURVE_WIDTH = 3;
 export const MIN_WIN_PROBABILITY = 0.01;
 export const MAX_WIN_PROBABILITY = 0.995;
 
+/** Default ladder for a league season: normal Classic (club choice) or Era. */
 export function getSimFormulaMode(currentSeasonOnly: boolean): SimFormulaMode {
   return currentSeasonOnly ? "classic" : "era";
 }

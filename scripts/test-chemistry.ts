@@ -5,7 +5,8 @@
  * - computeChemistry: adjacent same-line pairs sharing a club OR an era card year
  *   link for +0.5 each, capped at +3.0; current-season cards never link by year.
  * - getChemistryGain / getNewChemistryLinks drive the picker's "+0.5 link" badge.
- * - simulateSeason: chemistry raises the effective rating (deterministic), the
+ * - simulateSeason: chemistry raises the effective rating in Classic (deterministic) and has
+ *   no effect in Era (v1.40), the
  *   round-14 fork leaves rounds 1–14 untouched, "chase" only moves points, and
  *   the same seed + choice always gives the same season.
  */
@@ -302,11 +303,19 @@ function sameFirstRounds(a: SeasonResult, b: SeasonResult, upTo: number): boolea
   assert(noChem.fixtures.length === SEASON_GAMES, "season still 27 rounds");
   assert(noChem.chemistryBonus === 0 && noChem.halfwayCall === "none", "result records chemistry 0 / no call");
 
-  const chem = simulateSeason(oneClub, seed);
-  const chemOff = simulateSeason(oneClub, seed, { applyChemistry: false });
+  // Chemistry counts in Classic only (v1.40): these are 2026 cards, so a Classic season.
+  const CLASSIC = { currentSeasonOnly: true } as const;
+  const chem = simulateSeason(oneClub, seed, CLASSIC);
+  const chemOff = simulateSeason(oneClub, seed, { ...CLASSIC, applyChemistry: false });
   assert(chem.chemistryBonus === CHEMISTRY_MAX_BONUS, "one-club squad records the capped bonus");
   assert(chemOff.chemistryBonus === 0, "applyChemistry:false records 0");
-  const again = simulateSeason(oneClub, seed);
+  const era = simulateSeason(oneClub, seed);
+  const eraOff = simulateSeason(oneClub, seed, { applyChemistry: false });
+  assert(
+    era.chemistryBonus === 0 && era.gameResults.join("") === eraOff.gameResults.join(""),
+    "Era: chemistry has no effect (records 0, same season as with it off)"
+  );
+  const again = simulateSeason(oneClub, seed, CLASSIC);
   assert(
     JSON.stringify(again.fixtures) === JSON.stringify(chem.fixtures),
     "same seed + squad reproduces the same season"
@@ -316,8 +325,8 @@ function sameFirstRounds(a: SeasonResult, b: SeasonResult, upTo: number): boolea
   let chemWins = 0;
   let plainWins = 0;
   for (let i = 0; i < 40; i++) {
-    chemWins += simulateSeason(oneClub, `${seed}-${i}`).wins;
-    plainWins += simulateSeason(oneClub, `${seed}-${i}`, { applyChemistry: false }).wins;
+    chemWins += simulateSeason(oneClub, `${seed}-${i}`, CLASSIC).wins;
+    plainWins += simulateSeason(oneClub, `${seed}-${i}`, { ...CLASSIC, applyChemistry: false }).wins;
   }
   assert(chemWins >= plainWins, `chemistry never costs wins across 40 seeds (${chemWins} vs ${plainWins})`);
 }

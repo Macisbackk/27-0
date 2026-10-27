@@ -30,8 +30,16 @@ const TICK_SOUND_EVERY_ITEMS = 3;
 /** Ignore taps this soon after opening (the tap on the position that started the spin). */
 const SKIP_GUARD_MS = 250;
 
+/** Club choice: reel i lands at this share of the spin, so the three settle one after another. */
+const CHOICE_REEL_LAND_SHARE = [0.72, 0.86, 1];
+
 interface RecruitmentSlotRevealProps {
   target: SlotRevealTarget;
+  /**
+   * Classic club choice: the clubs on offer (one card each). Three team reels side by side
+   * land on them one after another; omitted for the one-club spin.
+   */
+  choiceTargets?: SlotRevealTarget[];
   /** Must match GameBoard spinVariant — Era shows team+year reels; Current is team-only. */
   spinVariant: SpinPoolVariant;
   /** Small status line for an armed pre-game boost (no boost controls). */
@@ -47,6 +55,7 @@ interface RecruitmentSlotRevealProps {
 
 export function RecruitmentSlotReveal({
   target,
+  choiceTargets,
   spinVariant,
   boostStatus = null,
   boostDetail = null,
@@ -57,8 +66,11 @@ export function RecruitmentSlotReveal({
   const spinDurationMs = getSpinDurationMs(quickSpin);
   const landHoldMs = getLandHoldMs(quickSpin);
   const isEraSpin = spinVariant !== "current";
+  const multiTargets =
+    choiceTargets && choiceTargets.length > 1 && !isEraSpin ? choiceTargets : null;
   const teamReelRef = useRef<SlotReelHandle>(null);
   const yearReelRef = useRef<SlotReelHandle>(null);
+  const choiceReelRefs = useRef<(SlotReelHandle | null)[]>([]);
   const shellRef = useRef<HTMLDivElement>(null);
   const onCompleteRef = useRef(onComplete);
   const [isSpinning, setIsSpinning] = useState(true);
@@ -72,6 +84,21 @@ export function RecruitmentSlotReveal({
   useScrollLock(!landed, "quick-mode-spin");
 
   onCompleteRef.current = onComplete;
+
+  const multiKey = multiTargets?.map((t) => t.teamYearId).join("|") ?? "";
+  const choicePlans = useMemo(() => {
+    if (!multiTargets) return null;
+    const teams = getSpinTeamsForVariant(spinVariant);
+    return multiTargets.map((t, i) => {
+      // Rotate each reel's strip so the three don't scroll in lockstep.
+      const shift = teams.length > 0 ? (i * 4) % teams.length : 0;
+      const rotated = [...teams.slice(shift), ...teams.slice(0, shift)];
+      const share = CHOICE_REEL_LAND_SHARE[i] ?? 1;
+      return buildSpinReelPlan(rotated, t.team, undefined, Math.round(spinDurationMs * share));
+    });
+    // multiKey stands in for multiTargets (a fresh array each render).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [multiKey, spinVariant, spinDurationMs]);
 
   const { teamPlan, yearPlan } = useMemo(() => {
     const t0 = spinTimingMark("reel-plan-start");
@@ -116,6 +143,7 @@ export function RecruitmentSlotReveal({
     };
 
     if (prefersReducedMotion) {
+      choicePlans?.forEach((plan, i) => choiceReelRefs.current[i]?.setScrollIndex(plan.finalIndex, false));
       teamReelRef.current?.setScrollIndex(teamPlan.finalIndex, false);
       if (isEraSpin && yearPlan) {
         yearReelRef.current?.setScrollIndex(yearPlan.finalIndex, false);
@@ -146,6 +174,13 @@ export function RecruitmentSlotReveal({
     if (isEraSpin && yearPlan) {
       yearReelRef.current?.setScrollY(yearStartY);
     }
+    const choiceY = (choicePlans ?? []).map((plan) => ({
+      start: computeSlotReelScrollY(plan.startIndex),
+      end: computeSlotReelScrollY(plan.finalIndex),
+      durationMs: plan.durationMs,
+      landed: false,
+    }));
+    choiceY.forEach((y, i) => choiceReelRefs.current[i]?.setScrollY(y.start));
 
     playSlotSpinStart();
 
@@ -169,6 +204,7 @@ export function RecruitmentSlotReveal({
       if (isEraSpin && yearPlan) {
         yearReelRef.current?.setScrollY(yearEndY);
       }
+      choiceY.forEach((y, i) => choiceReelRefs.current[i]?.setScrollY(y.end));
       playSlotLand();
       triggerHaptic(18);
       lockReels();
@@ -186,6 +222,17 @@ export function RecruitmentSlotReveal({
 
       const teamY = teamStartY + (teamEndY - teamStartY) * eased;
       teamReelRef.current?.setScrollY(teamY);
+      choiceY.forEach((y, i) => {
+        if (y.landed) return;
+        const t = Math.min(1, elapsed / y.durationMs);
+        choiceReelRefs.current[i]?.setScrollY(y.start + (y.end - y.start) * easeOut(t));
+        if (t >= 1 && i < choiceY.length - 1) {
+          // Earlier reels land with a small tick; the last one gets the full land in finish().
+          y.landed = true;
+          playSlotSpinTick(1, 50);
+          triggerHaptic(8);
+        }
+      });
       if (isEraSpin && yearPlan) {
         const yearY = yearStartY + (yearEndY - yearStartY) * eased;
         yearReelRef.current?.setScrollY(yearY);
@@ -224,7 +271,7 @@ export function RecruitmentSlotReveal({
       window.cancelAnimationFrame(rafId);
       if (holdTimeout) window.clearTimeout(holdTimeout);
     };
-  }, [teamPlan, yearPlan, isEraSpin, landHoldMs]);
+  }, [teamPlan, yearPlan, choicePlans, isEraSpin, landHoldMs]);
 
   return (
     <BodyPortal>
@@ -256,9 +303,11 @@ export function RecruitmentSlotReveal({
                 ? slotLabel
                   ? `Spinning for your ${slotLabel}…`
                   : "Spinning…"
-                : slotLabel
-                  ? `Your ${slotLabel} comes from…`
-                  : "Landed"}
+                : multiTargets
+                  ? `${multiTargets.length} clubs to pick from`
+                  : slotLabel
+                    ? `Your ${slotLabel} comes from…`
+                    : "Landed"}
             </p>
             {boostStatus ? (
               <p className={`mt-1 ${TYPO.meta} text-theme-primary/90`}>
@@ -273,6 +322,28 @@ export function RecruitmentSlotReveal({
           </div>
 
           <div ref={shellRef} className="px-3 py-4 sm:px-5 sm:py-5">
+            {multiTargets && choicePlans ? (
+              <div className="recruitment-spin-reels flex max-w-full items-stretch justify-center gap-1.5">
+                {choicePlans.map((plan, i) => (
+                  <div
+                    key={`${multiTargets[i]!.teamYearId}-${i}`}
+                    className={`slot-reveal-reel recruitment-spin-reel recruitment-spin-reel--triple min-w-0 flex-1 overflow-hidden rounded-xl border border-pitch-600/70 bg-pitch-950/80 ${
+                      landed ? "recruitment-spin-reel--landed" : ""
+                    }`}
+                  >
+                    <SlotReel
+                      ref={(handle) => {
+                        choiceReelRefs.current[i] = handle;
+                      }}
+                      strip={plan.strip}
+                      formatItem={formatSpinReelTeamName}
+                      textClassName="slot-reveal-team-name"
+                      useClubColors
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : (
             <div
               className={`recruitment-spin-reels flex max-w-full items-stretch justify-center ${
                 isEraSpin ? "gap-2" : ""
@@ -306,6 +377,7 @@ export function RecruitmentSlotReveal({
                 </div>
               )}
             </div>
+            )}
 
             {isSpinning ? (
               <p className={`mt-3 flex min-h-[2.5rem] items-center justify-center ${TYPO.meta} text-pitch-400`} aria-hidden>
@@ -318,6 +390,11 @@ export function RecruitmentSlotReveal({
               }`}
               aria-hidden={!landed}
             >
+              {multiTargets ? (
+                <p className="px-1 text-sm font-bold leading-snug text-white">
+                  {multiTargets.map((t) => formatSpinReelTeamName(t.team)).join(" · ")}
+                </p>
+              ) : (
               <p className="truncate px-1 font-display text-lg font-black text-white sm:text-xl">
                 {target.team}
                 {isEraSpin && (
@@ -329,6 +406,7 @@ export function RecruitmentSlotReveal({
                   </>
                 )}
               </p>
+              )}
             </div>
           </div>
         </div>

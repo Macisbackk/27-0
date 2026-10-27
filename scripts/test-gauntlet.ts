@@ -24,6 +24,10 @@ import { getAverageSquadRating } from "../src/lib/squad-analysis";
 import { applyGauntletRun, emptyModeRecords } from "../src/lib/storage/mode-records";
 import { draftSquad } from "./lib/sim-draft";
 
+/** The Gauntlet keeps the club spin on both card sets (Classic plays the "classic-spin" ladder). */
+const GAUNTLET_LADDERS = ["classic-spin", "era"] as const;
+const cardsFor = (mode: (typeof GAUNTLET_LADDERS)[number]) => (mode === "era" ? "era" : "classic");
+
 let passed = 0;
 let failed = 0;
 function check(condition: unknown, message: string): void {
@@ -48,7 +52,7 @@ for (const side of opponents) {
   check(Math.abs(getAverageSquadRating(xiii) - side.squadRating) < 1e-9, `${side.label}: rating is its best XIII (${side.squadRating})`);
   const expected = getTeamStrength({ avgRating: side.squadRating, mode: side.ladder }) - GAUNTLET_FIELD_OFFSET;
   check(Math.abs(side.strength - expected) < 1e-9, `${side.label}: strength from its actual rating`);
-  check(side.ladder === (side.year === 2026 ? "classic" : "era"), `${side.label}: read on the right ladder`);
+  check(side.ladder === (side.year === 2026 ? "classic-spin" : "era"), `${side.label}: read on the right ladder`);
 }
 for (let i = 1; i < opponents.length; i++) {
   check(opponents[i]!.strength >= opponents[i - 1]!.strength, `ordered by strength: ${opponents[i - 1]!.label} ≤ ${opponents[i]!.label}`);
@@ -71,8 +75,8 @@ console.log(`field: ${opponents.map((o) => `${o.label} ${o.squadRating}`).join("
 // ---------------------------------------------------------------------------
 // Runs
 // ---------------------------------------------------------------------------
-for (const mode of ["classic", "era"] as const) {
-  const squad = draftSquad(`gauntlet-test-${mode}`, mode, "good");
+for (const mode of GAUNTLET_LADDERS) {
+  const squad = draftSquad(`gauntlet-test-${mode}`, cardsFor(mode), "good", { flow: "club-spin" });
   const strength = getGauntletTeamStrength(squad, mode);
   const scores = new Set<number>();
   for (let s = 0; s < 40; s++) {
@@ -102,12 +106,12 @@ for (const mode of ["classic", "era"] as const) {
 // ---------------------------------------------------------------------------
 // Calibration sanity (scripts/sim-one-club-gauntlet.ts has the full numbers)
 // ---------------------------------------------------------------------------
-for (const mode of ["classic", "era"] as const) {
+for (const mode of GAUNTLET_LADDERS) {
   const sweep = (tier: "best" | "random" | "weak") => {
     let total = 0;
     const N = 30;
     for (let i = 0; i < N; i++) {
-      total += getGauntletChances(draftSquad(`g-cal-${mode}-${tier}-${i}`, mode, tier), mode).reduce((p, x) => p * x, 1);
+      total += getGauntletChances(draftSquad(`g-cal-${mode}-${tier}-${i}`, cardsFor(mode), tier, { flow: "club-spin" }), mode).reduce((p, x) => p * x, 1);
     }
     return total / N;
   };
