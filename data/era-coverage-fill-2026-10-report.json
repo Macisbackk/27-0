@@ -1,7 +1,7 @@
 {
  "generated": "era-coverage-2026-10",
- "xiiiAdded": 273,
- "cardsCreated": 3632,
+ "xiiiAdded": 294,
+ "cardsCreated": 4030,
  "superseded": [
   "st-helens-hist-era-scott-gibbs",
   "st-helens-hist-era-adam-fogerty",
@@ -220,7 +220,83 @@
   "castleford-hist-era-josh-simm"
  ],
  "unresolved": [
-  "Widnes Vikings 2012: Ben Davies"
+  "Halifax Panthers 1996: Craig Dean",
+  "Halifax Panthers 1996: Wayne Jackson",
+  "Halifax Panthers 1996: Wayne Parker",
+  "Halifax Panthers 1996: Paul Moriarty",
+  "Halifax Panthers 1996: Asa Amone",
+  "Sheffield Eagles 1996: Mick Cook",
+  "Oldham RLFC 1996: Robert Myler",
+  "Oldham RLFC 1996: Ian Sherratt",
+  "Paris Saint-Germain RL 1996: Mikhail Piskunov",
+  "Paris Saint-Germain RL 1996: Arnaud Cervello",
+  "Paris Saint-Germain RL 1996: Todd Brown",
+  "Paris Saint-Germain RL 1996: Gregory Kacala",
+  "Paris Saint-Germain RL 1996: Darren Adams",
+  "Paris Saint-Germain RL 1996: Jacques Pech",
+  "Paris Saint-Germain RL 1996: Ian Turner",
+  "Paris Saint-Germain RL 1996: Vea Bloomfield",
+  "Paris Saint-Germain RL 1996: Regis Pastre-Courtine",
+  "Workington Town 1996: Peter Livett",
+  "Workington Town 1996: Mark Wallace",
+  "Workington Town 1996: John Allen",
+  "Workington Town 1996: Paul Penrice",
+  "Workington Town 1996: Leigh Smith",
+  "Workington Town 1996: Wayne Kitchin",
+  "Workington Town 1996: Dean Marwood",
+  "Workington Town 1996: Colin Armstrong",
+  "Workington Town 1996: Phil McKenzie",
+  "Workington Town 1996: Rowland Phillips",
+  "Workington Town 1996: Jason Palmada",
+  "Workington Town 1996: Brad Nairn",
+  "Workington Town 1996: Paul Burns",
+  "Workington Town 1996: Mike Bethwaite",
+  "Workington Town 1996: Lafaele Filipo",
+  "Halifax Panthers 1997: Wayne Parker",
+  "Halifax Panthers 1997: Wayne Jackson",
+  "Halifax Panthers 1997: Carl Gillespie",
+  "Halifax Panthers 1997: Craig Dean",
+  "Sheffield Eagles 1997: Paul Dixon",
+  "Paris Saint-Germain RL 1997: Paul Evans",
+  "Paris Saint-Germain RL 1997: Jamie Olejnik",
+  "Paris Saint-Germain RL 1997: Jason Keough",
+  "Paris Saint-Germain RL 1997: Tony Wall",
+  "Paris Saint-Germain RL 1997: Jeremy Robinson",
+  "Paris Saint-Germain RL 1997: Phil Bergman",
+  "Paris Saint-Germain RL 1997: Tony Priddle",
+  "Paris Saint-Germain RL 1997: David O'Donnell",
+  "Paris Saint-Germain RL 1997: Wayne Sing",
+  "Paris Saint-Germain RL 1997: Adam Peters",
+  "Paris Saint-Germain RL 1997: Nick Hyde",
+  "Paris Saint-Germain RL 1997: Jason Martin",
+  "Paris Saint-Germain RL 1997: Craig Menkins",
+  "Paris Saint-Germain RL 1997: Joe Taylor",
+  "Oldham RLFC 1997: Peaufai Leuila",
+  "Oldham RLFC 1997: Mike Neal",
+  "Oldham RLFC 1997: David Jones",
+  "Oldham RLFC 1997: Scott Ranson",
+  "Oldham RLFC 1997: Jimmy Cowan",
+  "Halifax Panthers 1998: Oliver Marns",
+  "Halifax Panthers 1998: Carl Gillespie",
+  "Gateshead Thunder 1999: Sean Allwood",
+  "Halifax Panthers 1999: Danny Seal",
+  "Halifax Panthers 2000: Casey Mayberry",
+  "Halifax Panthers 2000: Jim Naylor",
+  "Halifax Panthers 2000: David Foster",
+  "Halifax Panthers 2001: Oliver Marns",
+  "Halifax Panthers 2003: Jaymes Chapman",
+  "Halifax Panthers 2003: Chris Maye",
+  "Halifax Panthers 2003: John Hill",
+  "Leigh Leopards 2005: Neil Turley",
+  "Crusaders RL 2009: Geraint Davies",
+  "Crusaders RL 2009: Lewis Mills",
+  "Crusaders RL 2011: Lee Williams",
+  "Crusaders RL 2011: Joe Burke",
+  "Crusaders RL 2011: Dalton Grant",
+  "Widnes Vikings 2014: Grant Gore",
+  "London Broncos 2014: Jonathan Magrin",
+  "Hull KR 2016: Kieran Moran",
+  "London Broncos 2024: Emmanuel Waine"
  ],
  "clubSeasons": {
   "St Helens|1996": {
@@ -233,7 +309,7 @@
     "st-helens-hist-adam-fogerty-1996",
     "st-helens-hist-alan-hunte-1996"
    ],
-   "existing": 16,
+   "existing": 22,
    "unresolved": [],
    "xiii": "added"
   },
@@ -248,7 +324,7 @@
     "wigan-hist-kelvin-skerrett-1996",
     "wigan-hist-danny-ellison-1996"
    ],
-   "existing": 17,
+   "existing": 24,
    "unresolved": [],
    "xiii": "added"
   },
@@ -260,7 +336,7 @@
     "bradford-hist-sonny-nickle-1996",
     "bradford-hist-glen-tomlinson-1996"
    ],
-   "existing": 14,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -279,7 +355,7 @@
     "london-hist-darryl-pitt-1996",
     "london-hist-justin-bryant-1996"
    ],
-   "existing": 7,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -303,29 +379,77 @@
     "warrington-hist-ian-knott-1996",
     "warrington-hist-salesi-finau-1996"
    ],
-   "existing": 2,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
   "Halifax Panthers|1996": {
-   "source": "",
-   "created": [],
-   "existing": 0,
-   "unresolved": [],
+   "source": "https://www.rugbyleagueproject.org/matches/15144",
+   "created": [
+    "halifax-hist-mike-umaga-1996",
+    "halifax-hist-john-bentley-1996",
+    "halifax-hist-john-schuster-1996",
+    "halifax-hist-fereti-tuilagi-1996",
+    "halifax-hist-abi-ekoku-1996",
+    "halifax-hist-chris-chester-1996",
+    "halifax-hist-karl-harrison-1996",
+    "halifax-hist-paul-rowley-1996",
+    "halifax-hist-paul-anderson-1996",
+    "halifax-hist-michael-jackson-1996",
+    "halifax-hist-simon-baldwin-1996"
+   ],
+   "existing": 11,
+   "unresolved": [
+    "Craig Dean",
+    "Wayne Jackson",
+    "Wayne Parker",
+    "Paul Moriarty",
+    "Asa Amone"
+   ],
    "xiii": "none"
   },
   "Sheffield Eagles|1996": {
-   "source": "",
-   "created": [],
-   "existing": 0,
-   "unresolved": [],
+   "source": "https://www.rugbyleagueproject.org/matches/15188",
+   "created": [
+    "sheffield-hist-waisale-sovatabua-1996",
+    "sheffield-hist-joe-dakuitoga-1996",
+    "sheffield-hist-lynton-stott-1996",
+    "sheffield-hist-matt-crowther-1996",
+    "sheffield-hist-ryan-sheridan-1996",
+    "sheffield-hist-dean-lawford-1996",
+    "sheffield-hist-paul-broadbent-1996",
+    "sheffield-hist-johnny-lawless-1996",
+    "sheffield-hist-danny-mcallister-1996",
+    "sheffield-hist-andy-hay-1996",
+    "sheffield-hist-paul-carr-1996",
+    "sheffield-hist-keith-senior-1996",
+    "sheffield-hist-mark-aston-1996",
+    "sheffield-hist-anthony-farrell-1996",
+    "sheffield-hist-dale-laughton-1996"
+   ],
+   "existing": 16,
+   "unresolved": [
+    "Mick Cook"
+   ],
    "xiii": "none"
   },
   "Oldham RLFC|1996": {
-   "source": "",
-   "created": [],
-   "existing": 0,
-   "unresolved": [],
+   "source": "https://mail.rugbyleagueproject.org/matches/15181",
+   "created": [
+    "oldham-hist-paul-atcheson-1996",
+    "oldham-hist-andy-patmore-1996",
+    "oldham-hist-francis-maloney-1996",
+    "oldham-hist-martin-crompton-1996",
+    "oldham-hist-ian-gildart-1996",
+    "oldham-hist-john-clarke-1996",
+    "oldham-hist-joe-faimalo-1996",
+    "oldham-hist-paul-davidson-1996"
+   ],
+   "existing": 14,
+   "unresolved": [
+    "Robert Myler",
+    "Ian Sherratt"
+   ],
    "xiii": "none"
   },
   "Castleford Tigers|1996": {
@@ -339,7 +463,7 @@
     "castleford-hist-ian-smales-1996",
     "castleford-hist-richard-goddard-1996"
    ],
-   "existing": 10,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -359,22 +483,57 @@
     "leeds-hist-nick-fozzard-1996",
     "leeds-hist-terry-newton-1996"
    ],
-   "existing": 5,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
   "Paris Saint-Germain RL|1996": {
-   "source": "",
-   "created": [],
-   "existing": 0,
-   "unresolved": [],
+   "source": "https://www.rugbyleagueproject.org/matches/15188",
+   "created": [
+    "psg-hist-laurent-lucchese-1996",
+    "psg-hist-frederic-banquet-1996",
+    "psg-hist-pierre-chamorin-1996",
+    "psg-hist-patrick-entat-1996",
+    "psg-hist-patrick-torreilles-1996"
+   ],
+   "existing": 8,
+   "unresolved": [
+    "Mikhail Piskunov",
+    "Arnaud Cervello",
+    "Todd Brown",
+    "Gregory Kacala",
+    "Darren Adams",
+    "Jacques Pech",
+    "Ian Turner",
+    "Vea Bloomfield",
+    "Regis Pastre-Courtine"
+   ],
    "xiii": "none"
   },
   "Workington Town|1996": {
-   "source": "",
-   "created": [],
-   "existing": 0,
-   "unresolved": [],
+   "source": "https://mail.rugbyleagueproject.org/matches/15181",
+   "created": [
+    "workington-hist-stephen-holgate-1996",
+    "workington-hist-jamie-smith-1996"
+   ],
+   "existing": 2,
+   "unresolved": [
+    "Peter Livett",
+    "Mark Wallace",
+    "John Allen",
+    "Paul Penrice",
+    "Leigh Smith",
+    "Wayne Kitchin",
+    "Dean Marwood",
+    "Colin Armstrong",
+    "Phil McKenzie",
+    "Rowland Phillips",
+    "Jason Palmada",
+    "Brad Nairn",
+    "Paul Burns",
+    "Mike Bethwaite",
+    "Lafaele Filipo"
+   ],
    "xiii": "none"
   },
   "Bradford Bulls|1997": {
@@ -386,7 +545,7 @@
     "bradford-hist-glen-tomlinson-1997",
     "bradford-hist-sonny-nickle-1997"
    ],
-   "existing": 18,
+   "existing": 23,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -408,7 +567,7 @@
     "london-hist-tony-martin-1997",
     "london-hist-shaun-edwards-1997"
    ],
-   "existing": 4,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -431,7 +590,7 @@
     "st-helens-hist-ian-pickavance-1997",
     "st-helens-hist-vila-mata-utia-1997"
    ],
-   "existing": 5,
+   "existing": 20,
    "unresolved": [],
    "xiii": "added"
   },
@@ -455,7 +614,7 @@
     "wigan-hist-darryl-cardiss-1997",
     "wigan-hist-tony-mestrov-1997"
    ],
-   "existing": 5,
+   "existing": 21,
    "unresolved": [],
    "xiii": "added"
   },
@@ -472,7 +631,7 @@
     "leeds-hist-terry-newton-1997",
     "leeds-hist-barrie-mcdermott-1997"
    ],
-   "existing": 8,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -487,25 +646,58 @@
     "salford-hist-john-cartwright-1997",
     "salford-hist-ian-watson-1997"
    ],
-   "existing": 10,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
   "Halifax Panthers|1997": {
-   "source": "",
-   "created": [],
-   "existing": 0,
-   "unresolved": [],
+   "source": "https://rugbyleagueproject.org/matches/15320",
+   "created": [
+    "halifax-hist-mike-umaga-1997",
+    "halifax-hist-fereti-tuilagi-1997",
+    "halifax-hist-martin-pearson-1997",
+    "halifax-hist-david-bouveng-1997",
+    "halifax-hist-damian-munro-1997",
+    "halifax-hist-chris-chester-1997",
+    "halifax-hist-karl-harrison-1997",
+    "halifax-hist-paul-rowley-1997",
+    "halifax-hist-simon-baldwin-1997",
+    "halifax-hist-martin-moana-1997",
+    "halifax-hist-richard-marshall-1997",
+    "halifax-hist-michael-jackson-1997",
+    "halifax-hist-paul-highton-1997"
+   ],
+   "existing": 13,
+   "unresolved": [
+    "Wayne Parker",
+    "Wayne Jackson",
+    "Carl Gillespie",
+    "Craig Dean"
+   ],
    "xiii": "none"
   },
   "Sheffield Eagles|1997": {
-   "source": "",
+   "source": "https://www.rugbyleagueproject.org/matches/15350",
    "created": [
-    "sheffield-hist-paul-broadbent-1997"
+    "sheffield-hist-paul-broadbent-1997",
+    "sheffield-hist-lynton-stott-1997",
+    "sheffield-hist-whetu-taewa-1997",
+    "sheffield-hist-nick-pinkney-1997",
+    "sheffield-hist-keith-senior-1997",
+    "sheffield-hist-jean-marc-garcia-1997",
+    "sheffield-hist-rod-doyle-1997",
+    "sheffield-hist-mark-aston-1997",
+    "sheffield-hist-johnny-lawless-1997",
+    "sheffield-hist-steve-edmed-1997",
+    "sheffield-hist-paul-carr-1997",
+    "sheffield-hist-martin-wood-1997",
+    "sheffield-hist-dale-laughton-1997"
    ],
-   "existing": 0,
-   "unresolved": [],
-   "xiii": "none"
+   "existing": 16,
+   "unresolved": [
+    "Paul Dixon"
+   ],
+   "xiii": "added"
   },
   "Warrington Wolves|1997": {
    "source": "https://www.rugbyleagueproject.org/seasons/super-league-ii-1997/warrington-wolves/detail.html?order=pos",
@@ -521,7 +713,7 @@
     "warrington-hist-mike-wainwright-1997",
     "warrington-hist-chris-rudd-1997"
    ],
-   "existing": 7,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -541,22 +733,57 @@
     "castleford-hist-graham-steadman-1997",
     "castleford-hist-lee-harland-1997"
    ],
-   "existing": 5,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
   "Paris Saint-Germain RL|1997": {
-   "source": "",
-   "created": [],
-   "existing": 0,
-   "unresolved": [],
+   "source": "https://www.rugbyleagueproject.org/matches/15350",
+   "created": [
+    "psg-hist-deon-bird-1997",
+    "psg-hist-jason-sands-1997",
+    "psg-hist-david-lomax-1997"
+   ],
+   "existing": 3,
+   "unresolved": [
+    "Paul Evans",
+    "Jamie Olejnik",
+    "Jason Keough",
+    "Tony Wall",
+    "Jeremy Robinson",
+    "Phil Bergman",
+    "Tony Priddle",
+    "David O'Donnell",
+    "Wayne Sing",
+    "Adam Peters",
+    "Nick Hyde",
+    "Jason Martin",
+    "Craig Menkins",
+    "Joe Taylor"
+   ],
    "xiii": "none"
   },
   "Oldham RLFC|1997": {
-   "source": "",
-   "created": [],
-   "existing": 0,
-   "unresolved": [],
+   "source": "https://rugbyleagueproject.org/matches/15320",
+   "created": [
+    "oldham-hist-darren-abram-1997",
+    "oldham-hist-francis-maloney-1997",
+    "oldham-hist-ian-gildart-1997",
+    "oldham-hist-david-stephenson-1997",
+    "oldham-hist-brett-goldspink-1997",
+    "oldham-hist-joe-faimalo-1997",
+    "oldham-hist-gary-lord-1997",
+    "oldham-hist-matt-munro-1997",
+    "oldham-hist-paul-davidson-1997"
+   ],
+   "existing": 12,
+   "unresolved": [
+    "Peaufai Leuila",
+    "Mike Neal",
+    "David Jones",
+    "Scott Ranson",
+    "Jimmy Cowan"
+   ],
    "xiii": "none"
   },
   "Wigan Warriors|1998": {
@@ -575,7 +802,7 @@
     "wigan-hist-mick-cassidy-1998",
     "wigan-hist-terry-o-connor-1998"
    ],
-   "existing": 12,
+   "existing": 24,
    "unresolved": [],
    "xiii": "added"
   },
@@ -594,18 +821,35 @@
     "leeds-hist-daryl-powell-1998",
     "leeds-hist-graham-holroyd-1998"
    ],
-   "existing": 10,
+   "existing": 21,
    "unresolved": [],
    "xiii": "added"
   },
   "Halifax Panthers|1998": {
-   "source": "",
+   "source": "https://www.rugbyleagueproject.org/matches/2585",
    "created": [
-    "halifax-hist-gavin-clinch-1998"
+    "halifax-hist-gavin-clinch-1998",
+    "halifax-hist-damian-gibson-1998",
+    "halifax-hist-jamie-bloem-1998",
+    "halifax-hist-daio-powell-1998",
+    "halifax-hist-martin-pearson-1998",
+    "halifax-hist-david-bouveng-1998",
+    "halifax-hist-chris-chester-1998",
+    "halifax-hist-karl-harrison-1998",
+    "halifax-hist-paul-rowley-1998",
+    "halifax-hist-kelvin-skerrett-1998",
+    "halifax-hist-gary-mercer-1998",
+    "halifax-hist-des-clark-1998",
+    "halifax-hist-simon-baldwin-1998",
+    "halifax-hist-martin-hall-1998",
+    "halifax-hist-richard-marshall-1998"
    ],
-   "existing": 0,
-   "unresolved": [],
-   "xiii": "none"
+   "existing": 16,
+   "unresolved": [
+    "Oliver Marns",
+    "Carl Gillespie"
+   ],
+   "xiii": "added"
   },
   "St Helens|1998": {
    "source": "https://www.rugbyleagueproject.org/seasons/super-league-1998/st-helens/detail.html?order=pos",
@@ -624,7 +868,7 @@
     "st-helens-hist-ian-pickavance-1998",
     "st-helens-hist-paul-anderson-1998"
    ],
-   "existing": 5,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -638,7 +882,7 @@
     "bradford-hist-tahi-reihana-1998",
     "bradford-hist-nathan-graham-1998"
    ],
-   "existing": 11,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -659,7 +903,7 @@
     "castleford-hist-jason-critchley-1998",
     "castleford-hist-danny-orr-1998"
    ],
-   "existing": 4,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -678,7 +922,7 @@
     "london-hist-matt-salter-1998",
     "london-hist-damien-chapman-1998"
    ],
-   "existing": 7,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -700,7 +944,7 @@
     "hull-fc-hist-jason-temu-1998",
     "hull-fc-hist-matt-schultz-1998"
    ],
-   "existing": 10,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -725,7 +969,7 @@
     "warrington-hist-mark-hilton-1998",
     "warrington-hist-vince-fawcett-1998"
    ],
-   "existing": 0,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -745,7 +989,7 @@
     "salford-hist-lokeni-savelio-1998",
     "salford-hist-paul-forber-1998"
    ],
-   "existing": 5,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -760,7 +1004,7 @@
     "huddersfield-hist-neil-harmon-1998",
     "huddersfield-hist-paul-cook-1998"
    ],
-   "existing": 10,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -771,7 +1015,7 @@
     "bradford-hist-brian-mcdermott-1999",
     "bradford-hist-bernard-dwyer-1999"
    ],
-   "existing": 16,
+   "existing": 19,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -791,7 +1035,7 @@
     "st-helens-hist-paul-sculthorpe-1999",
     "st-helens-hist-paul-davidson-1999"
    ],
-   "existing": 7,
+   "existing": 19,
    "unresolved": [],
    "xiii": "added"
   },
@@ -814,7 +1058,7 @@
     "leeds-hist-andy-hay-1999",
     "leeds-hist-jamie-mathiou-1999"
    ],
-   "existing": 6,
+   "existing": 21,
    "unresolved": [],
    "xiii": "added"
   },
@@ -838,7 +1082,7 @@
     "wigan-hist-brett-goldspink-1999",
     "wigan-hist-simon-haughton-1999"
    ],
-   "existing": 4,
+   "existing": 20,
    "unresolved": [],
    "xiii": "added"
   },
@@ -856,19 +1100,35 @@
     "castleford-hist-adrian-vowles-1999",
     "castleford-hist-jon-wells-1999"
    ],
-   "existing": 10,
+   "existing": 20,
    "unresolved": [],
    "xiii": "added"
   },
   "Gateshead Thunder|1999": {
-   "source": "",
+   "source": "https://www.rugbyleagueproject.org/matches/3125",
    "created": [
     "gateshead-hist-matthew-daylight-1999",
-    "gateshead-hist-willie-peters-1999"
+    "gateshead-hist-willie-peters-1999",
+    "gateshead-hist-ben-sammut-1999",
+    "gateshead-hist-ian-herron-1999",
+    "gateshead-hist-david-maiden-1999",
+    "gateshead-hist-craig-simon-1999",
+    "gateshead-hist-will-robinson-1999",
+    "gateshead-hist-danny-lee-1999",
+    "gateshead-hist-kerrod-walters-1999",
+    "gateshead-hist-brett-green-1999",
+    "gateshead-hist-luke-felsch-1999",
+    "gateshead-hist-adam-maher-1999",
+    "gateshead-hist-tony-grimaldi-1999",
+    "gateshead-hist-steve-collins-1999",
+    "gateshead-hist-craig-wilson-1999",
+    "gateshead-hist-andrew-hick-1999"
    ],
-   "existing": 0,
-   "unresolved": [],
-   "xiii": "none"
+   "existing": 18,
+   "unresolved": [
+    "Sean Allwood"
+   ],
+   "xiii": "added"
   },
   "Warrington Wolves|1999": {
    "source": "era-starting-17s.json (historic_starting_17_clean_verified.txt)",
@@ -880,7 +1140,7 @@
     "warrington-hist-steve-mccurrie-1999",
     "warrington-hist-dean-hanger-1999"
    ],
-   "existing": 11,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -898,23 +1158,55 @@
     "london-hist-mat-toshack-1999",
     "london-hist-tulsen-tollett-1999"
    ],
-   "existing": 7,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
   "Halifax Panthers|1999": {
-   "source": "",
-   "created": [],
-   "existing": 0,
-   "unresolved": [],
+   "source": "https://www.rugbyleagueproject.org/matches/3159",
+   "created": [
+    "halifax-hist-damian-gibson-1999",
+    "halifax-hist-nick-pinkney-1999",
+    "halifax-hist-jamie-bloem-1999",
+    "halifax-hist-andy-craig-1999",
+    "halifax-hist-david-bouveng-1999",
+    "halifax-hist-chris-chester-1999",
+    "halifax-hist-gavin-clinch-1999",
+    "halifax-hist-paul-broadbent-1999",
+    "halifax-hist-paul-rowley-1999",
+    "halifax-hist-kelvin-skerrett-1999",
+    "halifax-hist-gary-mercer-1999",
+    "halifax-hist-martin-moana-1999",
+    "halifax-hist-graham-holroyd-1999",
+    "halifax-hist-andy-hobson-1999",
+    "halifax-hist-craig-randall-1999",
+    "halifax-hist-richard-marshall-1999"
+   ],
+   "existing": 16,
+   "unresolved": [
+    "Danny Seal"
+   ],
    "xiii": "none"
   },
   "Sheffield Eagles|1999": {
-   "source": "",
-   "created": [],
-   "existing": 0,
+   "source": "https://www.rugbyleagueproject.org/matches/3150 (R9 8 May 1999 Sheffield Eagles 27-8 Halifax Blue Sox)",
+   "created": [
+    "sheffield-hist-dale-cardoza-1999",
+    "sheffield-hist-keith-senior-1999",
+    "sheffield-hist-matt-crowther-1999",
+    "sheffield-hist-johnny-lawless-1999",
+    "sheffield-hist-darren-shaw-1999",
+    "sheffield-hist-michael-jackson-1999",
+    "sheffield-hist-darren-turner-1999",
+    "sheffield-hist-rod-doyle-1999",
+    "sheffield-hist-waisale-sovatabua-1999",
+    "sheffield-hist-chris-thorman-1999",
+    "sheffield-hist-paul-anderson-1999",
+    "sheffield-hist-simon-baldwin-1999"
+   ],
+   "existing": 17,
    "unresolved": [],
-   "xiii": "none"
+   "xiii": "added"
   },
   "Wakefield Trinity|1999": {
    "source": "https://www.rugbyleagueproject.org/seasons/super-league-1999/wakefield-trinity-wildcats/detail.html?order=pos",
@@ -929,7 +1221,7 @@
     "wakefield-hist-paul-jackson-1999",
     "wakefield-hist-paul-march-1999"
    ],
-   "existing": 8,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -946,7 +1238,7 @@
     "salford-hist-joe-faimalo-1999",
     "salford-hist-garen-casey-1999"
    ],
-   "existing": 8,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -964,7 +1256,7 @@
     "hull-fc-hist-michael-smith-1999",
     "hull-fc-hist-andy-ireland-1999"
    ],
-   "existing": 7,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -985,7 +1277,7 @@
     "huddersfield-hist-danny-arnold-1999",
     "huddersfield-hist-ian-pickavance-1999"
    ],
-   "existing": 4,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1004,7 +1296,7 @@
     "wigan-hist-tony-mestrov-2000",
     "wigan-hist-chris-chester-2000"
    ],
-   "existing": 12,
+   "existing": 23,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1016,7 +1308,7 @@
     "st-helens-hist-fereti-tuilagi-2000",
     "st-helens-hist-sonny-nickle-2000"
    ],
-   "existing": 18,
+   "existing": 22,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -1028,7 +1320,7 @@
     "bradford-hist-brian-mcdermott-2000",
     "bradford-hist-stuart-fielden-2000"
    ],
-   "existing": 16,
+   "existing": 20,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -1052,7 +1344,7 @@
     "leeds-hist-kevin-sinfield-2000",
     "leeds-hist-graham-mackay-2000"
    ],
-   "existing": 2,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1076,7 +1368,7 @@
     "castleford-hist-andrew-purcell-2000",
     "castleford-hist-andy-lynch-2000"
    ],
-   "existing": 2,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1097,7 +1389,7 @@
     "warrington-hist-dean-busby-2000",
     "warrington-hist-jon-roper-2000"
    ],
-   "existing": 4,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1110,15 +1402,34 @@
     "hull-fc-hist-paul-king-2000",
     "hull-fc-hist-stanley-gene-2000"
    ],
-   "existing": 12,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
   "Halifax Panthers|2000": {
-   "source": "",
-   "created": [],
-   "existing": 0,
-   "unresolved": [],
+   "source": "https://mail.rugbyleagueproject.org/matches/7028",
+   "created": [
+    "halifax-hist-damian-gibson-2000",
+    "halifax-hist-phil-hassan-2000",
+    "halifax-hist-marvin-golden-2000",
+    "halifax-hist-greg-florimo-2000",
+    "halifax-hist-andrew-dunemann-2000",
+    "halifax-hist-brett-goldspink-2000",
+    "halifax-hist-paul-rowley-2000",
+    "halifax-hist-jim-gannon-2000",
+    "halifax-hist-gary-mercer-2000",
+    "halifax-hist-jamie-bloem-2000",
+    "halifax-hist-martin-moana-2000",
+    "halifax-hist-martin-pearson-2000",
+    "halifax-hist-gael-tallec-2000",
+    "halifax-hist-andy-hobson-2000"
+   ],
+   "existing": 14,
+   "unresolved": [
+    "Casey Mayberry",
+    "Jim Naylor",
+    "David Foster"
+   ],
    "xiii": "none"
   },
   "Salford Red Devils|2000": {
@@ -1138,7 +1449,7 @@
     "salford-hist-craig-makin-2000",
     "salford-hist-stuart-littler-2000"
    ],
-   "existing": 4,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1162,7 +1473,7 @@
     "wakefield-hist-willie-poching-2000",
     "wakefield-hist-andy-fisher-2000"
    ],
-   "existing": 1,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1185,7 +1496,7 @@
     "london-hist-dean-callaway-2000",
     "london-hist-brett-warton-2000"
    ],
-   "existing": 2,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1207,7 +1518,7 @@
     "huddersfield-hist-darren-turner-2000",
     "huddersfield-hist-paul-reilly-2000"
    ],
-   "existing": 3,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1219,7 +1530,7 @@
     "bradford-hist-brian-mcdermott-2001",
     "bradford-hist-stuart-fielden-2001"
    ],
-   "existing": 16,
+   "existing": 20,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -1241,7 +1552,7 @@
     "wigan-hist-david-hodgson-2001",
     "wigan-hist-garry-connolly-2001"
    ],
-   "existing": 10,
+   "existing": 24,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1262,7 +1573,7 @@
     "hull-fc-hist-paul-king-2001",
     "hull-fc-hist-garreth-carvell-2001"
    ],
-   "existing": 4,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1281,7 +1592,7 @@
     "st-helens-hist-john-stankevitch-2001",
     "st-helens-hist-vila-mata-utia-2001"
    ],
-   "existing": 11,
+   "existing": 22,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1302,7 +1613,7 @@
     "leeds-hist-david-wrench-2001",
     "leeds-hist-marcus-st-hilaire-2001"
    ],
-   "existing": 5,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1321,7 +1632,7 @@
     "london-hist-greg-fleming-2001",
     "london-hist-andy-johnson-2001"
    ],
-   "existing": 6,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1344,7 +1655,7 @@
     "warrington-hist-paul-wood-2001",
     "warrington-hist-dean-busby-2001"
    ],
-   "existing": 2,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1367,15 +1678,34 @@
     "castleford-hist-richard-gay-2001",
     "castleford-hist-andy-lynch-2001"
    ],
-   "existing": 2,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
   "Halifax Panthers|2001": {
-   "source": "",
-   "created": [],
-   "existing": 0,
-   "unresolved": [],
+   "source": "https://mail.rugbyleagueproject.org/matches/7630",
+   "created": [
+    "halifax-hist-darryl-cardiss-2001",
+    "halifax-hist-stuart-donlan-2001",
+    "halifax-hist-damian-gibson-2001",
+    "halifax-hist-jason-lee-2001",
+    "halifax-hist-andrew-dunemann-2001",
+    "halifax-hist-gavin-clinch-2001",
+    "halifax-hist-brett-goldspink-2001",
+    "halifax-hist-johnny-lawless-2001",
+    "halifax-hist-jim-gannon-2001",
+    "halifax-hist-paul-davidson-2001",
+    "halifax-hist-shayne-mcmenemy-2001",
+    "halifax-hist-danny-tickle-2001",
+    "halifax-hist-martin-moana-2001",
+    "halifax-hist-jamie-bloem-2001",
+    "halifax-hist-jamie-thackray-2001",
+    "halifax-hist-andy-hobson-2001"
+   ],
+   "existing": 16,
+   "unresolved": [
+    "Oliver Marns"
+   ],
    "xiii": "none"
   },
   "Salford Red Devils|2001": {
@@ -1397,7 +1727,7 @@
     "salford-hist-kris-tassell-2001",
     "salford-hist-graham-holroyd-2001"
    ],
-   "existing": 2,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1419,7 +1749,7 @@
     "wakefield-hist-ben-rauter-2001",
     "wakefield-hist-frank-watene-2001"
    ],
-   "existing": 3,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1437,7 +1767,7 @@
     "huddersfield-hist-steve-molloy-2001",
     "huddersfield-hist-chris-molyneux-2001"
    ],
-   "existing": 7,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1451,7 +1781,7 @@
     "st-helens-hist-sean-hoppe-2002",
     "st-helens-hist-tommy-martyn-2002"
    ],
-   "existing": 16,
+   "existing": 22,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -1465,7 +1795,7 @@
     "bradford-hist-brian-mcdermott-2002",
     "bradford-hist-nathan-mcavoy-2002"
    ],
-   "existing": 15,
+   "existing": 21,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -1486,7 +1816,7 @@
     "wigan-hist-harvey-howard-2002",
     "wigan-hist-ricky-bibey-2002"
    ],
-   "existing": 8,
+   "existing": 21,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1507,7 +1837,7 @@
     "leeds-hist-rob-burrow-2002",
     "leeds-hist-chev-walker-2002"
    ],
-   "existing": 5,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1527,7 +1857,7 @@
     "hull-fc-hist-scott-logan-2002",
     "hull-fc-hist-garreth-carvell-2002"
    ],
-   "existing": 5,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1548,7 +1878,7 @@
     "castleford-hist-barrie-jon-mather-2002",
     "castleford-hist-mark-lennon-2002"
    ],
-   "existing": 6,
+   "existing": 19,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1563,7 +1893,7 @@
     "widnes-hist-paul-atcheson-2002",
     "widnes-hist-craig-weston-2002"
    ],
-   "existing": 10,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1586,16 +1916,34 @@
     "london-hist-sylvain-houles-2002",
     "london-hist-wayne-evans-2002"
    ],
-   "existing": 2,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
   "Halifax Panthers|2002": {
-   "source": "",
-   "created": [],
-   "existing": 0,
+   "source": "https://mail.rugbyleagueproject.org/matches/3829 (R10 12 May 2002 Halifax Blue Sox 19-18 Castleford Tigers)",
+   "created": [
+    "halifax-hist-jason-flowers-2002",
+    "halifax-hist-robbie-beckett-2002",
+    "halifax-hist-david-woods-2002",
+    "halifax-hist-stuart-donlan-2002",
+    "halifax-hist-colum-halpenny-2002",
+    "halifax-hist-andrew-dunemann-2002",
+    "halifax-hist-gavin-clinch-2002",
+    "halifax-hist-brett-goldspink-2002",
+    "halifax-hist-johnny-lawless-2002",
+    "halifax-hist-jim-gannon-2002",
+    "halifax-hist-shayne-mcmenemy-2002",
+    "halifax-hist-danny-tickle-2002",
+    "halifax-hist-karle-hammond-2002",
+    "halifax-hist-darryl-cardiss-2002",
+    "halifax-hist-chris-birchall-2002",
+    "halifax-hist-jamie-thackray-2002",
+    "halifax-hist-andy-hobson-2002"
+   ],
+   "existing": 17,
    "unresolved": [],
-   "xiii": "none"
+   "xiii": "added"
   },
   "Warrington Wolves|2002": {
    "source": "era-starting-17s.json (historic_starting_17_clean_verified.txt)",
@@ -1615,7 +1963,7 @@
     "warrington-hist-paul-noone-2002",
     "warrington-hist-tom-o-reilly-2002"
    ],
-   "existing": 3,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1636,7 +1984,7 @@
     "wakefield-hist-damon-keating-2002",
     "wakefield-hist-graham-law-2002"
    ],
-   "existing": 4,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1660,7 +2008,7 @@
     "salford-hist-alan-hunte-2002",
     "salford-hist-andy-coley-2002"
    ],
-   "existing": 1,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1672,7 +2020,7 @@
     "bradford-hist-joe-vagana-2003",
     "bradford-hist-lee-gilmour-2003"
    ],
-   "existing": 17,
+   "existing": 21,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -1695,7 +2043,7 @@
     "leeds-hist-chris-feather-2003",
     "leeds-hist-chev-walker-2003"
    ],
-   "existing": 6,
+   "existing": 21,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1718,7 +2066,7 @@
     "wigan-hist-mark-smith-2003",
     "wigan-hist-luke-robinson-2003"
    ],
-   "existing": 7,
+   "existing": 22,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1738,7 +2086,7 @@
     "st-helens-hist-anthony-stewart-2003",
     "st-helens-hist-tim-jonkers-2003"
    ],
-   "existing": 5,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1762,7 +2110,7 @@
     "london-hist-richard-marshall-2003",
     "london-hist-damian-kennedy-2003"
    ],
-   "existing": 1,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1783,7 +2131,7 @@
     "warrington-hist-graham-appo-2003",
     "warrington-hist-jerome-guisset-2003"
    ],
-   "existing": 5,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1805,7 +2153,7 @@
     "hull-fc-hist-garreth-carvell-2003",
     "hull-fc-hist-graeme-horne-2003"
    ],
-   "existing": 3,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1827,7 +2175,7 @@
     "castleford-hist-wayne-godwin-2003",
     "castleford-hist-francis-maloney-2003"
    ],
-   "existing": 4,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1850,7 +2198,7 @@
     "widnes-hist-david-mills-2003",
     "widnes-hist-paul-atcheson-2003"
    ],
-   "existing": 2,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1864,7 +2212,7 @@
     "huddersfield-hist-steve-mcnamara-2003",
     "huddersfield-hist-mick-slicker-2003"
    ],
-   "existing": 11,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1884,16 +2232,35 @@
     "wakefield-hist-david-wrench-2003",
     "wakefield-hist-richard-newlove-2003"
    ],
-   "existing": 6,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
   "Halifax Panthers|2003": {
-   "source": "",
-   "created": [],
-   "existing": 0,
-   "unresolved": [],
-   "xiii": "none"
+   "source": "https://mail.rugbyleagueproject.org/matches/3717",
+   "created": [
+    "halifax-hist-darryl-cardiss-2003",
+    "halifax-hist-andrew-frew-2003",
+    "halifax-hist-ryan-clayton-2003",
+    "halifax-hist-stuart-donlan-2003",
+    "halifax-hist-lee-greenwood-2003",
+    "halifax-hist-dane-dorahy-2003",
+    "halifax-hist-sean-penkywicz-2003",
+    "halifax-hist-neil-harmon-2003",
+    "halifax-hist-johnny-lawless-2003",
+    "halifax-hist-chris-birchall-2003",
+    "halifax-hist-heath-cruckshank-2003",
+    "halifax-hist-martin-moana-2003",
+    "halifax-hist-andrew-brocklehurst-2003",
+    "halifax-hist-andy-hobson-2003"
+   ],
+   "existing": 14,
+   "unresolved": [
+    "Jaymes Chapman",
+    "Chris Maye",
+    "John Hill"
+   ],
+   "xiii": "added"
   },
   "Leeds Rhinos|2004": {
    "source": "era-starting-17s.json (historic_starting_17_clean_verified.txt)",
@@ -1913,7 +2280,7 @@
     "leeds-hist-willie-poching-2004",
     "leeds-hist-danny-ward-2004"
    ],
-   "existing": 9,
+   "existing": 23,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1926,7 +2293,7 @@
     "bradford-hist-logan-swann-2004",
     "bradford-hist-rob-parker-2004"
    ],
-   "existing": 13,
+   "existing": 18,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -1946,7 +2313,7 @@
     "hull-fc-hist-liam-higgins-2004",
     "hull-fc-hist-chris-chester-2004"
    ],
-   "existing": 8,
+   "existing": 20,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1971,7 +2338,7 @@
     "wigan-hist-kevin-brown-2004",
     "wigan-hist-andy-farrell-2004"
    ],
-   "existing": 2,
+   "existing": 19,
    "unresolved": [],
    "xiii": "added"
   },
@@ -1991,7 +2358,7 @@
     "st-helens-hist-dom-fe-aunati-2004",
     "st-helens-hist-ricky-bibey-2004"
    ],
-   "existing": 7,
+   "existing": 19,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2010,7 +2377,7 @@
     "wakefield-hist-mike-wainwright-2004",
     "wakefield-hist-david-wrench-2004"
    ],
-   "existing": 8,
+   "existing": 19,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2030,7 +2397,7 @@
     "huddersfield-hist-stanley-gene-2004",
     "huddersfield-hist-paul-smith-2004"
    ],
-   "existing": 5,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2053,7 +2420,7 @@
     "warrington-hist-ian-sibbit-2004",
     "warrington-hist-darren-burns-2004"
    ],
-   "existing": 2,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2069,7 +2436,7 @@
     "salford-hist-andy-coley-2004",
     "salford-hist-andy-johnson-2004"
    ],
-   "existing": 9,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2089,7 +2456,7 @@
     "london-hist-jon-wells-2004",
     "london-hist-francis-stephenson-2004"
    ],
-   "existing": 5,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2111,7 +2478,7 @@
     "widnes-hist-deon-bird-2004",
     "widnes-hist-daniel-frame-2004"
    ],
-   "existing": 3,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2135,7 +2502,7 @@
     "castleford-hist-paul-jackson-2004",
     "castleford-hist-nathan-sykes-2004"
    ],
-   "existing": 1,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2157,7 +2524,7 @@
     "st-helens-hist-vinnie-anderson-2005",
     "st-helens-hist-martin-gleeson-2005"
    ],
-   "existing": 10,
+   "existing": 24,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2179,7 +2546,7 @@
     "leeds-hist-barrie-mcdermott-2005",
     "leeds-hist-danny-mcguire-2005"
    ],
-   "existing": 8,
+   "existing": 22,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2192,7 +2559,7 @@
     "bradford-hist-lee-radford-2005",
     "bradford-hist-leon-pryce-2005"
    ],
-   "existing": 14,
+   "existing": 19,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -2214,7 +2581,7 @@
     "warrington-hist-danny-lima-2005",
     "warrington-hist-paul-wood-2005"
    ],
-   "existing": 3,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2236,7 +2603,7 @@
     "hull-fc-hist-danny-brough-2005",
     "hull-fc-hist-garreth-carvell-2005"
    ],
-   "existing": 5,
+   "existing": 19,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2252,7 +2619,7 @@
     "london-hist-robert-purdham-2005",
     "london-hist-danny-williams-2005"
    ],
-   "existing": 9,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2274,7 +2641,7 @@
     "wigan-hist-danny-sculthorpe-2005",
     "wigan-hist-david-allen-2005"
    ],
-   "existing": 3,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2294,7 +2661,7 @@
     "huddersfield-hist-eorl-crabtree-2005",
     "huddersfield-hist-stanley-gene-2005"
    ],
-   "existing": 5,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2316,7 +2683,7 @@
     "salford-hist-gareth-haggerty-2005",
     "salford-hist-nathan-mcavoy-2005"
    ],
-   "existing": 3,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2338,7 +2705,7 @@
     "wakefield-hist-chris-feather-2005",
     "wakefield-hist-steve-snitch-2005"
    ],
-   "existing": 3,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2362,23 +2729,45 @@
     "widnes-hist-david-mills-2005",
     "widnes-hist-sala-fa-alogo-2005"
    ],
-   "existing": 1,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
   "Leigh Leopards|2005": {
-   "source": "",
-   "created": [],
-   "existing": 0,
-   "unresolved": [],
-   "xiii": "none"
+   "source": "https://mail.rugbyleagueproject.org/matches/2657",
+   "created": [
+    "leigh-hist-john-wilshere-2005",
+    "leigh-hist-steve-maden-2005",
+    "leigh-hist-ben-cooper-2005",
+    "leigh-hist-phil-jones-2005",
+    "leigh-hist-rob-smyth-2005",
+    "leigh-hist-jason-kent-2005",
+    "leigh-hist-john-duffy-2005",
+    "leigh-hist-darren-fleary-2005",
+    "leigh-hist-robert-mears-2005",
+    "leigh-hist-steve-mccurrie-2005",
+    "leigh-hist-james-king-2005",
+    "leigh-hist-richard-marshall-2005",
+    "leigh-hist-matt-sturm-2005",
+    "leigh-hist-warren-stevens-2005"
+   ],
+   "existing": 16,
+   "unresolved": [
+    "Neil Turley"
+   ],
+   "xiii": "added"
   },
   "St Helens|2006": {
-   "source": "https://en.wikipedia.org/wiki/2006_Super_League_Grand_Final",
-   "created": [],
-   "existing": 21,
+   "source": "https://en.wikipedia.org/wiki/2006_Super_League_Grand_Final (2006 Super League Grand Final 14 Oct 2006 St Helens 26-4 Hull FC)",
+   "created": [
+    "st-helens-hist-james-roby-2006",
+    "st-helens-hist-james-graham-2006",
+    "st-helens-hist-mike-bennett-2006",
+    "st-helens-hist-maurie-fa-asavalu-2006"
+   ],
+   "existing": 25,
    "unresolved": [],
-   "xiii": "existing"
+   "xiii": "added"
   },
   "Hull FC|2006": {
    "source": "era-starting-17s.json (historic_starting_17_clean_verified.txt)",
@@ -2400,7 +2789,7 @@
     "hull-fc-hist-richard-whiting-2006",
     "hull-fc-hist-scott-wheeldon-2006"
    ],
-   "existing": 2,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2423,7 +2812,7 @@
     "leeds-hist-willie-poching-2006",
     "leeds-hist-nick-scruton-2006"
    ],
-   "existing": 5,
+   "existing": 20,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2437,7 +2826,7 @@
     "bradford-hist-joe-vagana-2006",
     "bradford-hist-ian-henderson-2006"
    ],
-   "existing": 11,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -2458,7 +2847,7 @@
     "salford-hist-chris-charles-2006",
     "salford-hist-sean-rutgerson-2006"
    ],
-   "existing": 5,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2481,7 +2870,7 @@
     "warrington-hist-mark-gleeson-2006",
     "warrington-hist-rob-parker-2006"
    ],
-   "existing": 2,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2503,7 +2892,7 @@
     "london-hist-neil-budworth-2006",
     "london-hist-solomon-haumono-2006"
    ],
-   "existing": 3,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2533,7 +2922,7 @@
     "huddersfield-hist-chris-nero-2006",
     "huddersfield-hist-wayne-mcdonald-2006"
    ],
-   "existing": 2,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2555,7 +2944,7 @@
     "wakefield-hist-olivier-elima-2006",
     "wakefield-hist-jamie-field-2006"
    ],
-   "existing": 3,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2574,7 +2963,7 @@
     "castleford-hist-deon-bird-2006",
     "castleford-hist-paul-handforth-2006"
    ],
-   "existing": 7,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2584,7 +2973,7 @@
     "catalans-hist-stacey-jones-2006",
     "catalans-hist-laurent-frayssinous-2006"
    ],
-   "existing": 16,
+   "existing": 18,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -2604,7 +2993,7 @@
     "st-helens-hist-maurie-fa-asavalu-2007",
     "st-helens-hist-paul-clough-2007"
    ],
-   "existing": 11,
+   "existing": 23,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2622,7 +3011,7 @@
     "leeds-hist-jamie-thackray-2007",
     "leeds-hist-ali-lauitiiti-2007"
    ],
-   "existing": 12,
+   "existing": 22,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2644,7 +3033,7 @@
     "bradford-hist-nathan-mcavoy-2007",
     "bradford-hist-jamie-langley-2007"
    ],
-   "existing": 4,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2666,7 +3055,7 @@
     "hull-fc-hist-paul-king-2007",
     "hull-fc-hist-hutch-maiava-2007"
    ],
-   "existing": 3,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2687,7 +3076,7 @@
     "huddersfield-hist-robbie-hunter-paul-2007",
     "huddersfield-hist-steve-snitch-2007"
    ],
-   "existing": 5,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2704,7 +3093,7 @@
     "wigan-hist-mickey-higham-2007",
     "wigan-hist-harrison-hansen-2007"
    ],
-   "existing": 9,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2728,7 +3117,7 @@
     "warrington-hist-andy-bracek-2007",
     "warrington-hist-ben-harrison-2007"
    ],
-   "existing": 2,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2749,7 +3138,7 @@
     "wakefield-hist-kevin-henderson-2007",
     "wakefield-hist-paul-march-2007"
    ],
-   "existing": 5,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2771,7 +3160,7 @@
     "london-hist-jon-grayshon-2007",
     "london-hist-louie-mccarthy-scarsbrook-2007"
    ],
-   "existing": 3,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2794,7 +3183,7 @@
     "hull-kr-hist-jim-gannon-2007",
     "hull-kr-hist-danny-ward-2007"
    ],
-   "existing": 9,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2818,7 +3207,7 @@
     "salford-hist-gareth-haggerty-2007",
     "salford-hist-jordan-turner-2007"
    ],
-   "existing": 1,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2840,7 +3229,7 @@
     "st-helens-hist-maurie-fa-asavalu-2008",
     "st-helens-hist-jason-cayless-2008"
    ],
-   "existing": 10,
+   "existing": 24,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2852,7 +3241,7 @@
     "leeds-hist-nick-scruton-2008",
     "leeds-hist-ryan-bailey-2008"
    ],
-   "existing": 19,
+   "existing": 23,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -2874,7 +3263,7 @@
     "wigan-hist-iafeta-paleaaesina-2008",
     "wigan-hist-eamon-o-carroll-2008"
    ],
-   "existing": 11,
+   "existing": 18,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -2898,7 +3287,7 @@
     "bradford-hist-iestyn-harris-2008",
     "bradford-hist-chris-nero-2008"
    ],
-   "existing": 1,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2921,7 +3310,7 @@
     "warrington-hist-mark-gleeson-2008",
     "warrington-hist-simon-grix-2008"
    ],
-   "existing": 3,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2940,7 +3329,7 @@
     "hull-kr-hist-kirk-netherton-2008",
     "hull-kr-hist-makali-aizue-2008"
    ],
-   "existing": 6,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2960,7 +3349,7 @@
     "wakefield-hist-kevin-henderson-2008",
     "wakefield-hist-brad-drew-2008"
    ],
-   "existing": 5,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -2982,7 +3371,7 @@
     "london-hist-joe-mbu-2008",
     "london-hist-julien-rinaldi-2008"
    ],
-   "existing": 3,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3003,7 +3392,7 @@
     "huddersfield-hist-chris-thorman-2008",
     "huddersfield-hist-stuart-jones-2008"
    ],
-   "existing": 4,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3025,7 +3414,7 @@
     "hull-fc-hist-jamie-thackray-2008",
     "hull-fc-hist-scott-wheeldon-2008"
    ],
-   "existing": 3,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3045,7 +3434,7 @@
     "castleford-hist-ryan-mcgoldrick-2008",
     "castleford-hist-scott-moore-2008"
    ],
-   "existing": 5,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3058,7 +3447,7 @@
     "leeds-hist-ryan-bailey-2009",
     "leeds-hist-ian-kirke-2009"
    ],
-   "existing": 17,
+   "existing": 22,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -3069,7 +3458,7 @@
     "st-helens-hist-maurie-fa-asavalu-2009",
     "st-helens-hist-mat-ashurst-2009"
    ],
-   "existing": 15,
+   "existing": 18,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -3080,7 +3469,7 @@
     "huddersfield-hist-eorl-crabtree-2009",
     "huddersfield-hist-jamaal-lolesi-2009"
    ],
-   "existing": 17,
+   "existing": 20,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -3092,7 +3481,7 @@
     "hull-kr-hist-chev-walker-2009",
     "hull-kr-hist-michael-vella-2009"
    ],
-   "existing": 17,
+   "existing": 21,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -3109,7 +3498,7 @@
     "wakefield-hist-tevita-leo-latu-2009",
     "wakefield-hist-richard-moore-2009"
    ],
-   "existing": 8,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -3120,7 +3509,7 @@
     "wigan-hist-stuart-fielden-2009",
     "wigan-hist-michael-mcilorum-2009"
    ],
-   "existing": 15,
+   "existing": 18,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -3132,7 +3521,7 @@
     "castleford-hist-stuart-jones-2009",
     "castleford-hist-chris-feather-2009"
    ],
-   "existing": 13,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -3142,7 +3531,7 @@
     "catalans-hist-jason-ryles-2009",
     "catalans-hist-gregory-mounis-2009"
    ],
-   "existing": 15,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -3151,7 +3540,7 @@
    "created": [
     "bradford-hist-dave-halley-2009"
    ],
-   "existing": 16,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -3163,7 +3552,7 @@
     "warrington-hist-paul-wood-2009",
     "warrington-hist-paul-rauhihi-2009"
    ],
-   "existing": 15,
+   "existing": 19,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -3176,7 +3565,7 @@
     "london-hist-daniel-heckenberg-2009",
     "london-hist-tony-clubb-2009"
    ],
-   "existing": 12,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -3191,7 +3580,7 @@
     "hull-fc-hist-lee-radford-2009",
     "hull-fc-hist-richard-whiting-2009"
    ],
-   "existing": 10,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -3207,16 +3596,35 @@
     "salford-hist-ian-sibbit-2009",
     "salford-hist-lee-jewitt-2009"
    ],
-   "existing": 9,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
   "Crusaders RL|2009": {
-   "source": "",
-   "created": [],
-   "existing": 0,
-   "unresolved": [],
-   "xiii": "none"
+   "source": "https://www.rugbyleagueproject.org/matches/15876",
+   "created": [
+    "crusaders-hist-anthony-blackwood-2009",
+    "crusaders-hist-luke-dyer-2009",
+    "crusaders-hist-josh-hannay-2009",
+    "crusaders-hist-steve-tyrer-2009",
+    "crusaders-hist-mark-dalle-cort-2009",
+    "crusaders-hist-matty-smith-2009",
+    "crusaders-hist-jace-van-dijk-2009",
+    "crusaders-hist-ryan-o-hara-2009",
+    "crusaders-hist-neil-budworth-2009",
+    "crusaders-hist-mark-bryant-2009",
+    "crusaders-hist-ben-flower-2009",
+    "crusaders-hist-jason-chan-2009",
+    "crusaders-hist-lloyd-white-2009",
+    "crusaders-hist-david-tangata-toa-2009",
+    "crusaders-hist-jordan-james-2009"
+   ],
+   "existing": 15,
+   "unresolved": [
+    "Geraint Davies",
+    "Lewis Mills"
+   ],
+   "xiii": "added"
   },
   "Wigan Warriors|2010": {
    "source": "era-starting-17s.json (historic_starting_17_clean_verified.txt)",
@@ -3237,7 +3645,7 @@
     "wigan-hist-iafeta-paleaaesina-2010",
     "wigan-hist-paul-deacon-2010"
    ],
-   "existing": 8,
+   "existing": 23,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3259,7 +3667,7 @@
     "st-helens-hist-mat-ashurst-2010",
     "st-helens-hist-nick-fozzard-2010"
    ],
-   "existing": 6,
+   "existing": 20,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3280,7 +3688,7 @@
     "warrington-hist-mickey-higham-2010",
     "warrington-hist-simon-grix-2010"
    ],
-   "existing": 8,
+   "existing": 21,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3303,7 +3711,7 @@
     "leeds-hist-greg-eastwood-2010",
     "leeds-hist-ali-lauitiiti-2010"
    ],
-   "existing": 4,
+   "existing": 19,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3323,7 +3731,7 @@
     "huddersfield-hist-eorl-crabtree-2010",
     "huddersfield-hist-graeme-horne-2010"
    ],
-   "existing": 5,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3345,7 +3753,7 @@
     "hull-fc-hist-peter-cusack-2010",
     "hull-fc-hist-shaun-berrigan-2010"
    ],
-   "existing": 3,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3365,16 +3773,34 @@
     "hull-kr-hist-jason-netherton-2010",
     "hull-kr-hist-ben-cockayne-2010"
    ],
-   "existing": 6,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
   "Crusaders RL|2010": {
-   "source": "",
-   "created": [],
-   "existing": 0,
+   "source": "https://www.rugbyleagueproject.org/matches/17707 (R7 19 Mar 2010 Crusaders RL 14-6 Catalans Dragons)",
+   "created": [
+    "crusaders-hist-elliot-kear-2010",
+    "crusaders-hist-gareth-thomas-2010",
+    "crusaders-hist-tony-martin-2010",
+    "crusaders-hist-vince-mellars-2010",
+    "crusaders-hist-luke-dyer-2010",
+    "crusaders-hist-peter-lupton-2010",
+    "crusaders-hist-michael-witt-2010",
+    "crusaders-hist-ryan-o-hara-2010",
+    "crusaders-hist-lincoln-withers-2010",
+    "crusaders-hist-mark-bryant-2010",
+    "crusaders-hist-jason-chan-2010",
+    "crusaders-hist-weller-hauraki-2010",
+    "crusaders-hist-rocky-trimarchi-2010",
+    "crusaders-hist-jamie-thackray-2010",
+    "crusaders-hist-ben-flower-2010",
+    "crusaders-hist-nick-youngquest-2010",
+    "crusaders-hist-frank-winterstein-2010"
+   ],
+   "existing": 17,
    "unresolved": [],
-   "xiii": "none"
+   "xiii": "added"
   },
   "Castleford Tigers|2010": {
    "source": "https://www.rugbyleagueproject.org/seasons/super-league-2010/castleford-tigers/detail.html?order=pos",
@@ -3395,7 +3821,7 @@
     "castleford-hist-ryan-clayton-2010",
     "castleford-hist-jordan-thompson-2010"
    ],
-   "existing": 2,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3416,7 +3842,7 @@
     "bradford-hist-craig-kopczak-2010",
     "bradford-hist-michael-worrincy-2010"
    ],
-   "existing": 4,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3429,7 +3855,7 @@
     "wakefield-hist-dale-ferguson-2010",
     "wakefield-hist-kevin-henderson-2010"
    ],
-   "existing": 12,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -3448,7 +3874,7 @@
     "salford-hist-matty-smith-2010",
     "salford-hist-phillip-leuluai-2010"
    ],
-   "existing": 6,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3470,7 +3896,7 @@
     "london-hist-louie-mccarthy-scarsbrook-2010",
     "london-hist-luke-dorn-2010"
    ],
-   "existing": 3,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3482,7 +3908,7 @@
     "catalans-hist-brent-sherwin-2010",
     "catalans-hist-david-ferriol-2010"
    ],
-   "existing": 13,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -3502,7 +3928,7 @@
     "warrington-hist-simon-grix-2011",
     "warrington-hist-paul-wood-2011"
    ],
-   "existing": 8,
+   "existing": 20,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3523,7 +3949,7 @@
     "wigan-hist-paul-prescott-2011",
     "wigan-hist-liam-farrell-2011"
    ],
-   "existing": 8,
+   "existing": 21,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3543,7 +3969,7 @@
     "st-helens-hist-scott-moore-2011",
     "st-helens-hist-chris-flannery-2011"
    ],
-   "existing": 7,
+   "existing": 19,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3567,7 +3993,7 @@
     "huddersfield-hist-graeme-horne-2011",
     "huddersfield-hist-keith-mason-2011"
    ],
-   "existing": 1,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3592,7 +4018,7 @@
     "leeds-hist-danny-mcguire-2011",
     "leeds-hist-ali-lauitiiti-2011"
    ],
-   "existing": 1,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3603,7 +4029,7 @@
     "catalans-hist-frederic-vaccari-2011",
     "catalans-hist-jamal-fakir-2011"
    ],
-   "existing": 16,
+   "existing": 19,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -3627,7 +4053,7 @@
     "hull-kr-hist-jason-netherton-2011",
     "hull-kr-hist-scott-taylor-2011"
    ],
-   "existing": 1,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3652,7 +4078,7 @@
     "hull-fc-hist-joe-westerman-2011",
     "hull-fc-hist-lee-radford-2011"
    ],
-   "existing": 2,
+   "existing": 19,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3675,7 +4101,7 @@
     "castleford-hist-nick-fozzard-2011",
     "castleford-hist-martin-aspinwall-2011"
    ],
-   "existing": 4,
+   "existing": 19,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3690,7 +4116,7 @@
     "bradford-hist-heath-l-estrange-2011",
     "bradford-hist-ian-sibbit-2011"
    ],
-   "existing": 10,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -3714,7 +4140,7 @@
     "salford-hist-lee-jewitt-2011",
     "salford-hist-adam-sidlow-2011"
    ],
-   "existing": 1,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3736,7 +4162,7 @@
     "london-hist-jamie-o-callaghan-2011",
     "london-hist-karl-pryce-2011"
    ],
-   "existing": 3,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3759,16 +4185,35 @@
     "wakefield-hist-michael-korkidas-2011",
     "wakefield-hist-liam-higgins-2011"
    ],
-   "existing": 2,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
   "Crusaders RL|2011": {
-   "source": "",
-   "created": [],
-   "existing": 0,
-   "unresolved": [],
-   "xiii": "none"
+   "source": "https://www.rugbyleagueproject.org/matches/23491",
+   "created": [
+    "crusaders-hist-clinton-schifcofske-2011",
+    "crusaders-hist-stuart-reardon-2011",
+    "crusaders-hist-gareth-thomas-2011",
+    "crusaders-hist-vince-mellars-2011",
+    "crusaders-hist-elliot-kear-2011",
+    "crusaders-hist-tony-martin-2011",
+    "crusaders-hist-michael-witt-2011",
+    "crusaders-hist-ryan-o-hara-2011",
+    "crusaders-hist-lincoln-withers-2011",
+    "crusaders-hist-mark-bryant-2011",
+    "crusaders-hist-aled-james-2011",
+    "crusaders-hist-frank-winterstein-2011",
+    "crusaders-hist-ben-flower-2011",
+    "crusaders-hist-jordan-james-2011"
+   ],
+   "existing": 14,
+   "unresolved": [
+    "Lee Williams",
+    "Joe Burke",
+    "Dalton Grant"
+   ],
+   "xiii": "added"
   },
   "Wigan Warriors|2012": {
    "source": "era-starting-17s.json (historic_starting_17_clean_verified.txt)",
@@ -3789,7 +4234,7 @@
     "wigan-hist-liam-farrell-2012",
     "wigan-hist-jack-hughes-2012"
    ],
-   "existing": 9,
+   "existing": 24,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3813,7 +4258,7 @@
     "warrington-hist-simon-grix-2012",
     "warrington-hist-stefan-ratchford-2012"
    ],
-   "existing": 5,
+   "existing": 21,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3835,7 +4280,7 @@
     "st-helens-hist-mark-flanagan-2012",
     "st-helens-hist-tony-puletua-2012"
    ],
-   "existing": 4,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3849,7 +4294,7 @@
     "catalans-hist-jamal-fakir-2012",
     "catalans-hist-david-ferriol-2012"
    ],
-   "existing": 13,
+   "existing": 19,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -3873,7 +4318,7 @@
     "leeds-hist-ian-kirke-2012",
     "leeds-hist-shaun-lunt-2012"
    ],
-   "existing": 3,
+   "existing": 19,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3889,7 +4334,7 @@
     "hull-fc-hist-richard-whiting-2012",
     "hull-fc-hist-jay-pitts-2012"
    ],
-   "existing": 9,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -3912,7 +4357,7 @@
     "huddersfield-hist-lee-gilmour-2012",
     "huddersfield-hist-david-fa-alogo-2012"
    ],
-   "existing": 2,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3932,7 +4377,7 @@
     "wakefield-hist-paul-johnson-2012",
     "wakefield-hist-steve-southern-2012"
    ],
-   "existing": 5,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3944,7 +4389,7 @@
     "bradford-hist-jamie-langley-2012",
     "bradford-hist-heath-l-estrange-2012"
    ],
-   "existing": 13,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -3964,7 +4409,7 @@
     "hull-kr-hist-scott-murrell-2012",
     "hull-kr-hist-joel-clinton-2012"
    ],
-   "existing": 5,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -3986,7 +4431,7 @@
     "salford-hist-chris-nero-2012",
     "salford-hist-vinnie-anderson-2012"
    ],
-   "existing": 3,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -4005,7 +4450,7 @@
     "london-hist-chris-melling-2012",
     "london-hist-julien-rinaldi-2012"
    ],
-   "existing": 6,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -4018,7 +4463,7 @@
     "castleford-hist-jacob-emmitt-2012",
     "castleford-hist-lee-mitchell-2012"
    ],
-   "existing": 12,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -4027,12 +4472,11 @@
    "created": [
     "widnes-hist-steve-pickersgill-2012",
     "widnes-hist-willie-isa-2012",
-    "widnes-hist-kurt-haggerty-2012"
+    "widnes-hist-kurt-haggerty-2012",
+    "widnes-hist-ben-davies-2012"
    ],
-   "existing": 13,
-   "unresolved": [
-    "Ben Davies"
-   ],
+   "existing": 17,
+   "unresolved": [],
    "xiii": "added"
   },
   "Huddersfield Giants|2013": {
@@ -4044,7 +4488,7 @@
     "huddersfield-hist-larne-patrick-2013",
     "huddersfield-hist-michael-lawrence-2013"
    ],
-   "existing": 18,
+   "existing": 23,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -4069,7 +4513,7 @@
     "warrington-hist-michael-monaghan-2013",
     "warrington-hist-ben-currie-2013"
    ],
-   "existing": 0,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -4081,7 +4525,7 @@
     "leeds-hist-chris-clarkson-2013",
     "leeds-hist-paul-mcshane-2013"
    ],
-   "existing": 14,
+   "existing": 18,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -4099,7 +4543,7 @@
     "wigan-hist-scott-taylor-2013",
     "wigan-hist-chris-tuson-2013"
    ],
-   "existing": 13,
+   "existing": 23,
    "unresolved": [],
    "xiii": "added"
   },
@@ -4123,7 +4567,7 @@
     "st-helens-hist-paul-clough-2013",
     "st-helens-hist-stuart-howarth-2013"
    ],
-   "existing": 1,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -4137,7 +4581,7 @@
     "hull-fc-hist-aaron-heremaia-2013",
     "hull-fc-hist-richard-whiting-2013"
    ],
-   "existing": 13,
+   "existing": 19,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -4152,7 +4596,7 @@
     "catalans-hist-kevin-larroyer-2013",
     "catalans-hist-lopini-paea-2013"
    ],
-   "existing": 10,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -4172,7 +4616,7 @@
     "hull-kr-hist-evarn-tuimavave-2013",
     "hull-kr-hist-graeme-horne-2013"
    ],
-   "existing": 5,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -4183,7 +4627,7 @@
     "bradford-hist-manase-manuokafoa-2013",
     "bradford-hist-heath-l-estrange-2013"
    ],
-   "existing": 14,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -4203,7 +4647,7 @@
     "widnes-hist-hep-cahill-2013",
     "widnes-hist-frank-winterstein-2013"
    ],
-   "existing": 5,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -4226,7 +4670,7 @@
     "wakefield-hist-lee-smith-2013",
     "wakefield-hist-kyle-wood-2013"
    ],
-   "existing": 3,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -4249,7 +4693,7 @@
     "castleford-hist-jonathan-walker-2013",
     "castleford-hist-ryan-boyle-2013"
    ],
-   "existing": 2,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -4273,7 +4717,7 @@
     "london-hist-ben-fisher-2013",
     "london-hist-chris-melling-2013"
    ],
-   "existing": 1,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -4295,7 +4739,7 @@
     "salford-hist-jordan-james-2013",
     "salford-hist-jacob-emmitt-2013"
    ],
-   "existing": 3,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -4307,9 +4751,9 @@
     "st-helens-hist-paul-wellens-2014",
     "st-helens-hist-josh-jones-2014"
    ],
-   "existing": 15,
+   "existing": 19,
    "unresolved": [],
-   "xiii": "existing"
+   "xiii": "added"
   },
   "Wigan Warriors|2014": {
    "source": "era-starting-17s.json (historic_starting_17_clean_verified.txt)",
@@ -4328,7 +4772,7 @@
     "wigan-hist-jack-hughes-2014",
     "wigan-hist-george-williams-2014"
    ],
-   "existing": 6,
+   "existing": 19,
    "unresolved": [],
    "xiii": "added"
   },
@@ -4353,7 +4797,7 @@
     "huddersfield-hist-kyle-wood-2014",
     "huddersfield-hist-larne-patrick-2014"
    ],
-   "existing": 0,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -4376,7 +4820,7 @@
     "castleford-hist-adam-milner-2014",
     "castleford-hist-nathan-massey-2014"
    ],
-   "existing": 5,
+   "existing": 20,
    "unresolved": [],
    "xiii": "added"
   },
@@ -4399,7 +4843,7 @@
     "warrington-hist-ben-currie-2014",
     "warrington-hist-michael-monaghan-2014"
    ],
-   "existing": 3,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -4422,7 +4866,7 @@
     "leeds-hist-brad-singleton-2014",
     "leeds-hist-ryan-bailey-2014"
    ],
-   "existing": 8,
+   "existing": 23,
    "unresolved": [],
    "xiii": "added"
   },
@@ -4443,18 +4887,34 @@
     "catalans-hist-lopini-paea-2014",
     "catalans-hist-benjamin-garcia-2014"
    ],
-   "existing": 5,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
   "Widnes Vikings|2014": {
-   "source": "",
+   "source": "https://www.rugbyleagueproject.org/matches/29681",
    "created": [
-    "widnes-hist-kevin-brown-2014"
+    "widnes-hist-kevin-brown-2014",
+    "widnes-hist-rhys-hanbury-2014",
+    "widnes-hist-patrick-ah-van-2014",
+    "widnes-hist-chris-dean-2014",
+    "widnes-hist-cameron-phelps-2014",
+    "widnes-hist-paddy-flynn-2014",
+    "widnes-hist-joe-mellor-2014",
+    "widnes-hist-philip-joseph-2014",
+    "widnes-hist-jon-clarke-2014",
+    "widnes-hist-ben-kavanagh-2014",
+    "widnes-hist-danny-tickle-2014",
+    "widnes-hist-hep-cahill-2014",
+    "widnes-hist-david-allen-2014",
+    "widnes-hist-willie-isa-2014",
+    "widnes-hist-macgraff-leuluai-2014"
    ],
-   "existing": 0,
-   "unresolved": [],
-   "xiii": "none"
+   "existing": 17,
+   "unresolved": [
+    "Grant Gore"
+   ],
+   "xiii": "added"
   },
   "Hull KR|2014": {
    "source": "era-starting-17s.json (historic_starting_17_clean_verified.txt)",
@@ -4472,7 +4932,7 @@
     "hull-kr-hist-jason-netherton-2014",
     "hull-kr-hist-jordan-cox-2014"
    ],
-   "existing": 5,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -4484,7 +4944,7 @@
     "salford-hist-mat-ashurst-2014",
     "salford-hist-steve-rapira-2014"
    ],
-   "existing": 13,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -4503,7 +4963,7 @@
     "hull-fc-hist-jordan-thompson-2014",
     "hull-fc-hist-iafeta-paleaaesina-2014"
    ],
-   "existing": 6,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -4524,7 +4984,7 @@
     "wakefield-hist-daniel-smith-2014",
     "wakefield-hist-taulima-tautai-2014"
    ],
-   "existing": 4,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -4538,23 +4998,47 @@
     "bradford-hist-adam-o-brien-2014",
     "bradford-hist-matty-blythe-2014"
    ],
-   "existing": 11,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
   "London Broncos|2014": {
-   "source": "",
-   "created": [],
-   "existing": 0,
-   "unresolved": [],
-   "xiii": "none"
+   "source": "https://www.rugbyleagueproject.org/matches/29698",
+   "created": [
+    "london-hist-jordan-atkins-2014",
+    "london-hist-james-cunningham-2014",
+    "london-hist-thomas-minns-2014",
+    "london-hist-denny-solomona-2014",
+    "london-hist-joe-keyes-2014",
+    "london-hist-josh-drinkwater-2014",
+    "london-hist-nick-slyney-2014",
+    "london-hist-scott-moore-2014",
+    "london-hist-olsi-krasniqi-2014",
+    "london-hist-atelea-vea-2014",
+    "london-hist-alex-foster-2014",
+    "london-hist-matt-cook-2014",
+    "london-hist-george-griffin-2014",
+    "london-hist-will-lovell-2014",
+    "london-hist-erjon-dollapi-2014"
+   ],
+   "existing": 16,
+   "unresolved": [
+    "Jonathan Magrin"
+   ],
+   "xiii": "added"
   },
   "Leeds Rhinos|2015": {
-   "source": "https://en.wikipedia.org/wiki/2015_Leeds_Rhinos_season",
+   "source": "https://en.wikipedia.org/wiki/2015_Super_League_Grand_Final (2015 Super League Grand Final 10 Oct 2015 Leeds Rhinos 22-20 Wigan Warriors)",
    "created": [
-    "leeds-hist-adam-cuthbertson-2015"
+    "leeds-hist-adam-cuthbertson-2015",
+    "leeds-hist-ryan-hall-2015",
+    "leeds-hist-mitch-garbutt-2015",
+    "leeds-hist-carl-ablett-2015",
+    "leeds-hist-brad-singleton-2015",
+    "leeds-hist-jimmy-keinhorst-2015",
+    "leeds-hist-josh-walters-2015"
    ],
-   "existing": 19,
+   "existing": 24,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -4568,7 +5052,7 @@
     "wigan-hist-larne-patrick-2015",
     "wigan-hist-tony-clubb-2015"
    ],
-   "existing": 13,
+   "existing": 19,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -4593,7 +5077,7 @@
     "huddersfield-hist-kyle-wood-2015",
     "huddersfield-hist-anthony-mullally-2015"
    ],
-   "existing": 2,
+   "existing": 19,
    "unresolved": [],
    "xiii": "added"
   },
@@ -4607,7 +5091,7 @@
     "st-helens-hist-mark-flanagan-2015",
     "st-helens-hist-andre-savelio-2015"
    ],
-   "existing": 13,
+   "existing": 19,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -4628,7 +5112,7 @@
     "castleford-hist-mike-mcmeeken-2015",
     "castleford-hist-ryan-boyle-2015"
    ],
-   "existing": 6,
+   "existing": 19,
    "unresolved": [],
    "xiii": "added"
   },
@@ -4643,7 +5127,7 @@
     "warrington-hist-brad-dwyer-2015",
     "warrington-hist-george-king-2015"
    ],
-   "existing": 10,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -4658,7 +5142,7 @@
     "catalans-hist-louis-anderson-2015",
     "catalans-hist-olivier-elima-2015"
    ],
-   "existing": 11,
+   "existing": 18,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -4680,7 +5164,7 @@
     "hull-fc-hist-iafeta-paleaaesina-2015",
     "hull-fc-hist-josh-bowden-2015"
    ],
-   "existing": 3,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -4699,16 +5183,31 @@
     "widnes-hist-matt-whitley-2015",
     "widnes-hist-paul-johnson-2015"
    ],
-   "existing": 2,
+   "existing": 13,
    "unresolved": [],
    "xiii": "existing"
   },
   "Hull KR|2015": {
-   "source": "",
-   "created": [],
-   "existing": 0,
+   "source": "https://www.rugbyleagueproject.org/matches/30861 (2015 Challenge Cup Final 29 Aug 2015 Hull KR 0-50 Leeds Rhinos)",
+   "created": [
+    "hull-kr-hist-kieran-dixon-2015",
+    "hull-kr-hist-kris-welham-2015",
+    "hull-kr-hist-liam-salter-2015",
+    "hull-kr-hist-ken-sio-2015",
+    "hull-kr-hist-maurice-blair-2015",
+    "hull-kr-hist-albert-kelly-2015",
+    "hull-kr-hist-adam-walker-2015",
+    "hull-kr-hist-shaun-lunt-2015",
+    "hull-kr-hist-tony-puletua-2015",
+    "hull-kr-hist-kevin-larroyer-2015",
+    "hull-kr-hist-graeme-horne-2015",
+    "hull-kr-hist-tyrone-mccarthy-2015",
+    "hull-kr-hist-james-donaldson-2015",
+    "hull-kr-hist-dane-tilse-2015"
+   ],
+   "existing": 17,
    "unresolved": [],
-   "xiii": "none"
+   "xiii": "added"
   },
   "Salford Red Devils|2015": {
    "source": "https://www.rugbyleagueproject.org/seasons/super-league-2015/salford-red-devils/detail.html?order=pos",
@@ -4722,7 +5221,7 @@
     "salford-hist-theo-fages-2015",
     "salford-hist-darrell-griffin-2015"
    ],
-   "existing": 9,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -4746,7 +5245,7 @@
     "wakefield-hist-matt-ryan-2015",
     "wakefield-hist-daniel-smith-2015"
    ],
-   "existing": 1,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -4758,7 +5257,7 @@
     "warrington-hist-brad-dwyer-2016",
     "warrington-hist-jordan-cox-2016"
    ],
-   "existing": 17,
+   "existing": 21,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -4773,7 +5272,7 @@
     "wigan-hist-taulima-tautai-2016",
     "wigan-hist-lee-mossop-2016"
    ],
-   "existing": 12,
+   "existing": 19,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -4785,7 +5284,7 @@
     "hull-fc-hist-frank-pritchard-2016",
     "hull-fc-hist-jordan-thompson-2016"
    ],
-   "existing": 21,
+   "existing": 25,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -4794,7 +5293,7 @@
    "created": [
     "st-helens-hist-luke-thompson-2016"
    ],
-   "existing": 16,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -4809,7 +5308,7 @@
     "castleford-hist-grant-millington-2016",
     "castleford-hist-junior-moors-2016"
    ],
-   "existing": 12,
+   "existing": 19,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -4822,12 +5321,12 @@
     "catalans-hist-julian-bousquet-2016",
     "catalans-hist-gregory-mounis-2016"
    ],
-   "existing": 12,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
   "Widnes Vikings|2016": {
-   "source": "https://en.wikipedia.org/wiki/2016_Widnes_Vikings_season",
+   "source": "https://www.rugbyleagueproject.org/matches/31058 (R14 16 May 2016 Hull KR 24-10 Widnes Vikings)",
    "created": [
     "widnes-hist-danny-craven-2016",
     "widnes-hist-paddy-flynn-2016",
@@ -4841,9 +5340,19 @@
     "widnes-hist-lloyd-white-2016",
     "widnes-hist-danny-tickle-2016",
     "widnes-hist-matt-whitley-2016",
-    "widnes-hist-hep-cahill-2016"
+    "widnes-hist-hep-cahill-2016",
+    "widnes-hist-rhys-hanbury-2016",
+    "widnes-hist-corey-thompson-2016",
+    "widnes-hist-charly-runciman-2016",
+    "widnes-hist-ed-chamberlain-2016",
+    "widnes-hist-aaron-heremaia-2016",
+    "widnes-hist-eamon-o-carroll-2016",
+    "widnes-hist-gil-dudson-2016",
+    "widnes-hist-chris-houston-2016",
+    "widnes-hist-jordan-johnstone-2016",
+    "widnes-hist-setaimata-sa-2016"
    ],
-   "existing": 0,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -4854,7 +5363,7 @@
     "wakefield-hist-mickael-simon-2016",
     "wakefield-hist-jason-walton-2016"
    ],
-   "existing": 14,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -4867,7 +5376,7 @@
     "leeds-hist-james-segeyaro-2016",
     "leeds-hist-carl-ablett-2016"
    ],
-   "existing": 12,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -4879,16 +5388,33 @@
     "salford-hist-niall-evalds-2016",
     "salford-hist-olsi-krasniqi-2016"
    ],
-   "existing": 13,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
   "Hull KR|2016": {
-   "source": "",
-   "created": [],
-   "existing": 0,
-   "unresolved": [],
-   "xiii": "none"
+   "source": "https://www.rugbyleagueproject.org/matches/31058",
+   "created": [
+    "hull-kr-hist-ben-cockayne-2016",
+    "hull-kr-hist-ken-sio-2016",
+    "hull-kr-hist-graeme-horne-2016",
+    "hull-kr-hist-joe-wardill-2016",
+    "hull-kr-hist-maurice-blair-2016",
+    "hull-kr-hist-albert-kelly-2016",
+    "hull-kr-hist-shaun-lunt-2016",
+    "hull-kr-hist-adam-walker-2016",
+    "hull-kr-hist-james-greenwood-2016",
+    "hull-kr-hist-james-donaldson-2016",
+    "hull-kr-hist-mitchell-allgood-2016",
+    "hull-kr-hist-john-boudebza-2016",
+    "hull-kr-hist-george-lawler-2016",
+    "hull-kr-hist-james-green-2016"
+   ],
+   "existing": 16,
+   "unresolved": [
+    "Kieran Moran"
+   ],
+   "xiii": "added"
   },
   "Huddersfield Giants|2016": {
    "source": "https://www.rugbyleagueproject.org/seasons/super-league-2016/huddersfield-giants/detail.html?order=pos",
@@ -4896,7 +5422,7 @@
     "huddersfield-hist-kyle-wood-2016",
     "huddersfield-hist-eorl-crabtree-2016"
    ],
-   "existing": 15,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -4916,7 +5442,7 @@
     "castleford-hist-matt-cook-2017",
     "castleford-hist-junior-moors-2017"
    ],
-   "existing": 12,
+   "existing": 24,
    "unresolved": [],
    "xiii": "added"
   },
@@ -4939,7 +5465,7 @@
     "leeds-hist-rob-burrow-2017",
     "leeds-hist-brett-delaney-2017"
    ],
-   "existing": 4,
+   "existing": 19,
    "unresolved": [],
    "xiii": "added"
   },
@@ -4959,7 +5485,7 @@
     "hull-fc-hist-jordan-thompson-2017",
     "hull-fc-hist-josh-bowden-2017"
    ],
-   "existing": 8,
+   "existing": 20,
    "unresolved": [],
    "xiii": "added"
   },
@@ -4978,7 +5504,7 @@
     "st-helens-hist-louie-mccarthy-scarsbrook-2017",
     "st-helens-hist-luke-thompson-2017"
    ],
-   "existing": 7,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -4996,7 +5522,7 @@
     "wakefield-hist-danny-kirmond-2017",
     "wakefield-hist-tinirau-arona-2017"
    ],
-   "existing": 7,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5020,7 +5546,7 @@
     "wigan-hist-joel-tomkins-2017",
     "wigan-hist-tony-clubb-2017"
    ],
-   "existing": 2,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5043,7 +5569,7 @@
     "salford-hist-george-griffin-2017",
     "salford-hist-weller-hauraki-2017"
    ],
-   "existing": 3,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5063,7 +5589,7 @@
     "huddersfield-hist-paul-clough-2017",
     "huddersfield-hist-ukuma-ta-ai-2017"
    ],
-   "existing": 6,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5088,7 +5614,7 @@
     "warrington-hist-andre-savelio-2017",
     "warrington-hist-brad-dwyer-2017"
    ],
-   "existing": 0,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5110,7 +5636,7 @@
     "catalans-hist-jason-baitieri-2017",
     "catalans-hist-thibaut-margalet-2017"
    ],
-   "existing": 3,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5133,7 +5659,7 @@
     "leigh-hist-sam-hopkins-2017",
     "leigh-hist-glenn-stewart-2017"
    ],
-   "existing": 2,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5153,7 +5679,7 @@
     "widnes-hist-danny-craven-2017",
     "widnes-hist-jordan-johnstone-2017"
    ],
-   "existing": 5,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5176,7 +5702,7 @@
     "st-helens-hist-theo-fages-2018",
     "st-helens-hist-morgan-knowles-2018"
    ],
-   "existing": 10,
+   "existing": 25,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5202,7 +5728,7 @@
     "wigan-hist-taulima-tautai-2018",
     "wigan-hist-john-bateman-2018"
    ],
-   "existing": 1,
+   "existing": 19,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5226,7 +5752,7 @@
     "castleford-hist-junior-moors-2018",
     "castleford-hist-jesse-sene-lefao-2018"
    ],
-   "existing": 1,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5248,7 +5774,7 @@
     "warrington-hist-ben-murdoch-masila-2018",
     "warrington-hist-sitaleki-akauola-2018"
    ],
-   "existing": 4,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5269,7 +5795,7 @@
     "wakefield-hist-kyle-wood-2018",
     "wakefield-hist-keegan-hirst-2018"
    ],
-   "existing": 7,
+   "existing": 20,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5293,7 +5819,7 @@
     "huddersfield-hist-michael-lawrence-2018",
     "huddersfield-hist-sebastine-ikahihifo-2018"
    ],
-   "existing": 1,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5313,7 +5839,7 @@
     "catalans-hist-louis-anderson-2018",
     "catalans-hist-kenny-edwards-2018"
    ],
-   "existing": 7,
+   "existing": 19,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5337,7 +5863,7 @@
     "hull-fc-hist-masi-matongo-2018",
     "hull-fc-hist-brad-fash-2018"
    ],
-   "existing": 1,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5361,7 +5887,7 @@
     "leeds-hist-ashton-golding-2018",
     "leeds-hist-mikolaj-oledzki-2018"
    ],
-   "existing": 1,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5381,7 +5907,7 @@
     "hull-kr-hist-nick-scruton-2018",
     "hull-kr-hist-james-donaldson-2018"
    ],
-   "existing": 5,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5403,7 +5929,7 @@
     "salford-hist-craig-kopczak-2018",
     "salford-hist-logan-tomkins-2018"
    ],
-   "existing": 3,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5426,7 +5952,7 @@
     "widnes-hist-danny-craven-2018",
     "widnes-hist-danny-walker-2018"
    ],
-   "existing": 2,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5437,7 +5963,7 @@
     "st-helens-hist-jack-ashworth-2019",
     "st-helens-hist-louie-mccarthy-scarsbrook-2019"
    ],
-   "existing": 20,
+   "existing": 23,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -5460,7 +5986,7 @@
     "wigan-hist-morgan-smithies-2019",
     "wigan-hist-joe-greenwood-2019"
    ],
-   "existing": 3,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5482,7 +6008,7 @@
     "salford-hist-adam-walker-2019",
     "salford-hist-logan-tomkins-2019"
    ],
-   "existing": 6,
+   "existing": 20,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5505,7 +6031,7 @@
     "warrington-hist-jake-mamo-2019",
     "warrington-hist-sitaleki-akauola-2019"
    ],
-   "existing": 5,
+   "existing": 20,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5528,7 +6054,7 @@
     "castleford-hist-matt-cook-2019",
     "castleford-hist-chris-clarkson-2019"
    ],
-   "existing": 3,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5552,7 +6078,7 @@
     "hull-fc-hist-brad-fash-2019",
     "hull-fc-hist-masi-matongo-2019"
    ],
-   "existing": 1,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5576,7 +6102,7 @@
     "catalans-hist-jason-baitieri-2019",
     "catalans-hist-kenny-edwards-2019"
    ],
-   "existing": 1,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5598,7 +6124,7 @@
     "leeds-hist-adam-cuthbertson-2019",
     "leeds-hist-mikolaj-oledzki-2019"
    ],
-   "existing": 5,
+   "existing": 19,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5622,7 +6148,7 @@
     "wakefield-hist-keegan-hirst-2019",
     "wakefield-hist-pauli-pauli-2019"
    ],
-   "existing": 1,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5646,7 +6172,7 @@
     "huddersfield-hist-aaron-murphy-2019",
     "huddersfield-hist-sebastine-ikahihifo-2019"
    ],
-   "existing": 1,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5669,7 +6195,7 @@
     "hull-kr-hist-danny-addy-2019",
     "hull-kr-hist-mitch-garbutt-2019"
    ],
-   "existing": 2,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5681,7 +6207,7 @@
     "london-hist-matty-fozard-2019",
     "london-hist-nathan-mason-2019"
    ],
-   "existing": 13,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -5690,7 +6216,7 @@
    "created": [
     "wigan-hist-liam-byrne-2020"
    ],
-   "existing": 18,
+   "existing": 19,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5702,7 +6228,7 @@
     "st-helens-hist-dominique-peyroux-2020",
     "st-helens-hist-kyle-amor-2020"
    ],
-   "existing": 17,
+   "existing": 21,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -5711,7 +6237,7 @@
    "created": [
     "warrington-hist-matthew-ashton-2020"
    ],
-   "existing": 18,
+   "existing": 19,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5735,7 +6261,7 @@
     "catalans-hist-benjamin-jullien-2020",
     "catalans-hist-sam-moa-2020"
    ],
-   "existing": 1,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5745,7 +6271,7 @@
     "leeds-hist-kruise-leeming-2020",
     "leeds-hist-rhyse-martin-2020"
    ],
-   "existing": 18,
+   "existing": 20,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5754,7 +6280,7 @@
    "created": [
     "hull-fc-hist-joe-cator-2020"
    ],
-   "existing": 16,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5778,7 +6304,7 @@
     "salford-hist-sebastine-ikahihifo-2020",
     "salford-hist-mark-flanagan-2020"
    ],
-   "existing": 2,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5787,7 +6313,7 @@
    "created": [
     "huddersfield-hist-james-gavet-2020"
    ],
-   "existing": 17,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5810,7 +6336,7 @@
     "castleford-hist-jacques-o-neill-2020",
     "castleford-hist-daniel-smith-2020"
    ],
-   "existing": 4,
+   "existing": 19,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5834,7 +6360,7 @@
     "wakefield-hist-jordan-crowther-2020",
     "wakefield-hist-josh-wood-2020"
    ],
-   "existing": 2,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5850,16 +6376,34 @@
     "hull-kr-hist-matty-gee-2020",
     "hull-kr-hist-kyle-trout-2020"
    ],
-   "existing": 9,
+   "existing": 17,
    "unresolved": [],
    "xiii": "existing"
   },
   "Toronto Wolfpack|2020": {
-   "source": "",
-   "created": [],
-   "existing": 0,
+   "source": "https://www.rugbyleagueproject.org/matches/40382 (R2 8 Feb 2020 Salford Red Devils 24-16 Toronto Wolfpack)",
+   "created": [
+    "toronto-hist-blake-wallace-2020",
+    "toronto-hist-liam-kay-2020",
+    "toronto-hist-hakim-miloudi-2020",
+    "toronto-hist-ricky-leutele-2020",
+    "toronto-hist-matthew-russell-2020",
+    "toronto-hist-joe-mellor-2020",
+    "toronto-hist-josh-mccrone-2020",
+    "toronto-hist-gadwin-springer-2020",
+    "toronto-hist-james-cunningham-2020",
+    "toronto-hist-brad-singleton-2020",
+    "toronto-hist-sonny-bill-williams-2020",
+    "toronto-hist-tom-olbison-2020",
+    "toronto-hist-jon-wilkin-2020",
+    "toronto-hist-adam-sidlow-2020",
+    "toronto-hist-anthony-mullally-2020",
+    "toronto-hist-bodene-thompson-2020",
+    "toronto-hist-gary-wheeler-2020"
+   ],
+   "existing": 17,
    "unresolved": [],
-   "xiii": "none"
+   "xiii": "added"
   },
   "Catalans Dragons|2021": {
    "source": "https://www.rugbyleagueproject.org/seasons/super-league-2021/catalans-dragons/detail.html?order=pos",
@@ -5880,7 +6424,7 @@
     "catalans-hist-sam-kasiano-2021",
     "catalans-hist-joel-tomkins-2021"
    ],
-   "existing": 7,
+   "existing": 22,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5893,7 +6437,7 @@
     "st-helens-hist-kyle-amor-2021",
     "st-helens-hist-louie-mccarthy-scarsbrook-2021"
    ],
-   "existing": 18,
+   "existing": 23,
    "unresolved": [],
    "xiii": "existing"
   },
@@ -5937,7 +6481,7 @@
     "hull-kr-hist-matthew-storton-2021",
     "hull-kr-hist-dean-hadley-2021"
    ],
-   "existing": 3,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5962,7 +6506,7 @@
     "castleford-hist-daniel-smith-2021",
     "castleford-hist-suaia-matagi-2021"
    ],
-   "existing": 1,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5971,7 +6515,7 @@
    "created": [
     "hull-fc-hist-josh-reynolds-2021"
    ],
-   "existing": 16,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -5982,7 +6526,7 @@
     "huddersfield-hist-jack-cogger-2021",
     "huddersfield-hist-oliver-russell-2021"
    ],
-   "existing": 14,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6005,7 +6549,7 @@
     "wakefield-hist-david-fifita-2021",
     "wakefield-hist-james-batchelor-2021"
    ],
-   "existing": 2,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6027,16 +6571,34 @@
     "salford-hist-sebastine-ikahihifo-2021",
     "salford-hist-josh-johnson-2021"
    ],
-   "existing": 4,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
   "Leigh Leopards|2021": {
-   "source": "",
-   "created": [],
-   "existing": 0,
+   "source": "https://www.rugbyleagueproject.org/matches/45457 (R24 12 Sep 2021 Leigh Centurions 26-18 Wakefield Trinity)",
+   "created": [
+    "leigh-hist-ryan-brierley-2021",
+    "leigh-hist-jack-logan-2021",
+    "leigh-hist-ben-hellewell-2021",
+    "leigh-hist-iain-thornley-2021",
+    "leigh-hist-brendan-elliot-2021",
+    "leigh-hist-joe-mellor-2021",
+    "leigh-hist-james-bell-2021",
+    "leigh-hist-rob-butler-2021",
+    "leigh-hist-liam-hood-2021",
+    "leigh-hist-adam-sidlow-2021",
+    "leigh-hist-jordan-thompson-2021",
+    "leigh-hist-sam-stone-2021",
+    "leigh-hist-jai-whitbread-2021",
+    "leigh-hist-alex-gerrard-2021",
+    "leigh-hist-jamie-ellis-2021",
+    "leigh-hist-nathan-mason-2021",
+    "leigh-hist-jack-ashworth-2021"
+   ],
+   "existing": 17,
    "unresolved": [],
-   "xiii": "none"
+   "xiii": "added"
   },
   "St Helens|2022": {
    "source": "https://www.rugbyleagueproject.org/seasons/super-league-2022/st-helens/detail.html?order=pos",
@@ -6058,7 +6620,7 @@
     "st-helens-hist-louie-mccarthy-scarsbrook-2022",
     "st-helens-hist-jake-wingfield-2022"
    ],
-   "existing": 6,
+   "existing": 22,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6067,7 +6629,7 @@
    "created": [
     "wigan-hist-kai-pearce-paul-2022"
    ],
-   "existing": 19,
+   "existing": 20,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6077,7 +6639,7 @@
     "huddersfield-hist-innes-senior-2022",
     "huddersfield-hist-danny-levi-2022"
    ],
-   "existing": 17,
+   "existing": 19,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6100,7 +6662,7 @@
     "catalans-hist-mickael-goudemand-2022",
     "catalans-hist-joe-chan-2022"
    ],
-   "existing": 2,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6129,7 +6691,7 @@
     "salford-hist-sam-luckley-2022",
     "salford-hist-ryan-lannon-2022"
    ],
-   "existing": 7,
+   "existing": 21,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6153,7 +6715,7 @@
     "castleford-hist-liam-watts-2022",
     "castleford-hist-adam-milner-2022"
    ],
-   "existing": 1,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6177,7 +6739,7 @@
     "hull-kr-hist-jez-litten-2022",
     "hull-kr-hist-rowan-milnes-2022"
    ],
-   "existing": 2,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6188,7 +6750,7 @@
     "hull-fc-hist-kane-evans-2022",
     "hull-fc-hist-joe-lovodua-2022"
    ],
-   "existing": 14,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6204,7 +6766,7 @@
    "created": [
     "warrington-hist-connor-wrench-2022"
    ],
-   "existing": 16,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6227,9 +6789,9 @@
     "toulouse-hist-harrison-hansen-2022",
     "toulouse-hist-eloi-pelissier-2022"
    ],
-   "existing": 2,
+   "existing": 17,
    "unresolved": [],
-   "xiii": "existing"
+   "xiii": "added"
   },
   "Wigan Warriors|2023": {
    "source": "era-starting-17s.json (historic_starting_17_clean_verified.txt)",
@@ -6238,7 +6800,7 @@
     "wigan-hist-bradley-o-neill-2023",
     "wigan-hist-jake-wardle-2023"
    ],
-   "existing": 19,
+   "existing": 22,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6261,7 +6823,7 @@
     "catalans-hist-sam-tomkins-2023",
     "catalans-hist-manu-ma-u-2023"
    ],
-   "existing": 3,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6285,7 +6847,7 @@
     "st-helens-hist-joey-lussick-2023",
     "st-helens-hist-george-delaney-2023"
    ],
-   "existing": 2,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6309,7 +6871,7 @@
     "hull-kr-hist-dean-hadley-2023",
     "hull-kr-hist-matthew-storton-2023"
    ],
-   "existing": 2,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6334,7 +6896,7 @@
     "leigh-hist-ben-nakubuwai-2023",
     "leigh-hist-ed-chamberlain-2023"
    ],
-   "existing": 6,
+   "existing": 23,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6343,7 +6905,7 @@
    "created": [
     "warrington-hist-thomas-mikaele-2023"
    ],
-   "existing": 17,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6368,7 +6930,7 @@
     "salford-hist-ben-hellewell-2023",
     "salford-hist-danny-addy-2023"
    ],
-   "existing": 1,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6377,7 +6939,7 @@
    "created": [
     "leeds-hist-corey-johnson-2023"
    ],
-   "existing": 16,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6395,7 +6957,7 @@
     "hull-fc-hist-jacob-trueman-2023",
     "hull-fc-hist-jake-clifford-2023"
    ],
-   "existing": 14,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6420,7 +6982,7 @@
     "castleford-hist-sam-hall-2023",
     "castleford-hist-suaia-matagi-2023"
    ],
-   "existing": 0,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6430,7 +6992,7 @@
     "wakefield-hist-lee-kershaw-2023",
     "wakefield-hist-kevin-proctor-2023"
    ],
-   "existing": 15,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6440,7 +7002,7 @@
     "wigan-hist-tyler-dupree-2024",
     "wigan-hist-jake-wardle-2024"
    ],
-   "existing": 20,
+   "existing": 22,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6465,7 +7027,7 @@
     "hull-kr-hist-sam-luckley-2024",
     "hull-kr-hist-matthew-storton-2024"
    ],
-   "existing": 3,
+   "existing": 20,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6475,7 +7037,7 @@
     "warrington-hist-rodrick-tai-2024",
     "warrington-hist-matty-ashton-2024"
    ],
-   "existing": 18,
+   "existing": 20,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6500,7 +7062,7 @@
     "salford-hist-chris-atkin-2024",
     "salford-hist-chris-hankinson-2024"
    ],
-   "existing": 2,
+   "existing": 19,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6525,7 +7087,7 @@
     "leigh-hist-brad-dwyer-2024",
     "leigh-hist-matt-davis-2024"
    ],
-   "existing": 0,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6549,7 +7111,7 @@
     "st-helens-hist-george-delaney-2024",
     "st-helens-hist-sione-mata-utia-2024"
    ],
-   "existing": 2,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6570,7 +7132,7 @@
     "catalans-hist-cesar-rouge-2024",
     "catalans-hist-paul-seguier-2024"
    ],
-   "existing": 4,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6579,7 +7141,7 @@
    "created": [
     "leeds-hist-paul-momirovski-2024"
    ],
-   "existing": 17,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6588,7 +7150,7 @@
    "created": [
     "huddersfield-hist-elliot-wallis-2024"
    ],
-   "existing": 16,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6613,7 +7175,7 @@
     "castleford-hist-sam-hall-2024",
     "castleford-hist-sylvester-namo-2024"
    ],
-   "existing": 0,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6626,16 +7188,33 @@
     "hull-fc-hist-will-gardiner-2024",
     "hull-fc-hist-jack-ashworth-2024"
    ],
-   "existing": 12,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
   "London Broncos|2024": {
-   "source": "",
-   "created": [],
-   "existing": 0,
-   "unresolved": [],
-   "xiii": "none"
+   "source": "https://mail.rugbyleagueproject.org/matches/62301",
+   "created": [
+    "london-hist-alex-walker-2024",
+    "london-hist-lee-kershaw-2024",
+    "london-hist-robbie-storey-2024",
+    "london-hist-jarred-bassett-2024",
+    "london-hist-oliver-leyland-2024",
+    "london-hist-jimmy-meadows-2024",
+    "london-hist-ugo-tison-2024",
+    "london-hist-lewis-bienek-2024",
+    "london-hist-will-lovell-2024",
+    "london-hist-ethan-natoli-2024",
+    "london-hist-jacob-jones-2024",
+    "london-hist-marcus-stock-2024",
+    "london-hist-jordan-williams-2024",
+    "london-hist-sadiq-adebiyi-2024"
+   ],
+   "existing": 16,
+   "unresolved": [
+    "Emmanuel Waine"
+   ],
+   "xiii": "added"
   },
   "Hull KR|2025": {
    "source": "https://www.rugbyleagueproject.org/seasons/super-league-2025/hull-kingston-rovers/detail.html?order=pos",
@@ -6658,7 +7237,7 @@
     "hull-kr-hist-kelepi-tanginoa-2025",
     "hull-kr-hist-sam-luckley-2025"
    ],
-   "existing": 4,
+   "existing": 21,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6675,7 +7254,7 @@
     "leigh-hist-bailey-hodgson-2025",
     "leigh-hist-alec-tuitavake-2025"
    ],
-   "existing": 16,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6684,7 +7263,7 @@
    "created": [
     "leeds-hist-keenan-palasia-2025"
    ],
-   "existing": 19,
+   "existing": 20,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6709,7 +7288,7 @@
     "st-helens-hist-jack-welsby-2025",
     "st-helens-hist-joe-batchelor-2025"
    ],
-   "existing": 1,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6722,7 +7301,7 @@
     "wakefield-hist-harvey-smith-2025",
     "wakefield-hist-isaiah-vagana-2025"
    ],
-   "existing": 13,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6731,7 +7310,7 @@
    "created": [
     "hull-fc-hist-liam-knight-2025"
    ],
-   "existing": 18,
+   "existing": 19,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6740,7 +7319,7 @@
    "created": [
     "warrington-hist-jake-thewlis-2025"
    ],
-   "existing": 17,
+   "existing": 18,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6765,7 +7344,7 @@
     "catalans-hist-tevita-pangai-junior-2025",
     "catalans-hist-paul-seguier-2025"
    ],
-   "existing": 0,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6776,7 +7355,7 @@
     "huddersfield-hist-thomas-burgess-2025",
     "huddersfield-hist-kieran-rush-2025"
    ],
-   "existing": 14,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
@@ -6801,16 +7380,34 @@
     "castleford-hist-louis-senior-2025",
     "castleford-hist-muizz-mustapha-2025"
    ],
-   "existing": 0,
+   "existing": 17,
    "unresolved": [],
    "xiii": "added"
   },
   "Salford Red Devils|2025": {
-   "source": "",
-   "created": [],
-   "existing": 0,
+   "source": "https://mail.rugbyleagueproject.org/matches/113944 (R2 22 Feb 2025 Salford Red Devils 6-32 Leeds Rhinos)",
+   "created": [
+    "salford-hist-ryan-brierley-2025",
+    "salford-hist-nene-macdonald-2025",
+    "salford-hist-esan-marsters-2025",
+    "salford-hist-tim-lafai-2025",
+    "salford-hist-deon-cross-2025",
+    "salford-hist-jayden-nikorima-2025",
+    "salford-hist-marc-sneyd-2025",
+    "salford-hist-brad-singleton-2025",
+    "salford-hist-chris-atkin-2025",
+    "salford-hist-chris-hill-2025",
+    "salford-hist-shane-wright-2025",
+    "salford-hist-kallum-watkins-2025",
+    "salford-hist-joe-shorrocks-2025",
+    "salford-hist-jack-ormondroyd-2025",
+    "salford-hist-justin-sangare-2025",
+    "salford-hist-matty-foster-2025",
+    "salford-hist-chris-hankinson-2025"
+   ],
+   "existing": 17,
    "unresolved": [],
-   "xiii": "none"
+   "xiii": "added"
   }
  }
 }

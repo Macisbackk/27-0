@@ -2969,16 +2969,16 @@
     "2003": [
       "widnes-hist-adam-hughes-2003",
       "widnes-hist-andy-hay-2003",
+      "widnes-hist-anthony-farrell-2003",
       "widnes-hist-chris-giles-2003",
       "widnes-hist-daniel-frame-2003",
+      "widnes-hist-david-mills-2003",
       "widnes-hist-jason-demetriou-2003",
-      "widnes-hist-julian-o-neill-2003",
       "widnes-hist-julian-o-neill-2003",
       "widnes-hist-paul-devlin",
       "widnes-hist-robert-relf-2003",
       "widnes-hist-ryan-sheridan-2003",
       "widnes-hist-shane-millard-2003",
-      "widnes-hist-steve-mccurrie-2003",
       "widnes-hist-stuart-spruce-2003"
     ],
     "2004": [
@@ -2986,7 +2986,7 @@
       "widnes-hist-adam-hughes-2004",
       "widnes-hist-andy-hay-2004",
       "widnes-hist-chris-giles-2004",
-      "widnes-hist-julian-o-neill-2004",
+      "widnes-hist-david-mills-2004",
       "widnes-hist-julian-o-neill-2004",
       "widnes-hist-nicky-royle-2004",
       "widnes-hist-robert-relf-2004",
@@ -3040,6 +3040,21 @@
       "widnes-hist-rhys-hanbury-2013",
       "widnes-hist-stefan-marsh-2013",
       "widnes-hist-steve-pickersgill-2013"
+    ],
+    "2014": [
+      "widnes-hist-ben-kavanagh-2014",
+      "widnes-hist-cameron-phelps-2014",
+      "widnes-hist-chris-dean-2014",
+      "widnes-hist-danny-galea",
+      "widnes-hist-danny-tickle-2014",
+      "widnes-hist-hep-cahill-2014",
+      "widnes-hist-joe-mellor-2014",
+      "widnes-hist-jon-clarke-2014",
+      "widnes-hist-kevin-brown-2014",
+      "widnes-hist-paddy-flynn-2014",
+      "widnes-hist-patrick-ah-van-2014",
+      "widnes-hist-philip-joseph-2014",
+      "widnes-hist-rhys-hanbury-2014"
     ],
     "2015": [
       "widnes-hist-alex-gerrard",
@@ -4434,6 +4449,21 @@
       "salford-hist-ryan-brierley-2024",
       "salford-hist-sam-stone-2024",
       "salford-hist-tim-lafai-2024"
+    ],
+    "2025": [
+      "salford-hist-brad-singleton-2025",
+      "salford-hist-chris-atkin-2025",
+      "salford-hist-chris-hill-2025",
+      "salford-hist-deon-cross-2025",
+      "salford-hist-esan-marsters-2025",
+      "salford-hist-jayden-nikorima-2025",
+      "salford-hist-joe-shorrocks-2025",
+      "salford-hist-kallum-watkins-2025",
+      "salford-hist-marc-sneyd-2025",
+      "salford-hist-nene-macdonald-2025",
+      "salford-hist-ryan-brierley-2025",
+      "salford-hist-shane-wright-2025",
+      "salford-hist-tim-lafai-2025"
     ]
   },
   "London Broncos": {
@@ -4707,6 +4737,21 @@
       "london-hist-shane-rodney-2013",
       "london-hist-tommy-lee-2013"
     ],
+    "2014": [
+      "london-hist-alex-foster-2014",
+      "london-hist-atelea-vea-2014",
+      "london-hist-ben-farrar",
+      "london-hist-denny-solomona-2014",
+      "london-hist-james-cunningham-2014",
+      "london-hist-joe-keyes-2014",
+      "london-hist-jordan-atkins-2014",
+      "london-hist-josh-drinkwater-2014",
+      "london-hist-matt-cook-2014",
+      "london-hist-nick-slyney-2014",
+      "london-hist-olsi-krasniqi-2014",
+      "london-hist-scott-moore-2014",
+      "london-hist-thomas-minns-2014"
+    ],
     "2019": [
       "london-hist-alex-walker-2019",
       "london-hist-ben-hellewell-2019",
@@ -4721,6 +4766,21 @@
       "london-hist-rhys-williams-2019",
       "london-hist-ryan-morgan-2019",
       "london-hist-will-lovell-2019"
+    ],
+    "2024": [
+      "london-hist-alex-walker-2024",
+      "london-hist-ethan-natoli-2024",
+      "london-hist-hakim-miloudi",
+      "london-hist-jacob-jones-2024",
+      "london-hist-jarred-bassett-2024",
+      "london-hist-jimmy-meadows-2024",
+      "london-hist-lee-kershaw-2024",
+      "london-hist-lewis-bienek-2024",
+      "london-hist-oliver-leyland-2024",
+      "london-hist-rhys-kennedy",
+      "london-hist-robbie-storey-2024",
+      "london-hist-ugo-tison-2024",
+      "london-hist-will-lovell-2024"
     ]
   },
   "St Helens": {
@@ -4874,6 +4934,21 @@
       "st-helens-hist-willie-talau-2005",
       "st-helens-leg-jamie-lyon-2005"
     ],
+    "2006": [
+      "st-helens-hist-ade-gardner-2006",
+      "st-helens-hist-francis-meli-2006",
+      "st-helens-hist-jamie-lyon-2006",
+      "st-helens-hist-jason-cayless-2006",
+      "st-helens-hist-jason-hooper-2006",
+      "st-helens-hist-jon-wilkin-2006",
+      "st-helens-hist-keiron-cunningham-2006",
+      "st-helens-hist-lee-gilmour-2006",
+      "st-helens-hist-leon-pryce-2006",
+      "st-helens-hist-paul-anderson-2006",
+      "st-helens-hist-paul-wellens-2006",
+      "st-helens-hist-willie-talau-2006",
+      "st-helens-leg-sean-long-2006"
+    ],
     "2007": [
       "leon-pryce",
       "st-helens-hist-ade-gardner-2007",
@@ -4978,6 +5053,21 @@
       "st-helens-hist-tommy-makinson-2013",
       "st-helens-hist-tony-puletua-2013",
       "st-helens-hist-willie-manu-2013"
+    ],
+    "2014": [
+      "st-helens-cur-jonny-lomax-2014",
+      "st-helens-cur-jordan-turner-2014",
+      "st-helens-cur-mark-percival-2014",
+      "st-helens-cur-tommy-makinson-2014",
+      "st-helens-hist-adam-swift-2014",
+      "st-helens-hist-alex-walmsley-2014",
+      "st-helens-hist-james-roby-2014",
+      "st-helens-hist-jon-wilkin-2014",
+      "st-helens-hist-kyle-amor",
+      "st-helens-hist-lance-hohaia-2014",
+      "st-helens-hist-luke-walsh-2014",
+      "st-helens-hist-sia-soliola-2014",
+      "st-helens-hist-willie-manu-2014"
     ],
     "2015": [
       "st-helens-hist-adam-swift-2015",
@@ -5300,6 +5390,36 @@
       "hull-kr-hist-omari-caro",
       "hull-kr-hist-travis-burns-2014"
     ],
+    "2015": [
+      "hull-kr-hist-adam-walker-2015",
+      "hull-kr-hist-albert-kelly-2015",
+      "hull-kr-hist-graeme-horne-2015",
+      "hull-kr-hist-josh-mantellato",
+      "hull-kr-hist-ken-sio-2015",
+      "hull-kr-hist-kevin-larroyer-2015",
+      "hull-kr-hist-kieran-dixon-2015",
+      "hull-kr-hist-kris-welham-2015",
+      "hull-kr-hist-liam-salter-2015",
+      "hull-kr-hist-maurice-blair-2015",
+      "hull-kr-hist-shaun-lunt-2015",
+      "hull-kr-hist-tony-puletua-2015",
+      "hull-kr-hist-tyrone-mccarthy-2015"
+    ],
+    "2016": [
+      "hull-kr-hist-adam-walker-2016",
+      "hull-kr-hist-albert-kelly-2016",
+      "hull-kr-hist-ben-cockayne-2016",
+      "hull-kr-hist-dane-tilse",
+      "hull-kr-hist-graeme-horne-2016",
+      "hull-kr-hist-james-donaldson-2016",
+      "hull-kr-hist-james-greenwood-2016",
+      "hull-kr-hist-joe-wardill-2016",
+      "hull-kr-hist-ken-sio-2016",
+      "hull-kr-hist-maurice-blair-2016",
+      "hull-kr-hist-mitchell-allgood-2016",
+      "hull-kr-hist-shaun-lunt-2016",
+      "hull-kr-hist-thomas-minns"
+    ],
     "2018": [
       "hull-kr-hist-adam-quinlan",
       "hull-kr-hist-chris-atkin-2018",
@@ -5458,6 +5578,21 @@
     ]
   },
   "Toulouse Olympique": {
+    "2022": [
+      "toulouse-hist-andrew-dixon-2022",
+      "toulouse-hist-anthony-marion-2022",
+      "toulouse-hist-chris-hankinson-2022",
+      "toulouse-hist-corey-norman-2022",
+      "toulouse-hist-daniel-alvaro-2022",
+      "toulouse-hist-dominique-peyroux-2022",
+      "toulouse-hist-guy-armitage-2022",
+      "toulouse-hist-lucas-albert-2022",
+      "toulouse-hist-matthew-russell-2022",
+      "toulouse-hist-nathan-peats-2022",
+      "toulouse-hist-olly-ashall-bott-2022",
+      "toulouse-hist-paul-marcon-2022",
+      "toulouse-hist-romain-navarrete-2022"
+    ],
     "2026": [
       "catalans-cur-cesar-rouge",
       "toulouse-cur-aj-wallace",
@@ -5493,6 +5628,21 @@
     ]
   },
   "Sheffield Eagles": {
+    "1997": [
+      "sheffield-hist-danny-mcallister",
+      "sheffield-hist-jean-marc-garcia-1997",
+      "sheffield-hist-johnny-lawless-1997",
+      "sheffield-hist-keith-senior-1997",
+      "sheffield-hist-lynton-stott-1997",
+      "sheffield-hist-mark-aston-1997",
+      "sheffield-hist-martin-wood-1997",
+      "sheffield-hist-nick-pinkney-1997",
+      "sheffield-hist-paul-broadbent-1997",
+      "sheffield-hist-paul-carr-1997",
+      "sheffield-hist-rod-doyle-1997",
+      "sheffield-hist-steve-edmed-1997",
+      "sheffield-hist-whetu-taewa-1997"
+    ],
     "1998": [
       "sheffield-hist-dale-laughton-1998",
       "sheffield-hist-darren-shaw-1998",
@@ -5507,9 +5657,39 @@
       "sheffield-hist-rod-doyle-1998",
       "sheffield-hist-waisale-sovatabua-1998",
       "sheffield-hist-whetu-taewa-1998"
+    ],
+    "1999": [
+      "sheffield-hist-daio-powell",
+      "sheffield-hist-dale-cardoza-1999",
+      "sheffield-hist-darren-shaw-1999",
+      "sheffield-hist-darren-turner-1999",
+      "sheffield-hist-dave-watson",
+      "sheffield-hist-jeff-hardy",
+      "sheffield-hist-johnny-lawless-1999",
+      "sheffield-hist-keith-senior-1999",
+      "sheffield-hist-martin-pearson",
+      "sheffield-hist-matt-crowther-1999",
+      "sheffield-hist-michael-jackson-1999",
+      "sheffield-hist-rod-doyle-1999",
+      "sheffield-hist-steve-molloy"
     ]
   },
   "Leigh Leopards": {
+    "2005": [
+      "leigh-hist-ben-cooper-2005",
+      "leigh-hist-craig-stapleton",
+      "leigh-hist-darren-fleary-2005",
+      "leigh-hist-james-king-2005",
+      "leigh-hist-jason-kent-2005",
+      "leigh-hist-john-duffy-2005",
+      "leigh-hist-john-wilshere-2005",
+      "leigh-hist-mark-leafa",
+      "leigh-hist-phil-jones-2005",
+      "leigh-hist-rob-smyth-2005",
+      "leigh-hist-robert-mears-2005",
+      "leigh-hist-steve-maden-2005",
+      "leigh-hist-steve-mccurrie-2005"
+    ],
     "2017": [
       "leigh-hist-adam-higson-2017",
       "leigh-hist-atelea-vea-2017",
@@ -5524,6 +5704,21 @@
       "leigh-hist-matty-dawson-jones-2017",
       "leigh-hist-mickey-higham-2017",
       "leigh-hist-mitch-brown"
+    ],
+    "2021": [
+      "leigh-hist-adam-sidlow-2021",
+      "leigh-hist-ben-hellewell-2021",
+      "leigh-hist-brendan-elliot-2021",
+      "leigh-hist-iain-thornley-2021",
+      "leigh-hist-jack-logan-2021",
+      "leigh-hist-jai-whitbread-2021",
+      "leigh-hist-james-bell-2021",
+      "leigh-hist-joe-mellor-2021",
+      "leigh-hist-jordan-thompson-2021",
+      "leigh-hist-liam-hood-2021",
+      "leigh-hist-rob-butler-2021",
+      "leigh-hist-ryan-brierley-2021",
+      "leigh-hist-sam-stone-2021"
     ],
     "2023": [
       "leigh-hist-ben-reynolds-2023",
@@ -5601,6 +5796,134 @@
       "leigh-cur-umyla-hanley",
       "leigh-cur-will-brough",
       "leigh-hist-ricky-leutele"
+    ]
+  },
+  "Halifax Panthers": {
+    "1998": [
+      "halifax-hist-chris-chester-1998",
+      "halifax-hist-daio-powell-1998",
+      "halifax-hist-damian-gibson-1998",
+      "halifax-hist-david-bouveng-1998",
+      "halifax-hist-des-clark-1998",
+      "halifax-hist-gary-mercer-1998",
+      "halifax-hist-gavin-clinch-1998",
+      "halifax-hist-jamie-bloem-1998",
+      "halifax-hist-karl-harrison-1998",
+      "halifax-hist-kelvin-skerrett-1998",
+      "halifax-hist-martin-pearson-1998",
+      "halifax-hist-paul-rowley-1998",
+      "halifax-hist-simon-baldwin-1998"
+    ],
+    "2002": [
+      "halifax-hist-andrew-dunemann-2002",
+      "halifax-hist-brett-goldspink-2002",
+      "halifax-hist-colum-halpenny-2002",
+      "halifax-hist-danny-tickle-2002",
+      "halifax-hist-david-woods-2002",
+      "halifax-hist-gavin-clinch-2002",
+      "halifax-hist-jason-flowers-2002",
+      "halifax-hist-jim-gannon-2002",
+      "halifax-hist-johnny-lawless-2002",
+      "halifax-hist-karle-hammond-2002",
+      "halifax-hist-robbie-beckett-2002",
+      "halifax-hist-shayne-mcmenemy-2002",
+      "halifax-hist-stuart-donlan-2002"
+    ],
+    "2003": [
+      "halifax-hist-andrew-brocklehurst-2003",
+      "halifax-hist-andrew-frew-2003",
+      "halifax-hist-chris-birchall-2003",
+      "halifax-hist-dane-dorahy-2003",
+      "halifax-hist-darryl-cardiss-2003",
+      "halifax-hist-heath-cruckshank-2003",
+      "halifax-hist-johnny-lawless-2003",
+      "halifax-hist-lee-greenwood-2003",
+      "halifax-hist-martin-moana-2003",
+      "halifax-hist-neil-harmon-2003",
+      "halifax-hist-ryan-clayton-2003",
+      "halifax-hist-sean-penkywicz-2003",
+      "halifax-hist-stuart-donlan-2003"
+    ]
+  },
+  "Gateshead Thunder": {
+    "1999": [
+      "gateshead-hist-adam-maher-1999",
+      "gateshead-hist-ben-sammut-1999",
+      "gateshead-hist-brett-green-1999",
+      "gateshead-hist-craig-simon-1999",
+      "gateshead-hist-danny-lee-1999",
+      "gateshead-hist-david-maiden-1999",
+      "gateshead-hist-ian-herron-1999",
+      "gateshead-hist-kerrod-walters-1999",
+      "gateshead-hist-luke-felsch-1999",
+      "gateshead-hist-matthew-daylight-1999",
+      "gateshead-hist-tony-grimaldi-1999",
+      "gateshead-hist-will-robinson-1999",
+      "gateshead-hist-willie-peters-1999"
+    ]
+  },
+  "Crusaders RL": {
+    "2009": [
+      "crusaders-hist-anthony-blackwood-2009",
+      "crusaders-hist-ben-flower-2009",
+      "crusaders-hist-jace-van-dijk-2009",
+      "crusaders-hist-jason-chan-2009",
+      "crusaders-hist-josh-hannay-2009",
+      "crusaders-hist-lloyd-white-2009",
+      "crusaders-hist-luke-dyer-2009",
+      "crusaders-hist-mark-bryant-2009",
+      "crusaders-hist-mark-dalle-cort-2009",
+      "crusaders-hist-matty-smith-2009",
+      "crusaders-hist-neil-budworth-2009",
+      "crusaders-hist-ryan-o-hara-2009",
+      "crusaders-hist-steve-tyrer-2009"
+    ],
+    "2010": [
+      "crusaders-hist-elliot-kear-2010",
+      "crusaders-hist-gareth-thomas-2010",
+      "crusaders-hist-jason-chan-2010",
+      "crusaders-hist-lincoln-withers-2010",
+      "crusaders-hist-luke-dyer-2010",
+      "crusaders-hist-mark-bryant-2010",
+      "crusaders-hist-michael-witt-2010",
+      "crusaders-hist-peter-lupton-2010",
+      "crusaders-hist-rocky-trimarchi-2010",
+      "crusaders-hist-ryan-o-hara-2010",
+      "crusaders-hist-tony-martin-2010",
+      "crusaders-hist-vince-mellars-2010",
+      "crusaders-hist-weller-hauraki-2010"
+    ],
+    "2011": [
+      "crusaders-hist-aled-james-2011",
+      "crusaders-hist-ben-flower-2011",
+      "crusaders-hist-clinton-schifcofske-2011",
+      "crusaders-hist-elliot-kear-2011",
+      "crusaders-hist-frank-winterstein-2011",
+      "crusaders-hist-gareth-thomas-2011",
+      "crusaders-hist-lincoln-withers-2011",
+      "crusaders-hist-mark-bryant-2011",
+      "crusaders-hist-michael-witt-2011",
+      "crusaders-hist-ryan-o-hara-2011",
+      "crusaders-hist-stuart-reardon-2011",
+      "crusaders-hist-tony-martin-2011",
+      "crusaders-hist-vince-mellars-2011"
+    ]
+  },
+  "Toronto Wolfpack": {
+    "2020": [
+      "toronto-hist-blake-wallace-2020",
+      "toronto-hist-brad-singleton-2020",
+      "toronto-hist-gadwin-springer-2020",
+      "toronto-hist-hakim-miloudi-2020",
+      "toronto-hist-james-cunningham-2020",
+      "toronto-hist-joe-mellor-2020",
+      "toronto-hist-jon-wilkin-2020",
+      "toronto-hist-josh-mccrone-2020",
+      "toronto-hist-liam-kay-2020",
+      "toronto-hist-matthew-russell-2020",
+      "toronto-hist-ricky-leutele-2020",
+      "toronto-hist-sonny-bill-williams-2020",
+      "toronto-hist-tom-olbison-2020"
     ]
   },
   "York Knights": {

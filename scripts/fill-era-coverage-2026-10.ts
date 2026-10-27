@@ -48,11 +48,20 @@ const lineups = (fs.existsSync(D("era-coverage-lineups-2026-10.json"))
   ? JSON.parse(fs.readFileSync(D("era-coverage-lineups-2026-10.json"), "utf8"))
   : []) as Array<S17 & { match: string }>;
 // Players with no card anywhere in the database: verified bio (nationality, birth) per name.
-type Bio = { nationality: string; dateOfBirth?: string; birthYear?: number; position?: string; source: string };
+type Bio = { nationality: string; dateOfBirth?: string; birthYear?: number; position?: string; source: string; name?: string };
 const bios = (fs.existsSync(D("era-coverage-new-players-2026-10.json"))
   ? JSON.parse(fs.readFileSync(D("era-coverage-new-players-2026-10.json"), "utf8"))
   : {}) as Record<string, Bio>;
 const s17Added: S17[] = [];
+// Club-seasons the last roster build could actually spin (an existing XIII that fails the
+// playability gate — wrong-season ids, hidden cards — is replaced by the verified 17's XIII).
+const rosterMeta = JSON.parse(fs.readFileSync(D("team-year-rosters-meta.json"), "utf8")) as Record<string, Record<string, { playableInEra?: boolean }>>;
+const isSpinnable = (club: string, year: number) => rosterMeta[club]?.[String(year)]?.playableInEra === true;
+// Position corrections backed by a sourced line-up (applied to existing cards).
+const POSITION_FIXES: Record<string, { position: Position; positions: Position[]; why: string }> = {};
+for (const id of ["st-helens-hist-jason-hooper", "st-helens-hist-jason-hooper-2004", "st-helens-hist-jason-hooper-2005", "st-helens-hist-jason-hooper-2006"]) {
+  POSITION_FIXES[id] = { position: "LOOSE_FORWARD", positions: ["LOOSE_FORWARD", "STAND_OFF"], why: "loose forward in the 2006 Grand Final line-up (https://en.wikipedia.org/wiki/2006_Super_League_Grand_Final)" };
+}
 const wiki = JSON.parse(fs.readFileSync(D("era-wikipedia-squads.json"), "utf8")) as Verified;
 const slVerified = JSON.parse(fs.readFileSync(D("sl-era-verified-squads.json"), "utf8")) as Verified;
 const anchors = JSON.parse(fs.readFileSync(D("era-rating-anchors.json"), "utf8")) as {
@@ -66,6 +75,10 @@ const POS: Record<string, Position> = {
   FB: "FULLBACK", W: "WING", C: "CENTRE", FE: "STAND_OFF", HB: "SCRUM_HALF",
   FR: "PROP", HK: "HOOKER", "2R": "SECOND_ROW", L: "LOOSE_FORWARD",
 };
+const SLOTS: Position[] = [
+  "FULLBACK", "WING", "WING", "CENTRE", "CENTRE", "STAND_OFF", "SCRUM_HALF",
+  "PROP", "PROP", "HOOKER", "SECOND_ROW", "SECOND_ROW", "LOOSE_FORWARD",
+];
 const DT_SLOTS: Position[] = [
   "FULLBACK", "WING", "CENTRE", "CENTRE", "WING", "STAND_OFF", "SCRUM_HALF",
   "PROP", "HOOKER", "PROP", "SECOND_ROW", "SECOND_ROW", "LOOSE_FORWARD",
@@ -190,15 +203,22 @@ function newId(club: string, name: string, year: number): string {
 }
 
 /** Ensure a card for (name, club, year); returns its id, or null when the player is unknown. */
-function ensureCard(name: string, club: string, year: number, position: Position | null, sourceUrl: string, key: string): string | null {
+const cardNameById = new Map<string, string>();
+function ensureCard(lineupName: string, club: string, year: number, position: Position | null, sourceUrl: string, key: string): string | null {
+  const id = ensureCardInner(lineupName, club, year, position, sourceUrl, key);
+  return id;
+}
+function ensureCardInner(lineupName: string, club: string, year: number, position: Position | null, sourceUrl: string, key: string): string | null {
+  const name = bios[lineupName]?.name ?? lineupName;
   const exact = exactCard(name, club, year);
   if (exact && !exact.id.includes("-hist-era-") && exact.availableInGame !== false && exact.category !== "current") {
     report[key]!.existing++;
+    cardNameById.set(exact.id, exact.name);
     return exact.id;
   }
   const base = exact ?? baseCard(name, club, year);
   if (!base) {
-    const bio = bios[name];
+    const bio = bios[lineupName];
     const pos = position ?? (bio?.position as Position | undefined) ?? null;
     if (!bio || !pos) {
       report[key]!.unresolved.push(name);
@@ -209,9 +229,10 @@ function ensureCard(name: string, club: string, year: number, position: Position
     // evidence of his level, so a squad-player rating (starter 82, bench 81); the club-finish
     // layer of build-era-ratings then moves the side as a whole.
     const rating = position ? 82 : 81;
+    const cardName = bio.name ?? name;
     const raw: Raw = {
-      id: newId(club, name, year),
-      name,
+      id: newId(club, cardName, year),
+      name: cardName,
       position: pos,
       primaryPosition: pos,
       club,
@@ -236,6 +257,7 @@ function ensureCard(name: string, club: string, year: number, position: Position
     };
     created.push(raw);
     report[key]!.created.push(raw.id);
+    cardNameById.set(raw.id, cardName);
     index({ ...(raw as unknown as Player), positions: [pos], availableInGame: undefined } as Player);
     return raw.id as string;
   }
@@ -271,6 +293,7 @@ function ensureCard(name: string, club: string, year: number, position: Position
   };
   created.push(raw);
   report[key]!.created.push(raw.id);
+  cardNameById.set(raw.id, base.name);
   if (exact) {
     // the era-only / hidden card for this exact season gives way to the new one
     const old = rawById.get(exact.id);
@@ -305,12 +328,12 @@ let xiiiAdded = 0;
 for (const { club, year } of real) {
   const key = `${club}|${year}`;
   let e17 = s17By.get(key);
+  let lineupFor: (S17 & { match: string }) | null = null;
   if (!e17) {
     const lu = lineups.find((l) => l.club === club && l.year === year);
     if (lu) {
       e17 = { club, year, source: lu.source, squad: lu.squad };
-      // a full match-day 17 also gives the club-season an era side
-      if (lu.squad.length === 17) s17Added.push({ club, year, source: `${lu.source} (${lu.match})`, squad: lu.squad });
+      lineupFor = lu;
     }
   }
   const existing = merged(club, year);
@@ -324,15 +347,23 @@ for (const { club, year } of real) {
   const xiiiPos: Position[] = [];
   const xiiiNames: string[] = [];
   if (e17) {
+    const resolved17: { number: number; position: string; name: string }[] = [];
     for (const m of [...e17.squad].sort((a, b) => a.number - b.number)) {
       const code = m.position.trim().toUpperCase();
       const pos = POS[code] ?? (Object.values(POS).includes(code as Position) ? (code as Position) : null);
       const id = ensureCard(m.name, club, year, pos, source, key);
+      if (id) resolved17.push({ number: m.number, position: m.position, name: cardNameById.get(id) ?? m.name });
       if (m.number <= 13 && pos) {
-        if (id) xiiiIds.push(id);
+        // two listed players resolving to one card (e.g. Widnes 2003–04's two Julian O'Neills)
+        // leave the XIII incomplete rather than fielding one card twice
+        if (id && !xiiiIds.includes(id)) xiiiIds.push(id);
         xiiiPos.push(pos);
-        xiiiNames.push(m.name);
+        xiiiNames.push(id ? cardNameById.get(id) ?? m.name : m.name);
       }
+    }
+    // a researched match-day 17 also gives the club-season an era side, once every player has a card
+    if (lineupFor && resolved17.length === 17) {
+      s17Added.push({ club, year, source: `${lineupFor.source} (${lineupFor.match})`, squad: resolved17 });
     }
   } else if (existing?.wikipediaPlayers?.length === 13) {
     existing.wikipediaPlayers.forEach((n, i) => ensureCard(n, club, year, (existing.positions?.[i] as Position) ?? null, existing.source ?? "", key));
@@ -342,7 +373,7 @@ for (const { club, year } of real) {
   // spin XIII: only when the club-season has none that works
   if (e17 && xiiiIds.length === 13 && xiiiPos.length === 13) {
     const ex = merged(club, year);
-    const exWorks = ex && ex.playerIds.length === 13;
+    const exWorks = ex && ex.playerIds.length === 13 && isSpinnable(club, year);
     if (!exWorks) {
       slVerified[club] ??= {};
       slVerified[club]![String(year)] = {
@@ -355,7 +386,40 @@ for (const { club, year } of real) {
       report[key]!.xiii = "added";
       xiiiAdded++;
     } else report[key]!.xiii = "existing";
-  } else if (merged(club, year)) report[key]!.xiii = "existing";
+  } else if (merged(club, year) && isSpinnable(club, year)) report[key]!.xiii = "existing";
+  else if (lineupFor || e17) {
+    // No complete line-up: a XIII from this club-season's own cards, each at the position he
+    // played in the sourced line-up (exact positions only, no stretching).
+    const pool = [...new Map(
+      [...byKey.values()].flat()
+        .filter((p) => cardYear(p) === year && clubMatches(p, club) && p.category !== "current" && p.availableInGame !== false && !p.id.includes("-hist-era-"))
+        .map((p) => [p.id, p])
+    ).values()];
+    const order = new Map(e17!.squad.map((m, i) => [bios[m.name]?.name ?? m.name, i]));
+    pool.sort((a, b) => (order.get(a.name) ?? 99) - (order.get(b.name) ?? 99) || b.peakRating - a.peakRating);
+    const ids: string[] = [], pos: Position[] = [], names: string[] = [];
+    const used = new Set<string>();
+    let ok = true;
+    for (const slot of SLOTS) {
+      const pick = pool.find((p) => !used.has(p.id) && !used.has(`n:${p.name}`) && p.position === slot);
+      if (!pick) { ok = false; break; }
+      used.add(pick.id); used.add(`n:${pick.name}`);
+      ids.push(pick.id); pos.push(slot); names.push(pick.name);
+    }
+    if (ok) {
+      slVerified[club] ??= {};
+      slVerified[club]![String(year)] = {
+        source,
+        playerIds: ids,
+        positions: pos,
+        wikipediaPlayers: names,
+        verifiedAt: `${TAG} (composite: this season's cards at the positions they played in the sourced line-ups)`,
+      };
+      report[key]!.xiii = "added";
+      xiiiAdded++;
+      console.log(`  composite XIII: ${club} ${year}`);
+    }
+  }
 }
 
 // ---- summary ------------------------------------------------------------------------------------
@@ -366,6 +430,14 @@ const noXiii = rows.filter(([, r]) => r.xiii === "none").map(([k]) => k);
 console.log(`club-seasons with no XIII source: ${noXiii.length}\n  ${noXiii.join(", ")}`);
 
 if (WRITE) {
+  for (const r of historic) {
+    const fix = POSITION_FIXES[r.id];
+    if (!fix || r.position === fix.position) continue;
+    r.position = fix.position;
+    r.primaryPosition = fix.position;
+    r.positions = fix.positions;
+    r.positionFixNote = `${TAG}: ${fix.why}`;
+  }
   const merged2 = [...historic, ...created];
   if (s17Added.length) {
     fs.writeFileSync(D("era-starting-17s.json"), `${JSON.stringify([...s17, ...s17Added], null, 2)}\n`);

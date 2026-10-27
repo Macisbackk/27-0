@@ -2033,8 +2033,8 @@
  {
   "club": "Crusaders RL",
   "year": 2009,
-  "source": "https://www.rugbyleagueproject.org/matches/15679",
-  "match": "R12 3 May 2009 Huddersfield Giants 40-16 Celtic Crusaders",
+  "source": "https://www.rugbyleagueproject.org/matches/15876",
+  "match": "R24 16 Aug 2009 Wakefield Trinity Wildcats 46-12 Celtic Crusaders",
   "squad": [
    {
     "number": 1,
@@ -2054,17 +2054,17 @@
    {
     "number": 4,
     "position": "C",
-    "name": "Mark Dalle Cort"
+    "name": "Steve Tyrer"
    },
    {
     "number": 5,
     "position": "W",
-    "name": "Paul Ballard"
+    "name": "Mark Dalle Cort"
    },
    {
     "number": 6,
     "position": "FE",
-    "name": "Damien Quinn"
+    "name": "Matty Smith"
    },
    {
     "number": 7,
@@ -2079,47 +2079,47 @@
    {
     "number": 9,
     "position": "HK",
-    "name": "Lincoln Withers"
+    "name": "Neil Budworth"
    },
    {
     "number": 10,
     "position": "FR",
-    "name": "Jordan James"
+    "name": "Mark Bryant"
    },
    {
     "number": 11,
     "position": "2R",
-    "name": "Jason Chan"
+    "name": "Ben Flower"
    },
    {
     "number": 12,
     "position": "2R",
-    "name": "Chris Beasley"
+    "name": "Jason Chan"
    },
    {
     "number": 13,
     "position": "L",
-    "name": "Peter Lupton"
+    "name": "Lloyd White"
    },
    {
     "number": 14,
     "position": "B",
-    "name": "David Tangata-Toa"
+    "name": "Geraint Davies"
    },
    {
     "number": 15,
     "position": "B",
-    "name": "Aled James"
+    "name": "David Tangata-Toa"
    },
    {
     "number": 16,
     "position": "B",
-    "name": "Mark Bryant"
+    "name": "Jordan James"
    },
    {
     "number": 17,
     "position": "B",
-    "name": "Neil Budworth"
+    "name": "Lewis Mills"
    }
   ]
  },

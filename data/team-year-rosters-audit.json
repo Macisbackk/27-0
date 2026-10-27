@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-10-27T18:07:22.468Z",
+  "generatedAt": "2026-10-27T18:38:09.825Z",
   "sources": [
     "Verified Wikipedia/manual XIII only (era-wikipedia-squads.json, sl-era-verified-squads.json)",
     "Current squad for 2026 only (current-squads.json)",
     "Super League season gate (super-league-club-years.json)"
   ],
   "minPlayers": 13,
-  "verifiedSquadsMerged": 356,
-  "verifiedPlayersRejected": 220,
+  "verifiedSquadsMerged": 376,
+  "verifiedPlayersRejected": 207,
   "unresolvedSquads": [
     {
       "team": "Toulouse Olympique",
@@ -21,8 +21,8 @@
     }
   ],
   "currentYearSquadsBuilt": 14,
-  "playableCount": 356,
-  "hiddenCount": 2,
+  "playableCount": 377,
+  "hiddenCount": 0,
   "playable": [
     {
       "team": "Bradford Bulls",
@@ -375,6 +375,41 @@
       "count": 31
     },
     {
+      "team": "Crusaders RL",
+      "year": "2009",
+      "count": 13
+    },
+    {
+      "team": "Crusaders RL",
+      "year": "2010",
+      "count": 13
+    },
+    {
+      "team": "Crusaders RL",
+      "year": "2011",
+      "count": 13
+    },
+    {
+      "team": "Gateshead Thunder",
+      "year": "1999",
+      "count": 13
+    },
+    {
+      "team": "Halifax Panthers",
+      "year": "1998",
+      "count": 13
+    },
+    {
+      "team": "Halifax Panthers",
+      "year": "2002",
+      "count": 13
+    },
+    {
+      "team": "Halifax Panthers",
+      "year": "2003",
+      "count": 13
+    },
+    {
       "team": "Huddersfield Giants",
       "year": "1998",
       "count": 13
@@ -701,6 +736,16 @@
     },
     {
       "team": "Hull KR",
+      "year": "2015",
+      "count": 13
+    },
+    {
+      "team": "Hull KR",
+      "year": "2016",
+      "count": 13
+    },
+    {
+      "team": "Hull KR",
       "year": "2018",
       "count": 13
     },
@@ -901,7 +946,17 @@
     },
     {
       "team": "Leigh Leopards",
+      "year": "2005",
+      "count": 13
+    },
+    {
+      "team": "Leigh Leopards",
       "year": "2017",
+      "count": 13
+    },
+    {
+      "team": "Leigh Leopards",
+      "year": "2021",
       "count": 13
     },
     {
@@ -1016,7 +1071,17 @@
     },
     {
       "team": "London Broncos",
+      "year": "2014",
+      "count": 13
+    },
+    {
+      "team": "London Broncos",
       "year": "2019",
+      "count": 13
+    },
+    {
+      "team": "London Broncos",
+      "year": "2024",
       "count": 13
     },
     {
@@ -1150,8 +1215,23 @@
       "count": 13
     },
     {
+      "team": "Salford Red Devils",
+      "year": "2025",
+      "count": 13
+    },
+    {
+      "team": "Sheffield Eagles",
+      "year": "1997",
+      "count": 13
+    },
+    {
       "team": "Sheffield Eagles",
       "year": "1998",
+      "count": 13
+    },
+    {
+      "team": "Sheffield Eagles",
+      "year": "1999",
       "count": 13
     },
     {
@@ -1206,6 +1286,11 @@
     },
     {
       "team": "St Helens",
+      "year": "2006",
+      "count": 13
+    },
+    {
+      "team": "St Helens",
       "year": "2007",
       "count": 13
     },
@@ -1237,6 +1322,11 @@
     {
       "team": "St Helens",
       "year": "2013",
+      "count": 13
+    },
+    {
+      "team": "St Helens",
+      "year": "2014",
       "count": 13
     },
     {
@@ -1298,6 +1388,16 @@
       "team": "St Helens",
       "year": "2026",
       "count": 32
+    },
+    {
+      "team": "Toronto Wolfpack",
+      "year": "2020",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
+      "year": "2022",
+      "count": 13
     },
     {
       "team": "Toulouse Olympique",
@@ -1626,6 +1726,11 @@
     },
     {
       "team": "Widnes Vikings",
+      "year": "2014",
+      "count": 13
+    },
+    {
+      "team": "Widnes Vikings",
       "year": "2015",
       "count": 13
     },
@@ -1805,18 +1910,7 @@
       "count": 35
     }
   ],
-  "hidden": [
-    {
-      "team": "St Helens",
-      "year": "2006",
-      "reason": "verified squad failed playability gate"
-    },
-    {
-      "team": "St Helens",
-      "year": "2014",
-      "reason": "verified squad failed playability gate"
-    }
-  ],
+  "hidden": [],
   "membershipMismatches": [],
   "incomplete": []
 }

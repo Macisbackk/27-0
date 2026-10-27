@@ -2648,6 +2648,55 @@
       ],
       "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
     },
+    "2014": {
+      "source": "https://www.rugbyleagueproject.org/matches/29698",
+      "playerIds": [
+        "london-hist-ben-farrar",
+        "london-hist-jordan-atkins-2014",
+        "london-hist-james-cunningham-2014",
+        "london-hist-thomas-minns-2014",
+        "london-hist-denny-solomona-2014",
+        "london-hist-joe-keyes-2014",
+        "london-hist-josh-drinkwater-2014",
+        "london-hist-nick-slyney-2014",
+        "london-hist-scott-moore-2014",
+        "london-hist-olsi-krasniqi-2014",
+        "london-hist-atelea-vea-2014",
+        "london-hist-alex-foster-2014",
+        "london-hist-matt-cook-2014"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "wikipediaPlayers": [
+        "Ben Farrar",
+        "Jordan Atkins",
+        "James Cunningham",
+        "Thomas Minns",
+        "Denny Solomona",
+        "Joe Keyes",
+        "Josh Drinkwater",
+        "Nick Slyney",
+        "Scott Moore",
+        "Olsi Krasniqi",
+        "Atelea Vea",
+        "Alex Foster",
+        "Matt Cook"
+      ],
+      "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
+    },
     "2018": {
       "source": "https://en.wikipedia.org/wiki/2018_London_Broncos_season",
       "playerIds": [
@@ -2695,6 +2744,55 @@
         "Will Lovell",
         "Sadiq Adebiyi"
       ]
+    },
+    "2024": {
+      "source": "https://mail.rugbyleagueproject.org/matches/62301",
+      "playerIds": [
+        "london-hist-alex-walker-2024",
+        "london-hist-lee-kershaw-2024",
+        "london-hist-robbie-storey-2024",
+        "london-hist-jarred-bassett-2024",
+        "london-hist-hakim-miloudi",
+        "london-hist-oliver-leyland-2024",
+        "london-hist-jimmy-meadows-2024",
+        "london-hist-rhys-kennedy",
+        "london-hist-ugo-tison-2024",
+        "london-hist-lewis-bienek-2024",
+        "london-hist-will-lovell-2024",
+        "london-hist-ethan-natoli-2024",
+        "london-hist-jacob-jones-2024"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "wikipediaPlayers": [
+        "Alex Walker",
+        "Lee Kershaw",
+        "Robbie Storey",
+        "Jarred Bassett",
+        "Hakim Miloudi",
+        "Oliver Leyland",
+        "Jimmy Meadows",
+        "Rhys Kennedy",
+        "Ugo Tison",
+        "Lewis Bienek",
+        "Will Lovell",
+        "Ethan Natoli",
+        "Jacob Jones"
+      ],
+      "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
     }
   },
   "Salford Red Devils": {
@@ -3821,6 +3919,55 @@
         "Kallum Watkins",
         "Sam Stone",
         "Oliver Partington"
+      ],
+      "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
+    },
+    "2025": {
+      "source": "https://mail.rugbyleagueproject.org/matches/113944",
+      "playerIds": [
+        "salford-hist-ryan-brierley-2025",
+        "salford-hist-nene-macdonald-2025",
+        "salford-hist-esan-marsters-2025",
+        "salford-hist-tim-lafai-2025",
+        "salford-hist-deon-cross-2025",
+        "salford-hist-jayden-nikorima-2025",
+        "salford-hist-marc-sneyd-2025",
+        "salford-hist-brad-singleton-2025",
+        "salford-hist-chris-atkin-2025",
+        "salford-hist-chris-hill-2025",
+        "salford-hist-shane-wright-2025",
+        "salford-hist-kallum-watkins-2025",
+        "salford-hist-joe-shorrocks-2025"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "wikipediaPlayers": [
+        "Ryan Brierley",
+        "Nene Macdonald",
+        "Esan Marsters",
+        "Tim Lafai",
+        "Deon Cross",
+        "Jayden Nikorima",
+        "Marc Sneyd",
+        "Brad Singleton",
+        "Chris Atkin",
+        "Chris Hill",
+        "Shane Wright",
+        "Kallum Watkins",
+        "Joe Shorrocks"
       ],
       "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
     }
@@ -6815,21 +6962,21 @@
       "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
     },
     "2006": {
-      "source": "https://en.wikipedia.org/wiki/2006_Super_League_Grand_Final",
+      "source": "https://en.wikipedia.org/wiki/2006_Super_League_Grand_Final (2006 Super League Grand Final 14 Oct 2006 St Helens 26-4 Hull FC)",
       "playerIds": [
-        "paul-wellens",
-        "st-helens-hist-ade-gardner",
-        "jamie-lyon",
-        "st-helens-hist-willie-talau",
-        "st-helens-hist-francis-meli",
-        "leon-pryce",
-        "sean-long",
-        "paul-anderson",
-        "keiron-cunningham",
-        "st-helens-hist-jason-cayless",
-        "st-helens-hist-lee-gilmour",
-        "st-helens-hist-jon-wilkin",
-        "st-helens-hist-jason-hooper"
+        "st-helens-hist-paul-wellens-2006",
+        "st-helens-hist-ade-gardner-2006",
+        "st-helens-hist-jamie-lyon-2006",
+        "st-helens-hist-willie-talau-2006",
+        "st-helens-hist-francis-meli-2006",
+        "st-helens-hist-leon-pryce-2006",
+        "st-helens-leg-sean-long-2006",
+        "st-helens-hist-paul-anderson-2006",
+        "st-helens-hist-keiron-cunningham-2006",
+        "st-helens-hist-jason-cayless-2006",
+        "st-helens-hist-lee-gilmour-2006",
+        "st-helens-hist-jon-wilkin-2006",
+        "st-helens-hist-jason-hooper-2006"
       ],
       "positions": [
         "FULLBACK",
@@ -6860,7 +7007,8 @@
         "Lee Gilmour",
         "Jon Wilkin",
         "Jason Hooper"
-      ]
+      ],
+      "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
     },
     "2007": {
       "source": "https://www.rugbyleagueproject.org/seasons/super-league-2007/st-helens/detail.html?order=pos",
@@ -7153,6 +7301,55 @@
         "Willie Manu",
         "Iosia Soliola",
         "Louie Mccarthy-Scarsbrook"
+      ],
+      "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
+    },
+    "2014": {
+      "source": "https://www.rugbyleagueproject.org/seasons/super-league-2014/st-helens/detail.html?order=pos",
+      "playerIds": [
+        "st-helens-cur-jonny-lomax-2014",
+        "st-helens-cur-tommy-makinson-2014",
+        "st-helens-cur-jordan-turner-2014",
+        "st-helens-cur-mark-percival-2014",
+        "st-helens-hist-adam-swift-2014",
+        "st-helens-hist-lance-hohaia-2014",
+        "st-helens-hist-luke-walsh-2014",
+        "st-helens-hist-alex-walmsley-2014",
+        "st-helens-hist-james-roby-2014",
+        "st-helens-hist-kyle-amor",
+        "st-helens-hist-jon-wilkin-2014",
+        "st-helens-hist-willie-manu-2014",
+        "st-helens-hist-sia-soliola-2014"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "wikipediaPlayers": [
+        "Jonny Lomax",
+        "Tommy Makinson",
+        "Jordan Turner",
+        "Mark Percival",
+        "Adam Swift",
+        "Lance Hohaia",
+        "Luke Walsh",
+        "Alex Walmsley",
+        "James Roby",
+        "Kyle Amor",
+        "Jon Wilkin",
+        "Willie Manu",
+        "Sia Soliola"
       ],
       "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
     },
@@ -10298,6 +10495,55 @@
     }
   },
   "Sheffield Eagles": {
+    "1997": {
+      "source": "https://www.rugbyleagueproject.org/matches/15350",
+      "playerIds": [
+        "sheffield-hist-lynton-stott-1997",
+        "sheffield-hist-whetu-taewa-1997",
+        "sheffield-hist-nick-pinkney-1997",
+        "sheffield-hist-keith-senior-1997",
+        "sheffield-hist-jean-marc-garcia-1997",
+        "sheffield-hist-rod-doyle-1997",
+        "sheffield-hist-mark-aston-1997",
+        "sheffield-hist-paul-broadbent-1997",
+        "sheffield-hist-johnny-lawless-1997",
+        "sheffield-hist-steve-edmed-1997",
+        "sheffield-hist-paul-carr-1997",
+        "sheffield-hist-danny-mcallister",
+        "sheffield-hist-martin-wood-1997"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "wikipediaPlayers": [
+        "Lynton Stott",
+        "Whetu Taewa",
+        "Nick Pinkney",
+        "Keith Senior",
+        "Jean-Marc Garcia",
+        "Rod Doyle",
+        "Mark Aston",
+        "Paul Broadbent",
+        "Johnny Lawless",
+        "Steve Edmed",
+        "Paul Carr",
+        "Danny Mcallister",
+        "Martin Wood"
+      ],
+      "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
+    },
     "1998": {
       "source": "era-starting-17s.json (verified starting 17)",
       "playerIds": [
@@ -10343,6 +10589,55 @@
         "Dale Laughton",
         "Paul Carr",
         "Darren Shaw",
+        "Rod Doyle"
+      ],
+      "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
+    },
+    "1999": {
+      "source": "https://www.rugbyleagueproject.org/matches/3150",
+      "playerIds": [
+        "sheffield-hist-dave-watson",
+        "sheffield-hist-dale-cardoza-1999",
+        "sheffield-hist-daio-powell",
+        "sheffield-hist-keith-senior-1999",
+        "sheffield-hist-matt-crowther-1999",
+        "sheffield-hist-jeff-hardy",
+        "sheffield-hist-martin-pearson",
+        "sheffield-hist-steve-molloy",
+        "sheffield-hist-johnny-lawless-1999",
+        "sheffield-hist-darren-shaw-1999",
+        "sheffield-hist-michael-jackson-1999",
+        "sheffield-hist-darren-turner-1999",
+        "sheffield-hist-rod-doyle-1999"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "wikipediaPlayers": [
+        "Dave Watson",
+        "Dale Cardoza",
+        "Daio Powell",
+        "Keith Senior",
+        "Matt Crowther",
+        "Jeff Hardy",
+        "Martin Pearson",
+        "Steve Molloy",
+        "Johnny Lawless",
+        "Darren Shaw",
+        "Michael Jackson",
+        "Darren Turner",
         "Rod Doyle"
       ],
       "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
@@ -12759,29 +13054,29 @@
       "playerIds": [
         "widnes-hist-stuart-spruce-2003",
         "widnes-hist-paul-devlin",
+        "widnes-hist-chris-giles-2003",
         "widnes-hist-adam-hughes-2003",
         "widnes-hist-jason-demetriou-2003",
-        "widnes-hist-chris-giles-2003",
         "widnes-hist-julian-o-neill-2003",
         "widnes-hist-ryan-sheridan-2003",
         "widnes-hist-robert-relf-2003",
+        "widnes-hist-david-mills-2003",
         "widnes-hist-shane-millard-2003",
-        "widnes-hist-julian-o-neill-2003",
         "widnes-hist-andy-hay-2003",
-        "widnes-hist-steve-mccurrie-2003",
+        "widnes-hist-anthony-farrell-2003",
         "widnes-hist-daniel-frame-2003"
       ],
       "positions": [
         "FULLBACK",
         "WING",
-        "CENTRE",
-        "CENTRE",
         "WING",
+        "CENTRE",
+        "CENTRE",
         "STAND_OFF",
         "SCRUM_HALF",
         "PROP",
-        "HOOKER",
         "PROP",
+        "HOOKER",
         "SECOND_ROW",
         "SECOND_ROW",
         "LOOSE_FORWARD"
@@ -12789,33 +13084,33 @@
       "wikipediaPlayers": [
         "Stuart Spruce",
         "Paul Devlin",
+        "Chris Giles",
         "Adam Hughes",
         "Jason Demetriou",
-        "Chris Giles",
-        "Julian O'Neill",
+        "Julian O'neill",
         "Ryan Sheridan",
         "Robert Relf",
+        "David Mills",
         "Shane Millard",
-        "Julian O'Neill",
         "Andy Hay",
-        "Steve McCurrie",
+        "Anthony Farrell",
         "Daniel Frame"
       ],
-      "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
+      "verifiedAt": "era-coverage-2026-10 (composite: this season's cards at the positions they played in the sourced line-ups)"
     },
     "2004": {
       "source": "era-starting-17s.json (historic_starting_17_clean_verified.txt)",
       "playerIds": [
         "widnes-hist-stephen-rowlands-2004",
         "widnes-hist-chris-giles-2004",
+        "widnes-hist-nicky-royle-2004",
         "widnes-hist-adam-hughes-2004",
         "widnes-hist-aaron-moule-2004",
-        "widnes-hist-nicky-royle-2004",
         "widnes-hist-julian-o-neill-2004",
         "widnes-hist-stephen-myler",
-        "widnes-hist-julian-o-neill-2004",
-        "widnes-hist-shane-millard-2004",
         "widnes-hist-robert-relf-2004",
+        "widnes-hist-david-mills-2004",
+        "widnes-hist-shane-millard-2004",
         "widnes-hist-andy-hay-2004",
         "widnes-hist-troy-wozniak-2004",
         "widnes-hist-simon-finnigan"
@@ -12823,14 +13118,14 @@
       "positions": [
         "FULLBACK",
         "WING",
-        "CENTRE",
-        "CENTRE",
         "WING",
+        "CENTRE",
+        "CENTRE",
         "STAND_OFF",
         "SCRUM_HALF",
         "PROP",
-        "HOOKER",
         "PROP",
+        "HOOKER",
         "SECOND_ROW",
         "SECOND_ROW",
         "LOOSE_FORWARD"
@@ -12838,19 +13133,19 @@
       "wikipediaPlayers": [
         "Stephen Rowlands",
         "Chris Giles",
+        "Nicky Royle",
         "Adam Hughes",
         "Aaron Moule",
-        "Nicky Royle",
-        "Julian O'Neill",
+        "Julian O'neill",
         "Stephen Myler",
-        "Julian O'Neill",
-        "Shane Millard",
         "Robert Relf",
+        "David Mills",
+        "Shane Millard",
         "Andy Hay",
         "Troy Wozniak",
         "Simon Finnigan"
       ],
-      "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
+      "verifiedAt": "era-coverage-2026-10 (composite: this season's cards at the positions they played in the sourced line-ups)"
     },
     "2005": {
       "source": "era-starting-17s.json (historic_starting_17_clean_verified.txt)",
@@ -12995,6 +13290,55 @@
         "Steve Pickersgill",
         "David Allen",
         "Gareth Hock",
+        "Hep Cahill"
+      ],
+      "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
+    },
+    "2014": {
+      "source": "https://www.rugbyleagueproject.org/matches/29681",
+      "playerIds": [
+        "widnes-hist-rhys-hanbury-2014",
+        "widnes-hist-patrick-ah-van-2014",
+        "widnes-hist-chris-dean-2014",
+        "widnes-hist-cameron-phelps-2014",
+        "widnes-hist-paddy-flynn-2014",
+        "widnes-hist-kevin-brown-2014",
+        "widnes-hist-joe-mellor-2014",
+        "widnes-hist-philip-joseph-2014",
+        "widnes-hist-jon-clarke-2014",
+        "widnes-hist-ben-kavanagh-2014",
+        "widnes-hist-danny-galea",
+        "widnes-hist-danny-tickle-2014",
+        "widnes-hist-hep-cahill-2014"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "wikipediaPlayers": [
+        "Rhys Hanbury",
+        "Patrick Ah Van",
+        "Chris Dean",
+        "Cameron Phelps",
+        "Paddy Flynn",
+        "Kevin Brown",
+        "Joe Mellor",
+        "Philip Joseph",
+        "Jon Clarke",
+        "Ben Kavanagh",
+        "Danny Galea",
+        "Danny Tickle",
         "Hep Cahill"
       ],
       "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
@@ -13442,6 +13786,104 @@
       ],
       "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
     },
+    "2015": {
+      "source": "https://www.rugbyleagueproject.org/matches/30861",
+      "playerIds": [
+        "hull-kr-hist-kieran-dixon-2015",
+        "hull-kr-hist-josh-mantellato",
+        "hull-kr-hist-kris-welham-2015",
+        "hull-kr-hist-liam-salter-2015",
+        "hull-kr-hist-ken-sio-2015",
+        "hull-kr-hist-maurice-blair-2015",
+        "hull-kr-hist-albert-kelly-2015",
+        "hull-kr-hist-adam-walker-2015",
+        "hull-kr-hist-shaun-lunt-2015",
+        "hull-kr-hist-tony-puletua-2015",
+        "hull-kr-hist-kevin-larroyer-2015",
+        "hull-kr-hist-graeme-horne-2015",
+        "hull-kr-hist-tyrone-mccarthy-2015"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "wikipediaPlayers": [
+        "Kieran Dixon",
+        "Josh Mantellato",
+        "Kris Welham",
+        "Liam Salter",
+        "Ken Sio",
+        "Maurice Blair",
+        "Albert Kelly",
+        "Adam Walker",
+        "Shaun Lunt",
+        "Tony Puletua",
+        "Kevin Larroyer",
+        "Graeme Horne",
+        "Tyrone Mccarthy"
+      ],
+      "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
+    },
+    "2016": {
+      "source": "https://www.rugbyleagueproject.org/matches/31058",
+      "playerIds": [
+        "hull-kr-hist-ben-cockayne-2016",
+        "hull-kr-hist-ken-sio-2016",
+        "hull-kr-hist-thomas-minns",
+        "hull-kr-hist-graeme-horne-2016",
+        "hull-kr-hist-joe-wardill-2016",
+        "hull-kr-hist-maurice-blair-2016",
+        "hull-kr-hist-albert-kelly-2016",
+        "hull-kr-hist-dane-tilse",
+        "hull-kr-hist-shaun-lunt-2016",
+        "hull-kr-hist-adam-walker-2016",
+        "hull-kr-hist-james-greenwood-2016",
+        "hull-kr-hist-james-donaldson-2016",
+        "hull-kr-hist-mitchell-allgood-2016"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "wikipediaPlayers": [
+        "Ben Cockayne",
+        "Ken Sio",
+        "Thomas Minns",
+        "Graeme Horne",
+        "Joe Wardill",
+        "Maurice Blair",
+        "Albert Kelly",
+        "Dane Tilse",
+        "Shaun Lunt",
+        "Adam Walker",
+        "James Greenwood",
+        "James Donaldson",
+        "Mitchell Allgood"
+      ],
+      "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
+    },
     "2018": {
       "source": "era-starting-17s.json (historic_starting_17_clean_verified.txt)",
       "playerIds": [
@@ -13787,6 +14229,55 @@
     }
   },
   "Leigh Leopards": {
+    "2005": {
+      "source": "https://mail.rugbyleagueproject.org/matches/2657",
+      "playerIds": [
+        "leigh-hist-john-wilshere-2005",
+        "leigh-hist-steve-maden-2005",
+        "leigh-hist-ben-cooper-2005",
+        "leigh-hist-phil-jones-2005",
+        "leigh-hist-rob-smyth-2005",
+        "leigh-hist-jason-kent-2005",
+        "leigh-hist-john-duffy-2005",
+        "leigh-hist-darren-fleary-2005",
+        "leigh-hist-robert-mears-2005",
+        "leigh-hist-craig-stapleton",
+        "leigh-hist-steve-mccurrie-2005",
+        "leigh-hist-james-king-2005",
+        "leigh-hist-mark-leafa"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "wikipediaPlayers": [
+        "John Wilshere",
+        "Steve Maden",
+        "Ben Cooper",
+        "Phil Jones",
+        "Rob Smyth",
+        "Jason Kent",
+        "John Duffy",
+        "Darren Fleary",
+        "Robert Mears",
+        "Craig Stapleton",
+        "Steve Mccurrie",
+        "James King",
+        "Mark Leafa"
+      ],
+      "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
+    },
     "2017": {
       "source": "era-starting-17s.json (historic_starting_17_clean_verified.txt)",
       "playerIds": [
@@ -13833,6 +14324,55 @@
         "Atelea Vea",
         "Cory Paterson",
         "Harrison Hansen"
+      ],
+      "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
+    },
+    "2021": {
+      "source": "https://www.rugbyleagueproject.org/matches/45457",
+      "playerIds": [
+        "leigh-hist-ryan-brierley-2021",
+        "leigh-hist-jack-logan-2021",
+        "leigh-hist-ben-hellewell-2021",
+        "leigh-hist-iain-thornley-2021",
+        "leigh-hist-brendan-elliot-2021",
+        "leigh-hist-joe-mellor-2021",
+        "leigh-hist-james-bell-2021",
+        "leigh-hist-rob-butler-2021",
+        "leigh-hist-liam-hood-2021",
+        "leigh-hist-adam-sidlow-2021",
+        "leigh-hist-jordan-thompson-2021",
+        "leigh-hist-sam-stone-2021",
+        "leigh-hist-jai-whitbread-2021"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "wikipediaPlayers": [
+        "Ryan Brierley",
+        "Jack Logan",
+        "Ben Hellewell",
+        "Iain Thornley",
+        "Brendan Elliot",
+        "Joe Mellor",
+        "James Bell",
+        "Rob Butler",
+        "Liam Hood",
+        "Adam Sidlow",
+        "Jordan Thompson",
+        "Sam Stone",
+        "Jai Whitbread"
       ],
       "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
     },
@@ -13980,6 +14520,457 @@
         "Frankie Halton",
         "Ethan O'Neill",
         "Isaac Liu"
+      ],
+      "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
+    }
+  },
+  "Halifax Panthers": {
+    "1998": {
+      "source": "https://www.rugbyleagueproject.org/matches/2585",
+      "playerIds": [
+        "halifax-hist-damian-gibson-1998",
+        "halifax-hist-jamie-bloem-1998",
+        "halifax-hist-daio-powell-1998",
+        "halifax-hist-martin-pearson-1998",
+        "halifax-hist-david-bouveng-1998",
+        "halifax-hist-chris-chester-1998",
+        "halifax-hist-gavin-clinch-1998",
+        "halifax-hist-karl-harrison-1998",
+        "halifax-hist-paul-rowley-1998",
+        "halifax-hist-kelvin-skerrett-1998",
+        "halifax-hist-gary-mercer-1998",
+        "halifax-hist-des-clark-1998",
+        "halifax-hist-simon-baldwin-1998"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "wikipediaPlayers": [
+        "Damian Gibson",
+        "Jamie Bloem",
+        "Daio Powell",
+        "Martin Pearson",
+        "David Bouveng",
+        "Chris Chester",
+        "Gavin Clinch",
+        "Karl Harrison",
+        "Paul Rowley",
+        "Kelvin Skerrett",
+        "Gary Mercer",
+        "Des Clark",
+        "Simon Baldwin"
+      ],
+      "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
+    },
+    "2002": {
+      "source": "https://mail.rugbyleagueproject.org/matches/3829",
+      "playerIds": [
+        "halifax-hist-jason-flowers-2002",
+        "halifax-hist-robbie-beckett-2002",
+        "halifax-hist-david-woods-2002",
+        "halifax-hist-stuart-donlan-2002",
+        "halifax-hist-colum-halpenny-2002",
+        "halifax-hist-andrew-dunemann-2002",
+        "halifax-hist-gavin-clinch-2002",
+        "halifax-hist-brett-goldspink-2002",
+        "halifax-hist-johnny-lawless-2002",
+        "halifax-hist-jim-gannon-2002",
+        "halifax-hist-shayne-mcmenemy-2002",
+        "halifax-hist-danny-tickle-2002",
+        "halifax-hist-karle-hammond-2002"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "wikipediaPlayers": [
+        "Jason Flowers",
+        "Robbie Beckett",
+        "David Woods",
+        "Stuart Donlan",
+        "Colum Halpenny",
+        "Andrew Dunemann",
+        "Gavin Clinch",
+        "Brett Goldspink",
+        "Johnny Lawless",
+        "Jim Gannon",
+        "Shayne Mcmenemy",
+        "Danny Tickle",
+        "Karle Hammond"
+      ],
+      "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
+    },
+    "2003": {
+      "source": "https://mail.rugbyleagueproject.org/matches/3717",
+      "playerIds": [
+        "halifax-hist-darryl-cardiss-2003",
+        "halifax-hist-andrew-frew-2003",
+        "halifax-hist-lee-greenwood-2003",
+        "halifax-hist-ryan-clayton-2003",
+        "halifax-hist-stuart-donlan-2003",
+        "halifax-hist-dane-dorahy-2003",
+        "halifax-hist-sean-penkywicz-2003",
+        "halifax-hist-neil-harmon-2003",
+        "halifax-hist-chris-birchall-2003",
+        "halifax-hist-johnny-lawless-2003",
+        "halifax-hist-heath-cruckshank-2003",
+        "halifax-hist-andrew-brocklehurst-2003",
+        "halifax-hist-martin-moana-2003"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "PROP",
+        "HOOKER",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "wikipediaPlayers": [
+        "Darryl Cardiss",
+        "Andrew Frew",
+        "Lee Greenwood",
+        "Ryan Clayton",
+        "Stuart Donlan",
+        "Dane Dorahy",
+        "Sean Penkywicz",
+        "Neil Harmon",
+        "Chris Birchall",
+        "Johnny Lawless",
+        "Heath Cruckshank",
+        "Andrew Brocklehurst",
+        "Martin Moana"
+      ],
+      "verifiedAt": "era-coverage-2026-10 (composite: this season's cards at the positions they played in the sourced line-ups)"
+    }
+  },
+  "Gateshead Thunder": {
+    "1999": {
+      "source": "https://www.rugbyleagueproject.org/matches/3125",
+      "playerIds": [
+        "gateshead-hist-ben-sammut-1999",
+        "gateshead-hist-ian-herron-1999",
+        "gateshead-hist-david-maiden-1999",
+        "gateshead-hist-craig-simon-1999",
+        "gateshead-hist-matthew-daylight-1999",
+        "gateshead-hist-will-robinson-1999",
+        "gateshead-hist-willie-peters-1999",
+        "gateshead-hist-danny-lee-1999",
+        "gateshead-hist-kerrod-walters-1999",
+        "gateshead-hist-brett-green-1999",
+        "gateshead-hist-luke-felsch-1999",
+        "gateshead-hist-adam-maher-1999",
+        "gateshead-hist-tony-grimaldi-1999"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "wikipediaPlayers": [
+        "Ben Sammut",
+        "Ian Herron",
+        "David Maiden",
+        "Craig Simon",
+        "Matthew Daylight",
+        "Will Robinson",
+        "Willie Peters",
+        "Danny Lee",
+        "Kerrod Walters",
+        "Brett Green",
+        "Luke Felsch",
+        "Adam Maher",
+        "Tony Grimaldi"
+      ],
+      "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
+    }
+  },
+  "Crusaders RL": {
+    "2009": {
+      "source": "https://www.rugbyleagueproject.org/matches/15876",
+      "playerIds": [
+        "crusaders-hist-anthony-blackwood-2009",
+        "crusaders-hist-luke-dyer-2009",
+        "crusaders-hist-josh-hannay-2009",
+        "crusaders-hist-steve-tyrer-2009",
+        "crusaders-hist-mark-dalle-cort-2009",
+        "crusaders-hist-matty-smith-2009",
+        "crusaders-hist-jace-van-dijk-2009",
+        "crusaders-hist-ryan-o-hara-2009",
+        "crusaders-hist-neil-budworth-2009",
+        "crusaders-hist-mark-bryant-2009",
+        "crusaders-hist-ben-flower-2009",
+        "crusaders-hist-jason-chan-2009",
+        "crusaders-hist-lloyd-white-2009"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "wikipediaPlayers": [
+        "Anthony Blackwood",
+        "Luke Dyer",
+        "Josh Hannay",
+        "Steve Tyrer",
+        "Mark Dalle Cort",
+        "Matty Smith",
+        "Jace Van Dijk",
+        "Ryan O'hara",
+        "Neil Budworth",
+        "Mark Bryant",
+        "Ben Flower",
+        "Jason Chan",
+        "Lloyd White"
+      ],
+      "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
+    },
+    "2010": {
+      "source": "https://www.rugbyleagueproject.org/matches/17707",
+      "playerIds": [
+        "crusaders-hist-elliot-kear-2010",
+        "crusaders-hist-gareth-thomas-2010",
+        "crusaders-hist-tony-martin-2010",
+        "crusaders-hist-vince-mellars-2010",
+        "crusaders-hist-luke-dyer-2010",
+        "crusaders-hist-peter-lupton-2010",
+        "crusaders-hist-michael-witt-2010",
+        "crusaders-hist-ryan-o-hara-2010",
+        "crusaders-hist-lincoln-withers-2010",
+        "crusaders-hist-mark-bryant-2010",
+        "crusaders-hist-jason-chan-2010",
+        "crusaders-hist-weller-hauraki-2010",
+        "crusaders-hist-rocky-trimarchi-2010"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "wikipediaPlayers": [
+        "Elliot Kear",
+        "Gareth Thomas",
+        "Tony Martin",
+        "Vince Mellars",
+        "Luke Dyer",
+        "Peter Lupton",
+        "Michael Witt",
+        "Ryan O'hara",
+        "Lincoln Withers",
+        "Mark Bryant",
+        "Jason Chan",
+        "Weller Hauraki",
+        "Rocky Trimarchi"
+      ],
+      "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
+    },
+    "2011": {
+      "source": "https://www.rugbyleagueproject.org/matches/23491",
+      "playerIds": [
+        "crusaders-hist-clinton-schifcofske-2011",
+        "crusaders-hist-stuart-reardon-2011",
+        "crusaders-hist-gareth-thomas-2011",
+        "crusaders-hist-vince-mellars-2011",
+        "crusaders-hist-elliot-kear-2011",
+        "crusaders-hist-tony-martin-2011",
+        "crusaders-hist-michael-witt-2011",
+        "crusaders-hist-ryan-o-hara-2011",
+        "crusaders-hist-lincoln-withers-2011",
+        "crusaders-hist-mark-bryant-2011",
+        "crusaders-hist-aled-james-2011",
+        "crusaders-hist-frank-winterstein-2011",
+        "crusaders-hist-ben-flower-2011"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "wikipediaPlayers": [
+        "Clinton Schifcofske",
+        "Stuart Reardon",
+        "Gareth Thomas",
+        "Vince Mellars",
+        "Elliot Kear",
+        "Tony Martin",
+        "Michael Witt",
+        "Ryan O'hara",
+        "Lincoln Withers",
+        "Mark Bryant",
+        "Aled James",
+        "Frank Winterstein",
+        "Ben Flower"
+      ],
+      "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
+    }
+  },
+  "Toronto Wolfpack": {
+    "2020": {
+      "source": "https://www.rugbyleagueproject.org/matches/40382",
+      "playerIds": [
+        "toronto-hist-blake-wallace-2020",
+        "toronto-hist-liam-kay-2020",
+        "toronto-hist-hakim-miloudi-2020",
+        "toronto-hist-ricky-leutele-2020",
+        "toronto-hist-matthew-russell-2020",
+        "toronto-hist-joe-mellor-2020",
+        "toronto-hist-josh-mccrone-2020",
+        "toronto-hist-gadwin-springer-2020",
+        "toronto-hist-james-cunningham-2020",
+        "toronto-hist-brad-singleton-2020",
+        "toronto-hist-sonny-bill-williams-2020",
+        "toronto-hist-tom-olbison-2020",
+        "toronto-hist-jon-wilkin-2020"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "wikipediaPlayers": [
+        "Blake Wallace",
+        "Liam Kay",
+        "Hakim Miloudi",
+        "Ricky Leutele",
+        "Matthew Russell",
+        "Joe Mellor",
+        "Josh McCrone",
+        "Gadwin Springer",
+        "James Cunningham",
+        "Brad Singleton",
+        "Sonny Bill Williams",
+        "Tom Olbison",
+        "Jon Wilkin"
+      ],
+      "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
+    }
+  },
+  "Toulouse Olympique": {
+    "2022": {
+      "source": "https://www.rugbyleagueproject.org/seasons/super-league-2022/toulouse-olympique/detail.html?order=pos",
+      "playerIds": [
+        "toulouse-hist-olly-ashall-bott-2022",
+        "toulouse-hist-matthew-russell-2022",
+        "toulouse-hist-chris-hankinson-2022",
+        "toulouse-hist-guy-armitage-2022",
+        "toulouse-hist-paul-marcon-2022",
+        "toulouse-hist-corey-norman-2022",
+        "toulouse-hist-lucas-albert-2022",
+        "toulouse-hist-romain-navarrete-2022",
+        "toulouse-hist-nathan-peats-2022",
+        "toulouse-hist-daniel-alvaro-2022",
+        "toulouse-hist-andrew-dixon-2022",
+        "toulouse-hist-dominique-peyroux-2022",
+        "toulouse-hist-anthony-marion-2022"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "wikipediaPlayers": [
+        "Olly Ashall-Bott",
+        "Matthew Russell",
+        "Chris Hankinson",
+        "Guy Armitage",
+        "Paul Marcon",
+        "Corey Norman",
+        "Lucas Albert",
+        "Romain Navarrete",
+        "Nathan Peats",
+        "Daniel Alvaro",
+        "Andrew Dixon",
+        "Dominique Peyroux",
+        "Anthony Marion"
       ],
       "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
     }
