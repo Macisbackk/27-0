@@ -14,7 +14,6 @@ import {
   getSpinDurationMs,
 } from "@/lib/game/slot-reel";
 import { spinTimingMark } from "@/lib/game/spin-timing";
-import { getClubColors } from "@/lib/clubs";
 import { formatSpinReelTeamName } from "@/lib/clubs/spin-reel-team-name";
 import { formatShortYear } from "@/lib/players/prime-year";
 import { playSlotLand, playSlotSpinStart, playSlotSpinTick } from "@/lib/sound";
@@ -63,7 +62,6 @@ export function RecruitmentSlotReveal({
   const yearReelRef = useRef<SlotReelHandle>(null);
   const shellRef = useRef<HTMLDivElement>(null);
   const onCompleteRef = useRef(onComplete);
-  const clubPrimaryRef = useRef(getClubColors(target.team).primary);
   const [isSpinning, setIsSpinning] = useState(true);
   const [landed, setLanded] = useState(false);
   const skipRef = useRef<(() => void) | null>(null);
@@ -74,13 +72,7 @@ export function RecruitmentSlotReveal({
   // Lock while spinning; release once the result has settled.
   useScrollLock(!landed, "quick-mode-spin");
 
-  const clubColors = useMemo(
-    () => getClubColors(target.team),
-    [target.team]
-  );
-
   onCompleteRef.current = onComplete;
-  clubPrimaryRef.current = clubColors.primary;
 
   const { teamPlan, yearPlan } = useMemo(() => {
     const t0 = spinTimingMark("reel-plan-start");
@@ -116,11 +108,7 @@ export function RecruitmentSlotReveal({
         shell.classList.add("slot-reel-lock-flash");
         shell.classList.remove("border-pitch-600/70", "bg-pitch-950/80");
         shell.classList.add("bg-pitch-950/95");
-        // Top edge only — avoid a single-side club colour border.
-        (shell as HTMLElement).style.borderColor = "";
-        (shell as HTMLElement).style.borderTopColor = clubPrimaryRef.current;
-        (shell as HTMLElement).style.borderTopWidth = "2px";
-        (shell as HTMLElement).style.borderTopStyle = "solid";
+        // No club-colour border on the reels once they land (owner, v1.39): it looked awkward.
       }
     };
 
