@@ -9,7 +9,7 @@ on:
 jobs:
   shots:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
     permissions:
       contents: write
     steps:
@@ -37,6 +37,12 @@ jobs:
           node scripts/preview-shots.mjs
           # Manager Mode break run (report only: preview-shots/manager-break.txt).
           [ -f scripts/manager-break.mjs ] && (timeout 600 node scripts/manager-break.mjs || true)
+          # Throwaway (preview/manager only): Manager e2e runs, report-only.
+          mkdir -p preview-shots/e2e
+          (CI=1 timeout 420 node scripts/e2e-career.mjs > preview-shots/e2e/e2e-career.txt 2>&1; echo "exit $?" >> preview-shots/e2e/e2e-career.txt) || true
+          (timeout 420 node scripts/e2e-career-chaos.mjs > preview-shots/e2e/e2e-career-chaos.txt 2>&1; echo "exit $?" >> preview-shots/e2e/e2e-career-chaos.txt) || true
+          (timeout 420 node scripts/e2e-stress.mjs > preview-shots/e2e/e2e-stress.txt 2>&1; echo "exit $?" >> preview-shots/e2e/e2e-stress.txt) || true
+          [ -d e2e-shots ] && cp -r e2e-shots preview-shots/e2e/shots || true
           # Popup audit (report only: preview-shots/popup-audit.txt).
           [ -f scripts/popup-audit.mjs ] && (timeout 400 node scripts/popup-audit.mjs || true)
       - name: Publish
