@@ -42,7 +42,7 @@ export type RunStatus = "IN_PROGRESS" | "COMPLETED" | "ABANDONED";
 export type LeaderboardPeriod = "WEEKLY" | "MONTHLY" | "ALL_TIME";
 
 export interface PlayerAchievements {
-  /** @deprecated Hidden from UI — kept for legacy data only */
+  /** Club Legend tag: only on cards for a club listed in data/club-legends.json (players/honour-tags.ts). */
   clubLegend?: boolean;
   /** @deprecated MoS years come from data/man-of-steel-winners.json */
   manOfSteel?: boolean;
@@ -118,7 +118,7 @@ export interface Player extends PlayerAchievements {
   availableInGame?: boolean;
   /** When false, hidden from Super League gameplay pools (pre-1996-only careers). */
   superLeagueEligible?: boolean;
-  /** Rugby League Hall of Fame inductee (from data flags). */
+  /** Men's Rugby League Hall of Fame (RFL) inductee: data/hall-of-fame.json, on every card of the player. */
   hallOfFame?: boolean;
 }
 

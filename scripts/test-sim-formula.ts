@@ -94,7 +94,9 @@ const pct = (x: number) => `${(x * 100).toFixed(2)}%`;
       return s.typicalRating + q * (s.eliteRating - s.typicalRating);
     };
     const classic = getTeamStrength({ avgRating: at("classic"), mode: "classic" });
-    const era = getTeamStrength({
+    // Era opponents carry a small extra edge (v1.36); add it back to compare the ladders.
+    const eraEdge = SIM_FORMULA_MODE_SCALE.era.opponentEdge ?? 0;
+    const era = eraEdge + getTeamStrength({
       avgRating: at("era"),
       mode: "era",
       chemistry: SIM_FORMULA_MODE_SCALE.era.typicalChemistry,
@@ -107,7 +109,9 @@ const pct = (x: number) => `${(x * 100).toFixed(2)}%`;
       symmetric = false;
     }
   }
-  assert(symmetric, "same draft quality ⇒ same strength and same 27-0 chance in Classic and Era");
+  assert(symmetric, "same draft quality ⇒ same strength and same 27-0 chance in Classic and Era (before Era's opponent edge)");
+  const edge = SIM_FORMULA_MODE_SCALE.era.opponentEdge ?? 0;
+  assert(edge > 0 && edge <= 1, "Era opponents are only slightly tougher (edge 0–1)");
   assert(
     SIM_FORMULA_MODE_SCALE.era.typicalRating > SIM_FORMULA_MODE_SCALE.classic.typicalRating,
     "Era is anchored higher than Classic (Era cards are rated higher)"

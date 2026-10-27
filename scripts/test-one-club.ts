@@ -117,7 +117,7 @@ for (const option of options.slice(0, 4)) {
   const override = getOneClubFormulaOverride(squad, option.club);
   const q = getOneClubDraftQuality(getAverageSquadRating(squad), option.club);
   const strength = getTeamStrength({ avgRating: override.avgRating, mode: "era", chemistry: override.chemistry });
-  const expected = TEAM_STRENGTH_TYPICAL + 8 * q + (override.chemistry - era.typicalChemistry);
+  const expected = TEAM_STRENGTH_TYPICAL + 8 * q + (override.chemistry - era.typicalChemistry) - (era.opponentEdge ?? 0);
   check(Math.abs(strength - expected) < 1e-9, `${option.club}: strength = 80 + 8q + chemistry above the club's typical`);
   // Deterministic season: same seed + squad → same result, and the formula override is used.
   const a = simulateSeason(squad, "oc-season-seed", { formulaOverride: override });

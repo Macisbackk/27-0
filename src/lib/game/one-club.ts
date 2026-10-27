@@ -100,6 +100,8 @@ export function getOneClubFormulaOverride(
   const q = getOneClubDraftQuality(getAverageSquadRating(squad), club);
   return {
     avgRating: era.typicalRating + q * (era.eliteRating - era.typicalRating),
-    chemistry: computeChemistry(squad).bonus - scale.typicalChemistry + era.typicalChemistry,
+    // One-Club keeps its own difficulty: cancel the small edge Era opponents get (v1.36).
+    chemistry:
+      computeChemistry(squad).bonus - scale.typicalChemistry + era.typicalChemistry + (era.opponentEdge ?? 0),
   };
 }
