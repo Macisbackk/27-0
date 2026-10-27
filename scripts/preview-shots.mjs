@@ -186,4 +186,58 @@ for (const id of ["cherry", "chalk", "neon"]) {
   await ctx.close();
 }
 
+// Settings → Dark mode (v1.24): black page, one coloured pitch surface per screen. The preference
+// is a localStorage key read by the <head> bootstrap script, so set it, then reload.
+async function darkContext(themeId) {
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+  await ctx.addInitScript((id) => {
+    localStorage.setItem("27-0-dark-mode", JSON.stringify({ on: true, updatedAt: 1 }));
+    if (id) {
+      localStorage.setItem(
+        "27-0-ui-theme-store",
+        JSON.stringify({ selectedThemeId: id, unlockedThemeIds: ["default", id], purchaseIds: [] }),
+      );
+    }
+  }, themeId ?? null);
+  return ctx;
+}
+{
+  const ctx = await darkContext();
+  await shot(ctx, "60-dark-home", "/");
+  await shot(ctx, "61-dark-home-full", "/", null, true);
+  await shot(ctx, "62-dark-store", "/store");
+  await shot(ctx, "63-dark-draft", "/play?e2e=1", async (page) => {
+    await tapFirst(page, [/Skip boost|Continue without boost/i]);
+    await page.waitForTimeout(800);
+  });
+  await shot(ctx, "64-dark-manager", "/manager");
+  await shot(ctx, "65-dark-leaderboard", "/leaderboard");
+  await shot(ctx, "66-dark-settings", "/settings", async (page) => {
+    await page.getByRole("switch", { name: "Dark mode" }).scrollIntoViewIfNeeded({ timeout: 5000 });
+    await page.waitForTimeout(300);
+  });
+  await shot(ctx, "67-dark-puzzles", "/mini-games");
+  await shot(ctx, "68-dark-profile", "/profile");
+  await ctx.close();
+}
+{
+  const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
+  await ctx.addInitScript(() => localStorage.setItem("27-0-dark-mode", JSON.stringify({ on: true, updatedAt: 1 })));
+  await shot(ctx, "69-dark-desktop-home", "/");
+  await ctx.close();
+}
+{
+  const ctx = await darkContext("cherry");
+  await shot(ctx, "70-dark-cherry-home", "/");
+  await shot(ctx, "71-dark-cherry-store", "/store");
+  await ctx.close();
+}
+// The toggle itself: light page, flip it on in Settings (the page turns dark straight away).
+await shot(phone, "72-settings-toggle-on", "/settings", async (page) => {
+  const sw = page.getByRole("switch", { name: "Dark mode" });
+  await sw.scrollIntoViewIfNeeded({ timeout: 5000 });
+  await sw.click({ timeout: 5000 });
+  await page.waitForTimeout(500);
+});
+
 await browser.close();

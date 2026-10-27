@@ -11,6 +11,8 @@ import {
   setNormalEraVariant,
 } from "@/lib/storage/preferences";
 import { getActiveTheme, UI_THEME_CHANGED_EVENT } from "@/lib/storage/ui-theme-store";
+import { isDarkModeOn, setDarkMode } from "@/lib/storage/dark-mode-store";
+import { DARK_MODE_CHANGED_EVENT } from "@/lib/ui/dark-mode";
 import { resetCareerStats } from "@/lib/storage/stats";
 import { getQuickSpins, setQuickSpins } from "@/lib/storage/spin-settings";
 import { InstallAppCard } from "@/components/InstallAppCard";
@@ -134,6 +136,7 @@ export function SettingsPanel() {
   const [era, setEra] = useState(false);
   const [quickSpins, setQuickSpinsOn] = useState(false);
   const [themeName, setThemeName] = useState("Default");
+  const [darkMode, setDarkModeOn] = useState(false);
   const [resetState, setResetState] = useState<"idle" | "confirm" | "busy" | "done" | "error">("idle");
   const [mailState, setMailState] = useState<"idle" | "busy" | "sent" | "error">("idle");
   const hiddenCoaches = useHiddenCoachesList();
@@ -143,16 +146,20 @@ export function SettingsPanel() {
     setEra(getNormalEraVariant());
     setQuickSpinsOn(getQuickSpins());
     setThemeName(getActiveTheme().label);
+    setDarkModeOn(isDarkModeOn());
     setReady(true);
     const onTheme = () => setThemeName(getActiveTheme().label);
     const onEra = (e: Event) => {
       const detail = (e as CustomEvent<{ eraMode: boolean }>).detail;
       if (detail) setEra(detail.eraMode);
     };
+    const onDark = () => setDarkModeOn(isDarkModeOn());
     window.addEventListener(UI_THEME_CHANGED_EVENT, onTheme);
+    window.addEventListener(DARK_MODE_CHANGED_EVENT, onDark);
     window.addEventListener(NORMAL_ERA_VARIANT_CHANGED_EVENT, onEra);
     return () => {
       window.removeEventListener(UI_THEME_CHANGED_EVENT, onTheme);
+      window.removeEventListener(DARK_MODE_CHANGED_EVENT, onDark);
       window.removeEventListener(NORMAL_ERA_VARIANT_CHANGED_EVENT, onEra);
     };
   }, []);
@@ -234,6 +241,19 @@ export function SettingsPanel() {
           ) : null}
         </Row>
         <LinkRow href="/store" label="Theme" hint={`${themeName} · change it in the Store`} />
+        <Row label="Dark mode" hint="Black page, only the main card in your theme colour.">
+          {ready ? (
+            <Switch
+              on={darkMode}
+              label="Dark mode"
+              onToggle={() => {
+                playUiClick();
+                setDarkMode(!darkMode);
+                setDarkModeOn(!darkMode);
+              }}
+            />
+          ) : null}
+        </Row>
       </Group>
 
       <Group title="Account">
