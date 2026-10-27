@@ -78,6 +78,17 @@ await shot(phone, "17-manager-preseason", "/manager", async (page) => {
   await page.getByRole("dialog", { name: "Manager Mode walkthrough" }).getByRole("button", { name: "Skip" }).click({ timeout: 8000 }).catch(() => {});
   await page.waitForTimeout(800);
 });
+// Pre-season: the summer window is still open; the market, and a free agent ("Free · £Xk/yr wages").
+await shot(phone, "17b-manager-preseason-market", "/manager", async (page) => {
+  await page.getByRole("region", { name: "Transfer window open" }).getByRole("button", { name: "Open market" }).click({ timeout: 5000 });
+  await page.waitForTimeout(800);
+});
+await shot(phone, "17c-manager-free-agent", "/manager", async (page) => {
+  await page.getByRole("region", { name: "Transfer window open" }).getByRole("button", { name: "Open market" }).click({ timeout: 5000 });
+  await page.waitForTimeout(600);
+  await page.locator('li[data-free-agent="true"]').first().scrollIntoViewIfNeeded({ timeout: 5000 });
+  await page.waitForTimeout(300);
+});
 await shot(desktop, "18-desktop-manager", "/manager");
 // Home once a Manager career exists on this device (the phone context just started one).
 await shot(phone, "19-home-with-career", "/");

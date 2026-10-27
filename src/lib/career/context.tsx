@@ -27,6 +27,7 @@ import {
   deadlineMarketBatch,
   isDeadlineDay,
   isWindowOpen,
+  windowStatus,
   pauseDeadline as pauseDeadlinePure,
   recordUserDeal,
   rejectBid as rejectBidPure,
@@ -235,16 +236,14 @@ export function CareerProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  // Summer window, or the mid-season window (a fresh list every round it's open).
+  // Summer window (the same list through pre-season), or Deadline Day (fresh names every three hours).
   const market = useMemo(() => {
     if (!state) return [];
-    if (state.phase === "transfers") return buildMarket(state, legacy.unlockedLegends);
-    if (isWindowOpen(state)) {
-      // Deadline Day: fresh names every three hours of the clock.
-      const salt = isDeadlineDay(state) ? `mid-${state.matchdayIndex}-dd${deadlineMarketBatch(state)}` : `mid-${state.matchdayIndex}`;
-      return buildMarket(state, legacy.unlockedLegends, salt);
-    }
-    return [];
+    const w = windowStatus(state);
+    if (!w.open) return [];
+    if (w.kind === "summer" || w.kind === "preseason") return buildMarket(state, legacy.unlockedLegends);
+    const salt = isDeadlineDay(state) ? `mid-${state.matchdayIndex}-dd${deadlineMarketBatch(state)}` : `mid-${state.matchdayIndex}`;
+    return buildMarket(state, legacy.unlockedLegends, salt);
   }, [state, legacy.unlockedLegends]);
 
   const value: CareerContextValue = {
@@ -362,7 +361,8 @@ export function CareerProvider({ children }: { children: ReactNode }) {
       if (!r.error) {
         if (isWindowOpen(r.state)) {
           const p = r.state.players[listing.playerId];
-          if (p) recordUserDeal(r.state, { playerId: p.id, playerName: p.name, pos: p.pos, rating: p.rating, from: listing.fromClubId, to: r.state.userClubId, fee: listing.price });
+          // Free agents go down as free: the fee actually paid, never a list price.
+          if (p) recordUserDeal(r.state, { playerId: p.id, playerName: p.name, pos: p.pos, rating: p.rating, from: listing.fromClubId, to: r.state.userClubId, fee: p.fee ?? 0 });
         }
         commit(r.state);
       }
@@ -382,7 +382,7 @@ export function CareerProvider({ children }: { children: ReactNode }) {
             rating: before.rating,
             from: r.state.userClubId,
             to: r.soldTo ?? null,
-            fee: r.fee ?? Math.max(0, r.state.budget - s.budget),
+            fee: r.fee ?? 0,
           });
         }
         commit(r.state);

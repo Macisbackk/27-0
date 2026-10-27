@@ -255,6 +255,7 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
     return (
       <div className="flex flex-col gap-4">
         <PreseasonCard />
+        <TransferWindowCard onOpenMarket={onOpenMarket} />
       </div>
     );
   }
@@ -262,6 +263,7 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
     return (
       <div className="flex flex-col gap-4">
         <PreseasonResults />
+        <TransferWindowCard onOpenMarket={onOpenMarket} />
         {stageBar("Start the season", () => passStage("preseason"))}
       </div>
     );

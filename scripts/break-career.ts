@@ -47,6 +47,7 @@ import {
   clubNeed,
   DEADLINE_MINUTES,
   type CareerState,
+  wagesDueNow,
 } from "../src/lib/career";
 import { isCareer } from "../src/lib/career/storage";
 
@@ -453,13 +454,15 @@ notes.push(`A) random walks: ${steps} actions in ${((Date.now() - t0) / 1000).to
         const o = offers[0]!;
         const buyerBefore = s.clubs[o.clubId]!.squad.length;
         const budget = s.budget;
+        // The fee lands, and the rest of his season's wages come off the bill.
+        const wagesSaved = wagesDueNow(s, s.players[o.playerId]!);
         const r = acceptOffer(s, o.id);
         if (!r.error) {
           accepted++;
           s = { ...r.state, lineup: repairLineup(r.state, r.state.lineup) };
           if (!s.clubs[o.clubId]!.squad.includes(o.playerId)) fail("B10: accepted player didn't join the bidder");
           if (s.clubs[o.clubId]!.squad.length !== buyerBefore + 1) fail("B10: bidder squad size wrong");
-          if (s.budget !== budget + o.fee) fail("B10: fee not paid");
+          if (s.budget !== budget + o.fee + wagesSaved) fail("B10: fee (plus wages saved) not paid");
           if (liveOffers(s).some((x) => x.playerId === o.playerId)) fail("B10: other offers for a sold player still live");
           if (!acceptOffer(s, o.id).error) fail("B10: accepted the same offer twice");
         }

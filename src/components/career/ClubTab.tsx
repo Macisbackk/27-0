@@ -8,7 +8,7 @@ import type { SeasonChallenge } from "@/lib/career/types";
 import { useCareer } from "@/lib/career/context";
 import { playUiClick, playWarning } from "@/lib/sound";
 import { Card, Eyebrow, ProgressBar, Stars } from "./bits";
-import { TransferRoundUp } from "./TransferNews";
+import { TransferRoundUp, WindowStatusLine } from "./TransferNews";
 
 /** "Best margin: 12 / 30" rather than a bare "12/30" for goals that track a best, not a count. */
 function challengeProgressLabel(c: SeasonChallenge): string {
@@ -107,7 +107,8 @@ export function ClubTab({ onOpenVault, onOpenRecords }: { onOpenVault: () => voi
 
       <Card>
         <Eyebrow>The club</Eyebrow>
-        <div className="mt-2 grid grid-cols-2 gap-3 text-sm">
+        <WindowStatusLine className="mt-2" />
+        <div className="mt-3 grid grid-cols-2 gap-3 text-sm">
           <div>
             <p className="text-[11px] uppercase tracking-wide text-gray-500">Transfer budget</p>
             <p className={`font-display text-xl font-bold ${s.budget < 0 ? "text-danger" : "text-white"}`}>{formatMoney(s.budget)}</p>

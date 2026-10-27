@@ -1,6 +1,6 @@
 import { generateRandomPlayerName } from "./names";
-import { randInt, type Rng } from "./rng";
-import type { CareerPlayer, Pos } from "./types";
+import { randInt, rngFor, type Rng } from "./rng";
+import type { CareerPlayer, CareerState, Pos } from "./types";
 import { formatPounds } from "../format-money";
 
 /** Shirt numbers 1–13. */
@@ -78,6 +78,52 @@ export function playerValue(player: Pick<CareerPlayer, "rating" | "age" | "poten
   const upside = Math.max(0, player.potential - player.rating) * 0.03;
   const raw = base * ageFactor * (1 + upside);
   return Math.max(5_000, Math.round(raw / 5_000) * 5_000);
+}
+
+/** Seasons left on a deal, including the current one. Older saves had none: derive a stable 1–3. */
+export function contractYearsLeft(p: Pick<CareerPlayer, "id" | "age" | "contract">): number {
+  if (typeof p.contract === "number" && p.contract > 0) return p.contract;
+  const roll = rngFor("contract", p.id)();
+  if (p.age >= 32) return roll < 0.6 ? 1 : 2;
+  return 1 + Math.floor(roll * 3);
+}
+
+/** Clubs take less for a man whose deal is running down (they'd lose him for nothing next summer). */
+export function contractFeeFactor(yearsLeft: number): number {
+  return yearsLeft <= 1 ? 0.75 : yearsLeft === 2 ? 0.9 : 1;
+}
+
+/**
+ * Fee to prise a player away from the club that holds his contract: his value (rating, age,
+ * upside) times the buyer's premium, cheaper in the last year of his deal.
+ * Free agents have no club and no fee — see `isFreeAgentListing`.
+ */
+export function transferFee(p: Pick<CareerPlayer, "id" | "rating" | "age" | "potential" | "contract">, premium = 1): number {
+  const raw = playerValue(p) * premium * contractFeeFactor(contractYearsLeft(p));
+  return Math.max(5_000, Math.round(raw / 5_000) * 5_000);
+}
+
+/** A season's wages for one player (the wage bill is the same share of the whole squad's value). */
+export function playerWage(p: Pick<CareerPlayer, "rating" | "age" | "potential">): number {
+  return Math.max(1_000, Math.round((playerValue(p) * WAGE_SHARE) / 1_000) * 1_000);
+}
+
+/**
+ * Share of this season's wages still to pay. The bill for the whole squad is paid when the season
+ * starts, so a signing in the summer window costs nothing extra now (he's on the bill at kick-off);
+ * from pre-season on, a new man's wages for the rest of the season are paid when he signs, and a
+ * player who leaves takes the rest of his wages off the bill.
+ */
+export function seasonWageShareLeft(state: Pick<CareerState, "phase" | "calendar">): number {
+  if (state.phase !== "season") return 0;
+  const rounds = state.calendar.filter((m) => m.label.startsWith("Round "));
+  if (rounds.length === 0) return 0;
+  return rounds.filter((m) => !m.played).length / rounds.length;
+}
+
+/** Wages paid now for signing this player (or saved by letting him go). */
+export function wagesDueNow(state: Pick<CareerState, "phase" | "calendar">, p: Pick<CareerPlayer, "rating" | "age" | "potential">): number {
+  return Math.round((playerWage(p) * seasonWageShareLeft(state)) / 1_000) * 1_000;
 }
 
 /** Manager Mode money (budgets, fees, wages): the game's one £ format. */

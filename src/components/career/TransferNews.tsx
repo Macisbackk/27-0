@@ -14,6 +14,7 @@ import {
   liveOffers,
   roundsUntilDeadline,
   seasonDeals,
+  windowStatus,
   type DeadlineEvent,
   type TransferDeal,
 } from "@/lib/career";
@@ -237,10 +238,32 @@ export function DeadlineDayCard({ onOpenMarket }: { onOpenMarket: () => void }) 
       ) : (
         <>
           <DeadlineFeed max={6} />
-          <p className="mt-3 text-sm font-semibold text-amber-200">Window shut. Round {WINDOW_CLOSES_BEFORE_ROUND} is next.</p>
+          <p className="mt-3 text-sm font-semibold text-amber-200">Window shut. Round {WINDOW_CLOSES_BEFORE_ROUND} is next, and it reopens after the season.</p>
         </>
       )}
     </section>
+  );
+}
+
+/** One line: is the transfer window open, and when does that change? (Season strip, Team and Club tabs.) */
+export function WindowStatusLine({ className = "" }: { className?: string }) {
+  const { state } = useCareer();
+  const w = windowStatus(state!);
+  return (
+    <p data-testid="window-status" data-window={w.open ? "open" : "shut"} className={`flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[13px] leading-snug ${className}`}>
+      <span
+        className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[11px] font-bold ${
+          w.open ? (w.kind === "deadline" ? "bg-amber-300/15 text-amber-200" : "bg-success/15 text-success") : "bg-white/10 text-[color:var(--fl-muted)]"
+        }`}
+      >
+        <span className={`h-1.5 w-1.5 rounded-full ${w.open ? (w.kind === "deadline" ? "bg-amber-300" : "bg-success") : "bg-gray-500"}`} aria-hidden />
+        {w.open ? (w.kind === "deadline" ? "Deadline Day · window open" : "Window open") : "Window shut"}
+      </span>
+      <span className="text-gray-300">
+        {w.detail}
+        {w.roundsUntil ? ` · ${w.roundsUntil} ${w.roundsUntil === 1 ? "round" : "rounds"} away` : ""}
+      </span>
+    </p>
   );
 }
 
@@ -249,15 +272,31 @@ export function TransferWindowCard({ onOpenMarket }: { onOpenMarket: () => void 
   const s = state!;
   // Deadline Day keeps its card after the window shuts, as a round-up of the day.
   if (isDeadlineDay(s)) return <DeadlineDayCard onOpenMarket={onOpenMarket} />;
-  // In-season transfers happen on Deadline Day only: a heads-up in the run-up to it.
+  const w = windowStatus(s);
+  // Pre-season: the summer window is still open until Round 1 kicks off.
+  if (w.open && w.kind === "preseason") {
+    return (
+      <section aria-label="Transfer window open" className="rounded-card bg-pitch-900 p-4 text-left ring-1 ring-success/40">
+        <WindowStatusLine />
+        <p className="mt-2 text-sm text-[color:var(--fl-muted)]">
+          <span className="font-semibold text-white">Last chance before the season.</span> Buy and sell until Round 1. After that the window
+          shuts until Deadline Day. Free agents cost no fee, only wages.
+        </p>
+        <GameButton size="md" variant="secondary" className="mt-3" onClick={() => { playUiClick(); onOpenMarket(); }}>
+          Open market
+        </GameButton>
+      </section>
+    );
+  }
+  // Shut until Deadline Day: a heads-up in the run-up to it.
   const until = roundsUntilDeadline(s);
   if (until === null || until > 5) return null;
   return (
     <section aria-label="Deadline Day coming" className="flex items-center gap-3 rounded-card bg-pitch-900 p-4">
       <span className="fl-number shrink-0 text-[26px] leading-none text-amber-300">{until}</span>
       <p className="min-w-0 text-left text-sm text-[color:var(--fl-muted)]">
-        <span className="font-semibold text-white">{until === 1 ? "Round" : "Rounds"} until Deadline Day.</span> Your only chance to
-        buy and sell this season.
+        <span className="font-semibold text-white">{until === 1 ? "Round" : "Rounds"} until Deadline Day.</span> The window is shut until
+        then. It&apos;s your only chance to buy and sell this season.
       </p>
     </section>
   );
@@ -301,9 +340,11 @@ export function TransferRoundUp() {
       <p className="text-[15px] font-bold text-white">Transfer round-up</p>
       {deals.length === 0 ? (
         <p className="mt-1 text-sm text-[color:var(--fl-muted)]">
-          {roundsUntilDeadline(s) === null && !isDeadlineDay(s)
-            ? "No deals this season."
-            : `No deals yet. Trade on Deadline Day, before Round ${WINDOW_CLOSES_BEFORE_ROUND}.`}
+          {(() => {
+            const w = windowStatus(s);
+            if (w.open) return w.kind === "deadline" ? "No deals yet. The clock is running." : "No deals yet. The window is open until Round 1 kicks off.";
+            return roundsUntilDeadline(s) === null ? "No deals this season." : `No deals yet. Trade on Deadline Day, before Round ${WINDOW_CLOSES_BEFORE_ROUND}.`;
+          })()}
         </p>
       ) : (
         <ul className="mt-1 divide-y divide-[color:var(--fl-line)]">

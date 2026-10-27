@@ -37,6 +37,9 @@ export interface CareerPlayer {
   fee?: number;
   /** Seasons left on his deal, including this one (see contracts.ts; older saves derive it). */
   contract?: number;
+  /** Club he last left as a free agent (released or sold with no buyer) and when: that club can't re-sign him for nothing the same year. */
+  leftClubId?: string;
+  leftYear?: number;
 }
 
 export interface CareerClub {
@@ -263,6 +266,8 @@ export interface TransferDeal {
   to: string | null;
   fee: number;
   deadlineDay?: boolean;
+  /** Done in the summer window (summer or pre-season). */
+  summer?: boolean;
   /** Involves the user's club. */
   user?: boolean;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { useArmed } from "@/hooks/useArmed";
 import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
@@ -14,8 +14,11 @@ import {
   prestigeRatingCap,
   WINDOW_CLOSES_BEFORE_ROUND,
   deadlineDecisionPending,
+  isFreeAgentListing,
   sellPrice,
+  signingCost,
   squadOf,
+  wagesDueNow,
   type MarketListing,
   type TransferError,
 } from "@/lib/career";
@@ -33,9 +36,22 @@ const ERROR_TEXT: Record<TransferError, string> = {
   "squad-min": `You need at least ${SQUAD_MIN} players.`,
   "not-available": "That player is no longer available.",
   lineup: "Couldn't update the team.",
+  "window-shut": "The transfer window is shut.",
 };
 
-export function TransferWindow({ midseason = false, onClose }: { midseason?: boolean; onClose?: () => void } = {}) {
+/** £45k → "£45k/yr wages". */
+const wagesText = (n: number) => `${formatMoney(n)}/yr wages`;
+
+/**
+ * The market. `summer` = the summer window screen (after departures); `preseason` = the same
+ * window reached from the pre-season hub; `deadline` = Deadline Day.
+ */
+export function TransferWindow({ mode = "summer", onClose }: { mode?: "summer" | "preseason" | "deadline"; onClose?: () => void } = {}) {
+  const midseason = mode === "deadline";
+  // Opened from the hub (pre-season or Deadline Day): start at the top, not where the hub was scrolled.
+  useEffect(() => {
+    if (mode !== "summer") window.scrollTo(0, 0);
+  }, [mode]);
   const { state, market, buy, sell, finishTransfers } = useCareer();
   const armed = useArmed();
   const [tab, setTab] = useState<"buy" | "sell">("buy");
@@ -52,13 +68,14 @@ export function TransferWindow({ midseason = false, onClose }: { midseason?: boo
     } else {
       if (l.legend) playLegendAppears();
       else playTransferComplete();
-      setMessage(`Signed ${s.players[l.playerId]?.name ?? legendById(l.playerId.replace(/^legend-/, ""))?.name ?? "a legend"}!`);
+      const name = s.players[l.playerId]?.name ?? legendById(l.playerId.replace(/^legend-/, ""))?.name ?? "a legend";
+      setMessage(isFreeAgentListing(l) ? `Signed ${name} on a free (${wagesText(l.wages)}).` : `Signed ${name}!`);
     }
   };
 
   return (
     <div className={CAREER_PAGE_CLASS}>
-      {midseason && onClose ? (
+      {mode !== "summer" && onClose ? (
         <nav aria-label="Manager navigation" className="-mb-2 flex">
           <button
             type="button"
@@ -73,7 +90,9 @@ export function TransferWindow({ midseason = false, onClose }: { midseason?: boo
       )}
       <PitchHero
         icon={<ShirtGlyph />}
-        eyebrow={midseason ? `Deadline Day · before Round ${WINDOW_CLOSES_BEFORE_ROUND}` : <>Transfer window · before {s.year}</>}
+        eyebrow={
+          midseason ? `Deadline Day · before Round ${WINDOW_CLOSES_BEFORE_ROUND}` : mode === "preseason" ? <>Transfer window · pre-season {s.year}</> : <>Transfer window · before {s.year}</>
+        }
         title={midseason ? "Last chance" : "Build your squad"}
       />
 
@@ -98,7 +117,13 @@ export function TransferWindow({ midseason = false, onClose }: { midseason?: boo
           <p className="mt-1"><Stars value={s.prestige} /></p>
         </div>
         <p className="col-span-3 text-xs text-gray-400">
-          Players rated up to <span className="font-semibold text-white">{prestigeRatingCap(s.prestige)}</span> will join you. Free agents and legends always will.
+          Players rated up to <span className="font-semibold text-white">{prestigeRatingCap(s.prestige)}</span> will join you, free agents included. Legends always will.
+        </p>
+        <p className="col-span-3 text-xs text-gray-400" data-testid="wage-note">
+          Free agents cost no fee, only wages.{" "}
+          {mode === "summer"
+            ? "Wages go on the bill when the season starts."
+            : "The rest of this season's wages are paid when he signs, and saved when a player leaves."}
         </p>
       </Card>
 
@@ -123,25 +148,35 @@ export function TransferWindow({ midseason = false, onClose }: { midseason?: boo
             const card = l.legend ? legendById(l.playerId.replace(/^legend-/, "")) : undefined;
             const p = s.players[l.playerId] ?? (card ? legendAsPlayer(card) : undefined);
             const from = l.fromClubId ? s.clubs[l.fromClubId] : null;
-            const affordable = s.budget >= l.price;
+            const free = isFreeAgentListing(l);
+            const cost = signingCost(s, l);
+            const affordable = s.budget >= cost.total;
+            const dueNow = cost.wagesNow > 0 && cost.wagesNow !== l.wages ? ` · ${formatMoney(cost.wagesNow)} this season` : "";
             return (
-              <li key={l.playerId} className={`flex items-center gap-3 rounded-tile px-3 py-2.5 text-left ${l.legend ? "bg-pitch-900 ring-1 ring-accent-gold/60" : "bg-pitch-900"}`}>
+              <li key={l.playerId} data-free-agent={free ? "true" : undefined} className={`flex items-center gap-3 rounded-tile px-3 py-2.5 text-left ${l.legend ? "bg-pitch-900 ring-1 ring-accent-gold/60" : "bg-pitch-900"}`}>
                 {from ? <ClubBadge club={from} size="sm" /> : <span title={l.legend ? "Legend" : "Free agent"} aria-label={l.legend ? "Legend" : "Free agent"} className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-pitch-700 text-[10px] font-bold text-gray-300">{l.legend ? "★" : "FA"}</span>}
                 <span className="min-w-0 flex-1">
                   <span className="block truncate font-semibold text-white">
                     {p?.name ?? "Unknown"}
                     {l.legend ? <span className="ml-1.5 text-[10px] font-bold uppercase text-accent-gold">Legend</span> : null}
                   </span>
-                  <span className="text-[11px] text-gray-400">
+                  <span className="block text-[11px] text-gray-400">
                     {p ? `${p.pos} · Age ${p.age}` : ""}
                     {card ? ` · ${card.club} great` : ""}
                     {p && p.age <= 21 ? <> · <Stars value={potentialStars(p.potential)} /></> : null}
                     {from ? <> · <ClubLink clubId={from.id}>{from.short}</ClubLink></> : l.legend ? "" : " · Free agent"}
                   </span>
+                  <span className="block text-[11px] text-gray-400">
+                    {free ? (
+                      <><span className="font-semibold text-success">Free</span> · {wagesText(l.wages)}{dueNow}</>
+                    ) : (
+                      <>{l.legend ? "Legend · " : ""}{wagesText(l.wages)}{dueNow}</>
+                    )}
+                  </span>
                 </span>
                 {p ? <RatingPill rating={p.rating} /> : null}
                 <GameButton size="sm" fullWidth={false} variant={affordable ? "theme" : "secondary"} disabled={!affordable} onClick={() => onBuy(l)}>
-                  {formatMoney(l.price)}
+                  {free ? "Free" : formatMoney(l.price)}
                 </GameButton>
               </li>
             );
@@ -158,7 +193,11 @@ export function TransferWindow({ midseason = false, onClose }: { midseason?: boo
                   {p.legend ? <span className="ml-1.5 text-[10px] font-bold uppercase text-accent-gold">Legend</span> : null}
                   {p.academy ? <span className="ml-1.5 text-[10px] font-bold uppercase text-sky-300">Academy</span> : null}
                 </span>
-                <span className="text-[11px] text-gray-400">Age {p.age}{p.age <= 21 ? <> · <Stars value={potentialStars(p.potential)} /></> : null}</span>
+                <span className="text-[11px] text-gray-400">
+                  Age {p.age}
+                  {p.age <= 21 ? <> · <Stars value={potentialStars(p.potential)} /></> : null}
+                  {wagesDueNow(s, p) > 0 ? ` · saves ${formatMoney(wagesDueNow(s, p))} wages` : ""}
+                </span>
               </span>
               <RatingPill rating={p.rating} />
               <GameButton
@@ -185,7 +224,10 @@ export function TransferWindow({ midseason = false, onClose }: { midseason?: boo
                   }
                 }}
               >
-                Sell {formatMoney(sellPrice(s, p.id))}
+                {(() => {
+                  const price = sellPrice(s, p.id);
+                  return price > 0 ? `Sell ${formatMoney(price)}` : "Let go (free)";
+                })()}
               </GameButton>
             </li>
           ))}
@@ -194,9 +236,9 @@ export function TransferWindow({ midseason = false, onClose }: { midseason?: boo
 
       <div className="mobile-action-bar sm:static sm:border-0 sm:bg-transparent sm:p-0" role="toolbar">
         <div className="mobile-action-bar__inner">
-          {midseason ? (
+          {mode !== "summer" ? (
             <GameButton size="lg" onClick={() => onClose?.()}>
-              Back to Deadline Day
+              {midseason ? "Back to Deadline Day" : "Back to pre-season"}
             </GameButton>
           ) : (
             <GameButton

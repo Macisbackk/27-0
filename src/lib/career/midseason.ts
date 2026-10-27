@@ -1,11 +1,17 @@
 /**
- * In-season transfers happen on one day only: Deadline Day, the stop before Round 16.
+ * Transfer windows, every season:
+ *   OPEN   the summer window — after the departures screen, through pre-season, until Round 1 kicks off;
+ *   SHUT   from Round 1 until Deadline Day;
+ *   OPEN   Deadline Day (the stop before Round 16) until its clock hits 0:00;
+ *   SHUT   from then until next summer's window.
+ * AI clubs follow the same windows: their signings happen in the summer window (free agents,
+ * see offseason.ts) and on Deadline Day only.
  * (Kept simple on purpose: no deals between rounds, just one big day.)
  * On Deadline Day: a 12-hour clock counts down, and deals, offers for
  * your players and fresh names on the market land as it runs. The window shuts at 0:00.
  * Everything is deterministic per save + round (+ half-hour slot), so reloading never re-rolls a deal.
  */
-import { LINEUP_SLOTS, SQUAD_MAX, SQUAD_MIN, effectiveRating, formatMoney, playerValue } from "./players";
+import { LINEUP_SLOTS, SQUAD_MAX, SQUAD_MIN, effectiveRating, formatMoney, playerValue, transferFee, wageBill, wagesDueNow } from "./players";
 import { buyersFor } from "./buyers";
 import { pick, rngFor, shuffle, type Rng } from "./rng";
 import type { CareerPlayer, CareerState, DeadlineClock, DeadlineOffer, Pos, TransferDeal } from "./types";
@@ -24,9 +30,52 @@ export function windowBounds(state: CareerState): { open: number; deadline: numb
   return { open, deadline };
 }
 
-/** In-season transfers: Deadline Day only, until its clock hits 0:00 (or you shut it). */
+export type WindowKind = "summer" | "preseason" | "deadline";
+
+export interface WindowStatus {
+  open: boolean;
+  /** Which window is open (null when shut). */
+  kind: WindowKind | null;
+  /** "Window open" / "Window shut" / "Deadline Day". */
+  label: string;
+  /** When it shuts (open) or next opens (shut). */
+  detail: string;
+  /** Shut before Deadline Day: league rounds until it opens. */
+  roundsUntil?: number;
+}
+
+/** Nothing has been played yet this season (pre-season, before Round 1 kicks off). */
+function beforeKickOff(state: CareerState): boolean {
+  return state.phase === "season" && state.matchdayIndex === 0 && !state.calendar[0]?.played;
+}
+
+/**
+ * Where the transfer window is right now. Worked out from the phase and the round alone, so saves
+ * from any version (made mid-summer, mid-season, on Deadline Day…) get the right answer.
+ */
+export function windowStatus(state: CareerState): WindowStatus {
+  if (state.phase === "transfers") return { open: true, kind: "summer", label: "Window open", detail: "Shuts when Round 1 kicks off" };
+  if (state.phase === "review" || state.phase === "departures") {
+    return { open: false, kind: null, label: "Window shut", detail: "Opens after the summer departures" };
+  }
+  if (beforeKickOff(state)) return { open: true, kind: "preseason", label: "Window open", detail: "Shuts when Round 1 kicks off" };
+  if (deadlineDecisionPending(state)) return { open: true, kind: "deadline", label: "Deadline Day", detail: "Window open until 0:00" };
+  const b = windowBounds(state);
+  if (b && state.matchdayIndex < b.deadline) {
+    return {
+      open: false,
+      kind: null,
+      label: "Window shut",
+      detail: `Opens on Deadline Day (before Round ${WINDOW_CLOSES_BEFORE_ROUND})`,
+      roundsUntil: roundsUntilDeadline(state) ?? undefined,
+    };
+  }
+  return { open: false, kind: null, label: "Window shut", detail: "Reopens after the season" };
+}
+
+/** Can anyone (you or the AI) buy or sell right now? Summer + pre-season, and Deadline Day until 0:00. */
 export function isWindowOpen(state: CareerState): boolean {
-  return deadlineDecisionPending(state);
+  return windowStatus(state).open;
 }
 
 /** League rounds until Deadline Day (null once it's been). */
@@ -251,7 +300,9 @@ export function acceptOffer(state: CareerState, offerId: string): { state: Caree
   mine.squad = mine.squad.filter((id) => id !== p.id);
   s.clubs[offer.clubId]!.squad.push(p.id);
   s.lineup = s.lineup.filter((id) => id !== p.id); // caller repairs the XIII
-  s.budget += offer.fee;
+  // The fee lands, and the rest of his season's wages come off the bill.
+  s.budget += offer.fee + wagesDueNow(s, p);
+  s.lastWages = wageBill(squad(s, s.userClubId));
   p.signedYear = s.year;
   p.fee = offer.fee;
   recordDeal(s, {
@@ -299,7 +350,8 @@ export function seasonDeals(state: CareerState): TransferDeal[] {
   return (state.transfers ?? []).filter((d) => d.year === state.year);
 }
 
-function recordDeal(state: CareerState, deal: TransferDeal) {
+/** Add a deal to the world's transfer log (newest first, capped). */
+export function recordDeal(state: CareerState, deal: TransferDeal) {
   state.transfers = [deal, ...(state.transfers ?? [])].slice(0, 120);
 }
 
@@ -340,6 +392,8 @@ const roundFee = (n: number) => Math.max(0, Math.round(n / 5000) * 5000);
 
 /** One AI club tries to strengthen its weakest position. Returns the deal, if any. */
 function aiDeal(state: CareerState, rng: Rng, buyerId: string, deadlineDay: boolean): TransferDeal | null {
+  // AI clubs deal only while a window is open, like you.
+  if (!isWindowOpen(state)) return null;
   const buyer = state.clubs[buyerId];
   if (!buyer || buyer.squad.length >= SQUAD_MAX) return null;
   const need = weakestSlot(state, buyerId);
@@ -365,7 +419,8 @@ function aiDeal(state: CareerState, rng: Rng, buyerId: string, deadlineDay: bool
   }
   if (candidates.length === 0) return null;
   const choice = pick(rng, shuffle(rng, candidates).slice(0, 4));
-  const fee = choice.from ? roundFee(playerValue(choice.p) * (deadlineDay ? 1.25 : 1.1)) : 0;
+  // Under contract: a fee (cheaper in his last year). Free agents: no fee, ever.
+  const fee = choice.from ? transferFee(choice.p, deadlineDay ? 1.25 : 1.1) : 0;
 
   if (choice.from) {
     const seller = state.clubs[choice.from]!;
@@ -374,6 +429,9 @@ function aiDeal(state: CareerState, rng: Rng, buyerId: string, deadlineDay: bool
     state.freeAgents = state.freeAgents.filter((id) => id !== choice.p.id);
   }
   buyer.squad.push(choice.p.id);
+  if (!(typeof choice.p.contract === "number" && choice.p.contract > 0)) choice.p.contract = choice.p.age <= 24 ? 3 : choice.p.age <= 30 ? 2 : 1;
+  choice.p.leftClubId = undefined;
+  choice.p.leftYear = undefined;
   return {
     year: state.year,
     at: state.matchdayIndex,
@@ -394,6 +452,8 @@ function aiDeal(state: CareerState, rng: Rng, buyerId: string, deadlineDay: bool
  */
 export function onMatchdayReached(state: CareerState): void {
   if (state.phase !== "season") return;
+  // The first game of the season shuts the summer window.
+  if (state.matchdayIndex === 1) addNews(state, `Transfer window shut. It reopens on Deadline Day, before Round ${WINDOW_CLOSES_BEFORE_ROUND}.`);
   const b = windowBounds(state);
   if (!b) return;
   // Older saves could have a between-rounds bid open: it lapses.
@@ -422,7 +482,8 @@ export function acceptBid(state: CareerState): CareerState {
   s.clubs[bid.clubId]!.squad.push(bid.playerId);
   // The caller repairs the XIII (repairLineup lives in season.ts, which imports this file).
   s.lineup = s.lineup.filter((id) => id !== bid.playerId);
-  s.budget += bid.fee;
+  s.budget += bid.fee + wagesDueNow(s, p);
+  s.lastWages = wageBill(squad(s, s.userClubId));
   const deal: TransferDeal = {
     year: s.year,
     at: s.matchdayIndex,
@@ -456,13 +517,14 @@ export function rejectBid(state: CareerState): CareerState {
 /** Record a user buy/sell made during the window so it shows in the deals list. */
 export function recordUserDeal(state: CareerState, deal: Omit<TransferDeal, "year" | "at" | "user" | "deadlineDay">): void {
   const dd = isDeadlineDay(state);
-  recordDeal(state, { ...deal, year: state.year, at: state.matchdayIndex, user: true, deadlineDay: dd || undefined });
+  const summer = windowStatus(state).kind === "summer" || windowStatus(state).kind === "preseason";
+  recordDeal(state, { ...deal, year: state.year, at: summer ? 0 : state.matchdayIndex, user: true, deadlineDay: dd || undefined, summer: summer || undefined });
   if (dd && deadlinePendingRaw(state)) {
     const clock = deadlineClock(state);
     state.deadline = clock;
     const to = deal.to ? state.clubs[deal.to]?.name : null;
     const from = deal.from ? state.clubs[deal.from]?.name : null;
-    const fee = deal.fee > 0 ? formatMoney(deal.fee) : "a free";
+    const fee = deal.fee > 0 ? formatMoney(deal.fee) : deal.to === state.userClubId ? "nothing (free agent)" : "nothing";
     feed(clock, "you", deal.to === state.userClubId ? `You sign ${deal.playerName}${from ? ` from ${from}` : ""} for ${fee}.` : `You sell ${deal.playerName}${to ? ` to ${to}` : ""} for ${fee}.`);
     // Offers for a player you've just sold elsewhere fall away.
     clock.offers = clock.offers.filter((o) => o.playerId !== deal.playerId);

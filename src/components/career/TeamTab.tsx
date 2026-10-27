@@ -17,6 +17,7 @@ import {
 import { useCareer } from "@/lib/career/context";
 import { playAutofill, playPlayerSelect } from "@/lib/sound";
 import { Card, Eyebrow, RatingPill, Stars } from "./bits";
+import { WindowStatusLine } from "./TransferNews";
 
 export function TeamTab() {
   const { state, setLineupSlot, autoPick } = useCareer();
@@ -35,6 +36,9 @@ export function TeamTab() {
 
   return (
     <div className="flex flex-col gap-4">
+      <section aria-label="Transfer window" className="rounded-card bg-pitch-900 px-4 py-2.5">
+        <WindowStatusLine />
+      </section>
       <Card>
         <div className="flex items-center justify-between gap-2">
           <div>
