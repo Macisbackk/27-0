@@ -16,6 +16,8 @@ import { getDailyChallengeHref, getDailyChallengeResultForKey } from "@/lib/dail
 import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 import { MODES_PAGE } from "@/lib/play-side-modes";
 import { playUiClick } from "@/lib/sound";
+import { PitchHero } from "@/components/ui/PitchHero";
+import { FixtureGlyph } from "@/components/icons/rugby-icons";
 
 interface ArchiveRow {
   key: string;
@@ -56,12 +58,17 @@ export default function PastDailiesPage() {
   return (
     <StandardPageShell>
       <div className={`${PAGE.section} mx-auto w-full max-w-[44rem]`}>
-        <header className="text-center">
-          <p className={`${TYPO.eyebrow} text-accent-gold`}>
-            <Link href={MODES_PAGE} className="hover:underline">More modes</Link> · Practice
-          </p>
-          <h1 className="font-cond text-[30px] font-bold leading-none text-white">Past Dailies</h1>
-          <p className="mt-1 text-[14px] text-[color:var(--fl-muted)]">
+        <header className="space-y-3">
+          <PitchHero
+            eyebrow={
+              <span>
+                <Link href={MODES_PAGE} className="underline-offset-2 hover:underline">More modes</Link> · Practice
+              </span>
+            }
+            title="Past Dailies"
+            icon={<FixtureGlyph />}
+          />
+          <p className="text-left text-sm text-[color:var(--fl-muted)] px-1">
             The last {DAILY_ARCHIVE_DAYS} days: same rule, same spins, same season as on the day. Practice only: no
             streak, Daily board, missions or Club Funds.
           </p>

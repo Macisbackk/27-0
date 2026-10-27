@@ -111,4 +111,79 @@ await shot(phone, "31-menu-full", "/", tap(/open menu/i), true);
   await back.close();
 }
 
+// More hub pages.
+await shot(phone, "40-records", "/records");
+await shot(phone, "41-squad-book", "/squad-book");
+await shot(phone, "42-modes", "/modes");
+await shot(phone, "43-settings", "/settings");
+await shot(phone, "44-quiz", "/quiz");
+
+// Classic: the draft screen, then a full auto-filled run to the season review (test build: ?e2e=1).
+async function tapFirst(page, patterns) {
+  for (const re of patterns) {
+    const btn = page.getByRole("button", { name: re }).first();
+    if ((await btn.isVisible().catch(() => false)) && (await btn.isEnabled().catch(() => false))) {
+      await btn.click({ timeout: 5000 }).catch(() => {});
+      return true;
+    }
+  }
+  return false;
+}
+await shot(phone, "35-classic-draft", "/play?e2e=1", async (page) => {
+  await tapFirst(page, [/Skip boost|Continue without boost/i]);
+  await page.waitForTimeout(800);
+});
+{
+  const page = await phone.newPage();
+  try {
+    await page.goto(BASE + "/play?e2e=1", { waitUntil: "networkidle", timeout: 30000 });
+    await page.waitForTimeout(1200);
+    let reviewed = false;
+    for (let i = 0; i < 70; i++) {
+      const text = await page.locator("main").innerText().catch(() => "");
+      if (/ Grade/.test(text) && /Regular Season Record/i.test(text) && !/Kick off the season|Simulate season/i.test(text)) {
+        reviewed = true;
+        break;
+      }
+      const tapped = await tapFirst(page, [
+        /Skip boost|Continue without boost/i, /Auto.?fill squad/i, /Kick off the season|Simulate season/i,
+        /Push for the top two/i, /Rest the stars/i, /Chase the points difference/i,
+        /Skip/i, /Sim(ulate)? (to )?(end|all|rest)/i,
+        /^Continue$/i, /Next/i, /View (season )?review/i, /See (your )?review/i, /Season review/i, /Finish/i,
+      ]);
+      await page.waitForTimeout(tapped ? 900 : 1500);
+    }
+    await page.waitForTimeout(1200);
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.screenshot({ path: `${OUT}/36-classic-review.png` });
+    await page.screenshot({ path: `${OUT}/37-classic-review-full.png`, fullPage: true });
+    console.log("shot 36-classic-review", reviewed ? "" : "(review not reached)");
+  } catch (e) {
+    console.log("skip 36-classic-review", String(e).slice(0, 160));
+  } finally {
+    await page.close();
+  }
+}
+
+// Store themes: the pitch surfaces and buttons follow the selected theme (dark primaries get light text).
+for (const id of ["cherry", "chalk", "neon"]) {
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+  await ctx.addInitScript((themeId) => {
+    localStorage.setItem(
+      "27-0-ui-theme-store",
+      JSON.stringify({ selectedThemeId: themeId, unlockedThemeIds: ["default", themeId], purchaseIds: [] }),
+    );
+  }, id);
+  await shot(ctx, `50-theme-${id}-home`, "/");
+  if (id === "cherry") {
+    await shot(ctx, "51-theme-cherry-store", "/store");
+    await shot(ctx, "52-theme-cherry-leaderboard", "/leaderboard");
+    await shot(ctx, "53-theme-cherry-draft", "/play?e2e=1", async (page) => {
+      await tapFirst(page, [/Skip boost|Continue without boost/i]);
+      await page.waitForTimeout(800);
+    });
+  }
+  await ctx.close();
+}
+
 await browser.close();

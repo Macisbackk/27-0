@@ -21,6 +21,8 @@ import {
   type SquadBookMilestone,
   type SquadBookSource,
 } from "@/lib/squad-book";
+import { PitchHero } from "@/components/ui/PitchHero";
+import { AlbumGlyph } from "@/components/icons/rugby-icons";
 
 type Tab = "collections" | "cards";
 const TABS: { id: Tab; label: string }[] = [
@@ -141,10 +143,9 @@ export default function SquadBookPage() {
   return (
     <StandardPageShell>
       <div className={PAGE.section}>
-        <header className="text-center">
-          <p className={TYPO.sectionLabel}>Collection</p>
-          <h1 className={`mt-2 ${TYPO.pageTitle}`}>Squad Book</h1>
-          <p className="mx-auto mt-3 max-w-md text-sm text-[color:var(--fl-muted)]">
+        <header className="space-y-3">
+          <PitchHero eyebrow="Collection" title="Squad Book" icon={<AlbumGlyph />} />
+          <p className="text-left text-sm text-[color:var(--fl-muted)] px-1">
             Every card you field in a finished Classic, Era Classic, Daily or Weekly season goes in the book. A player's 2026 card and his era cards count separately.
           </p>
         </header>

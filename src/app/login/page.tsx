@@ -4,6 +4,8 @@ import { LoginForm } from "@/components/LoginForm";
 import { PageShell } from "@/components/ui/PageShell";
 import { CARD, PAGE, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { PitchHero } from "@/components/ui/PitchHero";
+import { WhistleGlyph } from "@/components/icons/rugby-icons";
 
 export const metadata: Metadata = {
   title: "Log in — 27-0",
@@ -15,13 +17,13 @@ export default function LoginPage() {
     <PageShell withLights compact>
       <div className={`${PAGE.content} ${PAGE.section}`}>
         <div className="mx-auto w-full max-w-md">
-          <div className="mb-8 text-center">
-            <p className={TYPO.sectionLabel}>Account</p>
-            <h1 className={`mt-2 ${TYPO.pageTitle}`}>Log in</h1>
-            <p className={`mt-2 ${TYPO.bodySm}`}>
-              Log in or create a free account to save your progress online and join the leaderboards.
-            </p>
-          </div>
+          <PitchHero
+            className="mb-5"
+            eyebrow="Account"
+            title="Log in"
+            description="Log in or create a free account to save your progress online and join the leaderboards."
+            icon={<WhistleGlyph />}
+          />
 
           <Suspense
             fallback={

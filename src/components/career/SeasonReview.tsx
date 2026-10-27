@@ -11,6 +11,8 @@ import { DIVISION_LABEL, TROPHY_LABEL, formatMoney, ordinal } from "@/lib/career
 import { useCareer } from "@/lib/career/context";
 import { playPerfectSeason, playPromotion, playSeasonComplete, playSeasonReviewMajor, playWarning } from "@/lib/sound";
 import { Card, ClubBadge, Eyebrow, CAREER_PAGE_CLASS, CareerBackLink } from "./bits";
+import { CupGlyph } from "@/components/icons/rugby-icons";
+import { PitchHero } from "@/components/ui/PitchHero";
 
 export function SeasonReview() {
   const { state, legacy, recordBreaks, goToOffseason } = useCareer();
@@ -65,17 +67,20 @@ export function SeasonReview() {
     <div className={CAREER_PAGE_CLASS}>
       <CareerBackLink label="Home (progress saved)" />
       {celebrate ? <Confetti /> : null}
-      <header className="flex flex-col items-center text-center">
-        <ClubBadge club={club} size="lg" />
-        <p className="mt-3 font-display text-[10px] font-bold uppercase tracking-[0.25em] text-theme-primary">{o.year} season review</p>
-        <h1 className={`mt-1 font-display text-3xl font-bold tracking-tight sm:text-4xl ${o.relegated ? "text-danger" : o.trophies.length ? "text-accent-gold" : "text-white"}`}>
-          {headline}
-        </h1>
-        <p className="mt-1 text-sm text-gray-300">
-          {ordinal(o.position)} · {o.won}W {o.drawn}D {o.lost}L
-          {o.topTryScorer ? ` · Top try scorer ${o.topTryScorer.name} (${o.topTryScorer.tries})` : ""}
-        </p>
-      </header>
+      <PitchHero
+        size="feature"
+        icon={<CupGlyph />}
+        eyebrow={<>{o.year} season review</>}
+        badge={o.relegated ? "Relegated" : o.trophies.length ? `${o.trophies.length} ${o.trophies.length === 1 ? "trophy" : "trophies"}` : undefined}
+        title={headline}
+        description={
+          <>
+            {ordinal(o.position)} · {o.won}W {o.drawn}D {o.lost}L
+            {o.topTryScorer ? ` · Top try scorer ${o.topTryScorer.name} (${o.topTryScorer.tries})` : ""}
+          </>
+        }
+        aside={<ClubBadge club={club} size="lg" />}
+      />
 
       {o.trophies.length ? (
         <Card className="border-accent-gold/50">

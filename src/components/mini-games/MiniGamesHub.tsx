@@ -4,13 +4,14 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { StandardPageShell } from "@/components/ui/StandardPageShell";
 import { PAGE } from "@/lib/ui/design-system";
-import { TYPO } from "@/lib/ui/typography";
 import { playUiClick } from "@/lib/sound";
 import { getLocalDateKey } from "@/lib/mini-games/date";
 import { GRID_REWARD_PER_CELL, WORDLE_WIN_REWARD } from "@/lib/mini-games/rewards";
 import { QUIZ_GAME_NAME, QUIZ_TOP_PRIZE } from "@/lib/quiz/prizes";
 import { CLUB_FUNDS_CHANGED_EVENT, getPaidRunIds } from "@/lib/storage/club-funds";
 import { formatClubFunds } from "@/lib/club-funds";
+import { PitchHero } from "@/components/ui/PitchHero";
+import { TilesGlyph } from "@/components/icons/rugby-icons";
 
 type GameId = "quiz" | "wordle" | "grid";
 
@@ -76,9 +77,12 @@ export function MiniGamesHub() {
   return (
     <StandardPageShell>
       <div className={`${PAGE.section} mini-game-arena mx-auto flex w-full max-w-[44rem] flex-col text-center`}>
-        <p className={TYPO.sectionLabel}>Play</p>
-        <h1 className={`mt-1.5 ${TYPO.pageTitle}`}>Puzzles</h1>
-        <p className="mt-2 text-sm text-gray-400">Quick rugby league puzzles that pay Club Funds. Rewards reset at midnight UK time.</p>
+        <PitchHero
+          eyebrow="Play"
+          title="Puzzles"
+          icon={<TilesGlyph />}
+        />
+        <p className="mt-3 px-1 text-left text-sm text-[color:var(--fl-muted)]">Quick rugby league puzzles that pay Club Funds. Rewards reset at midnight UK time.</p>
 
         <ul className="fl-stagger mt-5 grid w-full gap-3 sm:grid-cols-3">
           {GAMES.map((game) => {

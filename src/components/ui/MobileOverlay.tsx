@@ -16,6 +16,11 @@ interface MobileOverlayBaseProps {
   className?: string;
   /** Optional header content below the title row (e.g. meta line). */
   headerExtra?: ReactNode;
+  /**
+   * Title strip on the pitch surface (src/styles/pitch.css). On by default for plain titled sheets;
+   * sheets with a busy header (the player card) keep the dark header unless they opt in.
+   */
+  pitchHeader?: boolean;
 }
 
 function MobileOverlayShell({
@@ -25,6 +30,7 @@ function MobileOverlayShell({
   children,
   footer,
   headerExtra,
+  pitchHeader,
   className = "",
   panelClass,
   backdropAlign,
@@ -48,6 +54,7 @@ function MobileOverlayShell({
 
   if (!open) return null;
 
+  const onPitch = pitchHeader ?? (Boolean(title) && !headerExtra);
   const alignClass =
     backdropAlign === "end"
       ? "items-end sm:items-center"
@@ -70,12 +77,12 @@ function MobileOverlayShell({
           data-scroll-lock-allow="true"
           onClick={(e) => e.stopPropagation()}
         >
-          <div className={MOBILE.overlayHeader}>
-            <div className="flex items-start justify-between gap-2">
+          <div className={`${MOBILE.overlayHeader}${onPitch ? " pitch-surface pitch-sheet-header" : ""}`}>
+            <div className={`flex justify-between gap-2 ${onPitch ? "items-center" : "items-start"}`}>
               {title ? (
                 <h2
                   id={titleId}
-                  className={`player-detail-modal__title min-w-0 flex-1 ${TYPO.cardTitle}`}
+                  className={onPitch ? "pitch-title min-w-0 flex-1 !text-[20px] !leading-tight sm:!text-[24px]" : `player-detail-modal__title min-w-0 flex-1 ${TYPO.cardTitle}`}
                 >
                   {title}
                 </h2>
@@ -84,7 +91,7 @@ function MobileOverlayShell({
               )}
               <button
                 type="button"
-                className={`${BTN.close} shrink-0`}
+                className={onPitch ? "pitch-chip !w-11 !px-0 text-[20px]" : `${BTN.close} shrink-0`}
                 onClick={handleClose}
                 aria-label="Close"
               >
@@ -111,6 +118,7 @@ export function MobileBottomSheet({
   children,
   footer,
   headerExtra,
+  pitchHeader,
   className = "",
 }: MobileOverlayBaseProps) {
   return (
@@ -120,6 +128,7 @@ export function MobileBottomSheet({
       title={title}
       footer={footer}
       headerExtra={headerExtra}
+      pitchHeader={pitchHeader}
       className={className}
       panelClass={MOBILE.bottomSheet}
       backdropAlign="end"
@@ -137,6 +146,7 @@ export function MobileModal({
   children,
   footer,
   headerExtra,
+  pitchHeader,
   className = "",
 }: MobileOverlayBaseProps) {
   return (
@@ -146,6 +156,7 @@ export function MobileModal({
       title={title}
       footer={footer}
       headerExtra={headerExtra}
+      pitchHeader={pitchHeader}
       className={className}
       panelClass={MOBILE.modalPanel}
       backdropAlign="center"

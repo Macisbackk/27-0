@@ -3,6 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
+import { PitchHero } from "@/components/ui/PitchHero";
+import { BoardGlyph } from "@/components/icons/rugby-icons";
 import { buildWorld, totalMajorTrophies, type Division } from "@/lib/career";
 import { newCareerSeed } from "@/lib/career/rng";
 import { useCareer } from "@/lib/career/context";
@@ -35,13 +37,12 @@ export function CareerStart({ onOpenVault, onOpenRecords }: { onOpenVault: () =>
   return (
     <div className={CAREER_PAGE_CLASS}>
       <CareerBackLink />
-      <header className="text-center">
-        <Eyebrow>Rugby League Manager</Eyebrow>
-        <h1 className="mt-1 font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">Pick your club</h1>
-        <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-gray-300">
-          Real squads. Play each round in a tap. Climb from the Championship to Old Trafford, unlock legends, and chase records.
-        </p>
-      </header>
+      <PitchHero
+        eyebrow="Rugby League Manager"
+        title="Pick your club"
+        description="Real squads. Play each round in a tap. Climb from the Championship to Old Trafford, unlock legends, and chase records."
+        icon={<BoardGlyph />}
+      />
 
       {hasLegacy ? (
         <Card className="flex flex-wrap items-center justify-between gap-3">

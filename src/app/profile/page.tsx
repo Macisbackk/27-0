@@ -19,6 +19,8 @@ import { CoachCard } from "@/components/CoachCard";
 import { titleName } from "@/lib/cosmetics";
 import { useCosmetics } from "@/lib/storage/cosmetics-store";
 import { useSquadBook } from "@/lib/squad-book";
+import { PitchHero } from "@/components/ui/PitchHero";
+import { WhistleGlyph } from "@/components/icons/rugby-icons";
 
 /**
  * Coach Profile — one page for everything about you: Career Stats, Achievements and Account.
@@ -128,9 +130,7 @@ export default function ProfilePage() {
   return (
     <StandardPageShell withLights compact>
       <div className={`${PAGE.section} text-center`}>
-        <header className="w-full text-center">
-          <h1 className={TYPO.pageTitle}>Coach Profile</h1>
-        </header>
+        <PitchHero eyebrow="Your coach" title="Coach Profile" icon={<WhistleGlyph />} />
         <div className="mt-4 w-full">
           <CoachCard
             name={loading ? "Coach" : isLoggedIn ? (coachName ?? "Coach") : "Guest coach"}

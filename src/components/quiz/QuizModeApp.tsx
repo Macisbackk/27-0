@@ -6,6 +6,9 @@ import "@/app/quiz/quiz.css";
 import { Confetti } from "@/components/Confetti";
 import { GameButton } from "@/components/ui/GameButton";
 import { GameModal } from "@/components/ui/GameModal";
+import { PitchHero } from "@/components/ui/PitchHero";
+import { TilesGlyph } from "@/components/icons/rugby-icons";
+import Link from "next/link";
 import { StandardPageShell } from "@/components/ui/StandardPageShell";
 import { MiniGameEndActions } from "@/components/mini-games/MiniGameShell";
 import { PAGE, SPACING } from "@/lib/ui/design-system";
@@ -271,12 +274,23 @@ function QuizLanding({ onStart }: { onStart: () => void }) {
   const capReached = ledger !== null && ledger.paid >= QUIZ_DAILY_CAP;
   return (
     <div className="mx-auto w-full max-w-xl text-center">
-      <p className={TYPO.sectionLabel}>Puzzles</p>
-      <h1 className={`mt-2 ${TYPO.pageTitle}`}>{QUIZ_GAME_NAME}</h1>
-      <p className={`mt-2 ${TYPO.bodySm}`}>
-        15 questions, four lifelines, {formatClubFundsExact(QUIZ_TOP_PRIZE)} top prize. Bank at Q5 and Q10.
-      </p>
-      <p className={`mt-1 ${TYPO.bodySm}`} data-testid="quiz-day-reward">
+      <PitchHero
+        size="feature"
+        eyebrow="Puzzles"
+        title={QUIZ_GAME_NAME}
+        description={<>15 questions, four lifelines, {formatClubFundsExact(QUIZ_TOP_PRIZE)} top prize. Bank at Q5 and Q10.</>}
+        icon={<TilesGlyph />}
+        aside={
+          <Link href="/mini-games" className="pitch-chip">
+            <span aria-hidden>‹</span> All puzzles
+          </Link>
+        }
+      >
+        <GameButton variant="theme" size="lg" onClick={onStart}>
+          Start quiz
+        </GameButton>
+      </PitchHero>
+      <p className={`mt-3 px-1 text-left ${TYPO.bodySm}`} data-testid="quiz-day-reward">
         {ledger === null || ledger.runs === 0
           ? `Your first run today pays in full. Later runs pay ${repeatPct}% of their prize.`
           : capReached
@@ -285,14 +299,6 @@ function QuizLanding({ onStart }: { onStart: () => void }) {
                 Math.max(0, QUIZ_DAILY_CAP - ledger.paid)
               )} left today).`}
       </p>
-      <div className="mx-auto mt-6 grid max-w-sm gap-2">
-        <GameButton variant="theme" onClick={onStart}>
-          Start quiz
-        </GameButton>
-        <GameButton variant="secondary" href="/mini-games">
-          All puzzles
-        </GameButton>
-      </div>
     </div>
   );
 }

@@ -18,6 +18,8 @@ import { TransferWindow } from "./TransferWindow";
 import { useDeadlineDriver } from "./TransferNews";
 import { ClubBadge, Stars, CAREER_PAGE_CLASS, CareerBackLink } from "./bits";
 import { CareerTutorial } from "./CareerTutorial";
+import { PitchMark } from "@/components/ui/PitchHero";
+import { BoardGlyph } from "@/components/icons/rugby-icons";
 
 type Tab = "match" | "team" | "table" | "club";
 
@@ -29,16 +31,22 @@ function HubHeader() {
   const pos = table.findIndex((r) => r.clubId === club.id) + 1;
   const row = table[pos - 1];
   return (
-    <header className="flex items-center gap-3 rounded-card bg-pitch-900 p-3">
+    <header className="pitch-surface flex items-center gap-3 p-3 pr-4">
+      <PitchMark size={120}>
+        <BoardGlyph />
+      </PitchMark>
       <ClubBadge club={club} size="lg" />
-      <div className="min-w-0 flex-1">
-        <p className="truncate font-display text-xl font-bold leading-tight text-white">{club.name}</p>
-        <p className="text-xs text-gray-400">
+      <div className="relative min-w-0 flex-1">
+        <p className="pitch-eyebrow !text-[13px] !leading-tight">
           {s.year} · {DIVISION_LABEL[club.division]}
           {row && row.p > 0 ? ` · ${ordinal(pos)} (${row.w}W ${row.l}L)` : ""}
         </p>
-        <p className="mt-0.5 flex items-center gap-2 text-xs text-gray-400">
-          <Stars value={s.prestige} label={`Prestige ${s.prestige}`} /> <span className={s.budget < 0 ? "text-danger" : "text-gray-300"}>{formatMoney(s.budget)}</span>
+        <p className="pitch-title !mt-0.5 truncate !text-[24px] !leading-tight sm:!text-[28px]">{club.name}</p>
+        <p className="mt-1 flex flex-wrap items-center gap-1.5">
+          <span className="pitch-pill">
+            <Stars value={s.prestige} label={`Prestige ${s.prestige}`} />
+          </span>
+          <span className={`pitch-pill ${s.budget < 0 ? "!text-[#fca5a5]" : "!text-white"}`}>{formatMoney(s.budget)}</span>
         </p>
       </div>
     </header>

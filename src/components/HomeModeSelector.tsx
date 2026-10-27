@@ -53,6 +53,7 @@ import { BALL_KNOWER_ID } from "@/lib/cosmetics";
 import { useCosmetics } from "@/lib/storage/cosmetics-store";
 import { DAILY_ARCHIVE_PAGE } from "@/lib/daily-archive";
 import { MODES_PAGE } from "@/lib/play-side-modes";
+import { PitchHero } from "@/components/ui/PitchHero";
 
 /** Everything on the home hub that depends on this device (filled in after mount). */
 interface HubState {
@@ -198,20 +199,6 @@ function ModeTile({
         {badge}
       </span>
     </Link>
-  );
-}
-
-/** Mown stripes and pitch markings behind the Classic hero. */
-function PitchMarkings({ tone = "white", opacity = 0.07 }: { tone?: string; opacity?: number }) {
-  return (
-    <svg aria-hidden className="pointer-events-none absolute inset-0 h-full w-full" preserveAspectRatio="none" viewBox="0 0 400 220">
-      {Array.from({ length: 10 }, (_, i) => (i % 2 ? <rect key={i} x={i * 40} y="0" width="40" height="220" fill={tone} fillOpacity={opacity * 0.5} /> : null))}
-      <g stroke={tone} strokeOpacity={opacity} strokeWidth="2" fill="none">
-        <line x1="200" y1="0" x2="200" y2="220" vectorEffect="non-scaling-stroke" />
-        <line x1="120" y1="0" x2="120" y2="220" strokeDasharray="10 8" vectorEffect="non-scaling-stroke" />
-        <line x1="280" y1="0" x2="280" y2="220" strokeDasharray="10 8" vectorEffect="non-scaling-stroke" />
-      </g>
-    </svg>
   );
 }
 
@@ -364,75 +351,63 @@ export function HomeModeSelector() {
         </span>
       ) : null}
 
-      {/* The main event: Classic, with a Current / Era switch and one Play button. */}
-      <section
-        className="relative overflow-hidden rounded-card bg-theme-primary p-4 text-left text-[color:var(--theme-text-on-primary)]"
+      {/* The main event: Classic, with a Current / Era switch and one Play button.
+          This card is the pitch look the whole site shares (src/styles/pitch.css). */}
+      <PitchHero
+        size="feature"
         aria-label={firstRun ? "New here? Start with Classic" : "Classic"}
+        icon={era ? <ProgrammeGlyph /> : <BallGlyph />}
+        eyebrow="Classic"
+        badge={best ? `Best ${best}` : undefined}
+        titleAs="p"
+        title={
+          firstRun ? (
+            <>
+              Sign a 13.
+              <br />
+              Win all 27.
+            </>
+          ) : (
+            "Chase 27-0"
+          )
+        }
       >
-        <PitchMarkings tone="black" opacity={0.09} />
-        <span aria-hidden className="pointer-events-none absolute -right-4 top-2 text-pitch-950/[0.12]">
-          <Glyph size={150}>{era ? <ProgrammeGlyph /> : <BallGlyph />}</Glyph>
-        </span>
-        <div className="relative">
-          <p className="flex items-center gap-2 font-cond text-[15px] font-bold">
-            Classic
-            {best ? (
-              <span className="rounded-full bg-pitch-950 px-2 py-0.5 text-[12px] text-theme-primary">Best {best}</span>
-            ) : null}
-          </p>
-          <p className="mt-1 font-display text-[36px] leading-[1]">
-            {firstRun ? (
-              <>
-                Sign a 13.
-                <br />
-                Win all 27.
-              </>
-            ) : (
-              "Chase 27-0"
-            )}
-          </p>
-          <div role="group" aria-label="Squads" className="mt-4 grid grid-cols-2 gap-1 rounded-control bg-pitch-950/90 p-1">
-            {([false, true] as const).map((v) => {
-              const on = era === v;
-              return (
-                <button
-                  key={String(v)}
-                  type="button"
-                  aria-pressed={on}
-                  onClick={() => {
-                    playUiClick();
-                    setEra(v);
-                    try {
-                      setNormalEraVariant(v);
-                    } catch {
-                      /* storage blocked: the choice still applies to this visit */
-                    }
-                  }}
-                  className={`flex h-11 items-center justify-center gap-1.5 rounded-[10px] font-cond text-[16px] font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 ${
-                    on ? (v ? "bg-mode-era text-pitch-950" : "bg-white text-pitch-950") : "text-white/70 hover:text-white"
-                  }`}
-                >
-                  <Glyph size={16}>{v ? <ProgrammeGlyph /> : <BallGlyph />}</Glyph>
-                  {v ? "Every era" : "2026 squads"}
-                </button>
-              );
-            })}
-          </div>
-          <Link
-            href={buildPlayHref("classic", era)}
-            onClick={() => {
-              playUiClick();
-              startClassic(era)();
-            }}
-            className="btn-press fl-pressable mt-2.5 flex h-[56px] items-center justify-center gap-2 rounded-control bg-pitch-950 font-cond text-[21px] font-bold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
-          >
-            {firstRun ? "Start Classic" : era ? "Play Era Classic" : "Play Classic"}
-            <svg aria-hidden width="15" height="15" viewBox="0 0 24 24" fill="currentColor" className="text-theme-primary">
-              <path d="M7 4.5v15l13-7.5z" />
-            </svg>
-          </Link>
+        <div role="group" aria-label="Squads" className="pitch-seg">
+          {([false, true] as const).map((v) => {
+            const on = era === v;
+            return (
+              <button
+                key={String(v)}
+                type="button"
+                aria-pressed={on}
+                data-tone={v ? "era" : undefined}
+                onClick={() => {
+                  playUiClick();
+                  setEra(v);
+                  try {
+                    setNormalEraVariant(v);
+                  } catch {
+                    /* storage blocked: the choice still applies to this visit */
+                  }
+                }}
+              >
+                <Glyph size={16}>{v ? <ProgrammeGlyph /> : <BallGlyph />}</Glyph>
+                {v ? "Every era" : "2026 squads"}
+              </button>
+            );
+          })}
         </div>
-      </section>
+        <Link
+          href={buildPlayHref("classic", era)}
+          onClick={() => {
+            playUiClick();
+            startClassic(era)();
+          }}
+          className="pitch-cta btn-press fl-pressable"
+        >
+          {firstRun ? "Start Classic" : era ? "Play Era Classic" : "Play Classic"}
+        </Link>
+      </PitchHero>
 
       {/* Manager Mode: one slim row under the hero. */}
       <Link

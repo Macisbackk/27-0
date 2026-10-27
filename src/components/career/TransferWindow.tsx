@@ -21,9 +21,11 @@ import {
 } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
 import { playLegendAppears, playSeasonStart, playTransferComplete, playWarning } from "@/lib/sound";
-import { Card, ClubBadge, Eyebrow, RatingPill, Stars, CAREER_PAGE_CLASS, CareerBackLink } from "./bits";
+import { Card, ClubBadge, RatingPill, Stars, CAREER_PAGE_CLASS, CareerBackLink } from "./bits";
 import { ClubLink } from "./ClubSheet";
 import { DeadlineClockFace, DeadlineOffers } from "./TransferNews";
+import { ShirtGlyph } from "@/components/icons/rugby-icons";
+import { PitchHero } from "@/components/ui/PitchHero";
 
 const ERROR_TEXT: Record<TransferError, string> = {
   budget: "Not enough budget for that deal.",
@@ -69,21 +71,11 @@ export function TransferWindow({ midseason = false, onClose }: { midseason?: boo
       ) : (
         <CareerBackLink label="Home (progress saved)" />
       )}
-      <header className="text-center">
-        {midseason ? (
-          <>
-            <Eyebrow>
-              {`Deadline Day · window shuts before Round ${WINDOW_CLOSES_BEFORE_ROUND}`}
-            </Eyebrow>
-            <h1 className="mt-1 font-display text-3xl font-bold tracking-tight text-white">Last chance</h1>
-          </>
-        ) : (
-          <>
-            <Eyebrow>Transfer window · before {s.year}</Eyebrow>
-            <h1 className="mt-1 font-display text-3xl font-bold tracking-tight text-white">Build your squad</h1>
-          </>
-        )}
-      </header>
+      <PitchHero
+        icon={<ShirtGlyph />}
+        eyebrow={midseason ? `Deadline Day · window shuts before Round ${WINDOW_CLOSES_BEFORE_ROUND}` : <>Transfer window · before {s.year}</>}
+        title={midseason ? "Last chance" : "Build your squad"}
+      />
 
       {midseason && deadlineDecisionPending(s) ? (
         <section aria-label="Deadline Day clock" className="flex flex-col gap-3 rounded-card bg-amber-400/10 p-3 ring-2 ring-amber-300/60">

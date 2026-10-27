@@ -1,0 +1,514 @@
+/*
+ * Pitch — the site-wide look taken from the home page's Classic card (v1.23).
+ *
+ * One bright "pitch" surface per screen (the page's hero / header or its key action area), in the
+ * Store theme's primary colour with faint mown stripes and dashed pitch lines; on it, near-black
+ * pieces: the Anton headline, a dark pill badge, a dark segmented control with a white active
+ * segment and a big black button with a theme-coloured ▸. Everything else stays on the dark cards.
+ *
+ * Theme tokens (set per theme by buildThemeCssVars, defaults here = Floodlit):
+ *   --pitch-ink              text on the surface (AA on every theme's primary)
+ *   --pitch-mark-rgb         stripe / line / watermark colour (dark on light primaries, light on dark)
+ *   --theme-primary-on-dark  the accent lightened until it reads (4.5:1) on near-black
+ * Loaded last (after matchnight.css), so these rules win.
+ */
+
+:root {
+  --pitch-dark: #0e0f10;
+  --pitch-dark-hover: #1f2123;
+  --pitch-ink: #0e1400;
+  --pitch-mark-rgb: 0 0 0;
+  --theme-primary-on-dark: #b6f23d;
+}
+
+/* ── The surface ──────────────────────────────────────────────────────── */
+.pitch-surface {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: var(--fl-radius-card);
+  color: var(--pitch-ink);
+  background-color: var(--theme-primary);
+  /* Centre line, two dashed lines at 30% / 70%, then ten mown stripes (every other one darker). */
+  background-image:
+    linear-gradient(rgb(var(--pitch-mark-rgb) / 0.09), rgb(var(--pitch-mark-rgb) / 0.09)),
+    linear-gradient(to bottom, rgb(var(--pitch-mark-rgb) / 0.09) 0 10px, transparent 10px 18px),
+    linear-gradient(to bottom, rgb(var(--pitch-mark-rgb) / 0.09) 0 10px, transparent 10px 18px),
+    repeating-linear-gradient(90deg, transparent 0 10%, rgb(var(--pitch-mark-rgb) / 0.045) 10% 20%);
+  background-size: 2px 100%, 2px 18px, 2px 18px, 100% 100%;
+  background-position: 50% 0, 30% 0, 70% 0, 0 0;
+  background-repeat: no-repeat, repeat-y, repeat-y, no-repeat;
+}
+
+/* Big faint icon bleeding off the right edge (a ball on Classic, a cup on the review, …). */
+.pitch-surface__mark {
+  pointer-events: none;
+  position: absolute;
+  right: -16px;
+  top: 8px;
+  z-index: -1;
+  color: rgb(var(--pitch-mark-rgb) / 0.12);
+}
+.pitch-surface__mark svg {
+  width: var(--pitch-mark-size, 150px);
+  height: var(--pitch-mark-size, 150px);
+}
+
+/* Text on the surface. */
+.pitch-eyebrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-cond);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+.pitch-title {
+  margin: 0.25rem 0 0;
+  font-family: var(--font-display), "Arial Black", Impact, sans-serif;
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0;
+  color: inherit;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.pitch-sub {
+  margin-top: 0.5rem;
+  max-width: 34rem;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: color-mix(in srgb, var(--pitch-ink) 88%, var(--theme-primary));
+  text-align: left;
+}
+
+/* Beat the centred-page rules (.site-page-center h1 …): the surface reads left-aligned. */
+.pitch-surface .pitch-title,
+.pitch-surface .pitch-eyebrow,
+.pitch-surface .pitch-sub {
+  text-align: left;
+}
+
+/* Page heroes (PitchHero): a compact header band, left-aligned like the home card. */
+.pitch-hero {
+  padding: 1rem;
+  text-align: left;
+}
+.pitch-hero--page .pitch-title {
+  font-size: 32px;
+}
+.pitch-hero--page .pitch-surface__mark {
+  --pitch-mark-size: 124px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.pitch-hero__actions {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+@media (min-width: 640px) {
+  .pitch-hero {
+    padding: 1.25rem 1.5rem;
+  }
+  .pitch-hero--page .pitch-title {
+    font-size: 36px;
+  }
+}
+
+/* ── Dark pill badge ──────────────────────────────────────────────────── */
+.pitch-pill {
+  display: inline-flex;
+  max-width: 100%;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 999px;
+  background: var(--pitch-dark);
+  padding: 0.125rem 0.5rem;
+  font-family: var(--font-cond);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 18px;
+  color: var(--theme-primary-on-dark);
+  white-space: nowrap;
+}
+
+/* ── The black button ─────────────────────────────────────────────────── */
+.pitch-cta {
+  display: flex;
+  width: 100%;
+  min-height: 56px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 0;
+  border-radius: var(--fl-radius-control);
+  background: var(--pitch-dark);
+  padding: 0 1.25rem;
+  font-family: var(--font-cond);
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: #ffffff;
+  text-align: center;
+  transition: background-color var(--motion-fast, 120ms) ease;
+}
+.pitch-cta:hover:not(:disabled) {
+  background: var(--pitch-dark-hover);
+}
+.pitch-cta:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--pitch-ink), 0 0 0 4px rgba(255, 255, 255, 0.7);
+}
+.pitch-cta:disabled,
+.pitch-cta[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+/* The ▸ after the label, in the accent. */
+.pitch-cta::after {
+  content: "";
+  flex-shrink: 0;
+  width: 8px;
+  height: 10px;
+  background: var(--theme-primary-on-dark);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+.pitch-cta--plain::after {
+  display: none;
+}
+.pitch-cta--md {
+  min-height: 50px;
+  font-size: 18px;
+}
+
+/* ── Dark segmented control, white active segment ─────────────────────── */
+.pitch-seg {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 4px;
+  border-radius: var(--fl-radius-control);
+  background: rgb(14 15 16 / 0.9);
+  padding: 4px;
+}
+.pitch-seg > button,
+.pitch-seg > a {
+  display: flex;
+  min-height: 44px;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  border-radius: 10px;
+  padding: 0 0.5rem;
+  font-family: var(--font-cond);
+  font-size: 16px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.7);
+  transition: background-color var(--motion-fast, 120ms) ease, color var(--motion-fast, 120ms) ease;
+}
+.pitch-seg > button:hover,
+.pitch-seg > a:hover {
+  color: #ffffff;
+}
+.pitch-seg > [aria-pressed="true"],
+.pitch-seg > [aria-selected="true"],
+.pitch-seg > [aria-current="page"] {
+  background: #ffffff;
+  color: var(--pitch-dark);
+}
+.pitch-seg > [data-tone="era"][aria-pressed="true"],
+.pitch-seg > [data-tone="era"][aria-selected="true"] {
+  background: var(--mode-era);
+  color: var(--pitch-dark);
+}
+.pitch-seg > :focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.7);
+}
+
+/* ══ Site-wide adoption ═══════════════════════════════════════════════════
+ * The shared kit (GameButton, GameSegmentedControl / SubTabBar, GameBadge) picks the look up here,
+ * so every page gets it without per-page edits.
+ */
+
+/* Segmented controls and tab groups: a dark well with a white active segment (Era stays parchment). */
+.mode-toggle,
+.tab-group {
+  border: 0 !important;
+  border-radius: var(--fl-radius-control) !important;
+  background: rgb(0 0 0 / 0.42) !important;
+  box-shadow: inset 0 0 0 1px var(--fl-line);
+  padding: 4px !important;
+  gap: 4px !important;
+}
+.mode-toggle button,
+.tab-group > button {
+  min-height: 44px !important;
+  border-radius: 10px !important;
+  font-family: var(--font-cond) !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: rgba(255, 255, 255, 0.72) !important;
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+.mode-toggle button:hover:not(.active),
+.tab-group > button:hover:not([aria-selected="true"]) {
+  color: #ffffff !important;
+}
+.mode-toggle__pill {
+  background: #ffffff;
+}
+.mode-toggle button.active:not(.era),
+.mode-toggle button[aria-selected="true"]:not(.era),
+.tab-group > button.tab-group-btn-active {
+  color: var(--pitch-dark) !important;
+}
+.mode-toggle:not([data-sliding]) button.active:not(.era),
+.tab-group > button.tab-group-btn-active {
+  background: #ffffff !important;
+}
+.mode-toggle button.active.era {
+  color: var(--pitch-dark) !important;
+}
+.mode-toggle:not([data-sliding]) button.active.era,
+.tab-group > button.era-tab-btn-active {
+  background: var(--mode-era) !important;
+  color: var(--pitch-dark) !important;
+}
+@media (max-width: 639px) {
+  /* The old phone rule turned tab groups into underlined text; keep the segmented look. */
+  .tab-group-btn-active {
+    box-shadow: none !important;
+  }
+}
+
+/* Badges: the dark pill. */
+.game-badge {
+  border: 0;
+  background: var(--pitch-dark);
+  font-family: var(--font-cond);
+  font-size: 12px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--theme-primary-on-dark);
+}
+.game-badge--win,
+.game-badge--loss,
+.game-badge--gold,
+.game-badge--muted {
+  border: 0;
+  background: var(--pitch-dark);
+}
+.game-badge--muted {
+  color: var(--fl-muted);
+}
+.game-panel .game-badge,
+.mobile-section .game-badge {
+  background: var(--pitch-dark);
+}
+
+/* Primary buttons: the same shape and weight as the hero's black button. */
+a.game-button--theme,
+button.game-button--theme,
+.game-button--theme {
+  border: 0 !important;
+  border-radius: var(--fl-radius-control) !important;
+  box-shadow: none !important;
+  font-family: var(--font-cond) !important;
+  font-weight: 700 !important;
+}
+.game-button--lg {
+  min-height: 56px;
+  font-size: 1.25rem;
+}
+
+/* On a pitch surface the primary button turns black with the ▸, toggles sit in a dark track,
+   and secondary buttons are a soft darker patch of the pitch. */
+.pitch-surface a.game-button--theme,
+.pitch-surface button.game-button--theme,
+.pitch-surface .game-button--theme {
+  background-color: var(--pitch-dark) !important;
+  color: #ffffff !important;
+  gap: 0.5rem;
+}
+.pitch-surface .game-button--theme:hover:not(:disabled) {
+  background-color: var(--pitch-dark-hover) !important;
+  filter: none;
+}
+.pitch-surface .game-button--theme::after {
+  content: "";
+  flex-shrink: 0;
+  width: 8px;
+  height: 10px;
+  background: var(--theme-primary-on-dark);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+.pitch-surface a.game-button--secondary,
+.pitch-surface button.game-button--secondary,
+.pitch-surface .game-button--secondary {
+  background-color: rgb(var(--pitch-mark-rgb) / 0.12) !important;
+  color: var(--pitch-ink) !important;
+  border: 0 !important;
+}
+.pitch-surface a.game-button--secondary:hover:not(:disabled),
+.pitch-surface button.game-button--secondary:hover:not(:disabled) {
+  background-color: rgb(var(--pitch-mark-rgb) / 0.2) !important;
+}
+.pitch-surface .mode-toggle,
+.pitch-surface .tab-group {
+  background: rgb(14 15 16 / 0.9) !important;
+  box-shadow: none;
+}
+
+/* Modal title strips (opt-in: .pitch-strip on a header inside a sheet). */
+.pitch-strip {
+  margin: -0.75rem -0.75rem 0.75rem;
+  border-radius: var(--fl-radius-card) var(--fl-radius-card) 0 0;
+  padding: 0.875rem 1rem;
+}
+@media (min-width: 640px) {
+  .pitch-strip {
+    margin: -1.5rem -1.5rem 1rem;
+    padding: 1rem 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pitch-cta,
+  .pitch-seg > button,
+  .pitch-seg > a {
+    transition: none;
+  }
+}
+
+/* Small dark button on the surface (a back link, "How to play"): the pill's bigger sibling. */
+.pitch-chip {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  border-radius: 999px;
+  background: var(--pitch-dark);
+  padding: 0 0.875rem;
+  font-family: var(--font-cond);
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  white-space: nowrap;
+  transition: background-color var(--motion-fast, 120ms) ease;
+}
+.pitch-chip:hover {
+  background: var(--pitch-dark-hover);
+}
+.pitch-chip:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--pitch-ink), 0 0 0 4px rgba(255, 255, 255, 0.7);
+}
+
+/* Slim band (the Classic draft screen): the pitch needs the room below. */
+.pitch-hero--slim {
+  padding: 0.75rem 1rem;
+}
+.pitch-hero--slim .pitch-title {
+  font-size: 26px;
+}
+.pitch-hero--slim .pitch-sub {
+  margin-top: 0.25rem;
+  font-size: 13px;
+}
+.pitch-hero--slim .pitch-surface__mark {
+  --pitch-mark-size: 96px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+@media (min-width: 640px) {
+  .pitch-hero--slim {
+    padding: 0.875rem 1.25rem;
+  }
+  .pitch-hero--slim .pitch-title {
+    font-size: 30px;
+  }
+}
+.pitch-sub__meta {
+  display: block;
+  margin-top: 0.125rem;
+  font-size: 12px;
+}
+
+/* Sheet / modal title strip (MobileOverlay): the pitch across the top, square at the bottom edge. */
+.pitch-sheet-header {
+  flex-shrink: 0;
+  border-bottom: 0 !important;
+  border-radius: inherit;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.pitch-sheet-header .pitch-title {
+  margin-top: 0;
+}
+
+/* ── Round-2 refinements ─────────────────────────────────────────────── */
+/* Page headers: the watermark sits further out and fainter, so it never fights the text. */
+.pitch-hero--page .pitch-surface__mark {
+  --pitch-mark-size: 112px;
+  right: -22px;
+  color: rgb(var(--pitch-mark-rgb) / 0.09);
+}
+.pitch-hero--page .pitch-sub {
+  max-width: min(34rem, calc(100% - 4.5rem));
+}
+
+/* The same segmented control on a dark card (Wordle's Current / Era). */
+.pitch-seg--on-dark {
+  background: rgb(0 0 0 / 0.42);
+  box-shadow: inset 0 0 0 1px var(--fl-line);
+}
+
+/* Puzzle boards: the site's dark card, no green tint or frame. */
+.mini-game-board {
+  border: 0 !important;
+  border-radius: var(--fl-radius-card) !important;
+  background: var(--fl-surface) !important;
+  box-shadow: none !important;
+}
+
+/* Small row actions in lists (Store "Buy", "Renew"…): white, like the active segment, so the
+   accent stays for the one big action on each screen. */
+a.game-button--theme.game-button--sm,
+button.game-button--theme.game-button--sm,
+.game-button--theme.game-button--sm {
+  background-color: #ffffff !important;
+  color: var(--pitch-dark) !important;
+}
+a.game-button--theme.game-button--sm:hover:not(:disabled),
+button.game-button--theme.game-button--sm:hover:not(:disabled) {
+  background-color: #e6e7e8 !important;
+}
+.pitch-surface .game-button--theme.game-button--sm {
+  background-color: var(--pitch-dark) !important;
+  color: #ffffff !important;
+}
+
+/* Accent text on the dark ground: the theme colour, lightened where a dark theme (Cherry) would
+   miss 4.5:1. Identical to --theme-primary on Floodlit and the other light themes. */
+.text-theme-primary {
+  color: var(--theme-primary-on-dark);
+}
+/* …but a form's submit (Wordle / Grid "Guess") is the screen's main action: keep the accent. */
+button[type="submit"].game-button--theme.game-button--sm {
+  background-color: var(--theme-button-primary-bg, var(--theme-primary)) !important;
+  color: var(--theme-button-primary-text, var(--pitch-ink)) !important;
+}
+button[type="submit"].game-button--theme.game-button--sm:hover:not(:disabled) {
+  background-color: var(--theme-button-primary-hover-bg, var(--theme-secondary)) !important;
+}

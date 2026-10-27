@@ -3,9 +3,10 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { GameButton } from "@/components/ui/GameButton";
+import { PitchHero } from "@/components/ui/PitchHero";
+import { TilesGlyph } from "@/components/icons/rugby-icons";
 import { StandardPageShell } from "@/components/ui/StandardPageShell";
 import { PAGE } from "@/lib/ui/design-system";
-import { TYPO } from "@/lib/ui/typography";
 
 export function MiniGameShell({
   title,
@@ -26,32 +27,24 @@ export function MiniGameShell({
       <div
         className={`${PAGE.section} mini-game-arena mx-auto flex w-full max-w-xl flex-col items-center text-center`}
       >
-        <div
-          className={`flex w-full flex-wrap items-center justify-center gap-3 ${
-            compact ? "mb-2" : "mb-4"
-          }`}
-        >
-          <GameButton
-            variant="secondary"
-            size="sm"
-            href="/mini-games"
-            fullWidth={false}
-          >
-            Puzzles
-          </GameButton>
-          {actions}
-        </div>
+        <PitchHero
+          className={compact ? "w-full" : "mb-1 w-full"}
+          eyebrow={eyebrow}
+          title={title}
+          icon={<TilesGlyph />}
+          aside={
+            <Link href="/mini-games" className="pitch-chip">
+              <span aria-hidden>‹</span> Puzzles
+            </Link>
+          }
+        />
+        {actions ? <div className="flex w-full flex-wrap items-center justify-center gap-3">{actions}</div> : null}
 
         <div
           className={`mini-game-board${compact ? " mini-game-board--compact" : ""}`}
         >
-          <span className="mini-game-board__accent" aria-hidden />
           <div className="mini-game-board__body">
-            <p className={TYPO.sectionLabel}>{eyebrow}</p>
-            <h1 className={`${compact ? "mt-1" : "mt-1.5"} ${TYPO.pageTitle}`}>
-              {title}
-            </h1>
-            <div className="mt-1 flex w-full flex-col items-center">{children}</div>
+            <div className="flex w-full flex-col items-center">{children}</div>
           </div>
         </div>
       </div>

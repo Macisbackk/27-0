@@ -84,7 +84,8 @@ function ClubSheet({ clubId, onClose }: { clubId: string | null; onClose: () => 
       open={!!clubId}
       onClose={onClose}
       title={club.name}
-      headerExtra={<ClubBadge club={club} size="sm" />}
+      pitchHeader
+      headerExtra={<span className="mt-1.5 block"><ClubBadge club={club} size="sm" /></span>}
     >
       <p className="text-sm text-[color:var(--fl-muted)]">
         {DIVISION_LABEL[club.division]}

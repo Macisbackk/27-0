@@ -61,6 +61,8 @@ import {
 } from "@/lib/daily-challenge";
 import type { ChallengePayload } from "@/lib/challenge-link";
 import { RunSocialPanel, useDailyPickRarity, type RunOutcome } from "./RunSocial";
+import { PitchMark } from "@/components/ui/PitchHero";
+import { BallGlyph, CupGlyph } from "@/components/icons/rugby-icons";
 
 interface SeasonReviewProps {
   squad: SquadSlot[];
@@ -428,58 +430,60 @@ export function SeasonReview({
             <motion.header
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="w-full min-w-0 px-1 pt-1 text-center"
+              className="w-full min-w-0 text-center"
             >
-              <p className={`${TYPO.eyebrow} text-[color:var(--fl-muted)]`}>
-                {reviewLabel}
-              </p>
-
-              <motion.div
-                className="mt-2"
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-              >
-                <p
-                  className="fl-number fl-stamp text-[44px] sm:text-[56px]"
-                  style={{
-                    color: gradeInfo.color,
-                  }}
-                >
-                  {gradeInfo.grade} Grade
-                </p>
-                <p className={`mt-3 ${TYPO.eyebrow} text-accent-gold`}>
-                  {getSeasonStoryHeading(mode)}
-                </p>
-                <p className="mt-0.5 text-[17px] font-bold leading-snug text-white">
-                  {gradeInfo.label}
-                </p>
-                <p className={`mx-auto mt-2 hidden max-w-md sm:block ${TYPO.muted}`}>
-                  {getSeasonReviewStoryBio(
-                    mode,
-                    gradeInfo.grade,
-                    {
-                      wins: seasonResult.wins,
-                      losses: seasonResult.losses,
-                      leaguePosition: dreamTeamTablePosition,
-                      pointsDifference: seasonResult.pointsDifference,
-                      isPerfect: seasonResult.isPerfect,
-                    },
-                    dreamTeamTablePosition
-                  )}
-                </p>
-              </motion.div>
-
-              {isPerfect && (
-                <motion.h1
-                  className="fl-number mt-3 text-[32px] text-accent-gold sm:text-[40px]"
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
-                >
-                  27-0 achieved
-                </motion.h1>
-              )}
+              <section className="pitch-surface pitch-hero pitch-hero--feature" aria-label="Season result">
+                <PitchMark>{isPerfect ? <CupGlyph /> : <BallGlyph />}</PitchMark>
+                <div className="relative min-w-0">
+                  <p className="pitch-eyebrow">
+                    {reviewLabel}
+                    {isPerfect ? null : (
+                      <span className="pitch-pill">
+                        {seasonResult.wins}-{seasonResult.losses}
+                      </span>
+                    )}
+                  </p>
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 }}
+                  >
+                    <p className="pitch-title fl-stamp !text-[48px] sm:!text-[56px]">
+                      {gradeInfo.grade} Grade
+                    </p>
+                    {isPerfect && (
+                      <motion.h1
+                        className="pitch-title mt-1 !text-[30px] sm:!text-[36px]"
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                      >
+                        27-0 achieved
+                      </motion.h1>
+                    )}
+                    <p className="pitch-eyebrow mt-3 !text-[13px] !leading-tight">
+                      {getSeasonStoryHeading(mode)}
+                    </p>
+                    <p className="pitch-sub !mt-0.5 !text-[17px] !font-bold !leading-snug">
+                      {gradeInfo.label}
+                    </p>
+                    <p className="pitch-sub hidden !font-medium sm:block">
+                      {getSeasonReviewStoryBio(
+                        mode,
+                        gradeInfo.grade,
+                        {
+                          wins: seasonResult.wins,
+                          losses: seasonResult.losses,
+                          leaguePosition: dreamTeamTablePosition,
+                          pointsDifference: seasonResult.pointsDifference,
+                          isPerfect: seasonResult.isPerfect,
+                        },
+                        dreamTeamTablePosition
+                      )}
+                    </p>
+                  </motion.div>
+                </div>
+              </section>
 
               <ReviewSubmissionNotice
                 submittedOnline={submittedOnline}
