@@ -455,3 +455,15 @@ html:where(:not([data-mode="dark"])),
   border-radius: 20px;
   background: #0e0f10 !important;
 }
+
+/* ── Dark mode only ───────────────────────────────────────────────────── */
+/* The sticky phone bar's small primary (Spin, Kick off…) is the screen's main action: accent fill,
+   as before v1.23, instead of pitch.css's white row-action style. */
+html[data-mode="dark"] .mobile-action-bar__inner a.game-button--theme.game-button--sm,
+html[data-mode="dark"] .mobile-action-bar__inner button.game-button--theme.game-button--sm {
+  background-color: var(--theme-primary) !important;
+  color: var(--pitch-ink) !important;
+}
+html[data-mode="dark"] .mobile-action-bar__inner button.game-button--theme.game-button--sm:hover:not(:disabled) {
+  background-color: var(--theme-secondary) !important;
+}

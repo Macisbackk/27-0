@@ -221,12 +221,18 @@ async function darkContext(themeId) {
   await ctx.close();
 }
 {
+  const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
+  await ctx.addInitScript(() => localStorage.setItem("27-0-dark-mode", JSON.stringify({ on: true, updatedAt: 1 })));
+  await shot(ctx, "69-dark-desktop-home", "/");
+  await ctx.close();
+}
+{
   const ctx = await darkContext("cherry");
   await shot(ctx, "70-dark-cherry-home", "/");
   await shot(ctx, "71-dark-cherry-store", "/store");
   await ctx.close();
 }
-// The toggle itself: light page, flip it on in Settings.
+// The toggle itself: light page, flip it on in Settings (the page turns dark straight away).
 await shot(phone, "72-settings-toggle-on", "/settings", async (page) => {
   const sw = page.getByRole("switch", { name: "Dark mode" });
   await sw.scrollIntoViewIfNeeded({ timeout: 5000 });
