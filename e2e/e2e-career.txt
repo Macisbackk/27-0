@@ -1,0 +1,22 @@
+✓ Club picker renders
+✓ First-save walkthrough
+✓ Career started (22 Championship clubs listed)
+✓ Pre-season: played two friendlies, results shown above Round 1; board target on the hub
+✓ Played a live match (call + skip) and saw the result
+✓ Team tab + player picker
+✓ Table tab (22 rows)
+✓ Club tab + Legend Vault
+✓ Deadline Day paused the season, late market, club team sheet, transfer round-up, window shut
+✓ League over: its own stage before the play-offs
+✓ Promotion and relegation: its own stage before the Grand Final
+✓ Quick-simmed the season → review screen
+✓ Departures: retirements, contracts and academy before the window
+✓ Transfer window: squad at the minimum, so signed a player instead
+✓ Second season (2027) started
+✓ Career persists across reload
+✓ Leaderboard shows Manager Mode records
+✓ Home page Manager Mode card
+
+E2E PASSED: 18 steps
+::notice title=Manager Mode e2e passed (18 steps)::Club picker renders%0AFirst-save walkthrough%0ACareer started (22 Championship clubs listed)%0APre-season: played two friendlies, results shown above Round 1; board target on the hub%0APlayed a live match (call + skip) and saw the result%0ATeam tab + player picker%0ATable tab (22 rows)%0AClub tab + Legend Vault%0ADeadline Day paused the season, late market, club team sheet, transfer round-up, window shut%0ALeague over: its own stage before the play-offs%0APromotion and relegation: its own stage before the Grand Final%0AQuick-simmed the season → review screen%0ADepartures: retirements, contracts and academy before the window%0ATransfer window: squad at the minimum, so signed a player instead%0ASecond season (2027) started%0ACareer persists across reload%0ALeaderboard shows Manager Mode records%0AHome page Manager Mode card
+exit 0

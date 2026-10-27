@@ -1,0 +1,12 @@
+✓ Corrupted saves fall back to the club picker
+✓ Five rapid taps on Quick sim handled
+✓ All hub tabs fit a 320px screen
+✓ Second tab follows the first
+✓ Championship season via Quick sim (8 taps)
+✓ Reloading the review screen doesn't re-award Legacy
+✓ Can't sell below the 20-man minimum
+✓ Next season starts after a fire sale
+
+CHAOS E2E PASSED: 8 steps
+::notice title=Manager Mode chaos e2e passed (8 steps)::Corrupted saves fall back to the club picker%0AFive rapid taps on Quick sim handled%0AAll hub tabs fit a 320px screen%0ASecond tab follows the first%0AChampionship season via Quick sim (8 taps)%0AReloading the review screen doesn't re-award Legacy%0ACan't sell below the 20-man minimum%0ANext season starts after a fire sale
+exit 0

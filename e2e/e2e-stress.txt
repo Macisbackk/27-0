@@ -1,0 +1,15 @@
+✓ Store: can't buy Ball Knower with £1m
+✓ Store: double-tap buys once, equip spam stays consistent
+✓ Store: titles, kit designer, tampered kit colours load safely
+✓ Ball Knower is locked without buying it
+✓ Classic: skip spins, respin spam, double-tap Sign signs exactly once
+✓ Season sim card keeps its size as results land
+✓ Login: Forgot password guards an empty email; empty sign-up handled
+✓ Frames: leaderboard and profile render with a frame equipped
+✓ Walkthrough survives a reload and stays gone after Skip
+✓ Friendlies: max two, double-tap plays once, paid once
+✓ Friendly results above Round 1 (double-tap safe)
+✓ Deadline Day pauses the season (survives reload) until the window is shut
+
+Stress test passed (12 checks).
+exit 0
