@@ -52,6 +52,14 @@ export const ERA_CHALLENGE_CLUBS = [
   "Salford Red Devils",
   "York Knights",
   "Toulouse Olympique",
+  "Halifax Panthers",
+  "Sheffield Eagles",
+  "Oldham RLFC",
+  "Paris Saint-Germain RL",
+  "Workington Town",
+  "Gateshead Thunder",
+  "Crusaders RL",
+  "Toronto Wolfpack",
 ] as const;
 
 /** Approved 2026/current Super League clubs — excludes historic-only clubs. */
@@ -78,6 +86,14 @@ export const ERA_HISTORIC_ONLY_CLUBS = [
   "Salford Red Devils",
   "London Broncos",
   "Widnes Vikings",
+  "Halifax Panthers",
+  "Sheffield Eagles",
+  "Oldham RLFC",
+  "Paris Saint-Germain RL",
+  "Workington Town",
+  "Gateshead Thunder",
+  "Crusaders RL",
+  "Toronto Wolfpack",
 ] as const;
 
 export function isEraCurrentPlayableClub(clubName: string): boolean {

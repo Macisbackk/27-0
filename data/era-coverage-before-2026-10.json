@@ -1,0 +1,7220 @@
+[
+ {
+  "club": "St Helens",
+  "year": 1996,
+  "spin": false,
+  "side": true,
+  "own": 12,
+  "eraOnly": 2,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Paul Newlove",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Anthony Sullivan",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Bobbie Goulding",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Apollo Perelini",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Keiron Cunningham",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 1996,
+  "spin": false,
+  "side": true,
+  "own": 17,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Andrew Farrell",
+    "award": "Man of Steel",
+    "card": true
+   },
+   {
+    "name": "Gary Connolly",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Jason Robinson",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Va'aiga Tuigamala",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Henry Paul",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Terry O'Connor",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Andrew Farrell",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Bradford Bulls",
+  "year": 1996,
+  "spin": false,
+  "side": true,
+  "own": 13,
+  "eraOnly": 2,
+  "full13": true,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Robbie Paul",
+    "award": "Lance Todd",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "London Broncos",
+  "year": 1996,
+  "spin": false,
+  "side": true,
+  "own": 7,
+  "eraOnly": 8,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Peter Gill",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 1996,
+  "spin": false,
+  "side": true,
+  "own": 2,
+  "eraOnly": 4,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Paul Sculthorpe",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Halifax Panthers",
+  "year": 1996,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Sheffield Eagles",
+  "year": 1996,
+  "spin": false,
+  "side": false,
+  "own": 2,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Oldham RLFC",
+  "year": 1996,
+  "spin": false,
+  "side": false,
+  "own": 6,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 1996,
+  "spin": false,
+  "side": true,
+  "own": 10,
+  "eraOnly": 5,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 1996,
+  "spin": false,
+  "side": true,
+  "own": 8,
+  "eraOnly": 4,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Paris Saint-Germain RL",
+  "year": 1996,
+  "spin": false,
+  "side": false,
+  "own": 4,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Workington Town",
+  "year": 1996,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Bradford Bulls",
+  "year": 1997,
+  "spin": true,
+  "side": true,
+  "own": 17,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "James Lowes",
+    "award": "Man of Steel",
+    "card": true
+   },
+   {
+    "name": "Stuart Spruce",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Danny Peacock",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Graeme Bradley",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "James Lowes",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Mike Forshaw",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "London Broncos",
+  "year": 1997,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 2,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Peter Gill",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "St Helens",
+  "year": 1997,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Alan Hunte",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Anthony Sullivan",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Tommy Martyn",
+    "award": "Lance Todd",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 1997,
+  "spin": false,
+  "side": true,
+  "own": 6,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Jason Robinson",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Tony Smith",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Tony Mestrov",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Andrew Farrell",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 1997,
+  "spin": false,
+  "side": true,
+  "own": 11,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Salford Red Devils",
+  "year": 1997,
+  "spin": false,
+  "side": true,
+  "own": 11,
+  "eraOnly": 3,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Halifax Panthers",
+  "year": 1997,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Sheffield Eagles",
+  "year": 1997,
+  "spin": false,
+  "side": false,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Paul Broadbent",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 1997,
+  "spin": false,
+  "side": true,
+  "own": 7,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 1997,
+  "spin": false,
+  "side": true,
+  "own": 6,
+  "eraOnly": 2,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Paris Saint-Germain RL",
+  "year": 1997,
+  "spin": false,
+  "side": false,
+  "own": 1,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Oldham RLFC",
+  "year": 1997,
+  "spin": false,
+  "side": false,
+  "own": 4,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 1998,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 2,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Kris Radlinski",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Jason Robinson",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Gary Connolly",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Robbie McCormack",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Tony Mestrov",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Andrew Farrell",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Jason Robinson",
+    "award": "Harry Sunderland",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 1998,
+  "spin": false,
+  "side": true,
+  "own": 24,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Iestyn Harris",
+    "award": "Man of Steel",
+    "card": true
+   },
+   {
+    "name": "Brad Godden",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Iestyn Harris",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Adrian Morley",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Halifax Panthers",
+  "year": 1998,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Gavin Clinch",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "St Helens",
+  "year": 1998,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Anthony Sullivan",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Bradford Bulls",
+  "year": 1998,
+  "spin": true,
+  "side": true,
+  "own": 17,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 1998,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "London Broncos",
+  "year": 1998,
+  "spin": false,
+  "side": true,
+  "own": 6,
+  "eraOnly": 4,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Steele Retchless",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Sheffield Eagles",
+  "year": 1998,
+  "spin": false,
+  "side": false,
+  "own": 17,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Dale Laughton",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Mark Aston",
+    "award": "Lance Todd",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Hull FC",
+  "year": 1998,
+  "spin": false,
+  "side": true,
+  "own": 10,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 1998,
+  "spin": false,
+  "side": true,
+  "own": 0,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Salford Red Devils",
+  "year": 1998,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Huddersfield Giants",
+  "year": 1998,
+  "spin": false,
+  "side": true,
+  "own": 10,
+  "eraOnly": 2,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Bradford Bulls",
+  "year": 1999,
+  "spin": true,
+  "side": true,
+  "own": 19,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "James Lowes",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Henry Paul",
+    "award": "Harry Sunderland",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "St Helens",
+  "year": 1999,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Paul Newlove",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Chris Joynt",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 1999,
+  "spin": false,
+  "side": true,
+  "own": 9,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Iestyn Harris",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Barrie McDermott",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Adrian Morley",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Leroy Rivett",
+    "award": "Lance Todd",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 1999,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Kris Radlinski",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Jason Robinson",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Gary Connolly",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 1999,
+  "spin": false,
+  "side": true,
+  "own": 8,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Adrian Vowles",
+    "award": "Man of Steel",
+    "card": false
+   },
+   {
+    "name": "Dean Sampson",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Adrian Vowles",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Gateshead Thunder",
+  "year": 1999,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Matt Daylight",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Willie Peters",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 1999,
+  "spin": false,
+  "side": true,
+  "own": 12,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "London Broncos",
+  "year": 1999,
+  "spin": false,
+  "side": true,
+  "own": 7,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Halifax Panthers",
+  "year": 1999,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Sheffield Eagles",
+  "year": 1999,
+  "spin": false,
+  "side": false,
+  "own": 7,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Wakefield Trinity",
+  "year": 1999,
+  "spin": false,
+  "side": true,
+  "own": 12,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Salford Red Devils",
+  "year": 1999,
+  "spin": false,
+  "side": true,
+  "own": 8,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Hull FC",
+  "year": 1999,
+  "spin": false,
+  "side": true,
+  "own": 9,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Huddersfield Giants",
+  "year": 1999,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 2,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 2000,
+  "spin": false,
+  "side": true,
+  "own": 7,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Kris Radlinski",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Jason Robinson",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Steve Renouf",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Terry O'Connor",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Denis Betts",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Andrew Farrell",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "St Helens",
+  "year": 2000,
+  "spin": true,
+  "side": true,
+  "own": 15,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Sean Long",
+    "award": "Man of Steel",
+    "card": true
+   },
+   {
+    "name": "Tommy Martyn",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Sean Long",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Keiron Cunningham",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Chris Joynt",
+    "award": "Harry Sunderland",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Bradford Bulls",
+  "year": 2000,
+  "spin": true,
+  "side": true,
+  "own": 15,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Stuart Fielden",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Jamie Peacock",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Henry Paul",
+    "award": "Lance Todd",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 2000,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Graham Mackay",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 2000,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Michael Eagar",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 2000,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Hull FC",
+  "year": 2000,
+  "spin": false,
+  "side": true,
+  "own": 13,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Halifax Panthers",
+  "year": 2000,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Salford Red Devils",
+  "year": 2000,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Wakefield Trinity",
+  "year": 2000,
+  "spin": false,
+  "side": true,
+  "own": 2,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "London Broncos",
+  "year": 2000,
+  "spin": false,
+  "side": true,
+  "own": 2,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Huddersfield Giants",
+  "year": 2000,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Bradford Bulls",
+  "year": 2001,
+  "spin": true,
+  "side": true,
+  "own": 16,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Tevita Vaikona",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Jamie Peacock",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Michael Withers",
+    "award": "Harry Sunderland",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 2001,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Kris Radlinski",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Steve Renouf",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Brett Dallas",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Adrian Lam",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Terry O'Connor",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "David Furner",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Andrew Farrell",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Hull FC",
+  "year": 2001,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "St Helens",
+  "year": 2001,
+  "spin": false,
+  "side": true,
+  "own": 7,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Paul Sculthorpe",
+    "award": "Man of Steel",
+    "card": true
+   },
+   {
+    "name": "Paul Sculthorpe",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "David Fairleigh",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Keiron Cunningham",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Sean Long",
+    "award": "Lance Todd",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 2001,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Tonie Carroll",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "London Broncos",
+  "year": 2001,
+  "spin": false,
+  "side": true,
+  "own": 6,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 2001,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 2001,
+  "spin": false,
+  "side": true,
+  "own": 2,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Halifax Panthers",
+  "year": 2001,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Salford Red Devils",
+  "year": 2001,
+  "spin": false,
+  "side": true,
+  "own": 2,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Wakefield Trinity",
+  "year": 2001,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 2,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Huddersfield Giants",
+  "year": 2001,
+  "spin": false,
+  "side": true,
+  "own": 7,
+  "eraOnly": 2,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "St Helens",
+  "year": 2002,
+  "spin": true,
+  "side": true,
+  "own": 16,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Paul Sculthorpe",
+    "award": "Man of Steel",
+    "card": true
+   },
+   {
+    "name": "Martin Gleeson",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Darren Albert",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Keiron Cunningham",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Paul Sculthorpe",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Bradford Bulls",
+  "year": 2002,
+  "spin": true,
+  "side": true,
+  "own": 14,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Tevita Vaikona",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Stuart Fielden",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Jamie Peacock",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Paul Deacon",
+    "award": "Harry Sunderland",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 2002,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Kris Radlinski",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Adrian Lam",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Terry O'Connor",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Kris Radlinski",
+    "award": "Lance Todd",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 2002,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Keith Senior",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Hull FC",
+  "year": 2002,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 2002,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Danny Orr",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Michael Smith",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Widnes Vikings",
+  "year": 2002,
+  "spin": false,
+  "side": true,
+  "own": 12,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "London Broncos",
+  "year": 2002,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Halifax Panthers",
+  "year": 2002,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 2002,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Wakefield Trinity",
+  "year": 2002,
+  "spin": false,
+  "side": true,
+  "own": 6,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Salford Red Devils",
+  "year": 2002,
+  "spin": false,
+  "side": true,
+  "own": 1,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Bradford Bulls",
+  "year": 2003,
+  "spin": true,
+  "side": true,
+  "own": 16,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Jamie Peacock",
+    "award": "Man of Steel",
+    "card": true
+   },
+   {
+    "name": "Lesley Vainikolo",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Jamie Peacock",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Stuart Reardon",
+    "award": "Harry Sunderland",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 2003,
+  "spin": false,
+  "side": true,
+  "own": 2,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Gary Connolly",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Keith Senior",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Matt Adamson",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Gary Connolly",
+    "award": "Lance Todd",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 2003,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Brian Carney",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Adrian Lam",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Craig Smith",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Terry Newton",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Andrew Farrell",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "St Helens",
+  "year": 2003,
+  "spin": false,
+  "side": true,
+  "own": 6,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "London Broncos",
+  "year": 2003,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 3,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 2003,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Graham Appo",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Hull FC",
+  "year": 2003,
+  "spin": false,
+  "side": true,
+  "own": 7,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 2003,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Andy Lynch",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Widnes Vikings",
+  "year": 2003,
+  "spin": false,
+  "side": false,
+  "own": 1,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Huddersfield Giants",
+  "year": 2003,
+  "spin": false,
+  "side": true,
+  "own": 11,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Wakefield Trinity",
+  "year": 2003,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 2,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Gareth Ellis",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Halifax Panthers",
+  "year": 2003,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 2004,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Keith Senior",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Marcus Bai",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Danny McGuire",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Matt Diskin",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Ali Lauitiiti",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Matt Diskin",
+    "award": "Harry Sunderland",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Bradford Bulls",
+  "year": 2004,
+  "spin": true,
+  "side": true,
+  "own": 16,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Lesley Vainikolo",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Hull FC",
+  "year": 2004,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Shaun Briscoe",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Richard Horne",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Paul King",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 2004,
+  "spin": false,
+  "side": true,
+  "own": 1,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Andrew Farrell",
+    "award": "Man of Steel",
+    "card": false
+   },
+   {
+    "name": "Andrew Farrell",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "St Helens",
+  "year": 2004,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Paul Sculthorpe",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Sean Long",
+    "award": "Lance Todd",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Wakefield Trinity",
+  "year": 2004,
+  "spin": false,
+  "side": true,
+  "own": 8,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Sid Domic",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "David Solomona",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Huddersfield Giants",
+  "year": 2004,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 2004,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Salford Red Devils",
+  "year": 2004,
+  "spin": false,
+  "side": true,
+  "own": 9,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "London Broncos",
+  "year": 2004,
+  "spin": false,
+  "side": true,
+  "own": 6,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Widnes Vikings",
+  "year": 2004,
+  "spin": false,
+  "side": false,
+  "own": 3,
+  "eraOnly": 3,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 2004,
+  "spin": false,
+  "side": true,
+  "own": 1,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "St Helens",
+  "year": 2005,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Jamie Lyon",
+    "award": "Man of Steel",
+    "card": true
+   },
+   {
+    "name": "Paul Wellens",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Jamie Lyon",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Martin Gleeson",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Darren Albert",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Keiron Cunningham",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Paul Anderson",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 2005,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Mark Calderwood",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Rob Burrow",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Ali Lauitiiti",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Kevin Sinfield",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Kevin Sinfield",
+    "award": "Lance Todd",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Bradford Bulls",
+  "year": 2005,
+  "spin": true,
+  "side": true,
+  "own": 16,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Jamie Peacock",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Leon Pryce",
+    "award": "Harry Sunderland",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 2005,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Hull FC",
+  "year": 2005,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Paul Cooke",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Jamie Thackray",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "London Broncos",
+  "year": 2005,
+  "spin": false,
+  "side": true,
+  "own": 9,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 2005,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Huddersfield Giants",
+  "year": 2005,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Salford Red Devils",
+  "year": 2005,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Wakefield Trinity",
+  "year": 2005,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Widnes Vikings",
+  "year": 2005,
+  "spin": false,
+  "side": true,
+  "own": 1,
+  "eraOnly": 5,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Leigh Leopards",
+  "year": 2005,
+  "spin": false,
+  "side": false,
+  "own": 2,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "St Helens",
+  "year": 2006,
+  "spin": false,
+  "side": false,
+  "own": 15,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Paul Wellens",
+    "award": "Man of Steel",
+    "card": true
+   },
+   {
+    "name": "Paul Wellens",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Jamie Lyon",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Sean Long",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Keiron Cunningham",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Jon Wilkin",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Sean Long",
+    "award": "Lance Todd",
+    "card": true
+   },
+   {
+    "name": "Paul Wellens",
+    "award": "Harry Sunderland",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Hull FC",
+  "year": 2006,
+  "spin": false,
+  "side": true,
+  "own": 1,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Kirk Yeaman",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 2006,
+  "spin": false,
+  "side": true,
+  "own": 2,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Danny McGuire",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Gareth Ellis",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Kevin Sinfield",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Bradford Bulls",
+  "year": 2006,
+  "spin": true,
+  "side": true,
+  "own": 14,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "Salford Red Devils",
+  "year": 2006,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "David Hodgson",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 2006,
+  "spin": false,
+  "side": true,
+  "own": 2,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "London Broncos",
+  "year": 2006,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 2006,
+  "spin": true,
+  "side": false,
+  "own": 14,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Stuart Fielden",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Huddersfield Giants",
+  "year": 2006,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Wakefield Trinity",
+  "year": 2006,
+  "spin": false,
+  "side": true,
+  "own": 6,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 2006,
+  "spin": false,
+  "side": true,
+  "own": 6,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Danny Nutley",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Catalans Dragons",
+  "year": 2006,
+  "spin": true,
+  "side": true,
+  "own": 22,
+  "eraOnly": 1,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Justin Murphy",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "St Helens",
+  "year": 2007,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "James Roby",
+    "award": "Man of Steel",
+    "card": true
+   },
+   {
+    "name": "Paul Wellens",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Nick Fozzard",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "James Roby",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Paul Wellens",
+    "award": "Lance Todd",
+    "card": false
+   },
+   {
+    "name": "Leon Pryce",
+    "award": "Lance Todd",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 2007,
+  "spin": false,
+  "side": true,
+  "own": 7,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Scott Donald",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Rob Burrow",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Jamie Peacock",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Gareth Ellis",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Rob Burrow",
+    "award": "Harry Sunderland",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Bradford Bulls",
+  "year": 2007,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Glenn Morrison",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Hull FC",
+  "year": 2007,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Huddersfield Giants",
+  "year": 2007,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Stephen Wild",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 2007,
+  "spin": false,
+  "side": true,
+  "own": 8,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Trent Barrett",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 2007,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Kevin Penny",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Wakefield Trinity",
+  "year": 2007,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Jason Demetriou",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "London Broncos",
+  "year": 2007,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Catalans Dragons",
+  "year": 2007,
+  "spin": true,
+  "side": false,
+  "own": 15,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Adam Mogg",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Hull KR",
+  "year": 2007,
+  "spin": false,
+  "side": true,
+  "own": 10,
+  "eraOnly": 2,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Salford Red Devils",
+  "year": 2007,
+  "spin": false,
+  "side": true,
+  "own": 1,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "St Helens",
+  "year": 2008,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "James Graham",
+    "award": "Man of Steel",
+    "card": true
+   },
+   {
+    "name": "Matthew Gidley",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Ade Gardner",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Leon Pryce",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "James Graham",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Keiron Cunningham",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Paul Wellens",
+    "award": "Lance Todd",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 2008,
+  "spin": true,
+  "side": true,
+  "own": 15,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Scott Donald",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Rob Burrow",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Jamie Peacock",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Gareth Ellis",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Kevin Sinfield",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Lee Smith",
+    "award": "Harry Sunderland",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Catalans Dragons",
+  "year": 2008,
+  "spin": true,
+  "side": false,
+  "own": 14,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Clint Greenshields",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 2008,
+  "spin": true,
+  "side": true,
+  "own": 18,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "George Carmont",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Bradford Bulls",
+  "year": 2008,
+  "spin": false,
+  "side": true,
+  "own": 2,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 2008,
+  "spin": false,
+  "side": true,
+  "own": 2,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Ben Westwood",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Hull KR",
+  "year": 2008,
+  "spin": false,
+  "side": true,
+  "own": 6,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Wakefield Trinity",
+  "year": 2008,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "London Broncos",
+  "year": 2008,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Huddersfield Giants",
+  "year": 2008,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Hull FC",
+  "year": 2008,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 2008,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 2009,
+  "spin": true,
+  "side": true,
+  "own": 15,
+  "eraOnly": 1,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Keith Senior",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Ryan Hall",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Jamie Peacock",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Kevin Sinfield",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Kevin Sinfield",
+    "award": "Harry Sunderland",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "St Helens",
+  "year": 2009,
+  "spin": true,
+  "side": true,
+  "own": 16,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Matthew Gidley",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Huddersfield Giants",
+  "year": 2009,
+  "spin": true,
+  "side": true,
+  "own": 14,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Brett Hodgson",
+    "award": "Man of Steel",
+    "card": true
+   },
+   {
+    "name": "Brett Hodgson",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Scott Moore",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Hull KR",
+  "year": 2009,
+  "spin": true,
+  "side": true,
+  "own": 14,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Peter Fox",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Michael Dobson",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Ben Galea",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Clint Newton",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Wakefield Trinity",
+  "year": 2009,
+  "spin": true,
+  "side": true,
+  "own": 17,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 2009,
+  "spin": true,
+  "side": true,
+  "own": 17,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Sam Tomkins",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 2009,
+  "spin": true,
+  "side": true,
+  "own": 18,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "Catalans Dragons",
+  "year": 2009,
+  "spin": true,
+  "side": true,
+  "own": 18,
+  "eraOnly": 1,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "Bradford Bulls",
+  "year": 2009,
+  "spin": true,
+  "side": true,
+  "own": 17,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 2009,
+  "spin": true,
+  "side": true,
+  "own": 15,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Adrian Morley",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Michael Monaghan",
+    "award": "Lance Todd",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "London Broncos",
+  "year": 2009,
+  "spin": true,
+  "side": true,
+  "own": 12,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "Hull FC",
+  "year": 2009,
+  "spin": true,
+  "side": true,
+  "own": 14,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "Salford Red Devils",
+  "year": 2009,
+  "spin": true,
+  "side": true,
+  "own": 18,
+  "eraOnly": 1,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "Crusaders RL",
+  "year": 2009,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 2010,
+  "spin": false,
+  "side": true,
+  "own": 2,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Pat Richards",
+    "award": "Man of Steel",
+    "card": true
+   },
+   {
+    "name": "Pat Richards",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Sam Tomkins",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Joel Tomkins",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Sean O'Loughlin",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Thomas Leuluai",
+    "award": "Harry Sunderland",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "St Helens",
+  "year": 2010,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Paul Wellens",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "James Roby",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "James Graham",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 2010,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Matt King",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Adrian Morley",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Ben Westwood",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Lee Briers",
+    "award": "Lance Todd",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 2010,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Keith Senior",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Ryan Hall",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Huddersfield Giants",
+  "year": 2010,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Hull FC",
+  "year": 2010,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Hull KR",
+  "year": 2010,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Michael Dobson",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Crusaders RL",
+  "year": 2010,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 2010,
+  "spin": false,
+  "side": true,
+  "own": 2,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Bradford Bulls",
+  "year": 2010,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Wakefield Trinity",
+  "year": 2010,
+  "spin": true,
+  "side": true,
+  "own": 16,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "Salford Red Devils",
+  "year": 2010,
+  "spin": false,
+  "side": true,
+  "own": 6,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "London Broncos",
+  "year": 2010,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Catalans Dragons",
+  "year": 2010,
+  "spin": true,
+  "side": true,
+  "own": 16,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 2011,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Joel Monaghan",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Garreth Carvell",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Ben Westwood",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 2011,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Sam Tomkins",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "George Carmont",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Sean O'Loughlin",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Jeff Lima",
+    "award": "Lance Todd",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "St Helens",
+  "year": 2011,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "James Graham",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "James Roby",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Huddersfield Giants",
+  "year": 2011,
+  "spin": false,
+  "side": true,
+  "own": 1,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 2011,
+  "spin": false,
+  "side": true,
+  "own": 0,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Rob Burrow",
+    "award": "Harry Sunderland",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Catalans Dragons",
+  "year": 2011,
+  "spin": true,
+  "side": true,
+  "own": 17,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Scott Dureau",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Steve Menzies",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Hull KR",
+  "year": 2011,
+  "spin": false,
+  "side": true,
+  "own": 1,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Hull FC",
+  "year": 2011,
+  "spin": false,
+  "side": true,
+  "own": 0,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Tom Briscoe",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Kirk Yeaman",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 2011,
+  "spin": false,
+  "side": true,
+  "own": 2,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Rangi Chase",
+    "award": "Man of Steel",
+    "card": false
+   },
+   {
+    "name": "Rangi Chase",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Bradford Bulls",
+  "year": 2011,
+  "spin": true,
+  "side": true,
+  "own": 14,
+  "eraOnly": 1,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "Salford Red Devils",
+  "year": 2011,
+  "spin": false,
+  "side": true,
+  "own": 1,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "London Broncos",
+  "year": 2011,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Wakefield Trinity",
+  "year": 2011,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Crusaders RL",
+  "year": 2011,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 2012,
+  "spin": false,
+  "side": true,
+  "own": 2,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Sam Tomkins",
+    "award": "Man of Steel",
+    "card": true
+   },
+   {
+    "name": "Sam Tomkins",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Josh Charnley",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "George Carmont",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Brett Finch",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Gareth Hock",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Sean O'Loughlin",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 2012,
+  "spin": false,
+  "side": true,
+  "own": 1,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Ryan Atkins",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Chris Hill",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Ben Westwood",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Brett Hodgson",
+    "award": "Lance Todd",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "St Helens",
+  "year": 2012,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "James Roby",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Catalans Dragons",
+  "year": 2012,
+  "spin": true,
+  "side": true,
+  "own": 15,
+  "eraOnly": 1,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Scott Dureau",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Rémi Casty",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 2012,
+  "spin": false,
+  "side": true,
+  "own": 1,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Ryan Hall",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Kevin Sinfield",
+    "award": "Harry Sunderland",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Hull FC",
+  "year": 2012,
+  "spin": true,
+  "side": true,
+  "own": 13,
+  "eraOnly": 1,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "Huddersfield Giants",
+  "year": 2012,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Wakefield Trinity",
+  "year": 2012,
+  "spin": false,
+  "side": true,
+  "own": 7,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Bradford Bulls",
+  "year": 2012,
+  "spin": true,
+  "side": true,
+  "own": 16,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "Hull KR",
+  "year": 2012,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Salford Red Devils",
+  "year": 2012,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "London Broncos",
+  "year": 2012,
+  "spin": false,
+  "side": true,
+  "own": 6,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 2012,
+  "spin": true,
+  "side": true,
+  "own": 17,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "Widnes Vikings",
+  "year": 2012,
+  "spin": false,
+  "side": true,
+  "own": 13,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Huddersfield Giants",
+  "year": 2013,
+  "spin": true,
+  "side": true,
+  "own": 15,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Danny Brough",
+    "award": "Man of Steel",
+    "card": true
+   },
+   {
+    "name": "Leroy Cudjoe",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Danny Brough",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Eorl Crabtree",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Shaun Lunt",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Brett Ferres",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 2013,
+  "spin": false,
+  "side": true,
+  "own": 1,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 2013,
+  "spin": true,
+  "side": false,
+  "own": 14,
+  "eraOnly": 1,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Jamie Peacock",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 2013,
+  "spin": false,
+  "side": true,
+  "own": 7,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Sam Tomkins",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Josh Charnley",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Matty Smith",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Sean O'Loughlin",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Matty Smith",
+    "award": "Lance Todd",
+    "card": true
+   },
+   {
+    "name": "Blake Green",
+    "award": "Harry Sunderland",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "St Helens",
+  "year": 2013,
+  "spin": false,
+  "side": true,
+  "own": 2,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Hull FC",
+  "year": 2013,
+  "spin": true,
+  "side": true,
+  "own": 15,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Ben Crooks",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Tom Lineham",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Catalans Dragons",
+  "year": 2013,
+  "spin": true,
+  "side": true,
+  "own": 16,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "Hull KR",
+  "year": 2013,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 2,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Bradford Bulls",
+  "year": 2013,
+  "spin": true,
+  "side": true,
+  "own": 15,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "Widnes Vikings",
+  "year": 2013,
+  "spin": false,
+  "side": false,
+  "own": 5,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Wakefield Trinity",
+  "year": 2013,
+  "spin": false,
+  "side": true,
+  "own": 2,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Danny Kirmond",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 2013,
+  "spin": false,
+  "side": true,
+  "own": 2,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "London Broncos",
+  "year": 2013,
+  "spin": false,
+  "side": true,
+  "own": 1,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Salford Red Devils",
+  "year": 2013,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "St Helens",
+  "year": 2014,
+  "spin": false,
+  "side": true,
+  "own": 14,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Tommy Makinson",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "James Roby",
+    "award": "Harry Sunderland",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 2014,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Matty Smith",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Sean O'Loughlin",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Huddersfield Giants",
+  "year": 2014,
+  "spin": false,
+  "side": true,
+  "own": 1,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 2014,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Daryl Clark",
+    "award": "Man of Steel",
+    "card": false
+   },
+   {
+    "name": "Michael Shenton",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Daryl Clark",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 2014,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Chris Hill",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 2014,
+  "spin": false,
+  "side": true,
+  "own": 2,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Zak Hardaker",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Kallum Watkins",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Ryan Hall",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Jamie Peacock",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Carl Ablett",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Ryan Hall",
+    "award": "Lance Todd",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Catalans Dragons",
+  "year": 2014,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Elliott Whitehead",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Widnes Vikings",
+  "year": 2014,
+  "spin": false,
+  "side": false,
+  "own": 1,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Kevin Brown",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Hull KR",
+  "year": 2014,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 3,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Salford Red Devils",
+  "year": 2014,
+  "spin": true,
+  "side": true,
+  "own": 17,
+  "eraOnly": 2,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "Hull FC",
+  "year": 2014,
+  "spin": false,
+  "side": true,
+  "own": 7,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Wakefield Trinity",
+  "year": 2014,
+  "spin": false,
+  "side": false,
+  "own": 5,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Bradford Bulls",
+  "year": 2014,
+  "spin": true,
+  "side": true,
+  "own": 14,
+  "eraOnly": 1,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "London Broncos",
+  "year": 2014,
+  "spin": false,
+  "side": false,
+  "own": 1,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 2015,
+  "spin": true,
+  "side": false,
+  "own": 13,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Zak Hardaker",
+    "award": "Man of Steel",
+    "card": true
+   },
+   {
+    "name": "Zak Hardaker",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Kallum Watkins",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Jamie Peacock",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Adam Cuthbertson",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Tom Briscoe",
+    "award": "Lance Todd",
+    "card": true
+   },
+   {
+    "name": "Danny McGuire",
+    "award": "Harry Sunderland",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 2015,
+  "spin": true,
+  "side": true,
+  "own": 14,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Joe Burgess",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Liam Farrell",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Huddersfield Giants",
+  "year": 2015,
+  "spin": false,
+  "side": true,
+  "own": 0,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Jermaine McGillvary",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Danny Brough",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "St Helens",
+  "year": 2015,
+  "spin": true,
+  "side": true,
+  "own": 15,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Alex Walmsley",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "James Roby",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 2015,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Michael Shenton",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Luke Gale",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 2015,
+  "spin": true,
+  "side": true,
+  "own": 14,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "Catalans Dragons",
+  "year": 2015,
+  "spin": true,
+  "side": true,
+  "own": 13,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Zeb Taia",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Hull FC",
+  "year": 2015,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Widnes Vikings",
+  "year": 2015,
+  "spin": false,
+  "side": false,
+  "own": 2,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Hull KR",
+  "year": 2015,
+  "spin": false,
+  "side": false,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Salford Red Devils",
+  "year": 2015,
+  "spin": true,
+  "side": true,
+  "own": 22,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "Wakefield Trinity",
+  "year": 2015,
+  "spin": false,
+  "side": false,
+  "own": 1,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 2016,
+  "spin": true,
+  "side": true,
+  "own": 16,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Ryan Atkins",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Kurt Gidley",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Chris Hill",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Ben Currie",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 2016,
+  "spin": true,
+  "side": true,
+  "own": 14,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Dominic Manfredi",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Liam Farrell",
+    "award": "Harry Sunderland",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Hull FC",
+  "year": 2016,
+  "spin": true,
+  "side": true,
+  "own": 14,
+  "eraOnly": 1,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Danny Houghton",
+    "award": "Man of Steel",
+    "card": true
+   },
+   {
+    "name": "Jamie Shaul",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Mahe Fonua",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Danny Houghton",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Scott Taylor",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Mark Minichiello",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Gareth Ellis",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Marc Sneyd",
+    "award": "Lance Todd",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "St Helens",
+  "year": 2016,
+  "spin": true,
+  "side": true,
+  "own": 20,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 2016,
+  "spin": true,
+  "side": false,
+  "own": 17,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Denny Solomona",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Luke Gale",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Catalans Dragons",
+  "year": 2016,
+  "spin": true,
+  "side": true,
+  "own": 16,
+  "eraOnly": 1,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "Widnes Vikings",
+  "year": 2016,
+  "spin": false,
+  "side": false,
+  "own": 2,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Wakefield Trinity",
+  "year": 2016,
+  "spin": true,
+  "side": true,
+  "own": 16,
+  "eraOnly": 1,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 2016,
+  "spin": true,
+  "side": true,
+  "own": 18,
+  "eraOnly": 1,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "Salford Red Devils",
+  "year": 2016,
+  "spin": true,
+  "side": true,
+  "own": 14,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "Hull KR",
+  "year": 2016,
+  "spin": false,
+  "side": false,
+  "own": 2,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Huddersfield Giants",
+  "year": 2016,
+  "spin": true,
+  "side": true,
+  "own": 17,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 2017,
+  "spin": false,
+  "side": false,
+  "own": 7,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Luke Gale",
+    "award": "Man of Steel",
+    "card": true
+   },
+   {
+    "name": "Zak Hardaker",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Greg Eden",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Michael Shenton",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Luke Gale",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Grant Millington",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Mike McMeeken",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 2017,
+  "spin": false,
+  "side": true,
+  "own": 2,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Matt Parcell",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Danny McGuire",
+    "award": "Harry Sunderland",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Hull FC",
+  "year": 2017,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Mahe Fonua",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Albert Kelly",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Marc Sneyd",
+    "award": "Lance Todd",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "St Helens",
+  "year": 2017,
+  "spin": false,
+  "side": true,
+  "own": 6,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Mark Percival",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Wakefield Trinity",
+  "year": 2017,
+  "spin": false,
+  "side": true,
+  "own": 7,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 2017,
+  "spin": false,
+  "side": false,
+  "own": 2,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Sean O'Loughlin",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Salford Red Devils",
+  "year": 2017,
+  "spin": false,
+  "side": true,
+  "own": 2,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Ben Murdoch-Masila",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Huddersfield Giants",
+  "year": 2017,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Sebastine Ikahihifo",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 2017,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Catalans Dragons",
+  "year": 2017,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Leigh Leopards",
+  "year": 2017,
+  "spin": false,
+  "side": true,
+  "own": 2,
+  "eraOnly": 5,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Widnes Vikings",
+  "year": 2017,
+  "spin": false,
+  "side": false,
+  "own": 5,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "St Helens",
+  "year": 2018,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Ben Barba",
+    "award": "Man of Steel",
+    "card": true
+   },
+   {
+    "name": "Ben Barba",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Thomas Makinson",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Mark Percival",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Jonny Lomax",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Danny Richardson",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Luke Thompson",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "James Roby",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 2018,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "John Bateman",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Sean O'Loughlin",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 2018,
+  "spin": false,
+  "side": false,
+  "own": 1,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 2018,
+  "spin": false,
+  "side": false,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Stefan Ratchford",
+    "award": "Harry Sunderland",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Wakefield Trinity",
+  "year": 2018,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Bill Tupou",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Tom Johnstone",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Matty Ashurst",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Huddersfield Giants",
+  "year": 2018,
+  "spin": false,
+  "side": true,
+  "own": 1,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Catalans Dragons",
+  "year": 2018,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Rémi Casty",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Tony Gigot",
+    "award": "Lance Todd",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Hull FC",
+  "year": 2018,
+  "spin": false,
+  "side": false,
+  "own": 1,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 2018,
+  "spin": false,
+  "side": true,
+  "own": 2,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Hull KR",
+  "year": 2018,
+  "spin": false,
+  "side": true,
+  "own": 5,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Salford Red Devils",
+  "year": 2018,
+  "spin": false,
+  "side": true,
+  "own": 4,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Widnes Vikings",
+  "year": 2018,
+  "spin": false,
+  "side": false,
+  "own": 2,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "St Helens",
+  "year": 2019,
+  "spin": true,
+  "side": true,
+  "own": 14,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Lachlan Coote",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Thomas Makinson",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Kevin Naiqama",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Luke Thompson",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Morgan Knowles",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Luke Thompson",
+    "award": "Harry Sunderland",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 2019,
+  "spin": false,
+  "side": true,
+  "own": 2,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Liam Farrell",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Salford Red Devils",
+  "year": 2019,
+  "spin": false,
+  "side": false,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Jackson Hastings",
+    "award": "Man of Steel",
+    "card": false
+   },
+   {
+    "name": "Jackson Hastings",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Josh Jones",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 2019,
+  "spin": false,
+  "side": false,
+  "own": 2,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Blake Austin",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Daryl Clark",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Daryl Clark",
+    "award": "Lance Todd",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 2019,
+  "spin": false,
+  "side": false,
+  "own": 2,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Liam Watts",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Hull FC",
+  "year": 2019,
+  "spin": false,
+  "side": false,
+  "own": 1,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Catalans Dragons",
+  "year": 2019,
+  "spin": false,
+  "side": false,
+  "own": 1,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 2019,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Konrad Hurrell",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Ash Handley",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Wakefield Trinity",
+  "year": 2019,
+  "spin": false,
+  "side": true,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Huddersfield Giants",
+  "year": 2019,
+  "spin": false,
+  "side": true,
+  "own": 1,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Hull KR",
+  "year": 2019,
+  "spin": false,
+  "side": false,
+  "own": 2,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "London Broncos",
+  "year": 2019,
+  "spin": true,
+  "side": false,
+  "own": 15,
+  "eraOnly": 1,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 2020,
+  "spin": false,
+  "side": true,
+  "own": 16,
+  "eraOnly": 1,
+  "full13": true,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Bevan French",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Liam Farrell",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "St Helens",
+  "year": 2020,
+  "spin": true,
+  "side": true,
+  "own": 15,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Jonny Lomax",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Alex Walmsley",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Morgan Knowles",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "James Roby",
+    "award": "Harry Sunderland",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 2020,
+  "spin": false,
+  "side": true,
+  "own": 16,
+  "eraOnly": 1,
+  "full13": true,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Toby King",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Mike Cooper",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Catalans Dragons",
+  "year": 2020,
+  "spin": false,
+  "side": false,
+  "own": 1,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 2020,
+  "spin": false,
+  "side": true,
+  "own": 15,
+  "eraOnly": 2,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Konrad Hurrell",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Ash Handley",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Richie Myler",
+    "award": "Lance Todd",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Hull FC",
+  "year": 2020,
+  "spin": false,
+  "side": true,
+  "own": 16,
+  "eraOnly": 1,
+  "full13": true,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Salford Red Devils",
+  "year": 2020,
+  "spin": false,
+  "side": false,
+  "own": 1,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Krisnan Inu",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Huddersfield Giants",
+  "year": 2020,
+  "spin": false,
+  "side": true,
+  "own": 16,
+  "eraOnly": 1,
+  "full13": true,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Aidan Sezer",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 2020,
+  "spin": false,
+  "side": false,
+  "own": 2,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Paul McShane",
+    "award": "Man of Steel",
+    "card": false
+   },
+   {
+    "name": "Paul McShane",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Wakefield Trinity",
+  "year": 2020,
+  "spin": false,
+  "side": true,
+  "own": 1,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Kelepi Tanginoa",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Hull KR",
+  "year": 2020,
+  "spin": true,
+  "side": false,
+  "own": 14,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": []
+ },
+ {
+  "club": "Toronto Wolfpack",
+  "year": 2020,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Catalans Dragons",
+  "year": 2021,
+  "spin": false,
+  "side": false,
+  "own": 2,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Sam Tomkins",
+    "award": "Man of Steel",
+    "card": false
+   },
+   {
+    "name": "Sam Tomkins",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Tom Davies",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "James Maloney",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Sam Kasiano",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "St Helens",
+  "year": 2021,
+  "spin": true,
+  "side": true,
+  "own": 13,
+  "eraOnly": 1,
+  "full13": true,
+  "full17": false,
+  "spinOwn": 13,
+  "notables": [
+   {
+    "name": "Jack Welsby",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Mark Percival",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Jonny Lomax",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Alex Walmsley",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Morgan Knowles",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Kevin Naiqama",
+    "award": "Harry Sunderland",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 2021,
+  "spin": false,
+  "side": true,
+  "own": 17,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 2021,
+  "spin": false,
+  "side": true,
+  "own": 17,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Liam Farrell",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 2021,
+  "spin": false,
+  "side": true,
+  "own": 17,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Kruise Leeming",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Hull KR",
+  "year": 2021,
+  "spin": false,
+  "side": false,
+  "own": 2,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Kane Linnett",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 2021,
+  "spin": false,
+  "side": false,
+  "own": 1,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Niall Evalds",
+    "award": "Lance Todd",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Hull FC",
+  "year": 2021,
+  "spin": false,
+  "side": true,
+  "own": 16,
+  "eraOnly": 1,
+  "full13": true,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Huddersfield Giants",
+  "year": 2021,
+  "spin": false,
+  "side": true,
+  "own": 14,
+  "eraOnly": 3,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Wakefield Trinity",
+  "year": 2021,
+  "spin": false,
+  "side": true,
+  "own": 2,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Salford Red Devils",
+  "year": 2021,
+  "spin": false,
+  "side": false,
+  "own": 3,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Ken Sio",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Leigh Leopards",
+  "year": 2021,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "St Helens",
+  "year": 2022,
+  "spin": false,
+  "side": false,
+  "own": 2,
+  "eraOnly": 2,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Jack Welsby",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Alex Walmsley",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "James Roby",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Morgan Knowles",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Jonny Lomax",
+    "award": "Harry Sunderland",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 2022,
+  "spin": false,
+  "side": true,
+  "own": 16,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Jai Field",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Bevan French",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Liam Farrell",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Huddersfield Giants",
+  "year": 2022,
+  "spin": false,
+  "side": true,
+  "own": 15,
+  "eraOnly": 2,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Chris McQueen",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Chris McQueen",
+    "award": "Lance Todd",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Catalans Dragons",
+  "year": 2022,
+  "spin": false,
+  "side": false,
+  "own": 2,
+  "eraOnly": 2,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 2022,
+  "spin": false,
+  "side": true,
+  "own": 17,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Mikolaj Oledzki",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Salford Red Devils",
+  "year": 2022,
+  "spin": false,
+  "side": false,
+  "own": 3,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Brodie Croft",
+    "award": "Man of Steel",
+    "card": false
+   },
+   {
+    "name": "Tim Lafai",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Ken Sio",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Brodie Croft",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 2022,
+  "spin": false,
+  "side": false,
+  "own": 1,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Hull KR",
+  "year": 2022,
+  "spin": false,
+  "side": false,
+  "own": 1,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Shaun Kenny-Dowall",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Hull FC",
+  "year": 2022,
+  "spin": false,
+  "side": true,
+  "own": 14,
+  "eraOnly": 3,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Wakefield Trinity",
+  "year": 2022,
+  "spin": false,
+  "side": true,
+  "own": 17,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 2022,
+  "spin": false,
+  "side": true,
+  "own": 16,
+  "eraOnly": 1,
+  "full13": true,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Toulouse Olympique",
+  "year": 2022,
+  "spin": false,
+  "side": false,
+  "own": 9,
+  "eraOnly": 4,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 2023,
+  "spin": false,
+  "side": true,
+  "own": 15,
+  "eraOnly": 2,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Bevan French",
+    "award": "Man of Steel",
+    "card": true
+   },
+   {
+    "name": "Jake Wardle",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Bevan French",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Liam Farrell",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Jake Wardle",
+    "award": "Harry Sunderland",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Catalans Dragons",
+  "year": 2023,
+  "spin": false,
+  "side": false,
+  "own": 2,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Tom Johnstone",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "St Helens",
+  "year": 2023,
+  "spin": false,
+  "side": false,
+  "own": 2,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Jack Welsby",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Hull KR",
+  "year": 2023,
+  "spin": false,
+  "side": false,
+  "own": 1,
+  "eraOnly": 2,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Shaun Kenny-Dowall",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Leigh Leopards",
+  "year": 2023,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 2,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Josh Charnley",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Lachlan Lam",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Edwin Ipape",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Tom Amone",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "John Asiata",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Lachlan Lam",
+    "award": "Lance Todd",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 2023,
+  "spin": false,
+  "side": true,
+  "own": 16,
+  "eraOnly": 1,
+  "full13": true,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Paul Vaughan",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Salford Red Devils",
+  "year": 2023,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Kallum Watkins",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 2023,
+  "spin": false,
+  "side": true,
+  "own": 16,
+  "eraOnly": 1,
+  "full13": true,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Huddersfield Giants",
+  "year": 2023,
+  "spin": false,
+  "side": true,
+  "own": 17,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Hull FC",
+  "year": 2023,
+  "spin": false,
+  "side": true,
+  "own": 14,
+  "eraOnly": 4,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 2023,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 3,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Wakefield Trinity",
+  "year": 2023,
+  "spin": false,
+  "side": true,
+  "own": 15,
+  "eraOnly": 2,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 2024,
+  "spin": false,
+  "side": true,
+  "own": 16,
+  "eraOnly": 1,
+  "full13": true,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Jake Wardle",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Liam Marshall",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Luke Thompson",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Junior Nsemba",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Bevan French",
+    "award": "Lance Todd",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Hull KR",
+  "year": 2024,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Mikey Lewis",
+    "award": "Man of Steel",
+    "card": false
+   },
+   {
+    "name": "Mikey Lewis",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Elliot Minchella",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 2024,
+  "spin": false,
+  "side": true,
+  "own": 16,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Matt Dufty",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Matty Ashton",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Danny Walker",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Salford Red Devils",
+  "year": 2024,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 2,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Nene McDonald",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Marc Sneyd",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Leigh Leopards",
+  "year": 2024,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "St Helens",
+  "year": 2024,
+  "spin": false,
+  "side": false,
+  "own": 1,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Matty Lees",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Catalans Dragons",
+  "year": 2024,
+  "spin": false,
+  "side": false,
+  "own": 4,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 2024,
+  "spin": false,
+  "side": true,
+  "own": 16,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Rhyse Martin",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Huddersfield Giants",
+  "year": 2024,
+  "spin": false,
+  "side": true,
+  "own": 16,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 2024,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 4,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Hull FC",
+  "year": 2024,
+  "spin": false,
+  "side": true,
+  "own": 12,
+  "eraOnly": 5,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "London Broncos",
+  "year": 2024,
+  "spin": false,
+  "side": false,
+  "own": 2,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Hull KR",
+  "year": 2025,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Peta Hiku",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Mikey Lewis",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Jez Litten",
+    "award": "Dream Team",
+    "card": false
+   },
+   {
+    "name": "Dean Hadley",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 2025,
+  "spin": false,
+  "side": true,
+  "own": 17,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Jai Field",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Liam Marshall",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Leigh Leopards",
+  "year": 2025,
+  "spin": false,
+  "side": true,
+  "own": 15,
+  "eraOnly": 2,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Umyla Hanley",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 2025,
+  "spin": false,
+  "side": true,
+  "own": 16,
+  "eraOnly": 1,
+  "full13": true,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Jake Connor",
+    "award": "Man of Steel",
+    "card": true
+   },
+   {
+    "name": "Jake Connor",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "James McDonnell",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "St Helens",
+  "year": 2025,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Morgan Knowles",
+    "award": "Dream Team",
+    "card": false
+   }
+  ]
+ },
+ {
+  "club": "Wakefield Trinity",
+  "year": 2025,
+  "spin": false,
+  "side": true,
+  "own": 13,
+  "eraOnly": 5,
+  "full13": true,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Mike McMeeken",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Hull FC",
+  "year": 2025,
+  "spin": false,
+  "side": true,
+  "own": 16,
+  "eraOnly": 1,
+  "full13": true,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Lewis Martin",
+    "award": "Dream Team",
+    "card": true
+   },
+   {
+    "name": "Herman Ese'ese",
+    "award": "Dream Team",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 2025,
+  "spin": false,
+  "side": true,
+  "own": 16,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": [
+   {
+    "name": "Marc Sneyd",
+    "award": "Lance Todd",
+    "card": true
+   }
+  ]
+ },
+ {
+  "club": "Catalans Dragons",
+  "year": 2025,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 5,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Huddersfield Giants",
+  "year": 2025,
+  "spin": false,
+  "side": true,
+  "own": 14,
+  "eraOnly": 3,
+  "full13": true,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 2025,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 1,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Salford Red Devils",
+  "year": 2025,
+  "spin": false,
+  "side": false,
+  "own": 0,
+  "eraOnly": 0,
+  "full13": false,
+  "full17": false,
+  "spinOwn": null,
+  "notables": []
+ },
+ {
+  "club": "Bradford Bulls",
+  "year": 2026,
+  "spin": true,
+  "side": false,
+  "own": 33,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 30,
+  "notables": []
+ },
+ {
+  "club": "Castleford Tigers",
+  "year": 2026,
+  "spin": true,
+  "side": false,
+  "own": 32,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 30,
+  "notables": []
+ },
+ {
+  "club": "Catalans Dragons",
+  "year": 2026,
+  "spin": true,
+  "side": false,
+  "own": 31,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 29,
+  "notables": []
+ },
+ {
+  "club": "Huddersfield Giants",
+  "year": 2026,
+  "spin": true,
+  "side": false,
+  "own": 30,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 28,
+  "notables": []
+ },
+ {
+  "club": "Hull FC",
+  "year": 2026,
+  "spin": true,
+  "side": false,
+  "own": 35,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 35,
+  "notables": []
+ },
+ {
+  "club": "Hull KR",
+  "year": 2026,
+  "spin": true,
+  "side": false,
+  "own": 34,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 31,
+  "notables": []
+ },
+ {
+  "club": "Leeds Rhinos",
+  "year": 2026,
+  "spin": true,
+  "side": false,
+  "own": 29,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 28,
+  "notables": []
+ },
+ {
+  "club": "Leigh Leopards",
+  "year": 2026,
+  "spin": true,
+  "side": false,
+  "own": 30,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 30,
+  "notables": []
+ },
+ {
+  "club": "St Helens",
+  "year": 2026,
+  "spin": true,
+  "side": false,
+  "own": 32,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 32,
+  "notables": []
+ },
+ {
+  "club": "Toulouse Olympique",
+  "year": 2026,
+  "spin": true,
+  "side": false,
+  "own": 31,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 31,
+  "notables": []
+ },
+ {
+  "club": "Wakefield Trinity",
+  "year": 2026,
+  "spin": true,
+  "side": false,
+  "own": 36,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 35,
+  "notables": []
+ },
+ {
+  "club": "Warrington Wolves",
+  "year": 2026,
+  "spin": true,
+  "side": false,
+  "own": 29,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 29,
+  "notables": []
+ },
+ {
+  "club": "Wigan Warriors",
+  "year": 2026,
+  "spin": true,
+  "side": false,
+  "own": 32,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 32,
+  "notables": []
+ },
+ {
+  "club": "York Knights",
+  "year": 2026,
+  "spin": true,
+  "side": true,
+  "own": 35,
+  "eraOnly": 0,
+  "full13": true,
+  "full17": true,
+  "spinOwn": 35,
+  "notables": []
+ }
+]

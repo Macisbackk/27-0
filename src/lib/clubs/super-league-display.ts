@@ -49,6 +49,16 @@ export const ERA_HISTORIC_ONLY_CLUBS = [
   "London Broncos",
   "Salford Red Devils",
   "Widnes Vikings",
+  // Former Super League clubs (era-coverage 2026-10): their real Super League seasons only,
+  // gated by data/super-league-club-years.json.
+  "Halifax Panthers",
+  "Sheffield Eagles",
+  "Oldham RLFC",
+  "Paris Saint-Germain RL",
+  "Workington Town",
+  "Gateshead Thunder",
+  "Crusaders RL",
+  "Toronto Wolfpack",
 ] as const;
 
 /** All clubs valid in Era Normal Mode / Era Challenge Cup historic pools. */

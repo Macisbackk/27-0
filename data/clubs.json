@@ -311,5 +311,16 @@
     "isCurrentSuperLeague": false,
     "playable": false,
     "accentColor": "#C9A227"
+  },
+  {
+    "id": "toronto",
+    "name": "Toronto Wolfpack",
+    "shortName": "TOR",
+    "primaryColor": "#111111",
+    "secondaryColor": "#FFFFFF",
+    "active": false,
+    "isCurrentSuperLeague": false,
+    "playable": false,
+    "accentColor": "#FFFFFF"
   }
 ]

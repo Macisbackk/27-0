@@ -45,7 +45,7 @@ export const GAUNTLET_MAX_PER_CLUB = 3;
  * clean-sweep odds as its 27-0 odds in Classic (~25%). Calibrated by
  * scripts/sim-one-club-gauntlet.ts — see the numbers there.
  */
-export const GAUNTLET_FIELD_OFFSET = 13;
+export const GAUNTLET_FIELD_OFFSET = 21;
 
 export interface GauntletOpponent {
   club: string;

@@ -4,7 +4,7 @@
  */
 import { writeFileSync } from "fs";
 import { join } from "path";
-import { getPlayableClubNames } from "../src/lib/clubs/super-league-display";
+import { getPlayableClubNames, isEraPlayableClub } from "../src/lib/clubs/super-league-display";
 import { buildTeamYearId } from "../src/lib/game/team-year-pools";
 import { getPlayerById } from "../src/lib/players";
 import {
@@ -29,11 +29,10 @@ import { isPlayableTeamYearRoster } from "../src/lib/players/team-year-roster-pl
 const ROOT = join(__dirname, "..");
 const REPORT_PATH = join(ROOT, "data", "team-years-validation-report.json");
 
-const BLOCKED_SPIN_CLUBS = new Set([
-  "Paris Saint-Germain RL",
-  "Gateshead Thunder",
-  "PSG",
-]);
+// Former Super League clubs (Paris, Gateshead, Halifax, ...) are era-playable for their real
+// Super League seasons only (super-league-club-years.json gates the years), so nothing is
+// blocked by name any more; a club must be current-playable or era-playable.
+const BLOCKED_SPIN_CLUBS = new Set<string>([]);
 
 type Issue = {
   severity: "error" | "warning";
@@ -62,7 +61,7 @@ function main(): void {
   const unsupportedRemoved: Array<{ team: string; year: string }> = [];
 
   for (const [team, years] of Object.entries(rosters)) {
-    if (BLOCKED_SPIN_CLUBS.has(team) || !playableClubs.has(team)) {
+    if (BLOCKED_SPIN_CLUBS.has(team) || (!playableClubs.has(team) && !isEraPlayableClub(team))) {
       for (const year of Object.keys(years)) {
         unsupportedRemoved.push({ team, year });
         issues.push({
