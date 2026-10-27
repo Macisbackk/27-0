@@ -44,6 +44,8 @@ export type LeaderboardPeriod = "WEEKLY" | "MONTHLY" | "ALL_TIME";
 export interface PlayerAchievements {
   /** Club Legend tag: only on cards for a club listed in data/club-legends.json (players/honour-tags.ts). */
   clubLegend?: boolean;
+  /** Great tier (one below Legend): an elite Super League-era card, e.g. Pat Richards 2010. */
+  great?: boolean;
   /** @deprecated MoS years come from data/man-of-steel-winners.json */
   manOfSteel?: boolean;
   challengeCupWinner?: boolean;

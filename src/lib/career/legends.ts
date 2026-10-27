@@ -2,7 +2,7 @@
 import legendsData from "./legends-data.json";
 import type { CareerPlayer, Pos } from "./types";
 
-type Row = { name: string; peakRating?: number; position?: string | null; club?: string; nationality?: string };
+type Row = { name: string; peakRating?: number; position?: string | null; club?: string; nationality?: string; tier?: "great" };
 
 export interface LegendCard {
   id: string;
@@ -11,6 +11,8 @@ export interface LegendCard {
   peak: number;
   club: string;
   nationality: string;
+  /** Legend, or Great (one tier below: cheaper to unlock and sign). */
+  tier: "legend" | "great";
   /** Legacy points to unlock (permanent, all careers). */
   unlockCost: number;
   /** One-off transfer fee to sign in a career once unlocked. */
@@ -41,7 +43,8 @@ function slug(name: string) {
   return name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 
-function tier(peak: number): { unlockCost: number; signingFee: number } {
+function tier(peak: number, great: boolean): { unlockCost: number; signingFee: number } {
+  if (great) return { unlockCost: 90, signingFee: 120_000 };
   if (peak >= 96) return { unlockCost: 300, signingFee: 500_000 };
   if (peak >= 93) return { unlockCost: 200, signingFee: 300_000 };
   return { unlockCost: 120, signingFee: 150_000 };
@@ -65,7 +68,8 @@ export function legendCatalog(): LegendCard[] {
       peak,
       club: r.club ?? "",
       nationality: r.nationality ?? "England",
-      ...tier(peak),
+      tier: r.tier === "great" ? "great" : "legend",
+      ...tier(peak, r.tier === "great"),
     });
   }
   cache = [...byName.values()].sort((a, b) => b.peak - a.peak || a.name.localeCompare(b.name));

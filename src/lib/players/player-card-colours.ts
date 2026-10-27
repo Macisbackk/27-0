@@ -23,6 +23,7 @@ export type PlayerTierId =
   | "super-sam"
   | "hall-of-fame"
   | "legend"
+  | "great"
   | "club-legend"
   | "historic"
   | "current";
@@ -60,6 +61,7 @@ export const PLAYER_TIER_PRIORITY: PlayerTierId[] = [
   "super-sam",
   "hall-of-fame",
   "legend",
+  "great",
   "club-legend",
   "historic",
   "current",
@@ -69,11 +71,13 @@ export const PLAYER_TIER_MAX_VISIBLE = 2;
 
 /**
  * What each tag means:
- * - Hall of Fame: men's Rugby League Hall of Fame (RFL) inductee (data/hall-of-fame.json), every card.
+ * - Hall of Fame: in a Rugby League Hall of Fame (RFL, or Australia's for a few UK-era greats)
+ *   (data/hall-of-fame.json), every card.
  * - Legend: a Legend-tier card (category "legend"), an all-time great's prime season.
+ * - Great: one tier below Legend (a past-season card with great: true), e.g. Pat Richards 2010.
  * - Club Legend: club Hall of Fame inductee or recognised club great, only on cards for
  *   that club (data/club-legends.json).
- * - Historic: a past-season card (category "historic"), even if the player still plays.
+ * - Past Season: a past-season card (category "historic"), even if the player still plays.
  * - Current: a 2026 squad card (category "current").
  */
 export const PLAYER_TIER_LABEL: Record<PlayerTierId, string> = {
@@ -81,8 +85,9 @@ export const PLAYER_TIER_LABEL: Record<PlayerTierId, string> = {
   "super-sam": "SUPER SAM",
   "hall-of-fame": "Hall of Fame",
   legend: "Legend",
+  great: "Great",
   "club-legend": "Club Legend",
-  historic: "Historic",
+  historic: "Past Season",
   current: "Current",
 };
 
@@ -91,6 +96,7 @@ const TIER_TONE: Record<PlayerTierId, PlayerTierBadgeStyle["tone"]> = {
   "super-sam": "purple",
   "hall-of-fame": "gold",
   legend: "gold",
+  great: "amber",
   "club-legend": "sky",
   historic: "slate",
   current: "slate",
@@ -101,6 +107,7 @@ const TIER_CLASS: Record<PlayerTierId, string> = {
   "super-sam": "player-tier-badge player-tier-badge--purple",
   "hall-of-fame": "player-tier-badge player-tier-badge--gold",
   legend: "player-tier-badge player-tier-badge--gold",
+  great: "player-tier-badge player-tier-badge--amber",
   "club-legend": "player-tier-badge player-tier-badge--sky",
   historic: "player-tier-badge player-tier-badge--slate",
   current: "player-tier-badge player-tier-badge--slate",
@@ -112,8 +119,9 @@ export function resolvePlayerTiers(player: Player): PlayerTierId[] {
   if (isSuperSamHallasPlayer(player)) ids.push("super-sam");
   if (player.hallOfFame === true) ids.push("hall-of-fame");
   if (player.category === "legend") ids.push("legend");
+  if (player.great === true) ids.push("great");
   if (player.clubLegend === true) ids.push("club-legend");
-  if (player.category === "historic") ids.push("historic");
+  if (player.category === "historic" && player.great !== true) ids.push("historic");
   if (
     isActivePlayer(player) &&
     player.category !== "legend" &&

@@ -123,14 +123,16 @@
   "peakRating": 96,
   "position": "Scrum-half",
   "club": "Huddersfield Giants",
-  "nationality": "England"
+  "nationality": "England",
+  "tier": "great"
  },
  {
   "name": "Gareth Ellis",
   "peakRating": 96,
   "position": "SECOND_ROW",
   "club": "Leeds Rhinos",
-  "nationality": "England"
+  "nationality": "England",
+  "tier": "great"
  },
  {
   "name": "Iestyn Harris",
@@ -158,14 +160,16 @@
   "peakRating": 96,
   "position": "Stand-off",
   "club": "St Helens",
-  "nationality": "England"
+  "nationality": "England",
+  "tier": "great"
  },
  {
   "name": "Pat Richards",
   "peakRating": 96,
   "position": "WING",
   "club": "Wigan Warriors",
-  "nationality": "Australia"
+  "nationality": "Australia",
+  "tier": "great"
  },
  {
   "name": "Rob Burrow",

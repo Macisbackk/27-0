@@ -18,7 +18,7 @@ interface PlayerTierBadgeProps {
 
 /**
  * Shared player-tier badge — never paints the outer card border.
- * Priority: GOAT → Super Sam → Hall of Fame → Legend → Club Legend → Historic → Current
+ * Priority: GOAT → Super Sam → Hall of Fame → Legend → Great → Club Legend → Past Season → Current
  * (PLAYER_TIER_PRIORITY). Tag meanings: see PLAYER_TIER_LABEL in player-card-colours.ts.
  */
 export function PlayerTierBadge({

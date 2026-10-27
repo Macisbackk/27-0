@@ -1,8 +1,9 @@
 {
-  "description": "Men's Rugby League Hall of Fame (RFL, England) inductees. Drives the \"Hall of Fame\" card tag on every card of the player. Women inductees and the 1996 GB Lionesses team are omitted because the game has no women's player cards. born = birth year, used to avoid tagging a namesake.",
+  "description": "Men's Rugby League Hall of Fame (RFL, England) inductees, plus Australian Rugby League Hall of Fame members with a UK club card (Andrew Johns). Drives the \"Hall of Fame\" card tag on every card of the player. Women inductees and the 1996 GB Lionesses team are omitted because the game has no women's player cards. born = birth year, used to avoid tagging a namesake.",
   "sources": [
     "https://www.rugby-league.com/governance/about-the-rfl/history-&-heritage",
     "https://en.wikipedia.org/wiki/Rugby_Football_League_Hall_of_Fame",
+    "https://en.wikipedia.org/wiki/Australian_Rugby_League_Hall_of_Fame",
     "https://www.rugbyleaguecares.org/news/peacock-banks-sculthorpe-and-land-to-be-elevated-into-rugby-league-hall-of-fame"
   ],
   "checkedAt": "2026-10-27",
@@ -43,6 +44,7 @@
     { "name": "James Lomas", "born": 1879, "inducted": 2024 },
     { "name": "Alan Prescott", "born": 1927, "inducted": 2024 },
     { "name": "Paul Sculthorpe", "born": 1977, "inducted": 2024 },
-    { "name": "Jamie Peacock", "born": 1977, "inducted": 2024 }
+    { "name": "Jamie Peacock", "born": 1977, "inducted": 2024 },
+    { "name": "Andrew Johns", "born": 1974, "inducted": 2012, "hallOfFame": "Australian Rugby League Hall of Fame (owner, v1.37: Hall of Fame means any Hall of Fame)" }
   ]
 }
