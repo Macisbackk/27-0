@@ -112,7 +112,6 @@ export function PlayoffBracketHeader({
     (tournamentComplete
       ? "Play-offs done. Tap a tie for details."
       : "Play each tie to advance");
-===
 
   return (
     <div className="playoff-bracket-header game-panel overflow-hidden p-4 text-center sm:p-5">

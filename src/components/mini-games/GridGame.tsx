@@ -517,7 +517,6 @@ export function GridGame() {
 
         <p className={`mt-4 text-xs leading-snug ${MUTED}`}>
           Daily grid pays £{GRID_REWARD_PER_CELL.toLocaleString("en-GB")} a square.
-===
         </p>
       </div>
     </MiniGameShell>

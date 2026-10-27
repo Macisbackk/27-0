@@ -174,7 +174,6 @@ export default function ModesPage() {
             id="past-dailies-title"
             title="Past Dailies"
             kicker={`Replay the last ${DAILY_ARCHIVE_DAYS} Dailies. Practice only.`}
-===
           >
             <Link
               href={DAILY_ARCHIVE_PAGE}

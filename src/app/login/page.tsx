@@ -22,7 +22,6 @@ export default function LoginPage() {
             eyebrow="Account"
             title="Log in"
             description="Save your progress and join the leaderboards."
-===
             icon={<WhistleGlyph />}
           />
 

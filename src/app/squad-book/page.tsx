@@ -177,7 +177,6 @@ export default function SquadBookPage() {
         ) : tab === "collections" ? (
           <div className="flex flex-col gap-3">
             <Section title="Clubs" intro="Collect 10, 25 and 50 cards per club. Tap a club to see them.">
-===
               <ul className="grid gap-2 sm:grid-cols-2">
                 {catalog.clubs.map((c) => {
                   const p = progress.byClub.get(c)!;

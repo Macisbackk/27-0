@@ -83,7 +83,6 @@ export function MiniGamesHub() {
           icon={<TilesGlyph />}
         />
         <p className="mt-3 px-1 text-left text-sm text-[color:var(--fl-muted)]">Quick puzzles that pay Club Funds. New each day at midnight.</p>
-===
 
         <ul className="fl-stagger mt-5 grid w-full gap-3 sm:grid-cols-3">
           {GAMES.map((game) => {

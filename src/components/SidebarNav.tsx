@@ -268,7 +268,6 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                 <span className="min-w-0 flex-1">
                   <span className="block text-[15px] font-semibold">Records</span>
                   <span className="block text-[13px] text-[color:var(--fl-muted)]">Best squad, record, 27-0s</span>
-===
                 </span>
                 <span aria-hidden className="text-[color:var(--fl-muted)]">›</span>
               </Link>

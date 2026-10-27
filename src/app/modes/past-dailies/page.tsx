@@ -76,7 +76,6 @@ export default function PastDailiesPage() {
           {SHOW_DAILY_CHALLENGE_UI ? (
             <Link href={getDailyChallengeHref()} onClick={() => playUiClick()} className="mt-2 inline-flex min-h-[44px] items-center text-sm font-bold text-theme-primary">
               Play today&apos;s Daily ›
-===
             </Link>
           ) : null}
         </header>

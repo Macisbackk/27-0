@@ -221,7 +221,6 @@ export default function RecordsPage() {
             </Section>
 
             <Section title="Most drafted" intro="The cards you've fielded most.">
-===
               {summary.mostDrafted.length === 0 ? (
                 <p className={TYPO.bodySm}>
                   Nothing yet. <Link href="/play" className={LINK.accent}>Play a season</Link>

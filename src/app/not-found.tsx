@@ -8,7 +8,6 @@ export default function NotFound() {
         <h1 className="text-3xl font-black text-white">Knocked on</h1>
         <p className="text-pitch-300">
           That page doesn&apos;t exist.
-===
         </p>
         <GameButton href="/" fullWidth={false}>
           Back to home

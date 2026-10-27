@@ -22,7 +22,6 @@ export default function Error({
         <h1 className="text-3xl font-black text-white">Something went wrong</h1>
         <p className="text-pitch-300">
           Your saves are safe. Try again or go home.
-===
         </p>
         <div className="flex w-full flex-col gap-2 sm:flex-row sm:justify-center">
           <GameButton onClick={reset} fullWidth={false}>

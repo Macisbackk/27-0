@@ -507,7 +507,6 @@ export function SeasonReview({
               >
                 <p className={TYPO.muted}>
                   You&apos;re in the play-offs. Win them for more Club Funds.
-===
                 </p>
               </motion.div>
             ) : null}

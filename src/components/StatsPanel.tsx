@@ -229,7 +229,6 @@ export function StatsPanel() {
         {isLoggedIn
           ? "Stats sync when logged in."
           : "Saved on this device."}
-===
       </p>
     </div>
   );

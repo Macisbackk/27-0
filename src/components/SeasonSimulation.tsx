@@ -219,7 +219,6 @@ export function SeasonSimulation({
               </p>
               <p className="mt-1 text-xs text-[color:var(--fl-muted)]">
                 One call for the rest of the season. No changes after.
-===
               </p>
               <div className="mt-3 flex flex-col gap-2">
                 {HALFWAY_CALL_OPTIONS.map((option) => (

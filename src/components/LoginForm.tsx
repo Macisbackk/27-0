@@ -291,7 +291,6 @@ export function LoginForm() {
           Keep playing as a guest
         </Link>
         <span className="block">Progress stays on this device.</span>
-===
       </p>
     </section>
   );

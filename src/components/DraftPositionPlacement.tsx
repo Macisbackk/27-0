@@ -41,7 +41,6 @@ export function DraftPositionPlacement({
             Pick a player, then pick his position.
             <br />
             Out of position costs −5 OVR. Similar positions are free.
-===
           </p>
         </div>
       )}

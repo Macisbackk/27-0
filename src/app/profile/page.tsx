@@ -253,7 +253,6 @@ export default function ProfilePage() {
                   {statsResetConfirm ? (
                     <div className="mx-auto max-w-md rounded-lg border border-red-500/35 bg-red-950/20 p-3 text-center">
                       <p className={`${TYPO.bodySm} text-red-200`}>Clear all Classic stats? You can&apos;t undo this.</p>
-===
                       <div className={MANAGER.actionRow}>
                         <GameButton variant="danger" size="sm" fullWidth={false} disabled={statsResetBusy} onClick={() => void handleResetCareerStats()}>
                           Yes, reset
