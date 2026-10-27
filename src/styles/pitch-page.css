@@ -337,13 +337,13 @@ button[type="submit"].game-button--theme.game-button--sm {
 }
 .mobile-action-bar__inner {
   border-radius: 20px;
-  background: #0e0f10;
+  background: #0e0f10 !important;
   padding: 8px;
   box-shadow: 0 10px 30px rgb(0 0 0 / 0.3);
 }
 @media (min-width: 640px) {
   .mobile-action-bar__inner {
-    background: transparent;
+    background: transparent !important;
     padding: 0;
     box-shadow: none;
   }
