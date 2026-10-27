@@ -169,11 +169,28 @@ export function createCareer(opts: { clubId: string; managerName: string; seed?:
     history: [],
     news: [`${opts.managerName.trim() || "Coach"} takes charge of ${choice.name}.`],
   };
+  state.freeAgents = unattachedPool(state);
   const started = startSeason(state);
   // Big squads in small leagues (e.g. London in the Championship) cost more than the board pays.
   // A new manager never starts in debt: the board covers the gap plus a little to spend.
   if (started.budget < STARTING_BUDGET_FLOOR) started.budget = STARTING_BUDGET_FLOOR;
   return started;
+}
+
+/** Players without a club when the career starts, so the first pre-season window has free agents. */
+const START_FREE_AGENTS = 18;
+function unattachedPool(state: CareerState): string[] {
+  const rng = rngFor(state.seed, "free-agents");
+  const positions = Object.keys(SQUAD_TEMPLATE) as Pos[];
+  const ids: string[] = [];
+  for (let i = 0; i < START_FREE_AGENTS; i++) {
+    // Mostly Championship-level squad players, a few who'd do a job in Super League.
+    const level = i % 6 === 0 ? 80 : i % 3 === 0 ? 77 : 72;
+    const p = generatePlayer(rng, { pos: positions[i % positions.length]!, level, age: randInt(rng, 22, 33), idPrefix: "fa0" });
+    state.players[p.id] = p;
+    ids.push(p.id);
+  }
+  return ids;
 }
 
 /** Minimum budget on day one of a new career. */

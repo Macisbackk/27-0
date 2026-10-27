@@ -147,7 +147,7 @@ export function TransferWindow({ mode = "summer", onClose }: { mode?: "summer" |
             const free = isFreeAgentListing(l);
             const cost = signingCost(s, l);
             const affordable = s.budget >= cost.total;
-            const dueNow = cost.wagesNow > 0 ? ` · ${formatMoney(cost.wagesNow)} due now` : "";
+            const dueNow = cost.wagesNow > 0 && cost.wagesNow !== l.wages ? ` · ${formatMoney(cost.wagesNow)} this season` : "";
             return (
               <li key={l.playerId} data-free-agent={free ? "true" : undefined} className={`flex items-center gap-3 rounded-tile px-3 py-2.5 text-left ${l.legend ? "bg-pitch-900 ring-1 ring-accent-gold/60" : "bg-pitch-900"}`}>
                 {from ? <ClubBadge club={from} size="sm" /> : <span title={l.legend ? "Legend" : "Free agent"} aria-label={l.legend ? "Legend" : "Free agent"} className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-pitch-700 text-[10px] font-bold text-gray-300">{l.legend ? "★" : "FA"}</span>}
@@ -166,7 +166,7 @@ export function TransferWindow({ mode = "summer", onClose }: { mode?: "summer" |
                     {free ? (
                       <><span className="font-semibold text-success">Free</span> · {wagesText(l.wages)}{dueNow}</>
                     ) : (
-                      <>{l.legend ? "Signing fee" : "Fee"} {formatMoney(l.price)} · {wagesText(l.wages)}{dueNow}</>
+                      <>{l.legend ? "Legend · " : ""}{wagesText(l.wages)}{dueNow}</>
                     )}
                   </span>
                 </span>

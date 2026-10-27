@@ -218,6 +218,7 @@ try {
   {
     const status = await page.getByTestId("window-status").first().innerText().catch(() => "");
     if (!/Window shut/.test(status) || !/Deadline Day/.test(status)) fail(`after Round 1 the Team tab says "${status}"`);
+    await page.waitForTimeout(700);
     await shot("window-shut-team");
   }
   await page.getByRole("tab", { name: "Match" }).click();
@@ -256,6 +257,8 @@ try {
         await page.getByRole("tab", { name: "Club" }).click();
         const status = await page.getByTestId("window-status").first().innerText().catch(() => "");
         if (!/Window shut/.test(status) || !/after the season/.test(status)) fail(`after Deadline Day the Club tab says "${status}"`);
+        await page.getByTestId("window-status").first().scrollIntoViewIfNeeded().catch(() => {});
+        await page.waitForTimeout(700);
         await shot("window-after-deadline-club");
         await page.getByRole("tab", { name: "Match" }).click();
         await page.waitForTimeout(300);
