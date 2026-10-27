@@ -12,6 +12,7 @@ import {
   getNewChemistryLinks,
 } from "@/lib/game/chemistry";
 import { formatSpinReelTeamName } from "@/lib/clubs/spin-reel-team-name";
+import { formatPlayerPositionLabel } from "@/lib/players/player-positions";
 import { getAgeAtYear, getPlayerAge } from "@/lib/players/player-age";
 import { formatShortYear } from "@/lib/players/prime-year";
 import { getClubColors } from "@/lib/clubs";
@@ -209,7 +210,7 @@ export function SlotTeamYearPicker({
     >
       <div className="slot-picker__card overflow-hidden rounded-card bg-pitch-900">
         {clubChoice ? (
-          <header className="px-4 pb-2.5 pt-3.5 text-center">
+          <header className="px-4 pb-2 pt-3 text-center">
             <h2 className="font-display text-xl font-bold leading-tight text-white">
               {slot ? `Pick your ${slot.label}` : "Pick your signing"}
             </h2>
@@ -220,7 +221,7 @@ export function SlotTeamYearPicker({
               {" · spin locked in"}
             </p>
             {chemistryHint ? (
-              <p className="mt-1.5 text-[13px] font-semibold text-lime-300">{chemistryHint}</p>
+              <p className="mt-1 text-[13px] font-semibold text-lime-300">{chemistryHint}</p>
             ) : null}
           </header>
         ) : (
@@ -282,7 +283,8 @@ export function SlotTeamYearPicker({
                   // No nation code: it pushed the age off a phone screen.
                   const metaLine = [
                     clubChoice ? formatSpinReelTeamName(club) : null,
-                    meta.positionLabel,
+                    // Club choice adds the club, so the short position keeps it to one line on a phone.
+                    clubChoice ? formatPlayerPositionLabel(player, { short: true }) : meta.positionLabel,
                     age !== undefined ? `Age ${age}` : null,
                   ]
                     .filter(Boolean)
@@ -373,7 +375,8 @@ export function SlotTeamYearPicker({
                 })}
               </ul>
 
-              {hideRatingNote ? null : (
+              {/* Club choice: the rating note is under the pitch already; keeps 3 rows on a phone. */}
+              {hideRatingNote || clubChoice ? null : (
                 <div className="mt-2 px-1 text-center">
                   {eraMode ? <EraRatingExplanation compact /> : <CurrentRatingExplanation compact />}
                 </div>
