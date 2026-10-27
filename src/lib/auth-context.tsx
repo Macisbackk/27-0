@@ -265,6 +265,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
 
+    // Ask the browser to keep this site's storage (where the login lives) instead of clearing it
+    // when space is low. Granted quietly for sites used often or added to the home screen.
+    try {
+      void navigator.storage?.persist?.().catch(() => {});
+    } catch {
+      /* not supported */
+    }
+
     initInFlightRef.current = true;
     void (async () => {
       try {
