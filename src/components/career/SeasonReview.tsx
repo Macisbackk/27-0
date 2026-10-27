@@ -1,5 +1,7 @@
 "use client";
 
+import { SHOW_SHARE_RESULT_UI } from "@/lib/feature-flags";
+
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Confetti } from "@/components/Confetti";
 import { GuestSaveNudge } from "@/components/EconomyExplainer";
@@ -170,7 +172,7 @@ export function SeasonReview() {
         </Card>
       ) : null}
 
-      <ShareSeasonButton data={shareCardData} filename="27-0-manager-season.png" />
+      {SHOW_SHARE_RESULT_UI ? <ShareSeasonButton data={shareCardData} filename="27-0-manager-season.png" /> : null}
 
       {!loggedIn ? <GuestSaveNudge context="manager-season" /> : null}
 

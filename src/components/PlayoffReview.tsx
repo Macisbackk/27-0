@@ -1,5 +1,7 @@
 "use client";
 
+import { SHOW_SHARE_RESULT_UI } from "@/lib/feature-flags";
+
 import { useEffect, useMemo, useRef } from "react";
 import { motion } from "framer-motion";
 import type { SquadSlot } from "@/lib/types";
@@ -380,7 +382,7 @@ export function PlayoffReview({
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <div className="mx-auto w-full max-w-xl">{shareAction}</div>
+          {SHOW_SHARE_RESULT_UI ? <div className="mx-auto w-full max-w-xl">{shareAction}</div> : null}
         </motion.div>
 
         {seed ? (
