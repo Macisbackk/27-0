@@ -1,0 +1,98 @@
+{
+  "description": "Drives the \"Club Legend\" card tag. A player is a Club Legend only on cards for the club(s) listed here: inducted into that club's Hall of Fame, or a long-serving, trophy-winning great the club itself treats as an icon. Clubs use the game's current display names. born = birth year, used to avoid tagging a namesake.",
+  "sources": [
+    "Leeds RL Hall of Fame: https://en.wikipedia.org/wiki/Leeds_Rhinos (2017-21), https://www.therhinos.co.uk/article/19049 (2023), https://www.therhinos.co.uk/article/20528 (2024), https://www.therhinos.co.uk/article/21723 (2025), https://therhinos.co.uk/article/23368 (2026)",
+    "St Helens Hall of Fame: https://en.wikipedia.org/wiki/St_Helens_R.F.C._Hall_of_Fame, https://www.saintsrlfc.com/2023/11/18/james-roby-inducted-into-saints-hall-of-fame/",
+    "RFL Hall of Fame (data/hall-of-fame.json) for pre-Super League greats"
+  ],
+  "checkedAt": "2026-10-27",
+  "legends": [
+    { "name": "Ali Lauitiiti", "born": 1979, "clubs": ["Leeds Rhinos"], "basis": "Leeds RL Hall of Fame 2024" },
+    { "name": "Barrie McDermott", "born": 1972, "clubs": ["Leeds Rhinos"], "basis": "Leeds RL Hall of Fame 2019" },
+    { "name": "Danny McGuire", "born": 1982, "clubs": ["Leeds Rhinos"], "basis": "Leeds RL Hall of Fame 2025; club record try scorer" },
+    { "name": "Ellery Hanley", "born": 1961, "clubs": ["Leeds Rhinos"], "basis": "RFL Hall of Fame; Leeds captain 1991-95" },
+    { "name": "Francis Cummins", "born": 1976, "clubs": ["Leeds Rhinos"], "basis": "Leeds RL Hall of Fame 2026" },
+    { "name": "Garry Schofield", "born": 1965, "clubs": ["Leeds Rhinos"], "basis": "Leeds RL Hall of Fame 2018" },
+    { "name": "Iestyn Harris", "born": 1976, "clubs": ["Leeds Rhinos"], "basis": "Leeds captain, 1999 Challenge Cup and Lance Todd Trophy" },
+    { "name": "Jamie Jones-Buchanan", "born": 1981, "clubs": ["Leeds Rhinos"], "basis": "Leeds RL Hall of Fame 2026; one-club man" },
+    { "name": "Jamie Peacock", "born": 1977, "clubs": ["Leeds Rhinos", "Bradford Bulls"], "basis": "RFL Hall of Fame 2024; title-winning captain at Bradford and Leeds" },
+    { "name": "Keith Senior", "born": 1976, "clubs": ["Leeds Rhinos"], "basis": "Leeds RL Hall of Fame 2023" },
+    { "name": "Kevin Sinfield", "born": 1980, "clubs": ["Leeds Rhinos"], "basis": "Leeds RL Hall of Fame 2021" },
+    { "name": "Kylie Leuluai", "born": 1978, "clubs": ["Leeds Rhinos"], "basis": "Leeds RL Hall of Fame 2025" },
+    { "name": "Rob Burrow", "born": 1982, "clubs": ["Leeds Rhinos"], "basis": "Leeds RL Hall of Fame 2020" },
+    { "name": "Ryan Hall", "born": 1987, "clubs": ["Leeds Rhinos"], "basis": "Leeds 2007-21, among the club's top Super League try scorers" },
+
+    { "name": "Alex Murphy", "born": 1939, "clubs": ["St Helens"], "basis": "St Helens Hall of Fame; RFL Hall of Fame" },
+    { "name": "Alan Prescott", "born": 1927, "clubs": ["St Helens"], "basis": "St Helens Hall of Fame; RFL Hall of Fame 2024" },
+    { "name": "Chris Joynt", "born": 1971, "clubs": ["St Helens"], "basis": "St Helens Hall of Fame" },
+    { "name": "James Graham", "born": 1985, "clubs": ["St Helens"], "basis": "Man of Steel 2008, academy product, 2006 treble" },
+    { "name": "James Roby", "born": 1985, "clubs": ["St Helens"], "basis": "St Helens Hall of Fame 2023; club record appearances" },
+    { "name": "Jamie Lyon", "born": 1982, "clubs": ["St Helens"], "basis": "Man of Steel 2005, 2006 treble" },
+    { "name": "Jon Wilkin", "born": 1983, "clubs": ["St Helens"], "basis": "St Helens 2003-18, captain, 2006 treble" },
+    { "name": "Keiron Cunningham", "born": 1976, "clubs": ["St Helens"], "basis": "Statue at the stadium; one-club hooker 1994-2010" },
+    { "name": "Louie McCarthy-Scarsbrook", "born": 1986, "clubs": ["St Helens"], "basis": "St Helens 2011-23, five Grand Final wins" },
+    { "name": "Paul Newlove", "born": 1971, "clubs": ["St Helens"], "basis": "St Helens Hall of Fame" },
+    { "name": "Paul Sculthorpe", "born": 1977, "clubs": ["St Helens"], "basis": "RFL Hall of Fame 2024; Man of Steel 2001 and 2002" },
+    { "name": "Paul Wellens", "born": 1980, "clubs": ["St Helens"], "basis": "St Helens Hall of Fame" },
+    { "name": "Sean Long", "born": 1976, "clubs": ["St Helens"], "basis": "Man of Steel 2000, three-time Lance Todd winner" },
+    { "name": "Tommy Martyn", "born": 1971, "clubs": ["St Helens"], "basis": "St Helens Hall of Fame" },
+
+    { "name": "Andy Farrell", "born": 1975, "clubs": ["Wigan Warriors"], "basis": "RFL Hall of Fame 2022; Wigan captain, two-time Man of Steel" },
+    { "name": "Andy Gregory", "born": 1961, "clubs": ["Wigan Warriors"], "basis": "RFL Hall of Fame 2018; Wigan's golden era scrum-half" },
+    { "name": "Denis Betts", "born": 1969, "clubs": ["Wigan Warriors"], "basis": "Man of Steel 1991, Wigan golden era" },
+    { "name": "Garry Connolly", "born": 1971, "clubs": ["Wigan Warriors"], "basis": "Wigan centre through the 1990s golden era" },
+    { "name": "Jason Robinson", "born": 1974, "clubs": ["Wigan Warriors"], "basis": "Wigan academy, 1998 Grand Final winning try" },
+    { "name": "Kris Radlinski", "born": 1976, "clubs": ["Wigan Warriors"], "basis": "One-club full-back, Lance Todd 2002" },
+    { "name": "Liam Farrell", "born": 1990, "clubs": ["Wigan Warriors"], "basis": "One-club captain 2010-26, five Grand Final wins" },
+    { "name": "Martin Offiah", "born": 1965, "clubs": ["Wigan Warriors"], "basis": "RFL Hall of Fame 2013; Wigan record tries in a match" },
+    { "name": "Michael McIlorum", "born": 1988, "clubs": ["Wigan Warriors"], "basis": "Wigan hooker 2007-20, four Grand Finals won" },
+    { "name": "Pat Richards", "born": 1982, "clubs": ["Wigan Warriors"], "basis": "Man of Steel 2010, Wigan 2006-13" },
+    { "name": "Sam Tomkins", "born": 1989, "clubs": ["Wigan Warriors"], "basis": "Man of Steel 2012, Wigan academy" },
+    { "name": "Sean O'Loughlin", "born": 1982, "clubs": ["Wigan Warriors"], "basis": "One-club captain 2002-20" },
+    { "name": "Shaun Edwards", "born": 1966, "clubs": ["Wigan Warriors"], "basis": "RFL Hall of Fame 2015; Wigan golden era captain" },
+    { "name": "Thomas Leuluai", "born": 1985, "clubs": ["Wigan Warriors"], "basis": "Two spells at Wigan, multiple Grand Final wins" },
+
+    { "name": "Henry Paul", "born": 1974, "clubs": ["Bradford Bulls"], "basis": "Bradford 1999-2001, 2001 Grand Final winner" },
+    { "name": "Leon Pryce", "born": 1981, "clubs": ["Bradford Bulls"], "basis": "Bradford academy, three Grand Final wins" },
+    { "name": "Lesley Vainikolo", "born": 1979, "clubs": ["Bradford Bulls"], "basis": "Bradford 2002-07, Grand Final winner" },
+    { "name": "Paul Deacon", "born": 1979, "clubs": ["Bradford Bulls"], "basis": "Bradford 1998-2009, three Grand Final wins" },
+    { "name": "Robbie Hunter-Paul", "born": 1975, "clubs": ["Bradford Bulls"], "basis": "Bradford 1994-2005, captain, Lance Todd 1996" },
+    { "name": "Stuart Fielden", "born": 1979, "clubs": ["Bradford Bulls"], "basis": "Bradford 1998-2006, three Grand Final wins" },
+    { "name": "Tevita Vaikona", "born": 1974, "clubs": ["Bradford Bulls"], "basis": "Bradford 1998-2004, three Grand Final wins" },
+
+    { "name": "Adrian Morley", "born": 1977, "clubs": ["Warrington Wolves"], "basis": "RFL Hall of Fame 2022; Warrington captain, three Challenge Cups" },
+    { "name": "Ben Westwood", "born": 1981, "clubs": ["Warrington Wolves"], "basis": "Warrington 2002-20, three Challenge Cups" },
+    { "name": "Lee Briers", "born": 1978, "clubs": ["Warrington Wolves"], "basis": "Warrington 1997-2013, Lance Todd 2010" },
+    { "name": "Paul Wood", "born": 1981, "clubs": ["Warrington Wolves"], "basis": "One-club prop 2000-16, three Challenge Cups" },
+    { "name": "Stefan Ratchford", "born": 1988, "clubs": ["Warrington Wolves"], "basis": "Warrington 2013-25, 2019 Challenge Cup" },
+
+    { "name": "Danny Houghton", "born": 1988, "clubs": ["Hull FC"], "basis": "One-club hooker and captain, 2016 and 2017 Challenge Cups" },
+    { "name": "Gareth Ellis", "born": 1981, "clubs": ["Hull FC"], "basis": "Hull FC captain, 2016 and 2017 Challenge Cups" },
+    { "name": "Lee Radford", "born": 1979, "clubs": ["Hull FC"], "basis": "Hull FC captain then coach, 2005 Challenge Cup" },
+    { "name": "Richard Horne", "born": 1982, "clubs": ["Hull FC"], "basis": "Hull FC 1999-2014, 2005 Challenge Cup" },
+    { "name": "Richard Swain", "born": 1975, "clubs": ["Hull FC"], "basis": "Hull FC captain, 2005 Challenge Cup" },
+
+    { "name": "Michael Dobson", "born": 1986, "clubs": ["Hull KR"], "basis": "Hull KR goal-kicking halfback, among the club's leading points scorers" },
+
+    { "name": "Danny Brough", "born": 1983, "clubs": ["Huddersfield Giants"], "basis": "Man of Steel 2013, captain of 2013 League Leaders" },
+    { "name": "Eorl Crabtree", "born": 1982, "clubs": ["Huddersfield Giants"], "basis": "One-club prop 2001-16" },
+    { "name": "Jermaine McGillvary", "born": 1988, "clubs": ["Huddersfield Giants"], "basis": "Huddersfield record Super League try scorer" },
+    { "name": "Leroy Cudjoe", "born": 1988, "clubs": ["Huddersfield Giants"], "basis": "Huddersfield centre and captain for over 15 seasons" },
+
+    { "name": "Danny Orr", "born": 1978, "clubs": ["Castleford Tigers"], "basis": "Castleford academy, two spells, captain" },
+    { "name": "Luke Gale", "born": 1988, "clubs": ["Castleford Tigers"], "basis": "Man of Steel 2017, 2017 League Leaders" },
+    { "name": "Malcolm Reilly", "born": 1948, "clubs": ["Castleford Tigers"], "basis": "RFL Hall of Fame 2014; Castleford loose forward and coach" },
+    { "name": "Michael Shenton", "born": 1986, "clubs": ["Castleford Tigers"], "basis": "Castleford captain, 2017 League Leaders" },
+    { "name": "Rangi Chase", "born": 1986, "clubs": ["Castleford Tigers"], "basis": "Man of Steel 2011" },
+
+    { "name": "Neil Fox", "born": 1939, "clubs": ["Wakefield Trinity"], "basis": "RFL Hall of Fame 1989; Wakefield record points scorer" },
+
+    { "name": "Stuart Littler", "born": 1979, "clubs": ["Salford Red Devils"], "basis": "Salford 1998-2014, long-serving one-club centre" },
+
+    { "name": "Remi Casty", "born": 1985, "clubs": ["Catalans Dragons"], "basis": "Catalans 2006-24, 2018 Challenge Cup winner" },
+    { "name": "Scott Dureau", "born": 1986, "clubs": ["Catalans Dragons"], "basis": "Catalans halfback 2011-15, Dream Team" },
+    { "name": "Thomas Bosc", "born": 1983, "clubs": ["Catalans Dragons"], "basis": "One-club halfback 2003-17" },
+
+    { "name": "Mark Aston", "born": 1967, "clubs": ["Sheffield Eagles"], "basis": "Lance Todd 1998, Sheffield player and coach" }
+  ]
+}

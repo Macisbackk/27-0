@@ -1,6 +1,6 @@
 import { APP_URL_SCHEME, isNativeApp } from "@/lib/native/platform";
 
-const PRODUCTION_SITE = "https://27-0.co.uk";
+const PRODUCTION_SITE = "https://www.27-0.co.uk";
 
 /**
  * Where email links (confirm, password reset) should land.

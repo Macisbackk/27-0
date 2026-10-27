@@ -67,7 +67,16 @@ export const PLAYER_TIER_PRIORITY: PlayerTierId[] = [
 
 export const PLAYER_TIER_MAX_VISIBLE = 2;
 
-const TIER_LABEL: Record<PlayerTierId, string> = {
+/**
+ * What each tag means:
+ * - Hall of Fame: men's Rugby League Hall of Fame (RFL) inductee (data/hall-of-fame.json), every card.
+ * - Legend: a Legend-tier card (category "legend"), an all-time great's prime season.
+ * - Club Legend: club Hall of Fame inductee or recognised club great, only on cards for
+ *   that club (data/club-legends.json).
+ * - Historic: a past-season card (category "historic"), even if the player still plays.
+ * - Current: a 2026 squad card (category "current").
+ */
+export const PLAYER_TIER_LABEL: Record<PlayerTierId, string> = {
   goat: "GOAT",
   "super-sam": "SUPER SAM",
   "hall-of-fame": "Hall of Fame",
@@ -123,7 +132,7 @@ export function getPrimaryPlayerTier(
     .slice(0, max)
     .map((id) => ({
       id,
-      label: TIER_LABEL[id],
+      label: PLAYER_TIER_LABEL[id],
       tone: TIER_TONE[id],
       className: TIER_CLASS[id],
     }));
