@@ -142,7 +142,7 @@ export default function RecordsPage() {
       <div className={PAGE.section}>
         <header className="space-y-3">
           <PitchHero eyebrow="Your history" title="Records" icon={<CupGlyph />} />
-          <p className="text-left text-sm text-[color:var(--fl-muted)] px-1">
+          <p className={PAGE.intro}>
             Your Classic, Era Classic and Ball Knower seasons.
           </p>
         </header>

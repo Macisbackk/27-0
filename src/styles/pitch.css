@@ -112,6 +112,20 @@
   flex-direction: column;
   gap: 0.625rem;
 }
+/* Phones: a hero's text stack (eyebrow, title, line) is centred; sm+ keeps it left. Heroes
+   with something beside the title (a crest, a back link) stay left so the row reads. */
+@media (max-width: 639.98px) {
+  .pitch-hero:not(.pitch-hero--has-aside) .pitch-eyebrow {
+    justify-content: center;
+    text-align: center;
+  }
+  .pitch-hero:not(.pitch-hero--has-aside) .pitch-title,
+  .pitch-hero:not(.pitch-hero--has-aside) .pitch-sub {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
 @media (min-width: 640px) {
   .pitch-hero {
     padding: 1.25rem 1.5rem;

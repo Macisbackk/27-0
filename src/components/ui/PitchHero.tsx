@@ -62,7 +62,7 @@ export function PitchHero({
 }: PitchHeroProps) {
   const Title = titleAs;
   return (
-    <section className={`pitch-surface pitch-hero pitch-hero--${size} ${className}`.trim()} aria-label={ariaLabel}>
+    <section className={`pitch-surface pitch-hero pitch-hero--${size}${aside ? " pitch-hero--has-aside" : ""} ${className}`.trim()} aria-label={ariaLabel}>
       {icon ? <PitchMark>{icon}</PitchMark> : null}
       <div className="relative min-w-0">
         <div className="flex items-start gap-3">

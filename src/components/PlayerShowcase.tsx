@@ -42,7 +42,7 @@ import {
 } from "./ShowcasePagination";
 import { GameButton } from "@/components/ui/GameButton";
 import { playUiClick } from "@/lib/sound";
-import { FILTER } from "@/lib/ui/design-system";
+import { FILTER, PAGE } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { EraRatingExplanation } from "./EraRatingExplanation";
 import { PitchHero } from "@/components/ui/PitchHero";
@@ -431,7 +431,7 @@ export function PlayerShowcase() {
     <div className="mx-auto w-full max-w-[60rem] space-y-4">
       <header className="space-y-3">
         <PitchHero eyebrow="Player database" title="Player Showcase" icon={<ShirtGlyph />} />
-        <p className="text-left text-sm text-[color:var(--fl-muted)] px-1">
+        <p className={PAGE.intro}>
           {dbStats.total.toLocaleString("en-GB")} players: {dbStats.current} in this season&rsquo;s squads,{" "}
           {dbStats.historic.toLocaleString("en-GB")} era cards and {dbStats.legends} legends.
           {topRated ? (

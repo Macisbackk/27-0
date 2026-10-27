@@ -153,6 +153,8 @@ export const CARD = {
 export const PAGE = {
   section: "space-y-4 sm:space-y-5 lg:space-y-4",
   sectionHero: "text-center",
+  /** A page's one-line intro under its hero: centred on phones, left from sm up. */
+  intro: "px-1 text-center text-sm text-[color:var(--fl-muted)] sm:text-left",
   cardStack: "flex flex-col gap-4 sm:gap-5",
   /** Site shell — same 1180px as Manager PageShell. */
   shell: "game-page",

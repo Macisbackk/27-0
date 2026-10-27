@@ -88,7 +88,7 @@ export default function ModesPage() {
               </>
             }
           />
-          <p className="text-left text-sm text-[color:var(--fl-muted)] px-1">
+          <p className={PAGE.intro}>
             Extra ways to play. No leaderboards or Club Funds.
           </p>
         </header>
