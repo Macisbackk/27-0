@@ -114,6 +114,27 @@ export function SeasonReview() {
         </Card>
       ) : null}
 
+      <Card className="border-theme-primary/40">
+        <Eyebrow>Next season · {o.year + 1}</Eyebrow>
+        {o.boardTarget ? (
+          <p className="mt-2 flex items-center justify-between gap-3 text-sm">
+            <span className="min-w-0 text-gray-300">
+              <span className="font-semibold text-white">Board:</span> {boardTargetLabel(o.division, o.boardTarget, boardSize)}
+            </span>
+            <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold ${boardMet ? "bg-success/15 text-success" : "bg-amber-300/15 text-amber-200"}`}>
+              {boardMet ? "Target met" : "Missed"}
+            </span>
+          </p>
+        ) : null}
+        <p className="mt-2 font-display text-xl font-bold leading-tight text-white">{hook}</p>
+        <p className="mt-1 text-sm text-gray-300">
+          {DIVISION_LABEL[club.division]} · budget about {formatMoney(Math.max(0, nextBudget))}
+        </p>
+        {affordableLegend ? (
+          <p className="mt-2 text-sm text-accent-gold">You have the Legacy points to unlock {affordableLegend} in the Legend Vault.</p>
+        ) : null}
+      </Card>
+
       <Card>
         <dl className="grid grid-cols-2 gap-4 text-sm">
           <div>
@@ -148,27 +169,6 @@ export function SeasonReview() {
           </ul>
         </Card>
       ) : null}
-
-      <Card className="border-theme-primary/40">
-        <Eyebrow>Next season · {o.year + 1}</Eyebrow>
-        {o.boardTarget ? (
-          <p className="mt-2 flex items-center justify-between gap-3 text-sm">
-            <span className="min-w-0 text-gray-300">
-              <span className="font-semibold text-white">Board:</span> {boardTargetLabel(o.division, o.boardTarget, boardSize)}
-            </span>
-            <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold ${boardMet ? "bg-success/15 text-success" : "bg-amber-300/15 text-amber-200"}`}>
-              {boardMet ? "Target met" : "Missed"}
-            </span>
-          </p>
-        ) : null}
-        <p className="mt-2 font-display text-xl font-bold leading-tight text-white">{hook}</p>
-        <p className="mt-1 text-sm text-gray-300">
-          {DIVISION_LABEL[club.division]} · budget about {formatMoney(Math.max(0, nextBudget))}
-        </p>
-        {affordableLegend ? (
-          <p className="mt-2 text-sm text-accent-gold">You have the Legacy points to unlock {affordableLegend} in the Legend Vault.</p>
-        ) : null}
-      </Card>
 
       <ShareSeasonButton data={shareCardData} filename="27-0-manager-season.png" />
 

@@ -65,10 +65,6 @@ export function ResultStrip({ state, fixture, flash }: { state: CareerState; fix
   const tone = us > them ? "text-success" : us < them ? "text-danger" : "text-gray-200";
   const streak = userStreak(state);
   const motm = r.motm ? state.players[r.motm] : undefined;
-  const mine = isHome ? r.homeTries : r.awayTries;
-  const counts = new Map<string, number>();
-  for (const id of mine) counts.set(id, (counts.get(id) ?? 0) + 1);
-  const scorers = [...counts.entries()].map(([id, n]) => `${state.players[id]?.name ?? "?"}${n > 1 ? ` ×${n}` : ""}`).join(", ");
   const chips: Array<{ text: string; tone: string }> = [];
   if (streak && streak.length >= 2) {
     chips.push({
@@ -79,21 +75,23 @@ export function ResultStrip({ state, fixture, flash }: { state: CareerState; fix
   if (flash && flash.moved > 0) chips.push({ text: `Up ${flash.moved} ${flash.moved === 1 ? "place" : "places"}`, tone: "bg-success/15 text-success" });
   if (flash && flash.moved < 0) chips.push({ text: `Down ${-flash.moved} ${flash.moved === -1 ? "place" : "places"}`, tone: "bg-danger/15 text-red-200" });
   return (
-    <section aria-label="Last result" className="fl-rise rounded-card bg-pitch-900 p-4 text-left">
-      <div className="flex items-center justify-between gap-2">
-        <Eyebrow>Last result · {fixture.label}</Eyebrow>
-        <ClubBadge club={opp} size="sm" />
+    <section aria-label="Last result" className="fl-rise rounded-card bg-pitch-900 px-4 py-3 text-left">
+      <div className="flex items-center gap-3">
+        <ClubBadge club={opp} size="md" />
+        <div className="min-w-0 flex-1">
+          <Eyebrow>Last result · {fixture.label}</Eyebrow>
+          <p className="mt-0.5 truncate text-[16px] font-bold leading-tight text-white">
+            <span className={tone}>{verdict} {us}–{them}</span>{" "}
+            <span className="font-semibold text-gray-300">{isHome ? "v" : "at"} <ClubLink clubId={opp.id}>{opp.name}</ClubLink></span>
+          </p>
+        </div>
       </div>
-      <p className="mt-1.5 text-[17px] font-bold leading-tight text-white">
-        <span className={tone}>{verdict} {us}–{them}</span>{" "}
-        <span className="font-semibold text-gray-300">{isHome ? "v" : "at"} <ClubLink clubId={opp.id}>{opp.name}</ClubLink></span>
-        {r.goldenPoint ? <span className="text-sm font-semibold text-gray-400"> · golden point</span> : null}
-      </p>
-      {chips.length || motm ? (
+      {chips.length || motm || r.goldenPoint ? (
         <p className="mt-2 flex flex-wrap items-center gap-1.5 text-[12px]">
           {chips.map((c) => (
             <span key={c.text} className={`rounded-full px-2 py-0.5 font-bold ${c.tone}`}>{c.text}</span>
           ))}
+          {r.goldenPoint ? <span className="rounded-full bg-white/10 px-2 py-0.5 font-bold text-gray-200">Golden point</span> : null}
           {motm ? (
             <span className="rounded-full bg-accent-gold/15 px-2 py-0.5 font-bold text-accent-gold">Player of the Match: {motm.name}</span>
           ) : null}
@@ -107,12 +105,6 @@ export function ResultStrip({ state, fixture, flash }: { state: CareerState; fix
             </li>
           ))}
         </ul>
-      ) : null}
-      {scorers ? (
-        <details className="mt-2 text-xs text-gray-400">
-          <summary className="cursor-pointer font-semibold text-gray-300">Scorers</summary>
-          <p className="mt-1">{state.clubs[state.userClubId]!.short} tries: {scorers}</p>
-        </details>
       ) : null}
     </section>
   );
@@ -141,10 +133,18 @@ function StageBar({ label, onClick }: { label: string; onClick: () => void }) {
 
 /** Short name for the place a sim stops: "Deadline Day", "Cup Round of 16", "league end". */
 function stopShort(label: string): string {
+  if (label === "Deadline Day") return "Deadline";
   if (label === "the end of the league") return "league end";
   if (label === "the end of the season") return "season end";
   if (label === "the Grand Final") return "Grand Final";
-  return label.replace(/^Challenge Cup /, "Cup ");
+  const cup: Record<string, string> = {
+    "Challenge Cup Round 1": "Cup R1",
+    "Challenge Cup Round of 16": "Cup R16",
+    "Challenge Cup Quarter-final": "Cup QF",
+    "Challenge Cup Semi-final": "Cup SF",
+    "Challenge Cup Final": "Cup Final",
+  };
+  return cup[label] ?? label;
 }
 
 export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
@@ -388,9 +388,8 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
                 </GameButton>
                 {stop ? (
                   <GameButton size="sm" variant="secondary" disabled={busy || !fixtureArmed} onClick={() => run(simToStop)}>
-                    <span className="flex flex-col items-center leading-tight">
-                      <span>Sim to {stopShort(stop.label)}</span>
-                      <span className="text-[11px] font-semibold opacity-75">{stop.games} games</span>
+                    <span className="block leading-tight">
+                      Sim to {stopShort(stop.label)} <span className="font-semibold opacity-75">· {stop.games}<span className="sr-only"> games</span></span>
                     </span>
                   </GameButton>
                 ) : null}

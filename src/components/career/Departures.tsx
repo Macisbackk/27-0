@@ -62,7 +62,7 @@ export function Departures() {
                     }
                   }}
                 >
-                  {`Renew ${keep.length === 1 ? "the one" : `the ${keep.length}`} worth keeping · ${formatMoney(keepFee)}`}
+                  {`${keep.length === 1 ? `Keep ${s.players[keep[0]!]?.name ?? "him"}` : `Keep the best ${keep.length}`} · ${formatMoney(keepFee)}`}
                 </GameButton>
               </div>
             ) : null}
@@ -77,13 +77,13 @@ export function Departures() {
                       <span className="min-w-0 flex-1">
                         <span className="block truncate font-semibold text-white">
                           {p.name}
-                          {keep.includes(p.id) ? <span className="ml-1.5 text-[10px] font-bold uppercase text-theme-primary">Worth keeping</span> : null}
                         </span>
                         <span className="block truncate text-[11px] text-gray-500">
                           Age {p.age} · {p.apps} apps · {p.tries} tries
                         </span>
                         <span className="block text-[11px] text-gray-500">
                           New deal: {years} yr{years > 1 ? "s" : ""}
+                          {keep.includes(p.id) ? <span className="font-bold text-theme-primary"> · Worth keeping</span> : null}
                         </span>
                       </span>
                       <RatingPill rating={p.rating} />

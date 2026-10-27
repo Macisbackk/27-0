@@ -56,7 +56,7 @@ function HubHeader() {
  * Where the season is and what the board wants, on every hub tab:
  * "Round 12 of 26 · 3rd" with a bar, then the board's target and whether you're on course.
  */
-function SeasonStrip({ onChallenges }: { onChallenges: () => void }) {
+function SeasonStrip() {
   const { state } = useCareer();
   const s = state!;
   const stage = currentStage(s);
@@ -64,9 +64,9 @@ function SeasonStrip({ onChallenges }: { onChallenges: () => void }) {
   const goal = boardGoal(s);
   const table = sortTable(s.tables[s.clubs[s.userClubId]!.division]);
   const row = table.find((r) => r.clubId === s.userClubId);
-  const doneChallenges = s.challenges.filter((c) => c.done).length;
   const started = goal.played > 0;
   const gap = goal.position - goal.target;
+  const leagueDone = progress.total > 0 && progress.done === progress.total;
   return (
     <section aria-label="Season progress" className="rounded-card bg-pitch-900 px-4 py-3 text-left">
       <div className="flex items-baseline justify-between gap-3">
@@ -81,10 +81,10 @@ function SeasonStrip({ onChallenges }: { onChallenges: () => void }) {
           )}
         </p>
       </div>
-      <div className="mt-2">
+      <div className="mt-1.5">
         <ProgressBar value={progress.done} max={progress.total} />
       </div>
-      <div className="mt-2.5 flex items-center justify-between gap-3">
+      <div className="mt-2 flex items-center justify-between gap-3">
         <p className="min-w-0 text-[13px] leading-snug text-gray-300">
           <span className="font-semibold text-white">Board:</span> {goal.label}
         </p>
@@ -93,18 +93,9 @@ function SeasonStrip({ onChallenges }: { onChallenges: () => void }) {
             !started ? "bg-white/10 text-[color:var(--fl-muted)]" : goal.onTrack ? "bg-success/15 text-success" : "bg-amber-300/15 text-amber-200"
           }`}
         >
-          {!started ? "New season" : goal.onTrack ? "On track" : `${gap} ${gap === 1 ? "place" : "places"} off`}
+          {!started ? "New season" : leagueDone ? (goal.onTrack ? "Target met" : "Missed") : goal.onTrack ? "On track" : `${gap} ${gap === 1 ? "place" : "places"} off`}
         </span>
       </div>
-      {s.challenges.length ? (
-        <button
-          type="button"
-          onClick={onChallenges}
-          className="mt-1.5 text-[12px] font-semibold text-theme-primary underline-offset-2 hover:underline"
-        >
-          Challenges: {doneChallenges} of {s.challenges.length} done ›
-        </button>
-      ) : null}
     </section>
   );
 }
@@ -194,7 +185,7 @@ function CareerRouter() {
       />
       </div>
       <div key={tab} className="fl-rise flex flex-col gap-4">
-      {tab === "match" ? <SeasonStrip onChallenges={() => setTab("club")} /> : null}
+      {tab === "match" ? <SeasonStrip /> : null}
       {tab === "match" ? <MatchTab onOpenMarket={() => setMarketOpen(true)} /> : null}
       {tab === "team" ? <TeamTab /> : null}
       {tab === "table" ? <TableTab /> : null}

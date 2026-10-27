@@ -275,6 +275,7 @@ export function seasonProgress(state: CareerState): SeasonProgress {
   let label: string;
   if (!md) label = "Season complete";
   else if (md.label.startsWith("Round ")) label = `${md.label} of ${total}`;
+  else if (isPlayoffMatchday(md)) label = "Play-offs";
   else label = md.label;
   return { label, done, total };
 }
