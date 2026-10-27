@@ -245,10 +245,11 @@ export function buildMarket(state: CareerState, unlockedLegends: string[], salt 
       listings.push({ playerId: p.id, fromClubId: clubId, price: transferFee(p, 1.2), wages: playerWage(p) });
     }
   }
-  // Free agents: no fee, just wages. Not a man you let go (or sold to nobody) this year, though.
+  // Free agents: no fee, just wages. Same prestige pull as anyone else, and not a man you let go
+  // (or sold to nobody) this year.
   for (const id of state.freeAgents) {
     const p = state.players[id];
-    if (!p || p.legend || userSquad.has(id)) continue;
+    if (!p || p.legend || userSquad.has(id) || p.rating > cap) continue;
     if (p.leftClubId === state.userClubId && p.leftYear === state.year) continue;
     listings.push({ playerId: id, fromClubId: null, price: 0, wages: playerWage(p) });
   }

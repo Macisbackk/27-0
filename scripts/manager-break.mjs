@@ -85,7 +85,8 @@ async function deadlineChecks() {
     if (offer) {
       if (!s1.clubs[offer.clubId].squad.includes(offer.playerId)) fail("accepted Deadline Day offer: the player didn't join the bidding club");
       if (s1.clubs[s1.userClubId].squad.includes(offer.playerId)) fail("accepted Deadline Day offer: the player is still yours");
-      if (s1.budget !== s0.budget + offer.fee) fail("accepted Deadline Day offer: fee not paid");
+      // The fee, plus the rest of his season's wages off the bill.
+      if (s1.budget < s0.budget + offer.fee) fail("accepted Deadline Day offer: fee not paid");
     }
     step("Deadline Day: clock counts down, pauses (and stays paused after a reload), skips an hour, an offer was accepted");
     await btn("Resume the clock").click().catch(() => {});
@@ -94,6 +95,9 @@ async function deadlineChecks() {
   await btn("Buy and sell").click();
   await page.getByRole("region", { name: "Deadline Day clock" }).waitFor({ timeout }).catch(() => fail("no Deadline Day clock in the market"));
   await noSideways("Deadline Day market");
+  await btn("Pause the clock").click().catch(() => {});
+  await shot("window-deadline-market");
+  await btn("Resume the clock").click().catch(() => {});
   await page.getByRole("tab", { name: "Sell" }).click();
   const sell = page.getByRole("button", { name: /^Sell / }).first();
   if (await sell.isEnabled().catch(() => false)) {
@@ -134,6 +138,41 @@ try {
   if (await visible(btn("Play match"))) fail("Round 1 visible during pre-season");
   await noSideways("pre-season");
   await reloadAndCheck("pre-season", "Pre-season friendlies");
+  // The summer window is still open in pre-season: market reachable, free agents cost no fee.
+  const winCard = page.getByRole("region", { name: "Transfer window open" });
+  if (!(await visible(winCard))) fail("pre-season: no 'Transfer window open' card");
+  else {
+    const status = await page.getByTestId("window-status").first().innerText().catch(() => "");
+    if (!/Window open/.test(status)) fail(`pre-season window status says "${status}"`);
+    await winCard.scrollIntoViewIfNeeded();
+    await shot("window-preseason-card");
+    await winCard.getByRole("button", { name: "Open market" }).click();
+    await page.getByRole("heading", { name: "Build your squad" }).waitFor({ timeout });
+    await noSideways("pre-season market");
+    await shot("window-preseason-market");
+    const faRow = page.locator('li[data-free-agent="true"]').first();
+    if (await visible(faRow)) {
+      await faRow.scrollIntoViewIfNeeded();
+      const t = await faRow.innerText();
+      if (!/Free/.test(t) || !/\/yr wages/.test(t)) fail(`free agent row doesn't say Free + wages: "${t.replace(/\s+/g, " ")}"`);
+      await shot("window-free-agent-row");
+      const signFree = faRow.getByRole("button", { name: "Free" });
+      if (await signFree.isEnabled().catch(() => false)) {
+        const b0 = await save();
+        await signFree.click();
+        await page.waitForTimeout(400);
+        const b1 = await save();
+        const signed = b1.clubs[b1.userClubId].squad.find((id) => !b0.clubs[b0.userClubId].squad.includes(id));
+        if (!signed) fail("pre-season: free agent signing didn't land");
+        else if (b1.players[signed].fee !== 0) fail(`pre-season: free agent signed with a fee (${b1.players[signed].fee})`);
+        else step(`Pre-season: signed free agent ${b1.players[signed].name}, £0 fee, budget ${b0.budget} → ${b1.budget} (wages only)`);
+        await shot("window-free-agent-signed");
+      }
+    } else step("Pre-season market: no free agents listed");
+    await btn("Back to pre-season").click();
+    await pre.waitFor({ timeout });
+    step("Pre-season: transfer window open, market reachable from the hub");
+  }
   // v1.18: two friendlies come pre-picked; the full list is behind "Change".
   await pre.getByRole("button", { name: "Change" }).click();
   await pre.getByRole("button", { name: /^Play 2/ }).dblclick();
@@ -173,6 +212,16 @@ try {
   await page.getByRole("region", { name: "Last result" }).waitFor({ timeout }).catch(() => fail("no Last result strip after a Quick sim"));
   await page.waitForTimeout(500);
   await shot("hub-result", true);
+  // Round 1 kicked off: the window is shut until Deadline Day, with no market button anywhere.
+  if (await visible(btn("Open market"))) fail("Open market offered after Round 1");
+  await page.getByRole("tab", { name: "Team" }).click();
+  {
+    const status = await page.getByTestId("window-status").first().innerText().catch(() => "");
+    if (!/Window shut/.test(status) || !/Deadline Day/.test(status)) fail(`after Round 1 the Team tab says "${status}"`);
+    await shot("window-shut-team");
+  }
+  await page.getByRole("tab", { name: "Match" }).click();
+  await page.waitForTimeout(300);
   const simTo = page.getByRole("button", { name: /^Sim to / }).first();
   if (await visible(simTo)) {
     const md0 = (await save()).matchdayIndex;
@@ -202,6 +251,13 @@ try {
       const shut = btn("Shut the window");
       if (await visible(shut)) {
         await shut.dblclick();
+        await page.waitForTimeout(300);
+        // After Deadline Day: shut until the new season.
+        await page.getByRole("tab", { name: "Club" }).click();
+        const status = await page.getByTestId("window-status").first().innerText().catch(() => "");
+        if (!/Window shut/.test(status) || !/after the season/.test(status)) fail(`after Deadline Day the Club tab says "${status}"`);
+        await shot("window-after-deadline-club");
+        await page.getByRole("tab", { name: "Match" }).click();
         await page.waitForTimeout(300);
         continue;
       }

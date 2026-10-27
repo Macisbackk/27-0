@@ -55,9 +55,10 @@ export function runDownContracts(state: CareerState): string[] {
         p.contract = 0;
         expiring.push(id);
       } else {
-        const fringe = ranked.indexOf(id) >= 17;
+        // Never their best XIII-and-bench: only fringe men, or veterans outside the first 13.
+        const rank = ranked.indexOf(id);
         const roll = rng();
-        if (!p.legend && club.squad.length - released.length > AI_KEEP && ((fringe && roll < 0.5) || (p.age >= 32 && roll < 0.35))) {
+        if (!p.legend && club.squad.length - released.length > AI_KEEP && ((rank >= 17 && roll < 0.5) || (rank >= 13 && p.age >= 32 && roll < 0.35))) {
           released.push(id);
         } else {
           p.contract = newDealLength(p.age);

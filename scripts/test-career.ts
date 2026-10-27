@@ -46,8 +46,27 @@ import {
   userFixture,
   recommendedRenewals,
   buildWorld,
+  isFreeAgentListing,
+  isWindowOpen,
+  playerWage,
+  signingCost,
+  wagesDueNow,
+  windowStatus,
   type CareerState,
 } from "../src/lib/career";
+
+/** Players who have retired (or otherwise left the world) in any career this run: they must never come back. */
+const gone = new Set<string>();
+function noGhosts(s: CareerState, label: string) {
+  const back: string[] = [];
+  for (const c of Object.values(s.clubs)) for (const id of c.squad) if (gone.has(id)) back.push(`${id}@${c.id}`);
+  for (const id of s.freeAgents) if (gone.has(id)) back.push(`${id}@FA`);
+  for (const id of Object.keys(s.players)) if (gone.has(id)) back.push(`${id}@players`);
+  check(back.length === 0, `${label}: retired players never reappear (${back.slice(0, 3).join(", ")})`);
+  const inSquads = new Set(Object.values(s.clubs).flatMap((c) => c.squad));
+  check(s.freeAgents.every((id) => !inSquads.has(id) && !!s.players[id]), `${label}: free agents are unattached and real`);
+  check(new Set(s.freeAgents).size === s.freeAgents.length, `${label}: no duplicate free agents`);
+}
 
 let passed = 0;
 let failed = 0;
@@ -138,6 +157,7 @@ let draws = 0;
 for (const [i, clubId] of ["salford-rlfc", "wigan-warriors", "north-wales-crusaders", "york-knights"].entries()) {
   let s = createCareer({ clubId, managerName: "Test", seed: `career-${i}` });
   let legacy = emptyLegacy();
+  gone.clear(); // real players share ids across careers
   invariants(s, `${clubId} start`);
   check(s.calendar.length === 33, `${clubId}: 33 matchdays (26 league + 5 cup + 2 play-off)`);
   check(s.challenges.length === 3, `${clubId}: 3 season challenges`);
@@ -184,8 +204,13 @@ for (const [i, clubId] of ["salford-rlfc", "wigan-warriors", "north-wales-crusad
     legacy = banked.legacy;
     check(legacy.legacyPoints >= 0, `${label}: legacy points non-negative`);
 
+    const beforeSummer = s;
     s = beginOffseason(s);
     check(s.phase === "departures", `${label}: off-season → departures`);
+    // Retirements happen here, at the end of the season: every retiree is gone for good.
+    for (const id of Object.keys(beforeSummer.players)) if (!s.players[id] && !id.startsWith("legend-")) gone.add(id);
+    check(!windowStatus(s).open, `${label}: window shut during departures`);
+    noGhosts(s, `${label} departures`);
     check(!!s.departures, `${label}: departures recorded`);
     // Contracts: renew the first expiring player if affordable, let the next one go.
     const exp = s.departures?.expiring ?? [];
@@ -208,6 +233,8 @@ for (const [i, clubId] of ["salford-rlfc", "wigan-warriors", "north-wales-crusad
     const undecided = [...(s.departures?.expiring ?? [])];
     s = finishDepartures(s);
     check(s.phase === "transfers", `${label}: departures → transfer window`);
+    check(isWindowOpen(s) && windowStatus(s).kind === "summer", `${label}: summer window open`);
+    if (exp[1]) check(!buildMarket(s, []).some((l) => l.playerId === exp[1]), `${label}: a man you let go can't be re-signed on a free the same summer`);
     for (const id of undecided) check(!s.clubs[s.userClubId]!.squad.includes(id), `${label}: undecided expiring players leave`);
     check(s.clubs[s.userClubId]!.squad.every((id) => contractOf(s.players[id]!) >= 1), `${label}: everyone left is under contract`);
     invariants(s, `${label} window`);
@@ -217,9 +244,28 @@ for (const [i, clubId] of ["salford-rlfc", "wigan-warriors", "north-wales-crusad
     const weakest = me.squad.map((id) => s.players[id]!).sort((a, b) => a.rating - b.rating)[0]!;
     const sold = sellPlayer(s, weakest.id);
     if (!sold.error) s = sold.state;
+    if (!sold.error && sold.soldTo === null) {
+      check(!buildMarket(s, []).some((l) => l.playerId === weakest.id), `${label}: a player you sold to nobody can't be bought straight back for free`);
+    }
     const market = buildMarket(s, legacy.unlockedLegends);
     check(market.length > 0, `${label}: market has players`);
-    const affordable = market.find((l) => l.price <= s.budget);
+    // Free agents: never a fee. In the summer window nothing is paid at signing (wages go on the bill at kick-off).
+    const fas = market.filter(isFreeAgentListing);
+    check(fas.every((l) => l.price === 0), `${label}: free agents are listed with no fee`);
+    check(fas.every((l) => l.wages === playerWage(s.players[l.playerId]!)), `${label}: free agents list their wages`);
+    check(market.filter((l) => l.fromClubId).every((l) => l.price > 0), `${label}: players under contract cost a fee`);
+    const fa = fas.find((l) => s.clubs[s.userClubId]!.squad.length < SQUAD_MAX && l.wages <= 2_000_000);
+    if (fa) {
+      const bought = buyPlayer(s, { ...fa, price: 123_456 }); // even a doctored listing can't charge a fee
+      check(!bought.error, `${label}: can sign a free agent`);
+      if (!bought.error) {
+        check(bought.state.budget === s.budget, `${label}: summer free-agent signing costs £0 now (budget ${s.budget} → ${bought.state.budget})`);
+        check(bought.state.players[fa.playerId]!.fee === 0, `${label}: free agent's fee recorded as £0`);
+        check(!bought.state.freeAgents.includes(fa.playerId), `${label}: signed free agent leaves the pool`);
+        s = bought.state;
+      }
+    }
+    const affordable = market.find((l) => signingCost(s, l).total <= s.budget && !s.clubs[s.userClubId]!.squad.includes(l.playerId) && s.clubs[s.userClubId]!.squad.length < SQUAD_MAX);
     if (affordable) {
       const bought = buyPlayer(s, affordable);
       check(!bought.error, `${label}: can buy an affordable player`);
@@ -235,6 +281,21 @@ for (const [i, clubId] of ["salford-rlfc", "wigan-warriors", "north-wales-crusad
     s = finishTransfers(s);
     check(s.phase === "season" && s.matchdayIndex === 0, `${label}: next season starts`);
     invariants(s, `${label} next`);
+    noGhosts(s, `${label} pre-season`);
+    // Pre-season: the window is still open. A free agent costs no fee; the budget moves only by his wages.
+    check(windowStatus(s).kind === "preseason", `${label}: window open in pre-season`);
+    const pre = buildMarket(s, []).filter(isFreeAgentListing).find((l) => s.budget >= signingCost(s, l).total);
+    if (pre && s.clubs[s.userClubId]!.squad.length < SQUAD_MAX) {
+      const p = s.players[pre.playerId]!;
+      const r = buyPlayer(s, pre);
+      check(!r.error, `${label}: pre-season free-agent signing goes through`);
+      if (!r.error) {
+        const due = wagesDueNow(s, p);
+        check(due === playerWage(p), `${label}: before Round 1 a new man's whole season of wages is due`);
+        check(r.state.budget === s.budget - due, `${label}: pre-season free agent costs only wages (${s.budget} → ${r.state.budget}, wages ${due})`);
+        s = r.state;
+      }
+    }
   }
   console.log(
     `${clubId.padEnd(22)} prestige ${s.prestige}  division ${s.clubs[s.userClubId]!.division}  history ${s.history

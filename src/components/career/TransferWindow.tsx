@@ -113,7 +113,7 @@ export function TransferWindow({ mode = "summer", onClose }: { mode?: "summer" |
           <p className="mt-1"><Stars value={s.prestige} /></p>
         </div>
         <p className="col-span-3 text-xs text-gray-400">
-          Players rated up to <span className="font-semibold text-white">{prestigeRatingCap(s.prestige)}</span> will join you. Free agents and legends always will.
+          Players rated up to <span className="font-semibold text-white">{prestigeRatingCap(s.prestige)}</span> will join you, free agents included. Legends always will.
         </p>
         <p className="col-span-3 text-xs text-gray-400" data-testid="wage-note">
           Free agents cost no fee, only wages.{" "}

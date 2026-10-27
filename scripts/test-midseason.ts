@@ -3,7 +3,9 @@ import { buildWorld, createCareer } from "../src/lib/career/world";
 import { playMatchday, repairLineup } from "../src/lib/career/season";
 import { SQUAD_MAX, SQUAD_MIN } from "../src/lib/career/players";
 import { acceptOffer, closeDeadlineDay, deadlineDecisionPending, isDeadlineDay, isWindowOpen, liveOffers, rejectOffer, seasonDeals, tickDeadline, windowBounds, windowStatus } from "../src/lib/career/midseason";
-import { beginOffseason, finishDepartures, finishTransfers } from "../src/lib/career/offseason";
+import { beginOffseason, buildMarket, buyPlayer, finishDepartures, finishTransfers, isFreeAgentListing, sellPlayer } from "../src/lib/career/offseason";
+import { playerWage, seasonWageShareLeft, wagesDueNow } from "../src/lib/career/players";
+import { simRestOfSeason } from "../src/lib/career/season";
 import type { CareerState } from "../src/lib/career/types";
 
 let passed = 0;
@@ -163,6 +165,40 @@ ok("same save → same deals");
   ok(`3 seasons: window open in summer + pre-season and on Deadline Day only; AI deals only in those windows`);
   if (summerAiSignings === 0) fail("AI clubs never signed a free agent in the summer window");
   ok(`AI clubs signed ${summerAiSignings} free agents in 3 summer windows, all for £0`);
+}
+
+// Deadline Day: a free agent costs no fee, only the rest of this season's wages; a sale saves them.
+{
+  let s = createCareer({ clubId: choices[1]!.id, managerName: "T", seed: "dd-free" });
+  s = simRestOfSeason(s);
+  if (!deadlineDecisionPending(s)) fail("didn't stop on Deadline Day");
+  const share = seasonWageShareLeft(s);
+  if (!(share > 0 && share < 1)) fail(`wage share on Deadline Day ${share}`);
+  s = { ...s, budget: 5_000_000 };
+  const market = buildMarket(s, [], "dd");
+  const fa = market.find(isFreeAgentListing);
+  if (fa) {
+    if (fa.price !== 0) fail("Deadline Day free agent listed with a fee");
+    const p = s.players[fa.playerId]!;
+    const r = buyPlayer(s, fa);
+    if (r.error) fail(`couldn't sign a free agent on Deadline Day: ${r.error}`);
+    const due = wagesDueNow(s, p);
+    if (due !== Math.round((playerWage(p) * share) / 1000) * 1000) fail("Deadline Day wages aren't the rest of the season's");
+    if (r.state.budget !== s.budget - due) fail(`Deadline Day free agent cost more than wages: ${s.budget} → ${r.state.budget} (wages ${due})`);
+    ok(`Deadline Day free agent: £0 fee, ${due} wages for the rest of the season`);
+  } else ok("no free agents on this Deadline Day market (nothing to check)");
+  const me = s.clubs[s.userClubId]!;
+  const seller = me.squad.map((id) => s.players[id]!).sort((a, b) => a.rating - b.rating)[0]!;
+  const sold = sellPlayer(s, seller.id);
+  if (!sold.error) {
+    if (sold.state.budget !== s.budget + (sold.fee ?? 0) + wagesDueNow(s, seller)) fail("a Deadline Day sale should bank the fee plus the wages saved");
+    ok("Deadline Day sale banks the fee and the rest of his wages");
+  }
+  // And with the window shut, nobody can deal.
+  const shut = playMatchday(closeDeadlineDay(s));
+  if (buyPlayer(shut, market[0]!).error !== "window-shut") fail("bought with the window shut");
+  if (sellPlayer(shut, shut.clubs[shut.userClubId]!.squad[0]!).error !== "window-shut") fail("sold with the window shut");
+  ok("no buying or selling while the window is shut");
 }
 
 // Old saves: the window is worked out from phase + round alone (no stored flag needed).
