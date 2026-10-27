@@ -1,0 +1,9 @@
+0 problem(s)
+
+
+Checks:
+Crawled 26 routes @320
+Crawled 26 routes @375
+Crawled 26 routes @desktop
+Bottom nav: items, visibility and no overlap
+Checked 73 internal links
