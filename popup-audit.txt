@@ -1,0 +1,24 @@
+✓ phone-menu: 288×640 "Site menu"
+✓ phone-classic-picker: 294×372 "Pick your Fullback"
+✓ phone-showcase-player: 296×563 "Andy Farrell (1996)"
+✓ phone-manager-tutorial: 296×306 "Manager Mode walkthrough"
+✓ phone-manager-club-sheet: 296×563 "Catalans Dragons"
+✓ phone-manager-team-slot: 296×563 "Shirt 1 · Fullback"
+✓ phone-manager-legend-vault: 296×563 "Legend Vault"
+✓ phone-manager-records: 296×563 "Records & trophy cabinet"
+✓ phone-manager-end-career: 296×563 "Start a new career?"
+✓ phone-quiz-walk-away: 320×640 "Walk away?"
+✓ desktop-menu: 320×800 "Site menu"
+✓ desktop-classic-picker: 640×440 "Pick your Fullback"
+✓ desktop-showcase-player: 512×704 "Andy Farrell (1996)"
+✓ desktop-manager-tutorial: 448×257 "Manager Mode walkthrough"
+✓ desktop-manager-club-sheet: 512×704 "Catalans Dragons"
+✓ desktop-manager-team-slot: 512×704 "Shirt 1 · Fullback"
+✓ desktop-manager-legend-vault: 512×704 "Legend Vault"
+✓ desktop-manager-records: 512×704 "Records & trophy cabinet"
+✓ desktop-manager-end-career: 448×704 "Start a new career?"
+✓ desktop-quiz-walk-away: 1280×800 "Walk away?"
+
+2 problem(s)
+- phone-team-sheet-player: couldn't open (TimeoutError: locator.click: Timeout 6000ms exceeded.)
+- desktop-team-sheet-player: couldn't open (TimeoutError: locator.click: Timeout 6000ms exceeded.)
