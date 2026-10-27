@@ -90,7 +90,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${anton.variable} ${barlow.variable} ${barlowCondensed.variable}`} suppressHydrationWarning>
+    <html lang="en" data-mode="dark" className={`${anton.variable} ${barlow.variable} ${barlowCondensed.variable}`} suppressHydrationWarning>
       <head>
         <Script
           id="ui-theme-bootstrap"
