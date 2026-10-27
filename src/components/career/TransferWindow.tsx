@@ -78,7 +78,7 @@ export function TransferWindow({ midseason = false, onClose }: { midseason?: boo
       />
 
       {midseason && deadlineDecisionPending(s) ? (
-        <section aria-label="Deadline Day clock" className="flex flex-col gap-3 rounded-card bg-amber-400/10 p-3 ring-2 ring-amber-300/60">
+        <section aria-label="Deadline Day clock" className="flex flex-col gap-3 rounded-card bg-pitch-900 p-3 ring-2 ring-amber-300/60">
           <DeadlineClockFace compact />
           <DeadlineOffers />
         </section>

@@ -208,7 +208,7 @@ export function WeeklyLeaderboard() {
         {offline
           ? "Offline: showing your score saved on this device"
           : view === "this"
-            ? "Live rankings for all players"
+            ? "Live rankings"
             : "Final rankings"}
         {" · "}Weekly{week ? ` · ${week.key}` : ""}
       </p>

@@ -195,7 +195,7 @@ export function DeadlineDayCard({ onOpenMarket }: { onOpenMarket: () => void }) 
   }, [finalHour]);
 
   return (
-    <section aria-label="Deadline Day" className="rounded-card bg-amber-400/10 p-4 ring-2 ring-amber-300/60">
+    <section aria-label="Deadline Day" className="rounded-card bg-pitch-900 p-4 ring-2 ring-amber-300/60">
       <div className="flex items-start justify-between gap-3">
         <p className="fl-number text-[26px] leading-none text-amber-300">DEADLINE DAY</p>
         {pending ? (

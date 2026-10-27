@@ -743,7 +743,7 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
       <p className="mt-4 text-center text-xs text-gray-600">
         {usingFallback
           ? "Offline: showing scores saved on this device"
-          : "Live rankings for all players"}
+          : "Live rankings"}
         {" · "}
         {modeLabel}
         {" · "}

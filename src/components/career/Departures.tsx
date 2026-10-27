@@ -53,8 +53,8 @@ export function Departures() {
                       <span className="w-8 text-[11px] font-bold uppercase text-gray-400">{p.pos}</span>
                       <span className="min-w-0 flex-1">
                         <span className="block truncate font-semibold text-white">{p.name}</span>
-                        <span className="text-[11px] text-gray-500">
-                          Age {p.age} · {p.apps} apps, {p.tries} tries last season
+                        <span className="block truncate text-[11px] text-gray-500">
+                          Age {p.age} · {p.apps} apps · {p.tries} tries
                         </span>
                       </span>
                       <RatingPill rating={p.rating} />
@@ -86,7 +86,7 @@ export function Departures() {
                           }
                         }}
                       >
-                        {`Renew ${years} yr${years > 1 ? "s" : ""} · ${formatMoney(fee)}`}
+                        {`Renew ${years}y · ${formatMoney(fee)}`}
                       </GameButton>
                     </div>
                   </li>

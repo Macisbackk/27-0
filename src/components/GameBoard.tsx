@@ -3510,7 +3510,7 @@ export function GameBoard({
                 disabled={choosing || hideActionBar}
                 className="min-h-[var(--mobile-tap-target)] shrink-0 px-3 text-xs"
               >
-                Auto-fill squad
+                Auto-fill<span className="sr-only"> squad</span>
               </GameButton>
             )}
             {phase === "pitch" && !squadComplete && suggestedSlotIndex !== null && (
