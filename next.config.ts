@@ -23,6 +23,15 @@ const nextConfig: NextConfig = {
         // Retired / merged pages keep working for old links and bookmarks.
         async redirects() {
           return [
+            // One address for the site: logins are saved per address, so 27-0.co.uk and
+            // www.27-0.co.uk each kept their own sign-in (email links went to the bare domain).
+            // .well-known stays on both so app links keep verifying.
+            {
+              source: "/:path((?!\\.well-known/).*)",
+              has: [{ type: "host", value: "27-0.co.uk" }],
+              destination: "https://www.27-0.co.uk/:path",
+              permanent: true,
+            },
             { source: "/mini-games/hangman", destination: "/mini-games", permanent: false },
             { source: "/mini-games/higher-lower", destination: "/mini-games", permanent: false },
             { source: "/stats", destination: "/profile", permanent: false },
