@@ -1,7 +1,7 @@
 "use client";
 
 import { contactMailto } from "@/lib/contact";
-import { BallGlyph, BoardGlyph, FixtureGlyph, LadderGlyph, ProgrammeGlyph, ShirtGlyph, ShopGlyph, TilesGlyph, WhistleGlyph } from "@/components/icons/rugby-icons";
+import { BallGlyph, BoardGlyph, CupGlyph, FixtureGlyph, LadderGlyph, ProgrammeGlyph, ShirtGlyph, ShopGlyph, TilesGlyph, WhistleGlyph } from "@/components/icons/rugby-icons";
 import Link from "next/link";
 import { CountUp } from "@/components/ui/CountUp";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -10,6 +10,7 @@ import { useAuth } from "@/lib/auth-context";
 import { useModalA11y } from "@/hooks/useModalA11y";
 import { buildPlayHref, isPlayModeActive } from "@/lib/play-links";
 import { getDailyChallengeHref } from "@/lib/daily-challenge";
+import { getWeeklyChallengeHref } from "@/lib/weekly-challenge";
 import { setNormalEraVariant } from "@/lib/storage/preferences";
 import {
   isSoundMuted,
@@ -101,8 +102,8 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
   ];
 
   const club = [
-    { href: "/store", label: "Store", icon: <BagIcon /> },
     { href: "/leaderboard", label: "Leaderboard", icon: <TableIcon /> },
+    { href: "/store", label: "Store", icon: <BagIcon /> },
     { href: "/showcase", label: "Players", icon: <PlayersIcon /> },
     { href: "/profile", label: "Coach Profile", icon: <PersonIcon /> },
     { href: "/settings", label: "Settings", icon: <CogIcon /> },
@@ -153,6 +154,88 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
               className={`sidebar-nav-scroll flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto overflow-x-hidden overscroll-contain px-3 pb-4 ${open ? "fl-stagger" : ""}`}
               data-scroll-lock-allow="true"
             >
+              <section aria-labelledby="menu-play">
+                <p id="menu-play" className="mb-1.5 px-1 text-[13px] font-semibold text-[color:var(--fl-muted)]">Play</p>
+                <ul className="space-y-1">
+                  <li>
+                    <MenuLink
+                      href={buildPlayHref("classic", false)}
+                      active={isNormalCurrent}
+                      icon={<ShirtIcon />}
+                      onClick={() => {
+                        setNormalEraVariant(false);
+                        handleNavClick();
+                      }}
+                    >
+                      Classic
+                    </MenuLink>
+                  </li>
+                  <li>
+                    <MenuLink
+                      href={buildPlayHref("classic", true)}
+                      active={isNormalEra}
+                      icon={<EraIcon />}
+                      onClick={() => {
+                        setNormalEraVariant(true);
+                        handleNavClick();
+                      }}
+                      dot="bg-accent-gold"
+                    >
+                      Era Classic
+                    </MenuLink>
+                  </li>
+                  <li>
+                    <MenuLink href="/manager" active={pathname.startsWith("/manager")} icon={<TrophyIcon />} onClick={handleNavClick}>
+                      Manager Mode
+                    </MenuLink>
+                  </li>
+                </ul>
+              </section>
+
+              {/* Order follows importance: Classic, Manager, Today (Daily / Weekly), Puzzles and
+                  More modes, then the club (funds, collection, records, boards) and Settings. */}
+              {SHOW_DAILY_CHALLENGE_UI ? (
+                <section aria-labelledby="menu-today">
+                  <p id="menu-today" className="mb-1.5 px-1 text-[13px] font-semibold text-[color:var(--fl-muted)]">Today</p>
+                  <ul className="space-y-1">
+                    <li>
+                      <MenuLink href={getDailyChallengeHref()} active={isDailyActive} icon={<CalendarIcon />} onClick={handleNavClick} dot="bg-amber-400">
+                        Daily Challenge
+                      </MenuLink>
+                    </li>
+                    <li>
+                      <MenuLink href={getWeeklyChallengeHref()} active={isWeekly} icon={<CupIcon />} onClick={handleNavClick} dot="bg-accent-gold">
+                        Weekly Challenge
+                      </MenuLink>
+                    </li>
+                  </ul>
+                </section>
+              ) : null}
+
+              <section aria-labelledby="menu-puzzles">
+                <p id="menu-puzzles" className="mb-1.5 px-1 text-[13px] font-semibold text-[color:var(--fl-muted)]">
+                  <Link href="/mini-games" onClick={handleNavClick} className="hover:text-white">
+                    Puzzles
+                  </Link>
+                </p>
+                <ul className="space-y-1">
+                  {puzzles.map((item) => (
+                    <li key={item.href}>
+                      <MenuLink href={item.href} active={item.active} icon={<PuzzleIcon />} onClick={handleNavClick}>
+                        {item.label}
+                      </MenuLink>
+                    </li>
+                  ))}
+                </ul>
+                <ul className="mt-1 space-y-1">
+                  <li>
+                    <MenuLink href="/modes" active={pathname.startsWith("/modes") || isSideMode} icon={<EraIcon />} onClick={handleNavClick}>
+                      More modes
+                    </MenuLink>
+                  </li>
+                </ul>
+              </section>
+
               <section aria-label="Club Funds" className="rounded-card bg-pitch-900 p-4">
                 <div className="flex items-end justify-between gap-3">
                   <div className="min-w-0">
@@ -190,56 +273,6 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                 </details>
               </section>
 
-              <section aria-labelledby="menu-play">
-                <p id="menu-play" className="mb-1.5 px-1 text-[13px] font-semibold text-[color:var(--fl-muted)]">Play</p>
-                <ul className="space-y-1">
-                  {SHOW_DAILY_CHALLENGE_UI ? (
-                    <li>
-                      <MenuLink href={getDailyChallengeHref()} active={isDailyActive} icon={<CalendarIcon />} onClick={handleNavClick} dot="bg-amber-400">
-                        Daily Challenge
-                      </MenuLink>
-                    </li>
-                  ) : null}
-                  <li>
-                    <MenuLink
-                      href={buildPlayHref("classic", false)}
-                      active={isNormalCurrent}
-                      icon={<ShirtIcon />}
-                      onClick={() => {
-                        setNormalEraVariant(false);
-                        handleNavClick();
-                      }}
-                    >
-                      Classic
-                    </MenuLink>
-                  </li>
-                  <li>
-                    <MenuLink
-                      href={buildPlayHref("classic", true)}
-                      active={isNormalEra}
-                      icon={<EraIcon />}
-                      onClick={() => {
-                        setNormalEraVariant(true);
-                        handleNavClick();
-                      }}
-                      dot="bg-accent-gold"
-                    >
-                      Era Classic
-                    </MenuLink>
-                  </li>
-                  <li>
-                    <MenuLink href="/manager" active={pathname.startsWith("/manager")} icon={<TrophyIcon />} onClick={handleNavClick}>
-                      Manager Mode
-                    </MenuLink>
-                  </li>
-                  <li>
-                    <MenuLink href="/modes" active={pathname.startsWith("/modes") || isSideMode} icon={<EraIcon />} onClick={handleNavClick}>
-                      More modes
-                    </MenuLink>
-                  </li>
-                </ul>
-              </section>
-
               <Link
                 href="/squad-book"
                 onClick={handleNavClick}
@@ -271,23 +304,6 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                 </span>
                 <span aria-hidden className="text-[color:var(--fl-muted)]">›</span>
               </Link>
-
-              <section aria-labelledby="menu-puzzles">
-                <p id="menu-puzzles" className="mb-1.5 px-1 text-[13px] font-semibold text-[color:var(--fl-muted)]">
-                  <Link href="/mini-games" onClick={handleNavClick} className="hover:text-white">
-                    Puzzles
-                  </Link>
-                </p>
-                <ul className="space-y-1">
-                  {puzzles.map((item) => (
-                    <li key={item.href}>
-                      <MenuLink href={item.href} active={item.active} icon={<PuzzleIcon />} onClick={handleNavClick}>
-                        {item.label}
-                      </MenuLink>
-                    </li>
-                  ))}
-                </ul>
-              </section>
 
               <section aria-labelledby="menu-club">
                 <p id="menu-club" className="mb-1.5 px-1 text-[13px] font-semibold text-[color:var(--fl-muted)]">Club</p>
@@ -402,6 +418,11 @@ const TrophyIcon = () => (
 const PuzzleIcon = () => (
   <Icon>
     <TilesGlyph />
+  </Icon>
+);
+const CupIcon = () => (
+  <Icon>
+    <CupGlyph />
   </Icon>
 );
 const BagIcon = () => (

@@ -79,6 +79,8 @@ await shot(phone, "17-manager-preseason", "/manager", async (page) => {
   await page.waitForTimeout(800);
 });
 await shot(desktop, "18-desktop-manager", "/manager");
+// Home once a Manager career exists on this device (the phone context just started one).
+await shot(phone, "19-home-with-career", "/");
 // v1.18 shell: bottom nav (Home · Classic · Manager · Puzzles · Profile) stays up on Manager and
 // the puzzles; the Store opens on "For you"; login leads with the form.
 await shot(phone, "26-home-first-run", "/");
@@ -254,5 +256,52 @@ await shot(phone, "72-settings-toggle-on", "/settings", async (page) => {
   await sw.click({ timeout: 5000 });
   await page.waitForTimeout(500);
 });
+
+// Lime: Dark mode off (the whole-page pitch alternative), plus a returning player with a
+// half-built Classic run (home offers "Resume run").
+{
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+  await ctx.addInitScript(() => {
+    localStorage.setItem("27-0-dark-mode", JSON.stringify({ on: false, updatedAt: 1 }));
+  });
+  await shot(ctx, "80-lime-home", "/");
+  await shot(ctx, "81-lime-home-full", "/", null, true);
+  await shot(ctx, "82-lime-draft", "/play?e2e=1", async (page) => {
+    await tapFirst(page, [/Skip boost|Continue without boost/i]);
+    await page.waitForTimeout(800);
+  });
+  await shot(ctx, "83-lime-menu", "/", tap(/open menu/i));
+  await shot(ctx, "84-lime-leaderboard", "/leaderboard");
+  await shot(ctx, "85-lime-settings", "/settings");
+  await ctx.close();
+}
+{
+  const ctx = await browser.newContext({ viewport: { width: 375, height: 812 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+  await ctx.addInitScript(() => {
+    if (localStorage.getItem("27-0-run-resume-classic")) return;
+    localStorage.setItem("27-0-stats-schema-version", "3");
+    localStorage.setItem(
+      "27-0-stats",
+      JSON.stringify({ normal: { totalRuns: 4, totalSeasonsSimulated: 3, bestRecordWins: 24, bestRecordLosses: 3 } }),
+    );
+    const squad = Array.from({ length: 13 }, (_, i) => ({
+      slotIndex: i,
+      label: `Slot ${i + 1}`,
+      player: i < 5 ? { id: `p${i}`, name: `Player ${i}` } : null,
+    }));
+    const now = new Date().toISOString();
+    localStorage.setItem(
+      "27-0-run-resume-classic",
+      JSON.stringify({ v: 1, modeKey: "classic", seed: "shot", runId: "shot", startedAt: now, squad, spinPickIndex: 5, respinsRemaining: 3, usedTeamYearKeys: [], legendSpinSlotIndex: null, legendSpinUsed: false, pendingSpin: null, savedAt: now }),
+    );
+  });
+  await shot(ctx, "86-home-resume-375", "/");
+  await ctx.close();
+}
+{
+  const ctx = await browser.newContext({ viewport: { width: 375, height: 812 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+  await shot(ctx, "87-home-first-run-375", "/");
+  await ctx.close();
+}
 
 await browser.close();

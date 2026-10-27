@@ -373,24 +373,13 @@ export function PlayoffReview({
           ) : null}
         </motion.header>
 
+        {/* Result (above) → share / challenge a mate → rewards (Club Funds sheet) → Play again. */}
         <motion.div
           className="w-full"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <MatchReviewActions
-            compact
-            onPlayAgain={onPlayAgain}
-            onReturnHome={onReturnHome}
-            leaderboardHref={
-              dailyChallengeMode && SHOW_DAILY_CHALLENGE_UI
-                ? "/leaderboard?tracker=daily_streak"
-                : weeklyChallengeMode
-                  ? "/leaderboard?tracker=weekly"
-                  : "/leaderboard"
-            }
-            shareAction={shareAction}
-          />
+          <div className="mx-auto w-full max-w-xl">{shareAction}</div>
         </motion.div>
 
         {seed ? (
@@ -405,7 +394,20 @@ export function PlayoffReview({
           />
         ) : null}
 
-        <ClubFundsEarned payout={playoffFundsToShow} />
+        <ClubFundsEarned payout={playoffFundsToShow} delayMs={1200} />
+
+        <MatchReviewActions
+          compact
+          onPlayAgain={onPlayAgain}
+          onReturnHome={onReturnHome}
+          leaderboardHref={
+            dailyChallengeMode && SHOW_DAILY_CHALLENGE_UI
+              ? "/leaderboard?tracker=daily_streak"
+              : weeklyChallengeMode
+                ? "/leaderboard?tracker=weekly"
+                : "/leaderboard"
+          }
+        />
 
         <CollapsibleReviewSection title="Play-off Summary" delay={0.2}>
           <div className={`${MANAGER.statGrid2} mx-auto max-w-lg`}>

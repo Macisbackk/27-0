@@ -3023,7 +3023,11 @@ export function GameBoard({
               : undefined
         }
       >
-          <GuestNotice variant="play" dailyChallenge={dailyChallengeMode} />
+          {/* Daily / Weekly guests need the log-in rule before they play; Classic guests get it
+              under the pitch so the pitch sits higher. */}
+          {dailyChallengeMode || weeklyChallengeMode ? (
+            <GuestNotice variant="play" dailyChallenge={dailyChallengeMode} />
+          ) : null}
 
         <div className="mb-3 sm:mb-4">
           <RunProgress
@@ -3230,21 +3234,6 @@ export function GameBoard({
                 Auto-fill counts as today&apos;s attempt.
               </p>
             ) : null}
-            <button
-              type="button"
-              role="switch"
-              aria-checked={quickSpins}
-              onClick={toggleQuickSpins}
-              className="mt-1 rounded-full border border-white/10 bg-pitch-950 px-2.5 py-1 text-[11px] font-bold text-gray-300 transition hover:text-white"
-            >
-              Quick spins: {quickSpins ? "On" : "Off"}
-            </button>
-            {!dailyChallengeMode && difficulty !== "HARD" &&
-              (normalEraMode ? (
-                <EraRatingExplanation compact className="w-full" />
-              ) : (
-                <CurrentRatingExplanation compact className="w-full" />
-              ))}
           </div>
         )}
 
@@ -3300,6 +3289,32 @@ export function GameBoard({
               />
             </div>
           )}
+
+          {/* Secondary draft controls live under the pitch: the pitch and the Spin bar come first. */}
+          {phase === "pitch" && isSlotRecruitMode && filledCount < TOTAL_SLOTS && (
+            <div className="mt-3 flex flex-col items-center gap-2">
+              <button
+                type="button"
+                role="switch"
+                aria-checked={quickSpins}
+                onClick={toggleQuickSpins}
+                className="rounded-full border border-white/10 bg-pitch-950 px-2.5 py-1 text-[11px] font-bold text-gray-300 transition hover:text-white"
+              >
+                Quick spins: {quickSpins ? "On" : "Off"}
+              </button>
+              {!dailyChallengeMode && difficulty !== "HARD" &&
+                (normalEraMode ? (
+                  <EraRatingExplanation compact className="w-full" />
+                ) : (
+                  <CurrentRatingExplanation compact className="w-full" />
+                ))}
+            </div>
+          )}
+          {phase === "pitch" && !dailyChallengeMode && !weeklyChallengeMode ? (
+            <div className="mt-3">
+              <GuestNotice variant="play" />
+            </div>
+          ) : null}
 
           {phase === "simulation" && gauntletResult && (
             <div className={`${CARD.panel} mt-4 ${SPACING.cardPadding}`}>

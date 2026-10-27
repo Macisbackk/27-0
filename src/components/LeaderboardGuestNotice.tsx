@@ -12,7 +12,7 @@ export function LeaderboardGuestNotice() {
 
   return (
     <div
-      className={`mb-4 ${CARD.base} border-theme-primary/20 bg-theme-primary/5 ${SPACING.cardPaddingSm}`}
+      className={`mt-4 ${CARD.base} border-theme-primary/20 bg-theme-primary/5 ${SPACING.cardPaddingSm}`}
     >
       <p className={TYPO.body}>
         Log in to submit. Guests can browse.

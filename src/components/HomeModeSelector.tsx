@@ -54,6 +54,8 @@ import { useCosmetics } from "@/lib/storage/cosmetics-store";
 import { DAILY_ARCHIVE_PAGE } from "@/lib/daily-archive";
 import { MODES_PAGE } from "@/lib/play-side-modes";
 import { PitchHero } from "@/components/ui/PitchHero";
+import { loadRunResume } from "@/lib/game/run-resume";
+import { TOTAL_SLOTS } from "@/lib/positions";
 
 /** Everything on the home hub that depends on this device (filled in after mount). */
 interface HubState {
@@ -70,6 +72,8 @@ interface HubState {
   classicBest: string | null;
   eraBest: string | null;
   wordleDone: boolean;
+  /** Players signed in a half-built Classic / Era Classic run on this device (null: none). */
+  resume: { classic: number | null; era: number | null };
   /** No Classic / Era Classic run and no Manager career on this device yet. */
   firstRun: boolean;
 }
@@ -104,6 +108,10 @@ function readHub(): HubState {
       ? `${b.bestRecordWins}-${b.bestRecordLosses}`
       : null;
   const progress = getDailyChallengeProgress();
+  const signed = (key: "classic" | "era") => {
+    const snap = loadRunResume(key);
+    return snap ? snap.squad.filter((slot) => slot.player).length : null;
+  };
   return {
     greeting: greeting(new Date().getHours()),
     daily: SHOW_DAILY_CHALLENGE_UI
@@ -128,6 +136,7 @@ function readHub(): HubState {
     classicBest: rec(stats.normal),
     eraBest: rec(stats.eraNormal),
     wordleDone: getPaidRunIds().includes(`wordle_win:${getLocalDateKey()}`),
+    resume: { classic: signed("classic"), era: signed("era") },
     firstRun:
       !career &&
       stats.normal.totalRuns + stats.normal.totalSeasonsSimulated + stats.eraNormal.totalRuns + stats.eraNormal.totalSeasonsSimulated === 0,
@@ -299,6 +308,7 @@ export function HomeModeSelector() {
   const missionsLeft = missions ? missionsLeftToEarn(missions) : 0;
 
   const best = era ? (hub?.eraBest ?? null) : (hub?.classicBest ?? null);
+  const resumeSigned = (era ? hub?.resume.era : hub?.resume.classic) ?? null;
   const startClassic = (eraMode: boolean) => () => {
     setNormalEraVariant(eraMode);
     playModeClassicStart("NORMAL");
@@ -358,7 +368,7 @@ export function HomeModeSelector() {
         aria-label={firstRun ? "New here? Start with Classic" : "Classic"}
         icon={era ? <ProgrammeGlyph /> : <BallGlyph />}
         eyebrow="Classic"
-        badge={best ? `Best ${best}` : undefined}
+        badge={resumeSigned != null ? "Run in progress" : best ? `Best ${best}` : undefined}
         titleAs="p"
         title={
           firstRun ? (
@@ -405,35 +415,46 @@ export function HomeModeSelector() {
           }}
           className="pitch-cta btn-press fl-pressable"
         >
-          {firstRun ? "Start Classic" : era ? "Play Era Classic" : "Play Classic"}
+          {resumeSigned != null
+            ? `Resume run · ${resumeSigned}/${TOTAL_SLOTS}`
+            : firstRun
+              ? "Start Classic"
+              : era
+                ? "Play Era Classic"
+                : "Play Classic"}
         </Link>
       </PitchHero>
 
-      {/* Manager Mode: one slim row under the hero. */}
+      {/* Manager Mode: the second mode, a proper card straight under the Classic hero (bigger
+          than the Today tiles, still plain so Classic stays the one coloured card). */}
       <Link
         href="/manager"
         onClick={() => playUiClick()}
         aria-label={hub?.career ? `Manager Mode: resume ${hub.career.club}, ${hub.career.detail}` : "Manager Mode: start a career"}
-        className={`btn-press fl-pressable flex min-h-[60px] items-center gap-3 rounded-tile bg-pitch-900 px-3 py-2.5 text-left text-white transition hover:bg-pitch-800 ${FOCUS}`}
+        className={`btn-press fl-pressable flex min-h-[84px] items-center gap-3.5 rounded-card bg-pitch-900 px-4 py-3.5 text-left text-white transition hover:bg-pitch-800 ${FOCUS}`}
       >
         {hub?.career ? (
-          <Crest primary={hub.career.primary} secondary={hub.career.secondary} label={hub.career.short.slice(0, 3).toUpperCase()} />
+          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-control bg-white/[0.06]">
+            <Crest primary={hub.career.primary} secondary={hub.career.secondary} label={hub.career.short.slice(0, 3).toUpperCase()} />
+          </span>
         ) : (
-          <span aria-hidden className="flex h-10 w-10 shrink-0 items-center justify-center rounded-control bg-white/[0.06] text-white">
-            <Glyph size={20}>
+          <span aria-hidden className="flex h-12 w-12 shrink-0 items-center justify-center rounded-control bg-theme-primary/10 text-theme-primary">
+            <Glyph size={24}>
               <BoardGlyph />
             </Glyph>
           </span>
         )}
-        <span className="flex min-w-0 flex-1 flex-col">
-          <span className="font-cond text-[17px] font-bold leading-tight">Manager Mode</span>
+        <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+          <span className="font-cond text-[21px] font-bold leading-tight">Manager Mode</span>
           <span className="truncate text-[13px] text-[color:var(--fl-muted)]">
-            {hub?.career ? `${hub.career.club} · ${hub.career.detail.split(" · ")[0]}` : "Start a career"}
+            {hub?.career ? `${hub.career.club} · ${hub.career.detail.split(" · ")[0]}` : "Run a club. Climb the leagues."}
           </span>
         </span>
-        <span className="inline-flex shrink-0 items-center gap-0.5 font-cond text-[15px] font-bold text-white">
+        <span
+          aria-hidden
+          className="flex h-10 shrink-0 items-center rounded-full bg-white px-4 font-cond text-[16px] font-bold text-[#0a0f0d]"
+        >
           {hub?.career ? "Resume" : "Start"}
-          <span aria-hidden className="text-[18px] leading-none text-[color:var(--fl-muted)]">›</span>
         </span>
       </Link>
 

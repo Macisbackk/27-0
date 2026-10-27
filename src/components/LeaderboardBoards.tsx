@@ -9,7 +9,7 @@ import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 
 type Board = "classic" | "daily" | "weekly" | "manager";
 
-/** The boards: Classic, Daily, Weekly and Manager Mode. */
+/** The boards: Classic, Manager Mode, Daily and Weekly. */
 export function LeaderboardBoards() {
   const [board, setBoard] = useState<Board>("classic");
   // Links like /leaderboard?tracker=daily open on that tab (read after mount, so the
@@ -35,13 +35,14 @@ export function LeaderboardBoards() {
   };
   const tabs = [
     { id: "classic" as const, label: "Classic", accent: "green" as const },
+    // Same order as the game: Classic, then Manager Mode, then the Daily / Weekly.
+    { id: "manager" as const, label: "Manager", accent: "gold" as const },
     ...(SHOW_DAILY_CHALLENGE_UI
       ? [
           { id: "daily" as const, label: "Daily", accent: "amber" as const },
           { id: "weekly" as const, label: "Weekly", accent: "gold" as const },
         ]
       : []),
-    { id: "manager" as const, label: "Manager", accent: "gold" as const },
   ];
   return (
     <div>

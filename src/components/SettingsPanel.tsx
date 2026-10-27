@@ -194,9 +194,20 @@ export function SettingsPanel() {
         }
       />
 
-      <InstallAppCard />
-
       <Group title="Game">
+        <Row label="Dark mode" hint="Black page, only the main card in your theme colour.">
+          {ready ? (
+            <Switch
+              on={darkMode}
+              label="Dark mode"
+              onToggle={() => {
+                playUiClick();
+                setDarkMode(!darkMode);
+                setDarkModeOn(!darkMode);
+              }}
+            />
+          ) : null}
+        </Row>
         <Row label="Sound" hint="Match sounds, spins and menus.">
           {ready ? (
             <Switch
@@ -223,6 +234,7 @@ export function SettingsPanel() {
             />
           ) : null}
         </Row>
+        <LinkRow href="/store" label="Theme" hint={`${themeName} · change in the Store`} />
         <Row label="Show first" hint="Default for stats and boards.">
           {ready ? (
             <Segmented
@@ -240,21 +252,9 @@ export function SettingsPanel() {
             />
           ) : null}
         </Row>
-        <LinkRow href="/store" label="Theme" hint={`${themeName} · change in the Store`} />
-        <Row label="Dark mode" hint="Black page, only the main card in your theme colour.">
-          {ready ? (
-            <Switch
-              on={darkMode}
-              label="Dark mode"
-              onToggle={() => {
-                playUiClick();
-                setDarkMode(!darkMode);
-                setDarkModeOn(!darkMode);
-              }}
-            />
-          ) : null}
-        </Row>
       </Group>
+
+      <InstallAppCard />
 
       <Group title="Account">
         {loading ? (
