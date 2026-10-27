@@ -3,6 +3,9 @@
  * Keys and values use normalizePlayerNameKey() form (lowercase, no accents).
  */
 export const PLAYER_NAME_ALIASES: Record<string, string> = {
+  "andrew farrell": "andy farrell",
+  "matty ashurst": "mat ashurst",
+  "robert butler": "rob butler",
   "robbie hunter paul": "robbie hunterpaul",
   "robbie hunterpaul": "robbie hunter paul",
   "robbie paul": "robbie hunterpaul",

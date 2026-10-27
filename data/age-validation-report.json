@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-10-22T18:54:44.607Z",
+  "generatedAt": "2026-10-27T18:12:34.791Z",
   "summary": {
-    "totalPlayers": 3348,
-    "withBirthData": 3340,
-    "withoutBirthData": 8,
+    "totalPlayers": 6825,
+    "withBirthData": 6816,
+    "withoutBirthData": 9,
     "errors": 0,
     "warnings": 0,
-    "informational": 8
+    "informational": 9
   },
   "issues": [
     {
@@ -26,6 +26,13 @@
     {
       "playerId": "castleford-hist-james-grehan",
       "name": "James Grehan",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "psg-hist-david-frayssinous",
+      "name": "David Frayssinous",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"

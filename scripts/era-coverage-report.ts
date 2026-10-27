@@ -24,6 +24,7 @@ import {
 } from "../src/lib/game/player-pool-eligibility";
 import { isPlayableTeamYearRoster } from "../src/lib/players/team-year-roster-playable";
 import { isSuperLeagueEligiblePlayer } from "../src/lib/players/super-league-eligibility";
+import { expandNameLookupKeys } from "../src/lib/players/player-name-resolve";
 import type { Player } from "../src/lib/types";
 
 const ROOT = path.resolve(import.meta.dirname ?? __dirname, "..");
@@ -65,7 +66,10 @@ export function superLeagueSeasons(): Array<{ club: string; year: number }> {
 
 const norm = (s: string) =>
   s.normalize("NFKD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z]/g, "");
-const NAME_ALIAS: Record<string, string> = { andrewfarrell: "andyfarrell", garyconnolly: "garryconnolly", robbiepaul: "robbiehunterpaul", tommymakinson: "thomasmakinson" };
+const NAME_ALIAS: Record<string, string> = {
+  andrewfarrell: "andyfarrell", garyconnolly: "garryconnolly", robbiepaul: "robbiehunterpaul",
+  tommymakinson: "thomasmakinson", matthewdaylight: "mattdaylight", nenemcdonald: "nenemacdonald",
+};
 const nk = (s: string) => NAME_ALIAS[norm(s)] ?? norm(s);
 
 const cardYear = (p: Player) => p.year ?? p.cardYear;
@@ -121,8 +125,11 @@ export function buildCoverage(): CoverageRow[] {
     const full13 = isPlayableTeamYearRoster(club, String(year), ids, (id) => byId.get(id));
     const pool = pools.get(k);
     const spinOwn = pool ? pool.filter((id) => cardYear(byId.get(id) ?? ({} as Player)) === year).length : null;
-    const names = new Set(cards.map((p) => nk(p.name)));
-    const notables = (notablesFor.get(k) ?? []).map((n) => ({ ...n, card: names.has(nk(n.name)) }));
+    const names = new Set(cards.flatMap((p) => [nk(p.name), ...expandNameLookupKeys(p.name)]));
+    const notables = (notablesFor.get(k) ?? []).map((n) => ({
+      ...n,
+      card: names.has(nk(n.name)) || expandNameLookupKeys(n.name).some((key) => names.has(key)),
+    }));
     return {
       club,
       year,

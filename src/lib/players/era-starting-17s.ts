@@ -113,8 +113,11 @@ function resolveMemberPosition(
   year: string,
   excludeIds?: Set<string>
 ): Position | null {
-  const mapped = STARTING_17_POSITION_MAP[member.position.trim().toUpperCase()];
+  const code = member.position.trim().toUpperCase();
+  const mapped = STARTING_17_POSITION_MAP[code];
   if (mapped) return mapped;
+  // Some lists spell the position out (e.g. Sheffield Eagles 1998: "FULLBACK").
+  if ((Object.values(STARTING_17_POSITION_MAP) as string[]).includes(code)) return code as Position;
   if (member.position.trim().toUpperCase() === "B") {
     const player = resolveEraSquadPlayer(member.name, club, year, excludeIds);
     if (!player) return null;
