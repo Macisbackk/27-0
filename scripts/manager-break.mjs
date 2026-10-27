@@ -32,9 +32,9 @@ page.on("console", (m) => {
 });
 
 let shotN = 0;
-const shot = async (name) => {
+const shot = async (name, fullPage = false) => {
   shotN++;
-  await page.screenshot({ path: `${OUT}/mb-${String(shotN).padStart(2, "0")}-${name}.png`, fullPage: false }).catch(() => {});
+  await page.screenshot({ path: `${OUT}/mb-${String(shotN).padStart(2, "0")}-${name}.png`, fullPage }).catch(() => {});
 };
 const save = () => page.evaluate((k) => JSON.parse(localStorage.getItem(k) || "null"), SAVE_KEY);
 async function noSideways(where) {
@@ -166,6 +166,24 @@ try {
   await shot("team-contracts");
   await page.getByRole("tab", { name: "Match" }).click();
   step("Hub tabs fit 320px; contracts on the Team tab");
+  await shot("hub-round1", true);
+  // v1.29: one Quick sim, then the result strip and "Sim to…" (the next decision).
+  for (let i = 0; i < 20 && !(await btn("Quick sim").isEnabled().catch(() => false)); i++) await page.waitForTimeout(100);
+  await btn("Quick sim").click();
+  await page.getByRole("region", { name: "Last result" }).waitFor({ timeout }).catch(() => fail("no Last result strip after a Quick sim"));
+  await page.waitForTimeout(500);
+  await shot("hub-result", true);
+  const simTo = page.getByRole("button", { name: /^Sim to / }).first();
+  if (await visible(simTo)) {
+    const md0 = (await save()).matchdayIndex;
+    await page.waitForTimeout(500);
+    await simTo.click();
+    await page.waitForTimeout(800);
+    const md1 = (await save()).matchdayIndex;
+    if (md1 <= md0 + 1) fail(`Sim to… only moved ${md1 - md0} week(s)`);
+    await shot("hub-after-sim-to", true);
+    step(`Sim to… played ${md1 - md0} weeks and stopped`);
+  } else fail("no Sim to… button on a league week");
 
   // Season: walk every stage, reloading and double-tapping at each one.
   const seen = new Set();
@@ -242,6 +260,7 @@ try {
   await page.getByText(/season review/i).first().waitFor({ timeout: 30000 });
   await reloadAndCheck("Season review");
   await shot("review");
+  await shot("review-full", true);
   step(`Season played through every stage (${[...seen].join(", ")}) with reloads and double taps`);
 
   // Departures.
@@ -250,6 +269,7 @@ try {
   await noSideways("Departures");
   await reloadAndCheck("Departures");
   await shot("departures");
+  await shot("departures-full", true);
   const s0 = await save();
   const expiring = s0.departures?.expiring ?? [];
   if (expiring.length) {
