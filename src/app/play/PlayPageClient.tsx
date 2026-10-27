@@ -18,7 +18,7 @@ import {
 import { getPlayPageTitle } from "@/lib/mode-labels";
 import { isNormalEraMode } from "@/lib/play-links";
 import type { GameDifficulty, GameMode } from "@/lib/types";
-import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
+import { SHOW_DAILY_CHALLENGE_UI, SHOW_WEEKLY_CHALLENGE_UI } from "@/lib/feature-flags";
 import { challengeBannerText, decodeChallenge } from "@/lib/challenge-link";
 import { getChallengeEraMode, getChallengeGate } from "@/lib/challenge-run";
 import { ChallengeLinkNotice } from "@/components/ChallengeLinkNotice";
@@ -72,7 +72,7 @@ export function PlayPageClient() {
   const dailyScenario = isDaily ? getDailyChallengeScenario() : null;
   // The Daily wins if both flags are set (GameStarter does the same).
   const isWeekly =
-    SHOW_DAILY_CHALLENGE_UI && !isDaily && !hasChallengeParam && isWeeklyChallengeActive({ weekly });
+    SHOW_DAILY_CHALLENGE_UI && SHOW_WEEKLY_CHALLENGE_UI && !isDaily && !hasChallengeParam && isWeeklyChallengeActive({ weekly });
   const weeklyScenario = isWeekly ? getWeeklyChallengeScenario() : null;
 
   // v1.19 side modes (entries on /modes). Never combined with the Daily / Weekly / hidden modes.
@@ -108,7 +108,8 @@ export function PlayPageClient() {
         return;
       }
     }
-    if (!SHOW_DAILY_CHALLENGE_UI && (daily === "1" || weekly === "1")) {
+    if ((!SHOW_DAILY_CHALLENGE_UI && (daily === "1" || weekly === "1")) || (!SHOW_WEEKLY_CHALLENGE_UI && weekly === "1")) {
+      // The Weekly is switched off: /play?weekly=1 is plain Classic.
       router.replace("/play");
       return;
     }
@@ -209,7 +210,8 @@ export function PlayPageClient() {
   }
 
   if (hasChallengeParam) {
-    if (!challenge) return <ChallengeLinkNotice reason="invalid" />;
+    // Weekly links are invalid while the Weekly is switched off.
+    if (!challenge || (!SHOW_WEEKLY_CHALLENGE_UI && challenge.kind === "weekly")) return <ChallengeLinkNotice reason="invalid" />;
     const gate = getChallengeGate(challenge);
     if (gate !== "ok") return <ChallengeLinkNotice reason={gate} challenge={challenge} />;
     return (

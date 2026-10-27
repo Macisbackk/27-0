@@ -64,23 +64,6 @@ export function CareerStart({ onOpenVault, onOpenRecords }: { onOpenVault: () =>
         </Card>
       ) : null}
 
-      <label className="block rounded-tile bg-pitch-900 px-3 py-2.5">
-        <span className="block text-xs font-semibold text-gray-300">Manager name</span>
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value.slice(0, 24))}
-          placeholder="Your name"
-          maxLength={24}
-          autoComplete="nickname"
-          enterKeyHint="done"
-          spellCheck={false}
-          className="mt-1 w-full rounded-lg border border-pitch-600 bg-pitch-950 px-3 py-2.5 text-white placeholder:text-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-theme-primary"
-        />
-        <span className="mt-1 block text-[11px] text-gray-500">
-          Shown on your Manager records. Blank means &ldquo;Coach&rdquo;.
-        </span>
-      </label>
-
       <GameSegmentedControl<Division>
         options={[
           { id: "super-league", label: "Super League", shortLabel: "Super League" },
@@ -131,6 +114,24 @@ export function CareerStart({ onOpenVault, onOpenRecords }: { onOpenVault: () =>
           );
         })}
       </ul>
+
+      {/* The name is optional: it sits under the clubs so picking a club comes first. */}
+      <label className="block rounded-tile bg-pitch-900 px-3 py-2.5">
+        <span className="block text-xs font-semibold text-gray-300">Manager name</span>
+        <input
+          value={name}
+          onChange={(e) => setName(e.target.value.slice(0, 24))}
+          placeholder="Your name"
+          maxLength={24}
+          autoComplete="nickname"
+          enterKeyHint="done"
+          spellCheck={false}
+          className="mt-1 w-full rounded-lg border border-pitch-600 bg-pitch-950 px-3 py-2.5 text-white placeholder:text-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-theme-primary"
+        />
+        <span className="mt-1 block text-[11px] text-gray-500">
+          Shown on your Manager records. Blank means &ldquo;Coach&rdquo;.
+        </span>
+      </label>
 
       <div className="mobile-action-bar sm:static sm:mt-2 sm:border-0 sm:bg-transparent sm:p-0" role="toolbar">
         <div className="mobile-action-bar__inner flex flex-col gap-2 sm:flex-row sm:items-end">

@@ -9,7 +9,7 @@ import { LadderGlyph } from "@/components/icons/rugby-icons";
 
 export const metadata: Metadata = {
   title: "Leaderboard — 27-0",
-  description: "Classic, Daily, Weekly and Manager Mode rankings.",
+  description: "Classic, Manager Mode and Daily rankings.",
 };
 
 export default async function LeaderboardPage() {
@@ -20,11 +20,12 @@ export default async function LeaderboardPage() {
           <PitchHero
             eyebrow="Rankings"
             title="Leaderboard"
-            description="Classic, Daily, Weekly and Manager Mode."
+            description="Classic, Manager Mode and the Daily."
             icon={<LadderGlyph />}
           />
-          <LeaderboardGuestNotice />
           <LeaderboardBoards />
+          {/* Boards first; the guest log-in nudge sits under them. */}
+          <LeaderboardGuestNotice />
         </div>
       </PageShellBody>
     </StandardPageShell>

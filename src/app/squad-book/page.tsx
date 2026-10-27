@@ -47,7 +47,7 @@ function Section({ title, intro, children }: { title: string; intro?: string; ch
   return (
     <section className="rounded-card bg-pitch-900 p-4 text-left">
       <h2 className="text-[17px] font-bold text-white">{title}</h2>
-      {intro ? <p className="mt-1 text-sm text-[color:var(--fl-muted)]">{intro}</p> : null}
+      {intro ? <p className="mt-1 text-center text-sm text-[color:var(--fl-muted)] sm:text-left">{intro}</p> : null}
       <div className="mt-3">{children}</div>
     </section>
   );
@@ -145,7 +145,7 @@ export default function SquadBookPage() {
       <div className={PAGE.section}>
         <header className="space-y-3">
           <PitchHero eyebrow="Collection" title="Squad Book" icon={<AlbumGlyph />} />
-          <p className="text-left text-sm text-[color:var(--fl-muted)] px-1">
+          <p className={PAGE.intro}>
             Every player you field in a finished season goes in the book.
           </p>
         </header>

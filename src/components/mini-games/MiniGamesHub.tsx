@@ -82,7 +82,7 @@ export function MiniGamesHub() {
           title="Puzzles"
           icon={<TilesGlyph />}
         />
-        <p className="mt-3 px-1 text-left text-sm text-[color:var(--fl-muted)]">Daily puzzles that pay Club Funds.</p>
+        <p className={`mt-3 ${PAGE.intro}`}>Daily puzzles that pay Club Funds.</p>
 
         <ul className="fl-stagger mt-5 grid w-full gap-3 sm:grid-cols-3">
           {GAMES.map((game) => {

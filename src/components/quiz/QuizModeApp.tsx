@@ -290,7 +290,7 @@ function QuizLanding({ onStart }: { onStart: () => void }) {
           Start quiz
         </GameButton>
       </PitchHero>
-      <p className={`mt-3 px-1 text-left ${TYPO.bodySm}`} data-testid="quiz-day-reward">
+      <p className={`mt-3 px-1 text-center sm:text-left ${TYPO.bodySm}`} data-testid="quiz-day-reward">
         {ledger === null || ledger.runs === 0
           ? `Your first run today pays in full. Later runs pay ${repeatPct}%.`
           : capReached

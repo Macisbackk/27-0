@@ -511,23 +511,20 @@ export function SeasonReview({
               </motion.div>
             ) : null}
 
-            <ClubFundsEarned payout={clubFundsPayout} />
+            <ClubFundsEarned payout={clubFundsPayout} delayMs={1200} />
 
+            {/* After a run, in the order that brings players back: the result (above), share /
+                challenge a mate, the rewards (Club Funds sheet, new Squad Book cards, awards),
+                then Play again (also pinned to the bottom on phones). */}
             {!showPlayoffPrompt ? (
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+              <motion.div className="w-full" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
                 {showDailyPresentation ? (
                   <p className="mb-2 text-center text-sm text-[color:var(--fl-muted)]">
                     {dailyStreakNow > 0 ? `🔥 ${dailyStreakNow}-day streak` : "No streak yet"}
                     {nextDailyIn ? ` · Next Daily in ${nextDailyIn}` : ""}
                   </p>
                 ) : null}
-                <MatchReviewActions
-                  compact
-                  onPlayAgain={handlePlayAgain}
-                  onReturnHome={onReturnHome}
-                  leaderboardHref={showDailyPresentation ? "/leaderboard?tracker=daily_streak" : weeklyChallengeMode ? "/leaderboard?tracker=weekly" : "/leaderboard"}
-                  shareAction={shareAction}
-                />
+                <div className="mx-auto w-full max-w-xl">{shareAction}</div>
               </motion.div>
             ) : null}
 
@@ -591,6 +588,17 @@ export function SeasonReview({
                   </ul>
                 ) : null}
               </motion.section>
+            ) : null}
+
+            {!showPlayoffPrompt ? (
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.32 }}>
+                <MatchReviewActions
+                  compact
+                  onPlayAgain={handlePlayAgain}
+                  onReturnHome={onReturnHome}
+                  leaderboardHref={showDailyPresentation ? "/leaderboard?tracker=daily_streak" : weeklyChallengeMode ? "/leaderboard?tracker=weekly" : "/leaderboard"}
+                />
+              </motion.div>
             ) : null}
 
             <CollapsibleReviewSection title="Season Summary" delay={0.32}>

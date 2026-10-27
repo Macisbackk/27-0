@@ -68,7 +68,7 @@ export default function PastDailiesPage() {
             title="Past Dailies"
             icon={<FixtureGlyph />}
           />
-          <p className="text-left text-sm text-[color:var(--fl-muted)] px-1">
+          <p className={PAGE.intro}>
             The last {DAILY_ARCHIVE_DAYS} days, same rule and spins.
             <br />
             Practice only: no streak, board or Club Funds.

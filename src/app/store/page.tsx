@@ -12,7 +12,7 @@ export default function StorePage() {
       <div className={PAGE.section}>
         <header className="space-y-3">
           <PitchHero eyebrow="Club Funds" title="Store" icon={<ShopGlyph />} />
-          <p className="text-left text-sm text-[color:var(--fl-muted)] px-1">
+          <p className={PAGE.intro}>
             Spend Club Funds on themes, kits and more.
           </p>
         </header>

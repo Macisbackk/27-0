@@ -5,11 +5,11 @@ import { LeaderboardTable } from "./LeaderboardTable";
 import { LeaderboardTabBar } from "./LeaderboardTabBar";
 import { WeeklyLeaderboard } from "./WeeklyLeaderboard";
 import { CareerLeaderboard } from "./career/CareerLeaderboard";
-import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
+import { SHOW_DAILY_CHALLENGE_UI, SHOW_WEEKLY_CHALLENGE_UI } from "@/lib/feature-flags";
 
 type Board = "classic" | "daily" | "weekly" | "manager";
 
-/** The boards: Classic, Daily, Weekly and Manager Mode. */
+/** The boards: Classic, Manager Mode, Daily (and the Weekly when it is switched on). */
 export function LeaderboardBoards() {
   const [board, setBoard] = useState<Board>("classic");
   // Links like /leaderboard?tracker=daily open on that tab (read after mount, so the
@@ -17,7 +17,8 @@ export function LeaderboardBoards() {
   useEffect(() => {
     const tracker = new URLSearchParams(window.location.search).get("tracker");
     if (SHOW_DAILY_CHALLENGE_UI && (tracker === "daily_streak" || tracker === "daily")) setBoard("daily");
-    if (SHOW_DAILY_CHALLENGE_UI && tracker === "weekly") setBoard("weekly");
+    // ?tracker=weekly falls back to the default (Classic) while the Weekly is switched off.
+    if (SHOW_DAILY_CHALLENGE_UI && SHOW_WEEKLY_CHALLENGE_UI && tracker === "weekly") setBoard("weekly");
     if (tracker === "manager") setBoard("manager");
   }, []);
   // Keep the tab in the URL so Back and shared links land on the same board.
@@ -35,13 +36,14 @@ export function LeaderboardBoards() {
   };
   const tabs = [
     { id: "classic" as const, label: "Classic", accent: "green" as const },
+    // Same order as the game: Classic, then Manager Mode, then the Daily / Weekly.
+    { id: "manager" as const, label: "Manager", accent: "gold" as const },
     ...(SHOW_DAILY_CHALLENGE_UI
       ? [
           { id: "daily" as const, label: "Daily", accent: "amber" as const },
-          { id: "weekly" as const, label: "Weekly", accent: "gold" as const },
+          ...(SHOW_WEEKLY_CHALLENGE_UI ? [{ id: "weekly" as const, label: "Weekly", accent: "gold" as const }] : []),
         ]
       : []),
-    { id: "manager" as const, label: "Manager", accent: "gold" as const },
   ];
   return (
     <div>

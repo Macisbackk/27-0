@@ -13,6 +13,8 @@ import { useSheetSlot } from "@/lib/ui/popup-queue";
 interface ClubFundsEarnedProps {
   payout: ClubFundsPayoutResult | null | undefined;
   title?: string;
+  /** Wait this long before the sheet rises, so the result itself is seen first. */
+  delayMs?: number;
 }
 
 /**
@@ -23,14 +25,22 @@ interface ClubFundsEarnedProps {
 export function ClubFundsEarned({
   payout,
   title = "Club Funds Earned",
+  delayMs = 0,
 }: ClubFundsEarnedProps) {
   const hasLines = Boolean(payout?.lines.length);
-  const [open, setOpen] = useState(hasLines);
+  const [open, setOpen] = useState(hasLines && delayMs <= 0);
 
-  // Funds are often awarded in a parent effect after review mounts.
+  // Funds are often awarded in a parent effect after review mounts. On the run reviews the
+  // sheet waits a beat (delayMs) so the grade / finish lands before the reward covers it.
   useEffect(() => {
-    if (hasLines) setOpen(true);
-  }, [hasLines, payout?.runId, payout?.total]);
+    if (!hasLines) return;
+    if (delayMs <= 0) {
+      setOpen(true);
+      return;
+    }
+    const t = window.setTimeout(() => setOpen(true), delayMs);
+    return () => window.clearTimeout(t);
+  }, [hasLines, payout?.runId, payout?.total, delayMs]);
 
   const granted = useSheetSlot(Boolean(payout && hasLines && open));
 
