@@ -23,7 +23,7 @@ interface GauntletRunProps {
 const STEP_MS = 900;
 
 function verdict(beaten: number): string {
-  if (beaten >= GAUNTLET_LENGTH) return "Clean sweep. Ten great sides, ten wins.";
+  if (beaten >= GAUNTLET_LENGTH) return `Clean sweep. ${GAUNTLET_LENGTH} great sides, ${GAUNTLET_LENGTH} wins.`;
   if (beaten >= 8) return "So close to immortality.";
   if (beaten >= 5) return "A proper run through the greats.";
   if (beaten >= 2) return "A couple of scalps, then the wall.";
@@ -51,7 +51,7 @@ export function GauntletRun({ result, era, record, newBest, onPlayAgain }: Gaunt
       <div className="text-center">
         <p className={`${TYPO.eyebrow} text-accent-gold`}>Gauntlet · {era ? "Era Classic" : "Classic"} draft</p>
         <h2 id="gauntlet-title" className="font-cond text-[26px] font-bold leading-tight text-white">
-          {done ? `${result.beaten} of ${GAUNTLET_LENGTH} great sides beaten` : "Ten great sides. Lose once and you're out."}
+          {done ? `${result.beaten} of ${GAUNTLET_LENGTH} great sides beaten` : `${GAUNTLET_LENGTH} great sides. Lose once and you're out.`}
         </h2>
       </div>
 
@@ -115,7 +115,7 @@ export function GauntletRun({ result, era, record, newBest, onPlayAgain }: Gaunt
               {record.sweeps > 0 ? ` · Clean sweeps: ${record.sweeps}` : ""} · Runs: {record.runs}
             </p>
           ) : null}
-          <p className={TYPO.meta}>Gauntlet runs aren&apos;t ranked and don&apos;t earn Club Funds.</p>
+          <p className={TYPO.meta}>Unranked. No Club Funds.</p>
           <div className="flex flex-col gap-2 sm:flex-row">
             <GameButton variant="theme" size="md" onClick={() => { playUiClick(); onPlayAgain(); }}>
               Draft again

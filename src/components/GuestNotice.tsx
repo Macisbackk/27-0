@@ -56,7 +56,7 @@ export function GuestNotice({
     return (
       <div className={`mb-3 text-center ${SPACING.stackSm}`}>
         <p className={TYPO.meta}>
-          Your first finished run this week counts. Log in any time before Sunday midnight to post it on the board.
+          Your first run this week counts. Log in by Sunday midnight to post it.
         </p>
         <Link
           href={loginHref(pathname, false, true)}
@@ -79,8 +79,8 @@ export function GuestNotice({
           className="inline-block text-sm font-semibold text-theme-primary hover:underline"
         >
           {isDaily
-            ? "Log in to sync your Daily streak and bank a £100k welcome bonus →"
-            : "Log in to put your run on the leaderboard and bank a £100k welcome bonus →"}
+            ? "Log in to save your streak and get £100k →"
+            : "Log in to rank your run and get £100k →"}
         </Link>
       </div>
     );

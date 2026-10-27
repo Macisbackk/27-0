@@ -26,8 +26,7 @@ export class CareerErrorBoundary extends Component<{ children: ReactNode }, { er
       <div className="mx-auto flex max-w-md flex-col items-center gap-4 py-16 text-center">
         <h1 className="font-display text-2xl font-bold text-white">Your career hit a problem</h1>
         <p className="text-sm text-gray-300">
-          Something in this save couldn&apos;t be loaded. Try again, or start a fresh career. Your Legacy points, unlocked legends
-          and records are kept either way.
+          This save couldn&apos;t load. Try again or start fresh. You keep Legacy points, legends and records.
         </p>
         <div className="grid w-full grid-cols-2 gap-2">
           <GameButton variant="secondary" onClick={() => this.setState({ error: null })}>

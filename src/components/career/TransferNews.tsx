@@ -84,7 +84,7 @@ export function DeadlineClockFace({ compact = false }: { compact?: boolean }) {
       </p>
       <div className={compact ? "min-w-0 flex-1" : "mt-1"}>
         <p className="text-xs font-semibold uppercase tracking-wide text-[color:var(--fl-muted)]">
-          {left === 0 ? "Window shut" : clock.paused ? "Clock paused" : late ? "Final hour" : "to go until the window shuts"}
+          {left === 0 ? "Window shut" : clock.paused ? "Clock paused" : late ? "Final hour" : "until the window shuts"}
         </p>
         <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-white/10" aria-hidden>
           <div className={`h-full rounded-full transition-[width] duration-1000 ease-linear ${late ? "bg-danger" : "bg-amber-300"}`} style={{ width: `${pct}%` }} />
@@ -223,7 +223,7 @@ export function DeadlineDayCard({ onOpenMarket }: { onOpenMarket: () => void }) 
           </div>
           <DeadlineFeed />
           <p className="mt-3 text-sm text-amber-200">
-            The season waits until the clock hits 0:00. Sign, sell, answer offers, or shut the window early.
+            The season waits for 0:00. Buy, sell, or shut the window early.
           </p>
           <div className="mt-2 grid grid-cols-2 gap-2">
             <GameButton size="md" variant="secondary" onClick={() => { playUiClick(); onOpenMarket(); }}>
@@ -256,8 +256,8 @@ export function TransferWindowCard({ onOpenMarket }: { onOpenMarket: () => void 
     <section aria-label="Deadline Day coming" className="flex items-center gap-3 rounded-card bg-pitch-900 p-4">
       <span className="fl-number shrink-0 text-[26px] leading-none text-amber-300">{until}</span>
       <p className="min-w-0 text-left text-sm text-[color:var(--fl-muted)]">
-        <span className="font-semibold text-white">{until === 1 ? "Round" : "Rounds"} until Deadline Day.</span> It&rsquo;s the only day in the
-        season to buy and sell, before Round {WINDOW_CLOSES_BEFORE_ROUND}.
+        <span className="font-semibold text-white">{until === 1 ? "Round" : "Rounds"} until Deadline Day.</span> Your only chance to
+        buy and sell this season.
       </p>
     </section>
   );
@@ -278,7 +278,7 @@ export function IncomingBidCard() {
         <ClubLink clubId={club.id} className="font-bold">{club.name}</ClubLink> want <span className="font-bold">{p.name}</span> ({p.pos}, {p.rating}) and offer{" "}
         <span className="font-bold text-theme-primary">{formatMoney(bid.fee)}</span>.
       </p>
-      <p className="mt-1 text-xs text-[color:var(--fl-muted)]">The offer lapses when the window shuts.</p>
+      <p className="mt-1 text-xs text-[color:var(--fl-muted)]">Ends when the window shuts.</p>
       <div className="mt-3 grid grid-cols-2 gap-2">
         <GameButton size="sm" variant="secondary" onClick={() => { playUiClick(); rejectBid(); }}>
           Turn it down
@@ -303,7 +303,7 @@ export function TransferRoundUp() {
         <p className="mt-1 text-sm text-[color:var(--fl-muted)]">
           {roundsUntilDeadline(s) === null && !isDeadlineDay(s)
             ? "No deals this season."
-            : `No deals yet. In-season transfers all happen on Deadline Day, before Round ${WINDOW_CLOSES_BEFORE_ROUND}.`}
+            : `No deals yet. Trade on Deadline Day, before Round ${WINDOW_CLOSES_BEFORE_ROUND}.`}
         </p>
       ) : (
         <ul className="mt-1 divide-y divide-[color:var(--fl-line)]">

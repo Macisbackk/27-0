@@ -92,7 +92,7 @@ export function DailyPickRarityPanel({ squad, rarity }: { squad: readonly SquadS
       <h2 id="pick-rarity-title" className={`${TYPO.eyebrow} text-accent-gold`}>
         Pick rarity
       </h2>
-      <p className="mt-0.5 text-xs text-[color:var(--fl-muted)]">How many Daily coaches put the same player in the same slot today.</p>
+      <p className="mt-0.5 text-xs text-[color:var(--fl-muted)]">How many Daily coaches picked the same player today.</p>
       <ul className="mt-2 divide-y divide-white/[0.06]">
         {rows.map((s) => {
           const r = rarity.get(s.slotIndex);
@@ -171,7 +171,7 @@ export function ChallengeMatePanel({
         Challenge a mate
       </h2>
       <p className="mt-0.5 text-xs text-[color:var(--fl-muted)]">
-        They get the same spins and see both squads at the end. Unranked, no account needed.
+        They get your spins. Compare squads at the end.
       </p>
       <label className="mt-2 block text-xs font-semibold text-[color:var(--fl-muted)]" htmlFor="challenge-name">
         Your name on the link
@@ -285,7 +285,7 @@ export function ChallengeComparison({
           })}
         </tbody>
       </table>
-      <p className="mt-2 text-xs text-[color:var(--fl-muted)]">Challenge runs are unranked: no leaderboard, Club Funds, missions or Daily/Weekly attempt.</p>
+      <p className="mt-2 text-xs text-[color:var(--fl-muted)]">Unranked. It doesn&apos;t use your Daily or Weekly run.</p>
     </section>
   );
 }

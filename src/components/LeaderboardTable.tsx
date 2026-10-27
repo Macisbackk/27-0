@@ -407,15 +407,15 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
           : "No entries yet";
   const emptyStateMessage = isDailyMode
     ? dailyView === "today"
-      ? `Play today's Daily: every win scores 10, top the table +50, play-off wins 15 and the Grand Final +100 (max ${DAILY_MAX_SCORE}).`
-      : "Finish the Daily on back-to-back days to build a streak."
+      ? `Play today's Daily to score (max ${DAILY_MAX_SCORE}).`
+      : "Finish the Daily on back-to-back days."
     : isQuizPrizeBoard
-      ? "No prizes banked yet. Play the Golden Point Quiz to climb the board."
+      ? "Play the Golden Point Quiz to get on the board."
       : isMiniGamesMode
-      ? `No ${activeMiniGamesCategory.label.toLowerCase()} yet. Win a game to climb the board.`
+      ? "Win a puzzle to get on the board."
       : period === "ALL_TIME"
         ? "Finish a Classic season to get on the board."
-        : "Finish a Classic season this week to get on the board.";
+        : "Finish a Classic season this week.";
 
   const showUpdatedColumn =
     !isDailyMode && !isTrophyCabinetMode && !isMiniGamesMode;
@@ -599,7 +599,7 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
 
           {showPeriodFilters ? (
             <p className={`text-center ${TYPO.meta}`}>
-              This week and this month list coaches who played in that period.
+              Week and month show coaches who played in that time.
             </p>
           ) : null}
         </div>

@@ -106,8 +106,8 @@ export function WeeklyLeaderboard() {
       </div>
       <p className={`text-center ${TYPO.bodySm}`}>
         {view === "this"
-          ? `${week ? `${week.title} · one ranked attempt each · resets in ${week.resetsIn}. ` : ""}Top 10 when the week ends earn ${formatClubFunds(WEEKLY_TOP10_REWARD)}.`
-          : `${week ? `${week.title} · final standings. ` : ""}The top 10 earned ${formatClubFunds(WEEKLY_TOP10_REWARD)} each.`}
+          ? `${week ? `${week.title} · resets in ${week.resetsIn}. ` : ""}Top 10 earn ${formatClubFunds(WEEKLY_TOP10_REWARD)}.`
+          : `${week ? `${week.title} · final. ` : ""}Top 10 earned ${formatClubFunds(WEEKLY_TOP10_REWARD)}.`}
       </p>
       <GamePanel variant="elevated" className="overflow-hidden p-0">
         {rows === null ? (
@@ -119,8 +119,8 @@ export function WeeklyLeaderboard() {
             </p>
             <p className="text-sm text-gray-300">
               {view === "this"
-                ? `Play the Weekly: one ranked run, 10 points a win plus play-off and title bonuses. Top 10 on Sunday night earn ${formatClubFunds(WEEKLY_TOP10_REWARD)}.`
-                : "Last week's board closed empty. This week's is open now."}
+                ? `Play the Weekly. Top 10 on Sunday night earn ${formatClubFunds(WEEKLY_TOP10_REWARD)}.`
+                : "Nobody played last week."}
             </p>
             {view === "this" && lastWeekTop && lastWeekTop.length > 0 ? (
               <div className="w-full max-w-xs rounded-tile bg-pitch-900/70 px-3 py-2 text-left" aria-label="Last week's top 3">

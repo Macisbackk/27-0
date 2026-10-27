@@ -2978,8 +2978,8 @@ export function GameBoard({
                 {dailyScenario.ruleSummary}
                 <span className="pitch-sub__meta">
                   {dailyAttemptCounts
-                    ? `Top the table +${formatClubFunds(dailyScenario.leagueLeadersBonus)} · Win the Grand Final +${formatClubFunds(dailyScenario.playoffTitleBonus)}`
-                    : "Practice run — today's Daily attempt is used"}
+                    ? `Top the table +${formatClubFunds(dailyScenario.leagueLeadersBonus)} · Grand Final +${formatClubFunds(dailyScenario.playoffTitleBonus)}`
+                    : "Practice run. Today's Daily is used."}
                 </span>
               </>
             ) : weeklyScenario ? (
@@ -2987,8 +2987,8 @@ export function GameBoard({
                 {weeklyScenario.ruleSummary}
                 <span className="pitch-sub__meta">
                   {weeklyAttemptCounts
-                    ? `Ranked attempt · Win ${WEEKLY_SCORE.regularWin} · Play-off win ${WEEKLY_SCORE.playoffWin} · Grand Final +${WEEKLY_SCORE.grandFinal} · League Leaders +${WEEKLY_SCORE.leagueLeaders}`
-                    : "Practice run — this week's ranked attempt is used"}
+                    ? `Ranked · Win ${WEEKLY_SCORE.regularWin} · Play-off win ${WEEKLY_SCORE.playoffWin} · Grand Final +${WEEKLY_SCORE.grandFinal} · League Leaders +${WEEKLY_SCORE.leagueLeaders}`
+                    : "Practice run. This week's ranked run is used."}
                 </span>
               </>
             ) : challenge ? (
@@ -3003,7 +3003,7 @@ export function GameBoard({
               <>
                 {archiveScenario.ruleSummary}
                 <span className="pitch-sub__meta">
-                  Practice: same spins as on the day. No streak, board, missions or Club Funds.
+                  Practice: same spins as on the day.
                 </span>
               </>
             ) : subtitle ? (
@@ -3039,8 +3039,8 @@ export function GameBoard({
             role="status"
           >
             <span>
-              Welcome back — your run is restored ({filledCount}/{TOTAL_SLOTS} signed
-              {pendingSpin ? `, ${squad.find((x) => x.slotIndex === pendingSpin.slotIndex)?.label ?? "a"} spin waiting` : ""}).
+              Welcome back. {filledCount}/{TOTAL_SLOTS} signed
+              {pendingSpin ? `, ${squad.find((x) => x.slotIndex === pendingSpin.slotIndex)?.label ?? "a"} spin waiting` : ""}.
             </span>
             {!dailyChallengeMode && !weeklyChallengeMode ? (
               <button
@@ -3208,12 +3208,10 @@ export function GameBoard({
           <div className="mt-4 flex flex-wrap items-center justify-center gap-1">
             <p className={`w-full text-center ${TYPO.bodySm} font-semibold text-white`}>
               {pendingSpin
-                ? `Your ${suggestedSlotLabel ?? "last"} spin is locked in — tap it to sign`
+                ? `Your ${suggestedSlotLabel ?? "last"} spin is waiting. Tap it to sign.`
                 : filledCount === 0
-                  ? "Tap any position to spin for a player"
-                  : `Tap an empty position · ${TOTAL_SLOTS - filledCount} to go${
-                      suggestedSlotLabel ? ` · next up: ${suggestedSlotLabel}` : ""
-                    }`}
+                  ? "Tap a position to spin"
+                  : `${TOTAL_SLOTS - filledCount} to go${suggestedSlotLabel ? ` · next: ${suggestedSlotLabel}` : ""}`}
             </p>
             {difficulty !== "HARD" && filledCount > 0 && chemistry.links.length > 0 ? (
               <p className="w-full text-center text-xs text-lime-300">
@@ -3575,7 +3573,7 @@ export function GameBoard({
                     oneClubOutcome.record.titles > 0 ? ` · ${oneClubOutcome.record.titles} Grand Final${oneClubOutcome.record.titles === 1 ? "" : "s"}` : ""
                   } · `
                 : ""}
-              Unranked: no leaderboard or Club Funds.
+              Unranked. No Club Funds.
             </p>
           </div>
         ) : null}
@@ -3693,9 +3691,9 @@ export function GameBoard({
               </h2>
               <p id="leave-run-body" className={`mt-2 ${TYPO.bodySm} text-gray-300`}>
                 {resumeModeKey
-                  ? `${filledCount}/${TOTAL_SLOTS} signed. Your squad is saved on this device — open ${
+                  ? `${filledCount}/${TOTAL_SLOTS} signed. Your squad is saved. Open ${
                       dailyChallengeMode ? "today's Daily" : weeklyChallengeMode ? "this week's Weekly" : normalEraMode ? "Era Classic" : "Classic"
-                    } again to pick up where you left off.`
+                    } to carry on.`
                   : `${filledCount}/${TOTAL_SLOTS} signed. This run won't be saved.`}
               </p>
               <div className="mt-4 flex gap-2">

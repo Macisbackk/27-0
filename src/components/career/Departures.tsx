@@ -35,14 +35,14 @@ export function Departures() {
         icon={<ShirtGlyph />}
         eyebrow={<>Before the {s.year} season</>}
         title="Comings and goings"
-        description={<>Sort out contracts before the transfer window opens. Budget {formatMoney(s.budget)}.</>}
+        description={<>Sort out contracts. Budget {formatMoney(s.budget)}.</>}
       />
 
       <Card>
         <Eyebrow>Contracts up · {expiring.length}</Eyebrow>
         {expiring.length ? (
           <>
-            <p className="mt-1 text-xs text-gray-400">Renew for a one-off signing-on fee, or let him go (legends go back to the Legend Vault).</p>
+            <p className="mt-1 text-xs text-gray-400">Renew for a one-off fee, or let him go.</p>
             <ul className="mt-3 space-y-2">
               {expiring.map((p) => {
                 const fee = renewalFee(p);
@@ -96,7 +96,7 @@ export function Departures() {
             {error ? <p className="mt-2 text-sm text-danger" role="alert">{error}</p> : null}
           </>
         ) : (
-          <p className="mt-2 text-sm text-gray-300">No decisions left. Everyone else is under contract.</p>
+          <p className="mt-2 text-sm text-gray-300">All done. Everyone else is under contract.</p>
         )}
         {renewed.length ? (
           <p className="mt-3 text-xs text-success">
@@ -144,8 +144,8 @@ export function Departures() {
         const after = squadNow - expiring.length;
         return after < 20 ? (
           <p className="text-center text-xs text-amber-300" role="note">
-            {expiring.length ? `Letting the rest go leaves ${after} players.` : `Squad: ${squadNow} players.`} The minimum is 20, so the board will
-            fill the gaps with fringe players when the window opens. Renew now to keep your quality.
+            {expiring.length ? `Letting the rest go leaves ${after} players.` : `Squad: ${squadNow} players.`} The minimum is 20. The board
+            fills gaps with fringe players.
           </p>
         ) : null;
       })()}
@@ -179,7 +179,7 @@ export function Departures() {
                 Let {expiring.length} go?
               </h2>
               <p className="mt-1 text-center text-sm text-[color:var(--fl-muted)]">
-                These players leave on a free when the window opens.
+                They leave on a free.
               </p>
               <ul className="mt-3 max-h-64 divide-y divide-pitch-800 overflow-y-auto rounded-tile bg-pitch-950 px-3">
                 {sorted.map((p) => (
@@ -193,7 +193,7 @@ export function Departures() {
               </ul>
               {after < 20 ? (
                 <p className="mt-3 text-center text-xs text-amber-300" role="note">
-                  That leaves {after} players. The minimum is 20, so the board fills the gaps with fringe players.
+                  That leaves {after}. The minimum is 20. The board fills gaps with fringe players.
                 </p>
               ) : null}
               <div className="mt-4 grid gap-2">

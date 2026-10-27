@@ -407,7 +407,7 @@ function ForYouStore({
         {affordable.length === 0 ? (
           <p className="mt-1 text-sm text-[color:var(--fl-muted)]">
             {next
-              ? `Win games, Daily Challenges and puzzles to earn Club Funds. The cheapest item is ${formatClubFunds(next.price)}.`
+              ? `Win games and play puzzles to earn Club Funds. Items start at ${formatClubFunds(next.price)}.`
               : "You own everything in the Store."}
           </p>
         ) : null}

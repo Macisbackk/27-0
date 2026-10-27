@@ -11,7 +11,6 @@ import {
 import {
   DAILY_FREEZE_EVERY,
   DAILY_MAX_FREEZES,
-  nextStreakMilestone,
   pendingStreakMilestone,
   type DailyChallengeMeta,
 } from "@/lib/daily-streak";
@@ -70,7 +69,6 @@ export function DailyStreakStrip({ className = "", compact = false }: DailyStrea
 
   const streak = meta.currentStreak;
   const freezes = meta.freezes ?? 0;
-  const next = nextStreakMilestone(streak);
   const toNextFreeze = DAILY_FREEZE_EVERY - (streak % DAILY_FREEZE_EVERY);
 
   const onBuy = () => {
@@ -150,13 +148,12 @@ export function DailyStreakStrip({ className = "", compact = false }: DailyStrea
       {!compact ? (
         <p className={`mt-1.5 ${TYPO.meta}`}>
           {doneToday
-            ? "Today's Daily is done: your streak is safe."
+            ? "Done today. Your streak is safe."
             : streak > 0
-              ? "Finish today's Daily (win or lose) to keep your streak."
+              ? "Finish today's Daily to keep your streak."
               : "Finish today's Daily to start a streak."}{" "}
-          {next ? `${next - streak} to the ${next}-day milestone. ` : ""}
-          {freezes < DAILY_MAX_FREEZES ? `Next free freeze in ${toNextFreeze} day${toNextFreeze === 1 ? "" : "s"}. ` : ""}
-          A missed day uses a freeze automatically.
+          {freezes < DAILY_MAX_FREEZES ? `Free freeze in ${toNextFreeze} day${toNextFreeze === 1 ? "" : "s"}. ` : ""}
+          Freezes cover a missed day.
         </p>
       ) : null}
       {!compact ? (
@@ -167,7 +164,7 @@ export function DailyStreakStrip({ className = "", compact = false }: DailyStrea
             </GameButton>
           ) : null}
           <Link href={DAILY_ARCHIVE_PAGE} className="inline-flex min-h-[44px] items-center text-xs font-semibold text-accent-gold hover:underline">
-            Play past Dailies (practice) ›
+            Past Dailies ›
           </Link>
         </div>
       ) : null}
