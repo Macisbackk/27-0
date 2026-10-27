@@ -320,6 +320,18 @@ await shot(phone, "72-settings-toggle-on", "/settings", async (page) => {
 {
   const ctx = await browser.newContext({ viewport: { width: 375, height: 812 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
   await shot(ctx, "87-home-first-run-375", "/");
+  // Phones: hero text stacks and page intros are centred (sm+ keeps them left).
+  for (const [name, path] of [["store", "/store"], ["records", "/records"], ["squad-book", "/squad-book"], ["puzzles", "/mini-games"], ["modes", "/modes"], ["leaderboard", "/leaderboard"]]) {
+    await shot(ctx, `88-375-${name}`, path);
+  }
+  await ctx.close();
+}
+{
+  const ctx = await browser.newContext({ viewport: { width: 320, height: 640 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+  await ctx.addInitScript(() => localStorage.setItem("27-0-dark-mode", JSON.stringify({ on: false, updatedAt: 1 })));
+  for (const [name, path] of [["home", "/"], ["store", "/store"], ["puzzles", "/mini-games"], ["settings", "/settings"]]) {
+    await shot(ctx, `89-lime-320-${name}`, path);
+  }
   await ctx.close();
 }
 
