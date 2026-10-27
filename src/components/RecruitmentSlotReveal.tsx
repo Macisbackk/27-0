@@ -21,7 +21,6 @@ import { triggerHaptic } from "@/lib/haptics";
 import { SPACING } from "@/lib/ui/design-system";
 import { BodyPortal } from "@/components/ui/BodyPortal";
 import { useModalA11y } from "@/hooks/useModalA11y";
-import { TeamColourStrip } from "@/components/ui/TeamColourStrip";
 import { uiLayerClass } from "@/lib/ui/layers";
 import { useScrollLock } from "@/hooks/useScrollLock";
 import { TYPO } from "@/lib/ui/typography";
@@ -249,12 +248,8 @@ export function RecruitmentSlotReveal({
             transition: landed ? "border-color 0.35s ease-out" : undefined,
           }}
         >
-          {/* The club's colours only appear once the reels land: showing them during the spin gave the result away. */}
-          {landed ? (
-            <TeamColourStrip club={target.team} className="fl-rise" />
-          ) : (
-            <div aria-hidden className="h-0.5 w-full bg-white/10" />
-          )}
+          {/* No club-colour bar here (owner, v1.39): a neutral top edge before and after the spin. */}
+          <div aria-hidden className="h-0.5 w-full bg-white/10" />
           <div className="border-b border-white/10 px-4 py-2.5 text-center">
             <p className={`${TYPO.sectionLabel} text-pitch-400`}>
               {isSpinning
