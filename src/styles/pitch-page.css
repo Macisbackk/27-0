@@ -59,6 +59,11 @@ html:where(:not([data-mode="dark"])),
   --on-danger: color-mix(in srgb, #7f1d1d 70%, var(--pitch-ink));
   --on-success: var(--pitch-ink);
   --on-line: rgb(var(--pitch-mark-rgb) / 0.18);
+  /* Tints that only read on dark (lime, sky, pale amber/red): ink on the pitch. */
+  --on-lime: var(--pitch-ink);
+  --on-sky: var(--pitch-ink);
+  --on-amber-soft: var(--pitch-ink);
+  --on-danger-soft: color-mix(in srgb, #7f1d1d 70%, var(--pitch-ink));
 }
 
 /* Every dark surface: white text, muted grey, the accent, gold and red as designed. */
@@ -113,6 +118,10 @@ html:where(:not([data-mode="dark"])),
   --on-danger: #f87171;
   --on-success: #4ade80;
   --on-line: var(--fl-line);
+  --on-lime: #bef264;
+  --on-sky: #7dd3fc;
+  --on-amber-soft: #fde68a;
+  --on-danger-soft: #fca5a5;
   color: var(--on-fg);
 }
 
@@ -147,8 +156,24 @@ html:where(:not([data-mode="dark"])),
 :where(html:not([data-mode="dark"])) .text-red-400 {
   color: var(--on-danger) !important;
 }
-:where(html:not([data-mode="dark"])) .text-success {
+:where(html:not([data-mode="dark"])) .text-success,
+:where(html:not([data-mode="dark"])) .text-emerald-300 {
   color: var(--on-success) !important;
+}
+:where(html:not([data-mode="dark"])) .text-lime-300 {
+  color: var(--on-lime) !important;
+}
+:where(html:not([data-mode="dark"])) .text-sky-200,
+:where(html:not([data-mode="dark"])) .text-sky-300 {
+  color: var(--on-sky) !important;
+}
+:where(html:not([data-mode="dark"])) .text-amber-100,
+:where(html:not([data-mode="dark"])) .text-amber-200 {
+  color: var(--on-amber-soft) !important;
+}
+:where(html:not([data-mode="dark"])) .text-red-200,
+:where(html:not([data-mode="dark"])) .text-red-300 {
+  color: var(--on-danger-soft) !important;
 }
 /* Muted page copy that used design tokens rather than utilities. */
 :where(html:not([data-mode="dark"])) :where(main) :where(p, span, li, h1, h2, h3, h4, label, small) {
@@ -180,6 +205,9 @@ html:where(:not([data-mode="dark"])),
   --on-fg-muted: var(--pitch-ink-muted);
   --on-accent: var(--pitch-ink);
   --on-gold: var(--pitch-ink);
+  --on-lime: var(--pitch-ink);
+  --on-sky: var(--pitch-ink);
+  --on-amber-soft: var(--pitch-ink);
   color: var(--pitch-ink);
 }
 

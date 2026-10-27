@@ -21,7 +21,7 @@ export default function LoginPage() {
             className="mb-5"
             eyebrow="Account"
             title="Log in"
-            description="Log in or create a free account to save your progress online and join the leaderboards."
+            description="Save your progress and join the leaderboards."
             icon={<WhistleGlyph />}
           />
 

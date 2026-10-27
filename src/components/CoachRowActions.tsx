@@ -17,13 +17,13 @@ import { playUiClick } from "@/lib/sound";
 import { TYPO } from "@/lib/ui/typography";
 
 const RESULT_TEXT: Record<ReportResult["status"], string> = {
-  sent: "Thanks, report sent. We review reports within 24 hours, and a name reported by several players is hidden straight away until we've checked it.",
+  sent: "Thanks, report sent. We review reports within 24 hours.",
   duplicate: "You've already reported this coach today. We'll look at it.",
   login: "Log in to report a coach.",
   self: "That's you.",
   limit: "You've sent a lot of reports today. Try again tomorrow, or email us.",
-  "unknown-coach": "We couldn't find that coach online. Email us and we'll look into it.",
-  offline: "Couldn't send the report. Check your connection and try again.",
+  "unknown-coach": "We couldn't find that coach. Email us instead.",
+  offline: "Couldn't send. Check your connection.",
   error: "Couldn't send the report. Try again, or email us.",
 };
 
@@ -165,7 +165,7 @@ export function CoachRowActions({
                     Hide this coach
                   </GameButton>
                   <p className="mt-2 text-xs text-gray-500">
-                    You won&apos;t see them on any leaderboard. Undo in Settings → Hidden coaches.
+                    Gone from your leaderboards. Undo in Settings.
                   </p>
                 </div>
               ) : null}

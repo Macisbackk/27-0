@@ -32,8 +32,8 @@ export function DeleteAccountPanel() {
       <header className="py-2">
         <h1 className="text-[26px] font-bold text-white">Delete account</h1>
         <p className="mx-auto mt-1 max-w-sm text-sm text-[color:var(--fl-muted)]">
-          This permanently deletes your 27-0 account: your login, coach name, leaderboard entries, stats, Club Funds and
-          Manager Mode save. It can&rsquo;t be undone.
+          This deletes your account for good: login, coach name, leaderboard entries, stats, Club Funds and Manager
+          Mode save. You can&rsquo;t undo it.
         </p>
       </header>
 
@@ -52,15 +52,14 @@ export function DeleteAccountPanel() {
           <>
             <p className="text-[15px] font-bold text-white">You&rsquo;re not logged in</p>
             <p className="mt-1 text-sm text-[color:var(--fl-muted)]">
-              Log in to delete your account here, or email{" "}
+              Log in to delete it here. Or email{" "}
               <a className="font-semibold text-theme-primary" href={`mailto:${CONTACT}?subject=Delete%20my%2027-0%20account`}>
                 {CONTACT}
               </a>{" "}
-              from the address you signed up with and we&rsquo;ll delete it within 30 days.
+              from your account&rsquo;s email and we&rsquo;ll delete it within 30 days.
             </p>
             <p className="mt-2 text-sm text-[color:var(--fl-muted)]">
-              Playing as a guest? There&rsquo;s no account: your progress lives only on your device and is removed when
-              you clear the app&rsquo;s data.
+              Guest? There&rsquo;s no account. Clearing the app&rsquo;s data removes your progress.
             </p>
             <Link href="/login?redirect=/delete-account" className="btn-press mx-auto mt-4 flex h-11 max-w-[240px] items-center justify-center rounded-control bg-pitch-800 text-sm font-bold text-white">
               Log in

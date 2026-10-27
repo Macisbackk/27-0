@@ -1,37 +1,58 @@
 import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 
-const GUIDE_ITEMS = [
-  {
-    title: "Manager Mode",
-    body: "Pick a real Super League or Championship club, play each round in a tap, chase the Grand Final and unlock legends.",
-  },
+const GUIDE_ITEMS: { title: string; lines: string[] }[] = [
   {
     title: "Classic",
-    body: "Spin and sign a 13 from this season's squads (Classic) or any era (Era Classic), chase 27-0, then fight for the play-offs.",
+    lines: [
+      "Spin for a club, sign a player, fill your 13.",
+      "Classic uses 2026 squads. Era Classic uses any era.",
+      "Go 27-0, then win the play-offs.",
+    ],
   },
   {
-    title: "How results are decided",
-    body: "Every game is decided by how much stronger your 13 is than the opposition, judged against what's possible in Classic or Era Classic. The stronger your squad, the better your 27-0 chance. It's never guaranteed and never impossible.",
+    title: "Manager Mode",
+    lines: ["Run a real Super League or Championship club.", "Win trophies. Unlock legends."],
+  },
+  {
+    title: "How games are won",
+    lines: [
+      "The stronger your 13, the better your odds.",
+      "No win is certain. No loss is either.",
+    ],
   },
   ...(SHOW_DAILY_CHALLENGE_UI
     ? [
         {
-          title: "Daily Challenge",
-          body: "A new rule every day: one club, one era, underdogs, no respins and more. One counted attempt per UK day. Finishing it (win or lose) extends your streak; top the table and win the Grand Final for a perfect day. Today's board ranks the day's score (10 a win, +50 League Leaders, 15 a play-off win, +100 Grand Final). Every 7-day streak earns a streak freeze (hold up to 2), which covers a missed day automatically.",
+          title: "Daily",
+          lines: [
+            "A new rule every day. 1 counted run.",
+            "Finish it, win or lose, to keep your streak.",
+            "10 a win, 15 a play-off win.",
+            "+50 for League Leaders, +100 for the Grand Final.",
+            "Every 7-day streak earns a freeze (hold 2).",
+          ],
         },
         {
-          title: "Weekly Challenge",
-          body: "One rule and the same spins for everyone, all week (Monday to Sunday UK). One ranked attempt a week; later runs are practice. Score 10 a win, 15 a play-off win, +100 for the Grand Final and +50 for League Leaders. The top 10 when the week ends earn £150k.",
+          title: "Weekly",
+          lines: [
+            "Same rule and spins for all, Monday to Sunday.",
+            "1 ranked run a week. Same scoring as the Daily.",
+            "Top 10 earn £150k.",
+          ],
         },
       ]
     : []),
   {
     title: "Puzzles",
-    body: "Golden Point Quiz, Rugby League Wordle and the 3×3 Grid. Play daily for Club Funds. The quiz pays your first run of the day in full (up to £100k) and 10% after that.",
+    lines: [
+      "Golden Point Quiz, Wordle and the Grid.",
+      "Play daily for Club Funds.",
+      "Your first quiz run pays in full. Later runs pay 10%.",
+    ],
   },
   {
     title: "Club Funds",
-    body: "Earn them from Classic seasons and play-offs, the Daily and Weekly Challenges, puzzles and achievements. Spend them in the Store on themes, your own kit, pitch styles, titles, leaderboard frames and Ball Knower mode.",
+    lines: ["Earn them by winning and playing daily.", "Spend them in the Store."],
   },
 ];
 
@@ -41,7 +62,11 @@ export function HowToPlaySection() {
       {GUIDE_ITEMS.map((item) => (
         <li key={item.title} className="py-2.5 text-center">
           <p className="text-sm font-bold text-white">{item.title}</p>
-          <p className="mt-0.5 text-[13px] leading-snug text-[color:var(--fl-muted)]">{item.body}</p>
+          {item.lines.map((line) => (
+            <p key={line} className="mt-0.5 text-[13px] leading-snug text-[color:var(--fl-muted)]">
+              {line}
+            </p>
+          ))}
         </li>
       ))}
     </ul>

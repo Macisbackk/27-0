@@ -30,7 +30,7 @@ export function OfflineBanner() {
       aria-live="polite"
       className="offline-banner fixed inset-x-0 top-0 z-[80] bg-amber-500 px-4 pb-1.5 pt-[max(0.375rem,env(safe-area-inset-top))] text-center text-[13px] font-semibold text-black"
     >
-      You&rsquo;re offline. You can keep playing; leaderboards and online saves will catch up when you reconnect.
+      You&rsquo;re offline. Keep playing. We&rsquo;ll sync when you&rsquo;re back.
     </div>
   );
 }

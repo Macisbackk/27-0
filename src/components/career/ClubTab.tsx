@@ -40,7 +40,7 @@ export function ClubTab({ onOpenVault, onOpenRecords }: { onOpenVault: () => voi
     <div className="flex flex-col gap-4">
       <Card>
         <Eyebrow>Season challenges</Eyebrow>
-        <p className="mt-1 text-xs text-gray-400">Optional goals. Hit them for cash and Legacy points.</p>
+        <p className="mt-1 text-xs text-gray-400">Optional. Hit them for cash and Legacy points.</p>
         <ul className="mt-3 space-y-3">
           {s.challenges.map((c) => {
             const lowerBetter = c.kind === "finish-top";
@@ -101,8 +101,9 @@ export function ClubTab({ onOpenVault, onOpenRecords }: { onOpenVault: () => voi
           ) : null}
         </div>
         <p className="mt-3 text-xs leading-relaxed text-gray-400">
-          Prestige rises with trophies, promotion and top-four finishes, and falls with relegation or a bottom-three finish. It brings more income and better signings: players rated up to{" "}
-          <span className="font-semibold text-white">{prestigeRatingCap(s.prestige)}</span> from other clubs will join you now. In the season you can only buy and sell on Deadline Day, before Round 16; the summer window opens after the season.
+          Prestige rises with trophies and top-4 finishes. It falls with relegation or a bottom-3 finish.
+          <br />
+          It brings more income. Players rated up to <span className="font-semibold text-white">{prestigeRatingCap(s.prestige)}</span> will join you now.
         </p>
       </Card>
 
@@ -138,7 +139,7 @@ export function ClubTab({ onOpenVault, onOpenRecords }: { onOpenVault: () => voi
 
       <MobileModal open={confirm} onClose={() => setConfirm(false)} title="Start a new career?">
         <p className="text-sm text-gray-300">
-          This career ends for good. Your Legacy points, unlocked legends, trophies and records are kept.
+          This career ends for good. You keep Legacy points, legends, trophies and records.
         </p>
         <div className="mt-4 grid grid-cols-2 gap-2">
           <GameButton variant="secondary" onClick={() => setConfirm(false)}>Keep playing</GameButton>

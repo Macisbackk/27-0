@@ -218,7 +218,7 @@ export function SeasonSimulation({
                 Unbeaten at halfway. How do you chase 27-0?
               </p>
               <p className="mt-1 text-xs text-[color:var(--fl-muted)]">
-                One call for the run-in. It can&apos;t be changed once made.
+                One call for the rest of the season. No changes after.
               </p>
               <div className="mt-3 flex flex-col gap-2">
                 {HALFWAY_CALL_OPTIONS.map((option) => (

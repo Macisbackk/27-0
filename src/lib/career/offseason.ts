@@ -332,7 +332,7 @@ export function sellPlayer(state: CareerState, playerId: string): SaleResult {
       line = `Sold ${p.name} to ${s.clubs[buyer.clubId]!.name} for ${formatMoney(price)}. They were ${buyer.reason}.`;
     } else {
       s.freeAgents.push(playerId);
-      line = `Sold ${p.name} for ${formatMoney(price)}. No club had room, so he's a free agent.`;
+      line = `Sold ${p.name} for ${formatMoney(price)}. He's now a free agent.`;
     }
   }
   s.lineup = repairLineup(s, s.lineup.filter((id) => id !== playerId));

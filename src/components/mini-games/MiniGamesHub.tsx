@@ -28,7 +28,7 @@ const GAMES: {
     id: "quiz",
     href: "/mini-games/quiz",
     title: QUIZ_GAME_NAME,
-    blurb: "15 questions, four lifelines, climb the ladder to golden point.",
+    blurb: "15 questions, 4 lifelines. Climb to golden point.",
     reward: `Up to ${formatClubFunds(QUIZ_TOP_PRIZE)} a day`,
     glyph: "?",
     accent: "from-lime-400/25 to-lime-500/5 text-lime-300 border-lime-400/40",
@@ -37,7 +37,7 @@ const GAMES: {
     id: "wordle",
     href: "/mini-games/wordle",
     title: "Rugby League Wordle",
-    blurb: "Guess the player from club, position, age and more.",
+    blurb: "Guess the mystery player.",
     reward: `${formatClubFunds(WORDLE_WIN_REWARD)} a day`,
     glyph: "W",
     accent: "from-lime-400/25 to-lime-500/5 text-lime-300 border-lime-400/40",
@@ -46,7 +46,7 @@ const GAMES: {
     id: "grid",
     href: "/mini-games/grid",
     title: "Rugby League Grid",
-    blurb: "Fill a 3×3 grid with players who fit each club, nation, position, era or honour.",
+    blurb: "Name a player for each square of the 3×3 grid.",
     reward: `Up to ${formatClubFunds(GRID_REWARD_PER_CELL * 9)} a day`,
     glyph: "#",
     accent: "from-lime-400/25 to-lime-500/5 text-lime-300 border-lime-400/40",
@@ -82,7 +82,7 @@ export function MiniGamesHub() {
           title="Puzzles"
           icon={<TilesGlyph />}
         />
-        <p className="mt-3 px-1 text-left text-sm text-[color:var(--fl-muted)]">Quick rugby league puzzles that pay Club Funds. Rewards reset at midnight UK time.</p>
+        <p className="mt-3 px-1 text-left text-sm text-[color:var(--fl-muted)]">Daily puzzles that pay Club Funds.</p>
 
         <ul className="fl-stagger mt-5 grid w-full gap-3 sm:grid-cols-3">
           {GAMES.map((game) => {

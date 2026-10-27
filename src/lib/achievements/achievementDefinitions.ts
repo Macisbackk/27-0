@@ -57,7 +57,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     id: "29-0",
     name: "29-0",
     description:
-      "Go unbeaten through the league and play-offs: 27-0 in the regular season and 2-0 in the play-offs.",
+      "Go 27-0, then 2-0 in the play-offs.",
     category: "normal",
     points: 150,
     rewardClubFunds: 500_000,
@@ -88,7 +88,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     id: "bradford-bias",
     name: "Bradford Bias",
     description:
-      "Build a team with 5+ Bradford players and finish with a winning record.",
+      "Field 5+ Bradford players and finish with a winning record.",
     category: "normal",
     points: 30,
   },
@@ -338,7 +338,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     id: "quiz-millionaire",
     name: "Golden Point",
     description:
-      "Answer all 15 Golden Point Quiz questions correctly and bank the £100,000 top prize.",
+      "Answer all 15 quiz questions and bank the £100,000 top prize.",
     category: "quiz",
     points: 100,
     rewardClubFunds: 100_000,
@@ -346,7 +346,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "quiz-no-help",
     name: "No Help Needed",
-    description: "Answer all 15 quiz questions correctly without using a lifeline.",
+    description: "Answer all 15 quiz questions with no lifelines.",
     category: "quiz",
     points: 40,
   },
@@ -508,4 +508,4 @@ export function getAchievementDefinition(
 
 export const HIDDEN_ACHIEVEMENT_LABEL = "Hidden Achievement";
 export const HIDDEN_ACHIEVEMENT_DESCRIPTION =
-  "Complete a secret challenge to reveal this achievement.";
+  "Complete a secret challenge to reveal this.";

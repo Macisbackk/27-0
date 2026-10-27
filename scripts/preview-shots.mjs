@@ -117,6 +117,21 @@ await shot(phone, "41-squad-book", "/squad-book");
 await shot(phone, "42-modes", "/modes");
 await shot(phone, "43-settings", "/settings");
 await shot(phone, "44-quiz", "/quiz");
+await shot(phone, "45-how-to-play", "/", async (page) => {
+  await page.locator("summary", { hasText: "How to play" }).first().click({ timeout: 5000 });
+  await page.waitForTimeout(500);
+  await page.locator("#how-to-play").scrollIntoViewIfNeeded();
+}, true);
+
+// Narrowest phones (320px): text wrapping and clipping.
+{
+  const narrow = await browser.newContext({ viewport: { width: 320, height: 640 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+  await shot(narrow, "46-320-home", "/", null, true);
+  await shot(narrow, "47-320-store", "/store");
+  await shot(narrow, "48-320-manager", "/manager");
+  await shot(narrow, "49-320-settings", "/settings", null, true);
+  await narrow.close();
+}
 
 // Classic: the draft screen, then a full auto-filled run to the season review (test build: ?e2e=1).
 async function tapFirst(page, patterns) {

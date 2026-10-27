@@ -154,7 +154,7 @@ function WordleLegend({ showEra }: { showEra: boolean }) {
       {" · "}
       <span className="whitespace-nowrap">✗ = no match</span>
       {" · "}
-      <span className="whitespace-nowrap">↑ ↓ = answer is higher / lower</span>
+      <span className="whitespace-nowrap">↑ ↓ = higher / lower</span>
       {showEra ? (
         <>
           {" · "}
@@ -355,7 +355,7 @@ export function WordleGame() {
       <MiniGameRewardPopup
         open={rewardOpen}
         amount={WORDLE_WIN_REWARD}
-        detail="One reward per day. Resets at midnight UK time."
+        detail="1 reward a day."
         onClose={() => setRewardOpen(false)}
       />
       <div className="mini-game-play mx-auto flex w-full max-w-lg flex-col items-center">
@@ -378,8 +378,8 @@ export function WordleGame() {
         </div>
         <p className={`mb-2 text-center ${TYPO.meta}`} data-testid="wordle-reward-line">
           {rewardBankedToday
-            ? `Today's ${formatClubFunds(WORDLE_WIN_REWARD)} is banked. Play on for fun and your streak.`
-            : `${formatClubFunds(WORDLE_WIN_REWARD)} today for your first win (Current or Era).`}
+            ? `Today's ${formatClubFunds(WORDLE_WIN_REWARD)} is banked. Play on for fun.`
+            : `First win today pays ${formatClubFunds(WORDLE_WIN_REWARD)}.`}
         </p>
         <div className="text-center">
           <MiniGameStatLine
@@ -451,15 +451,15 @@ export function WordleGame() {
             )}
 
             {canUseHint ? (
-              <div className="mt-2 flex w-full justify-end">
+              <div className="mt-2 flex w-full justify-center">
                 <GameButton
                   variant="ghost"
                   size="sm"
                   fullWidth={false}
-                  className="!min-h-0 !px-2 !py-1 text-[11px] font-medium text-pitch-400 hover:text-pitch-200"
+                  className="!min-h-[44px] !px-2 !py-1 !font-body !text-[13px] !font-semibold !normal-case !tracking-normal !text-[color:var(--fl-muted)] hover:!text-white"
                   onClick={revealClue}
                 >
-                  Reveal a clue (free, marked on your share)
+                  Reveal a clue (shown on your share)
                 </GameButton>
               </div>
             ) : null}

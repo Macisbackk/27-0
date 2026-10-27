@@ -40,7 +40,7 @@ export function CareerStart({ onOpenVault, onOpenRecords }: { onOpenVault: () =>
       <PitchHero
         eyebrow="Rugby League Manager"
         title="Pick your club"
-        description="Real squads. Play each round in a tap. Climb from the Championship to Old Trafford, unlock legends, and chase records."
+        description="Real squads. Climb to Old Trafford. Unlock legends."
         icon={<BoardGlyph />}
       />
 
@@ -77,7 +77,7 @@ export function CareerStart({ onOpenVault, onOpenRecords }: { onOpenVault: () =>
           className="mt-1 w-full rounded-lg border border-pitch-600 bg-pitch-950 px-3 py-2.5 text-white placeholder:text-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-theme-primary"
         />
         <span className="mt-1 block text-[11px] text-gray-500">
-          Shown on your Manager records. Leave it blank and you&apos;re &ldquo;Coach&rdquo;.
+          Shown on your Manager records. Blank means &ldquo;Coach&rdquo;.
         </span>
       </label>
 
@@ -95,8 +95,8 @@ export function CareerStart({ onOpenVault, onOpenRecords }: { onOpenVault: () =>
       />
       <p className="-mt-2 text-center text-xs text-gray-400">
         {division === "championship"
-          ? "Win the league to go up. Finish 2nd and you get the Million Pound Game."
-          : "Top 4 make the play-offs. Finish 13th and you play the Million Pound Game; finish bottom and you go down."}
+          ? "Win the league to go up. 2nd plays the Million Pound Game."
+          : "Top 4 make the play-offs. 13th plays the Million Pound Game. Bottom goes down."}
       </p>
 
       <ul className="fl-stagger grid grid-cols-[minmax(0,1fr)] gap-2" aria-label="Clubs">

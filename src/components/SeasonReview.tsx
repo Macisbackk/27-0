@@ -506,8 +506,7 @@ export function SeasonReview({
                 transition={{ delay: 0.25 }}
               >
                 <p className={TYPO.muted}>
-                  Play-offs unlocked — finish the knockout stage to earn more
-                  Club Funds
+                  You&apos;re in the play-offs. Win them for more Club Funds.
                 </p>
               </motion.div>
             ) : null}
