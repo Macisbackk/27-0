@@ -451,12 +451,12 @@ export function WordleGame() {
             )}
 
             {canUseHint ? (
-              <div className="mt-2 flex w-full justify-end">
+              <div className="mt-2 flex w-full justify-center">
                 <GameButton
                   variant="ghost"
                   size="sm"
                   fullWidth={false}
-                  className="!min-h-0 !px-2 !py-1 text-[11px] font-medium text-pitch-400 hover:text-pitch-200"
+                  className="!min-h-[44px] !px-2 !py-1 !font-body !text-[13px] !font-semibold !normal-case !tracking-normal !text-[color:var(--fl-muted)] hover:!text-white"
                   onClick={revealClue}
                 >
                   Reveal a clue (shown on your share)
