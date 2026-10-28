@@ -52,11 +52,13 @@ export interface SimFormulaModeScale {
  * / +1.0 chemistry, top card every spin 85.86 / +1.86. Elite 86.0 puts the top-card draft just
  * past q = 1 with its extra +0.85 chemistry counted: 8·(85.86 − 83.1)/(86.0 − 83.1) + 0.85 ≈ 8.5
  * (≈ 30% 27-0, the middle of the 25–35% target).
+ * v1.42: Classic opponents get +0.7 (owner: "Classic now too easy"; players stack club links
+ * beyond what the top-card bot does). Top-card 27-0 ≈ 29% → ≈ 23%, good ≈ 2.3% → 1.4%.
  * Classic spin and Era: mean ratings of the typical and top-card drafts (unchanged in v1.40;
  * Era's typical chemistry was 0.3 before chemistry stopped counting there).
  */
 export const SIM_FORMULA_MODE_SCALE: Record<SimFormulaMode, SimFormulaModeScale> = {
-  classic: { typicalRating: 83.1, eliteRating: 86.0, typicalChemistry: 1 },
+  classic: { typicalRating: 83.1, eliteRating: 86.0, typicalChemistry: 1, opponentEdge: 0.7 },
   "classic-spin": { typicalRating: 83.1, eliteRating: 85.5, typicalChemistry: 0 },
   era: { typicalRating: 85.6, eliteRating: 87.5, typicalChemistry: 0, opponentEdge: 0.4, noChemistry: true },
 };

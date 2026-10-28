@@ -45,7 +45,7 @@ export const CollapsibleReviewSection = memo(function CollapsibleReviewSection({
         {collapsed ? (
           <button
             type="button"
-            className={`flex w-full min-w-0 items-center justify-between gap-3 text-left ${TYPO.cardHeading} ${featured ? "!text-theme-primary" : ""}`}
+            className={`relative flex w-full min-w-0 items-center justify-center px-16 text-center ${TYPO.cardHeading} ${featured ? "!text-theme-primary" : ""}`}
             aria-expanded={open}
             onClick={() => {
               playUiClick();
@@ -53,7 +53,7 @@ export const CollapsibleReviewSection = memo(function CollapsibleReviewSection({
             }}
           >
             <span className="min-w-0 truncate">{title}</span>
-            <span className="shrink-0 rounded-full bg-pitch-800 px-3 py-1 text-xs font-bold text-[color:var(--fl-muted)]">{open ? "Hide" : "Show"}</span>
+            <span className="absolute right-0 top-1/2 -translate-y-1/2 shrink-0 rounded-full bg-pitch-800 px-3 py-1 text-xs font-bold text-[color:var(--fl-muted)]">{open ? "Hide" : "Show"}</span>
           </button>
         ) : (
           <h3

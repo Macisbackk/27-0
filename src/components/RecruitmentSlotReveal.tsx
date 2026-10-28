@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { GameButton } from "@/components/ui/GameButton";
 import type { SlotRevealTarget } from "@/lib/game/recruitment-slot-reveal";
 import {
   getSpinTeamsForVariant,
@@ -37,6 +38,11 @@ interface RecruitmentSlotRevealProps {
    * (labels = positions with an empty slot). The three-club offer follows in the picker.
    */
   positionReel?: { labels: string[]; final: string } | null;
+  /**
+   * Classic: once the position lands, wait for "See players" or "Respin" (spins for another
+   * position, owner v1.42) instead of moving on by itself.
+   */
+  positionRespin?: { left: number; onRespin: () => void } | null;
   /** Must match GameBoard spinVariant — Era shows team+year reels; Current is team-only. */
   spinVariant: SpinPoolVariant;
   /** Small status line for an armed pre-game boost (no boost controls). */
@@ -53,6 +59,7 @@ interface RecruitmentSlotRevealProps {
 export function RecruitmentSlotReveal({
   target,
   positionReel = null,
+  positionRespin = null,
   spinVariant,
   boostStatus = null,
   boostDetail = null,
@@ -70,6 +77,8 @@ export function RecruitmentSlotReveal({
   const onCompleteRef = useRef(onComplete);
   const [isSpinning, setIsSpinning] = useState(true);
   const [landed, setLanded] = useState(false);
+  const waitForChoiceRef = useRef(false);
+  waitForChoiceRef.current = Boolean(positionReel && positionRespin);
   const skipRef = useRef<(() => void) | null>(null);
   // Focus moves to the spin so keyboard users can skip it: Escape skips, like a tap.
   const spinDialogRef = useModalA11y(true, () => skipRef.current?.(), { lockScroll: false });
@@ -126,6 +135,7 @@ export function RecruitmentSlotReveal({
         yearReelRef.current?.setScrollIndex(yearPlan.finalIndex, false);
       }
       lockReels();
+      if (waitForChoiceRef.current) return;
       const timeoutId = window.setTimeout(() => {
         completeAndRelease();
       }, 120);
@@ -178,6 +188,7 @@ export function RecruitmentSlotReveal({
       triggerHaptic(18);
       lockReels();
       spinTimingMark("animation-end", tAnimStart);
+      if (waitForChoiceRef.current) return;
       holdTimeout = window.setTimeout(() => {
         if (!cancelled) completeAndRelease();
       }, landHoldMs);
@@ -339,6 +350,22 @@ export function RecruitmentSlotReveal({
                 )}
               </p>
             </div>
+            {landed && positionReel && positionRespin ? (
+              <div className="mt-3 flex items-center gap-2">
+                <GameButton
+                  variant="secondary"
+                  size="md"
+                  fullWidth
+                  disabled={positionRespin.left <= 0}
+                  onClick={() => positionRespin.onRespin()}
+                >
+                  {positionRespin.left > 0 ? `Respin (${positionRespin.left})` : "No respins"}
+                </GameButton>
+                <GameButton size="md" fullWidth onClick={() => onCompleteRef.current()}>
+                  See players
+                </GameButton>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

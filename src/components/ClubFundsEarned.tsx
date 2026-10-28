@@ -57,11 +57,11 @@ export function ClubFundsEarned({
         <p id="club-funds-earned-title" className={TYPO.cardHeading}>
           {title}
         </p>
-        <ul className="fl-stagger space-y-1.5 text-left">
+        <ul className="fl-stagger space-y-1.5 text-center">
           {payout.lines.map((line) => (
             <li
               key={line.id}
-              className="flex items-baseline justify-between gap-3 rounded-control bg-pitch-800 px-3 py-2.5 text-sm text-[color:var(--fl-text)]"
+              className="flex flex-col items-center gap-0.5 rounded-control bg-pitch-800 px-3 py-2.5 text-sm text-[color:var(--fl-text)]"
             >
               <span className="min-w-0">{line.label}</span>
               {/* Non-cash lines (an item unlocked with the payout) carry amount 0. */}

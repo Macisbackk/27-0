@@ -114,6 +114,18 @@ try {
     await page.getByRole("button", { name: /^Spin$/ }).click({ timeout });
     await page.waitForTimeout(300);
     await page.getByRole("dialog", { name: "Recruitment spin" }).click({ timeout: 3000 }).catch(() => {}); // tap to skip
+    // v1.42: the landed position waits for "Respin" or "See players".
+    const seePlayers = page.getByRole("button", { name: "See players" });
+    await seePlayers.waitFor({ timeout });
+    if (round === 1) {
+      const posRespin = page.getByRole("dialog", { name: "Recruitment spin" }).getByRole("button", { name: /^Respin/ });
+      if (!(await posRespin.isEnabled())) fail("position Respin disabled with respins left");
+      await posRespin.click({ timeout });
+      await page.waitForTimeout(300);
+      await page.getByRole("dialog", { name: "Recruitment spin" }).click({ timeout: 3000 }).catch(() => {});
+      await seePlayers.waitFor({ timeout });
+    }
+    await seePlayers.click({ timeout });
     const sign = page.getByRole("button", { name: /^Sign / }).first();
     await sign.waitFor({ timeout });
     if (round === 0) {
@@ -130,6 +142,7 @@ try {
       for (let i = 0; i < 4; i++) await respin.click({ timeout: 1500 }).catch(() => {});
       await page.waitForTimeout(400);
       await page.getByRole("dialog", { name: "Recruitment spin" }).click({ timeout: 3000 }).catch(() => {});
+      await page.getByRole("button", { name: "See players" }).click({ timeout }).catch(() => {});
     }
     await page.getByRole("button", { name: /^Sign / }).first().dblclick({ timeout });
     await page.getByRole("button", { name: /Confirm Placement/i }).first().click({ timeout: 2500 }).catch(() => {});

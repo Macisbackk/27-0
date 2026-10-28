@@ -172,6 +172,7 @@ async function classicSpin(page) {
 async function skipSpin(page) {
   await page.waitForTimeout(400);
   await page.getByRole("dialog", { name: "Recruitment spin" }).click({ timeout: 3000 }).catch(() => {});
+  await page.getByRole("button", { name: "See players" }).click({ timeout: 4000 }).catch(() => {});
   await page.getByRole("button", { name: /^Sign / }).first().waitFor({ timeout: 8000 });
   await page.waitForTimeout(500);
 }
