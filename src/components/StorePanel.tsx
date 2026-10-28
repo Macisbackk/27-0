@@ -33,16 +33,17 @@ import {
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { GameButton } from "./ui/GameButton";
-import { FramesStore, InUseBadge, KitAndPitchStore, ModesStore, TitlesStore } from "./StoreCosmetics";
+import { FramesStore, InUseBadge, KitStore, ModesStore, PitchStore, TitlesStore } from "./StoreCosmetics";
 import { COSMETICS, nextStoreUnlock, type CosmeticKind } from "@/lib/cosmetics";
 import { purchaseCosmetic, useCosmetics } from "@/lib/storage/cosmetics-store";
 
-type StoreTab = "foryou" | "themes" | "kit" | "titles" | "frames" | "modes";
+type StoreTab = "foryou" | "themes" | "kit" | "pitches" | "titles" | "frames" | "modes";
 
 const STORE_TABS: { id: StoreTab; label: string }[] = [
   { id: "foryou", label: "For you" },
   { id: "themes", label: "Themes" },
-  { id: "kit", label: "Kit & pitch" },
+  { id: "kit", label: "Kit" },
+  { id: "pitches", label: "Pitches" },
   { id: "titles", label: "Titles" },
   { id: "frames", label: "Frames" },
   { id: "modes", label: "Modes" },
@@ -194,7 +195,8 @@ export function StorePanel() {
           }}
         />
       ) : null}
-      {tab === "kit" ? <KitAndPitchStore balance={balance} /> : null}
+      {tab === "kit" ? <KitStore balance={balance} /> : null}
+      {tab === "pitches" ? <PitchStore balance={balance} /> : null}
       {tab === "titles" ? <TitlesStore balance={balance} /> : null}
       {tab === "frames" ? <FramesStore balance={balance} /> : null}
       {tab === "modes" ? <ModesStore balance={balance} /> : null}
@@ -301,7 +303,7 @@ const KIND_LABEL: Record<CosmeticKind | "theme", string> = {
 const KIND_TAB: Record<CosmeticKind | "theme", StoreTab> = {
   theme: "themes",
   kit: "kit",
-  pitch: "kit",
+  pitch: "pitches",
   title: "titles",
   frame: "frames",
   mode: "modes",

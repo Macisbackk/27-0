@@ -82,13 +82,12 @@ function Swatch({ hex, selected, onClick, label }: { hex: string; selected: bool
   );
 }
 
-export function KitAndPitchStore({ balance }: { balance: number }) {
+export function KitStore({ balance }: { balance: number }) {
   const c = useCosmetics();
   const { message, buy } = useBuy(balance);
   const kitItem = COSMETICS.find((i) => i.id === KIT_DESIGNER_ID)!;
   const ownsKit = c.owned.includes(KIT_DESIGNER_ID);
   const kit = kitFromDesign(c.kit);
-  const activePitch = pitchStyleForItem(c.equipped.pitch);
 
   return (
     <div className="flex flex-col gap-3">
@@ -163,7 +162,18 @@ export function KitAndPitchStore({ balance }: { balance: number }) {
           </div>
         ) : null}
       </Section>
+    </div>
+  );
+}
 
+export function PitchStore({ balance }: { balance: number }) {
+  const c = useCosmetics();
+  const { message, buy } = useBuy(balance);
+  const activePitch = pitchStyleForItem(c.equipped.pitch);
+
+  return (
+    <div className="flex flex-col gap-3">
+      {message ? <p className="text-center text-sm text-theme-primary" role="status">{message}</p> : null}
       <Section title="Pitch styles" intro="The pitch under your team sheet.">
         <ul className="grid grid-cols-2 gap-3">
           {(["classic", ...items("pitch").map((i) => i.id)] as string[]).map((id) => {
