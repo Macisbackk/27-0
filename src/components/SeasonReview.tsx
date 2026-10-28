@@ -577,7 +577,7 @@ export function SeasonReview({
                 {endOfSeasonAwards.length > 0 ? (
                   <ul className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-3" aria-label="Awards">
                     {endOfSeasonAwards.map((a) => (
-                      <li key={a.id} className="rounded-tile bg-pitch-950 px-3 py-2 text-left">
+                      <li key={a.id} className="rounded-tile bg-pitch-950 px-3 py-2 text-center">
                         <p className="text-[11px] font-bold uppercase tracking-wide text-[color:var(--fl-muted)]">
                           {a.title}
                         </p>
