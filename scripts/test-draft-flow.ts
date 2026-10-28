@@ -6,8 +6,23 @@
 import {
   buildRunProgressSteps,
   getNextEmptySlotIndex,
+  getRunFormulaMode,
   resolveSpinRequest,
+  usesClubChoiceSpin,
 } from "../src/lib/game/draft-flow";
+import { getTeamYearPoolFromTarget } from "../src/lib/game/team-year-pools";
+import {
+  eligiblePlayersForSlot,
+  getPositionSpinOptions,
+  pickPositionSpin,
+  isPersonAlreadySigned,
+  placeSlotRecruitPlayerAtSlot,
+  prepareSlotClubChoicePlayers,
+} from "../src/lib/game/slot-team-year-pick";
+import { getChemistryGain } from "../src/lib/game/chemistry";
+import { buildBoostedSpinPlan, slotRevealTargetFromBoostedPlan } from "../src/lib/game/boosted-spin-plan";
+import { isNinetyPlusPlayer } from "../src/lib/boosts/applyQuickModeBoost";
+import { canPlayerFillTeamYearSlot } from "../src/lib/players/team-year-roster-playable";
 import {
   clearRunResume,
   getResumeModeKey,
@@ -255,6 +270,189 @@ assert(getSpinDurationMs(false) === DEFAULT_SPIN_DURATION_MS, "normal reel uncha
   );
   assert(winless[0].id === "heaviest-defeat" && winless[0].text.includes("40-4"), "no wins: heaviest defeat leads");
   assert(winless[1].id === "slump", "long losing run makes the slump headline");
+}
+
+/* ------------------------------------------------- Classic club choice (v1.40) */
+{
+  const base = {
+    slotRecruitMode: true,
+    spinVariant: "current" as const,
+    dailyChallengeMode: false,
+    weeklyChallengeMode: false,
+    sideMode: false,
+    challengeKind: null,
+  };
+  assert(usesClubChoiceSpin(base), "normal Classic uses the club choice");
+  assert(usesClubChoiceSpin({ ...base, challengeKind: "classic" }), "a Classic challenge link replays the club choice");
+  assert(!usesClubChoiceSpin({ ...base, spinVariant: "era" }), "Era keeps the club spin");
+  assert(!usesClubChoiceSpin({ ...base, spinVariant: "all", sideMode: true }), "One-Club XI keeps the club spin");
+  assert(!usesClubChoiceSpin({ ...base, sideMode: true }), "Gauntlet / past Daily keep the club spin");
+  assert(!usesClubChoiceSpin({ ...base, dailyChallengeMode: true }), "the Daily keeps the club spin (forced club)");
+  assert(!usesClubChoiceSpin({ ...base, weeklyChallengeMode: true }), "the Weekly keeps the club spin");
+  assert(!usesClubChoiceSpin({ ...base, challengeKind: "daily" }), "a Daily challenge link keeps the club spin");
+  assert(!usesClubChoiceSpin({ ...base, slotRecruitMode: false }), "Draft Mode never spins");
+  assert(
+    getRunFormulaMode({ eraCards: false, clubChoice: true }) === "classic" &&
+      getRunFormulaMode({ eraCards: false, clubChoice: false }) === "classic-spin" &&
+      getRunFormulaMode({ eraCards: true, clubChoice: false }) === "era",
+    "each flow plays the season on its own 27-0 ladder"
+  );
+
+  const personKey = (p: Player) => p.basePlayerId ?? p.name.toLowerCase();
+  let offersOk = true;
+  let distinctClubs = true;
+  let canPlay = true;
+  let deterministic = true;
+  let primaryIncluded = true;
+  let fullOffers = 0;
+  let offers = 0;
+  for (let i = 0; i < 12; i++) {
+    const squad = createEmptySquad();
+    for (const slotIndex of FORMATION_SLOT_INDICES) {
+      const seed = `club-choice-${i}`;
+      const primary = generateSlotTeamYearTargetForSlot(seed, slotIndex, new Set(), squad, slotIndex, new Set(), {
+        spinVariant: "current",
+      });
+      if (!primary) {
+        offersOk = false;
+        continue;
+      }
+      const offer = prepareSlotClubChoicePlayers(primary, new Set(), squad, slotIndex, { seed });
+      const again = prepareSlotClubChoicePlayers(primary, new Set(), squad, slotIndex, { seed });
+      offers++;
+      if (offer.length === 3) fullOffers++;
+      if (offer.length === 0 || offer.length > 3) offersOk = false;
+      if (new Set(offer.map((e) => e.target?.team)).size !== offer.length) distinctClubs = false;
+      if (!offer.some((e) => e.target?.teamYearKey === primary.teamYearKey)) primaryIncluded = false;
+      if (new Set(offer.map((e) => personKey(e.player))).size !== offer.length) distinctClubs = false;
+      const slot = squad.find((s) => s.slotIndex === slotIndex)!;
+      for (const e of offer) {
+        if (!e.target || !canPlayerFillTeamYearSlot(e.target.team, e.target.year, e.player, slot.position)) canPlay = false;
+      }
+      if (offer.map((e) => `${e.player.id}@${e.target?.team}`).join() !== again.map((e) => `${e.player.id}@${e.target?.team}`).join()) {
+        deterministic = false;
+      }
+    }
+  }
+  assert(offersOk, "club choice: every slot gets 1–3 cards");
+  assert(fullOffers / offers > 0.95, `club choice: almost every offer has three cards (${fullOffers}/${offers})`);
+  assert(distinctClubs, "club choice: every card is from a different club and a different person");
+  assert(primaryIncluded, "club choice: the spun club is always on offer");
+  assert(canPlay, "club choice: every card can play the tapped position for its club");
+  assert(deterministic, "club choice: same seed + squad + spin ⇒ same three cards (lock / resume safe)");
+
+  // A signed neighbour: the offer always includes a link with them (when the spun club isn't theirs).
+  let linkOffered = 0;
+  let linkChances = 0;
+  for (let i = 0; i < 20; i++) {
+    const seed = `club-choice-link-${i}`;
+    let squad = createEmptySquad();
+    const wingTarget = generateSlotTeamYearTargetForSlot(seed, 0, new Set(), squad, 1, new Set(), { spinVariant: "current" })!;
+    const wing = prepareSlotClubChoicePlayers(wingTarget, new Set(), squad, 1, { seed })[0]!;
+    squad = placeSlotRecruitPlayerAtSlot(squad, wing.player, wing.target!, 1) ?? squad;
+    const usedIds = new Set([wing.player.id]);
+    const centreTarget = generateSlotTeamYearTargetForSlot(seed, 1, usedIds, squad, 3, new Set(), { spinVariant: "current" })!;
+    const offer = prepareSlotClubChoicePlayers(centreTarget, usedIds, squad, 3, { seed });
+    const wingPool = getTeamYearPoolFromTarget(wing.target!);
+    if (!wingPool || eligiblePlayersForSlot(wingPool, usedIds, squad, 3).length === 0) continue;
+    linkChances++;
+    if (offer.some((e) => getChemistryGain(squad, 3, e.player) > 0)) linkOffered++;
+    if (offer.some((e) => isPersonAlreadySigned(e.player, squad))) linkOffered = -1000;
+  }
+  assert(linkOffered === linkChances, `club choice: a club link with the signed neighbour is always on offer (${linkOffered}/${linkChances})`);
+
+  // 90+ boost: the boosted card is in the offer, from the club the boost plan spun.
+  const boostSquad = createEmptySquad();
+  let boostSlots = 0;
+  let boostOk = true;
+  for (const slotIndex of FORMATION_SLOT_INDICES) {
+    const plan = buildBoostedSpinPlan({
+      runId: "club-choice-boost",
+      seed: "club-choice-boost",
+      spinIndex: 17,
+      boostId: "qm-90-plus-player",
+      usedIds: new Set(),
+      squad: boostSquad,
+      slotIndex,
+      options: { spinVariant: "current" },
+    });
+    const target = slotRevealTargetFromBoostedPlan(plan);
+    if (!target) continue;
+    boostSlots++;
+    const offer = prepareSlotClubChoicePlayers(target, new Set(), boostSquad, slotIndex, {
+      seed: "club-choice-boost",
+      selectionBoostId: plan.boostId,
+      guaranteedPlayerId: plan.guaranteedPlayerId,
+    });
+    const boosted = offer.find((e) => e.player.id === plan.guaranteedPlayerId);
+    if (!boosted || !isNinetyPlusPlayer(boosted.player) || boosted.target?.teamYearKey !== target.teamYearKey) boostOk = false;
+  }
+  assert(boostSlots > 0 && boostOk, `club choice: the 90+ boost's card is always in the offer (${boostSlots} slots)`);
+
+  // The position reel: one option per position with an empty slot, uniform, seeded.
+  const empty = createEmptySquad();
+  const allOptions = getPositionSpinOptions(empty);
+  assert(
+    allOptions.map((o) => o.label).join() ===
+      "Fullback,Wing,Centre,Stand Off,Scrum Half,Prop,Hooker,Second Row,Loose Forward",
+    `position reel lists the nine positions once each (${allOptions.map((o) => o.label).join(", ")})`
+  );
+  assert(
+    allOptions.every((o) => empty.find((s) => s.slotIndex === o.slotIndex)?.position === o.position),
+    "each position option points at an empty slot of that position"
+  );
+  const seen = new Set<string>();
+  let reelDeterministic = true;
+  for (let i = 0; i < 200; i++) {
+    const a = pickPositionSpin("pos-reel", i, empty)!;
+    const b = pickPositionSpin("pos-reel", i, empty)!;
+    if (a.slotIndex !== b.slotIndex) reelDeterministic = false;
+    seen.add(a.label);
+  }
+  assert(reelDeterministic, "position reel: same seed + spin ⇒ same position (lock / resume safe)");
+  assert(seen.size === 9, `position reel lands on every position over 200 spins (${seen.size})`);
+  {
+    let wingsFilled = createEmptySquad();
+    const anyWing = (slotIndex: number) => wingsFilled.find((s) => s.slotIndex === slotIndex)!;
+    for (const idx of [1, 2]) {
+      wingsFilled = wingsFilled.map((s) =>
+        s.slotIndex === idx ? { ...s, player: { id: `w${idx}`, name: `Wing ${idx}` } as Player } : s
+      );
+    }
+    assert(anyWing(1).player !== null, "test squad has both wings signed");
+    const opts = getPositionSpinOptions(wingsFilled);
+    assert(!opts.some((o) => o.position === "WING") && opts.length === 8, "position reel drops a position once its slots are full");
+    let onlyEmpty = true;
+    for (let i = 0; i < 100; i++) {
+      const pick = pickPositionSpin("pos-reel-full", i, wingsFilled)!;
+      if (pick.position === "WING") onlyEmpty = false;
+    }
+    assert(onlyEmpty, "position reel never lands on a full position");
+    const allowed = pickPositionSpin("pos-reel-boost", 0, empty, [8]);
+    assert(allowed?.slotIndex === 8 && allowed.label === "Hooker", "an armed boost narrows the reel to positions it can fill");
+    assert(pickPositionSpin("x", 0, empty, []) === null, "no allowed position ⇒ no spin");
+  }
+
+  // A whole Classic draft through the position reel + club choice: 13 signed, no person twice.
+  let squad = createEmptySquad();
+  for (let n = 0; n < TOTAL_SLOTS; n++) {
+    const slotIndex = pickPositionSpin("club-choice-draft", n, squad)!.slotIndex;
+    const usedIds = new Set(squad.filter((s) => s.player).map((s) => s.player!.id));
+    const target = generateSlotTeamYearTargetForSlot("club-choice-draft", n, usedIds, squad, slotIndex, new Set(), {
+      spinVariant: "current",
+    });
+    if (!target) break;
+    const offer = prepareSlotClubChoicePlayers(target, usedIds, squad, slotIndex, { seed: "club-choice-draft" });
+    const pick = offer[n % offer.length]!;
+    squad = placeSlotRecruitPlayerAtSlot(squad, pick.player, pick.target!, slotIndex) ?? squad;
+  }
+  const signed = squad.filter((s) => s.player).map((s) => s.player!);
+  assert(signed.length === TOTAL_SLOTS, `club choice: a full draft signs all ${TOTAL_SLOTS} (${signed.length})`);
+  assert(new Set(signed.map(personKey)).size === signed.length, "club choice: nobody is signed twice");
+  assert(
+    signed.every((p) => p.runClub && !p.runClub.includes("undefined")),
+    "club choice: every signing carries the club it was picked from"
+  );
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);

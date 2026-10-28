@@ -211,11 +211,15 @@ export const DAILY_MISSION_TEMPLATES: readonly DailyMissionTemplate[] = [
     id: "chemistry",
     category: "squad",
     params: [1, 2, 3],
-    title: (p) => `Get ${num(p)} chemistry link${num(p) === 1 ? "" : "s"} in a season`,
+    title: (p) => `Get ${num(p)} chemistry link${num(p) === 1 ? "" : "s"} in a Classic season`,
     reward: (p) => (num(p) >= 3 ? 30_000 : num(p) === 2 ? 20_000 : 15_000),
     target: (p) => num(p),
     accumulate: "max",
-    measure: (e) => countedSeason(e)?.chemistryLinks ?? null,
+    // Chemistry has no effect in Era (v1.40), so only Classic seasons count.
+    measure: (e) => {
+      const s = countedSeason(e);
+      return s && !s.era ? s.chemistryLinks : null;
+    },
   },
   {
     id: "spine",

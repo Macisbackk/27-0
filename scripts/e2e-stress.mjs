@@ -106,15 +106,24 @@ try {
   where = "classic";
   await page.goto(`${BASE}/play?e2e=1`, { waitUntil: "networkidle" });
   await page.getByRole("button", { name: /Skip boost|Continue without boost/i }).first().click({ timeout: 4000 }).catch(() => {});
+  // v1.40: Classic has one Spin button (the reel spins positions); team-sheet slots aren't spin buttons.
+  if (await page.getByRole("button", { name: /: empty — tap to spin$/ }).count()) {
+    fail("Classic team sheet still has tap-to-spin slots");
+  }
   for (let round = 0; round < 3; round++) {
-    const slot = page.getByRole("button", { name: /: empty — tap to spin$/ }).first();
-    await slot.click({ timeout });
+    await page.getByRole("button", { name: /^Spin$/ }).click({ timeout });
     await page.waitForTimeout(300);
     await page.getByRole("dialog", { name: "Recruitment spin" }).click({ timeout: 3000 }).catch(() => {}); // tap to skip
     const sign = page.getByRole("button", { name: /^Sign / }).first();
     await sign.waitFor({ timeout });
     if (round === 0) {
       await shot(page, "classic-picker");
+      // v1.40 club choice: one card from each of up to three different clubs.
+      const clubs = await page
+        .locator(".slot-picker__row[data-club]")
+        .evaluateAll((els) => els.map((el) => el.getAttribute("data-club")));
+      if (clubs.length < 2) fail(`Classic picker offered ${clubs.length} club(s), expected a choice of clubs`);
+      if (new Set(clubs).size !== clubs.length) fail(`Classic picker repeated a club: ${clubs.join(", ")}`);
       const box = await page.locator(".slot-picker__card").boundingBox();
       if (box && box.y + box.height > 640 + 2) fail(`picker is taller than a 320×640 screen (${Math.round(box.y + box.height)}px)`);
       const respin = page.getByRole("button", { name: /^Respin/ });
@@ -146,6 +155,28 @@ try {
   if (Math.max(...heights) - Math.min(...heights) > 40) fail(`season sim card grew while simulating: ${heights.join(" → ")}`);
   await shot(page, "season-sim");
   step("Season sim card keeps its size as results land");
+
+  // ── 3b. Era: one club per spin, and no chemistry shown (it has no effect there, v1.40).
+  where = "era";
+  await page.goto(`${BASE}/play?era=1&e2e=1`, { waitUntil: "networkidle" });
+  await page.getByRole("button", { name: /Skip boost|Continue without boost/i }).first().click({ timeout: 4000 }).catch(() => {});
+  for (let round = 0; round < 2; round++) {
+    await page.getByRole("button", { name: /: empty — tap to spin$/ }).first().click({ timeout });
+    await page.waitForTimeout(300);
+    await page.getByRole("dialog", { name: "Recruitment spin" }).click({ timeout: 3000 }).catch(() => {});
+    await page.getByRole("button", { name: /^Sign / }).first().waitFor({ timeout });
+    const eraClubs = await page
+      .locator(".slot-picker__row[data-club]")
+      .evaluateAll((els) => els.map((el) => el.getAttribute("data-club")));
+    if (new Set(eraClubs).size > 1) fail(`Era picker mixed clubs: ${eraClubs.join(", ")}`);
+    if (await page.locator(".slot-picker__card").getByText(/\+\d\.\d link|chemistry/i).count()) fail("Era picker shows chemistry");
+    await page.getByRole("button", { name: /^Sign / }).first().click({ timeout });
+    await page.waitForTimeout(500);
+  }
+  if (/Chemistry/i.test(await page.locator(".matchday-scoreboard").innerText().catch(() => ""))) {
+    fail("Era scoreboard shows chemistry");
+  }
+  step("Era: one club per spin, no chemistry shown");
 
   // ── 4. Login page: forgot password with no email, then a bad email.
   where = "login";

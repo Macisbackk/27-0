@@ -5,7 +5,14 @@ import { motion } from "framer-motion";
 import { ClubLogoBox } from "@/components/ClubBadge";
 import type { Player, SquadSlot } from "@/lib/types";
 import { getAverageSquadRating } from "@/lib/squad-analysis";
-import { getChemistryGain, getNewChemistryLinks } from "@/lib/game/chemistry";
+import {
+  CHEMISTRY_PAIRS,
+  getChemistryGain,
+  getChoiceScore,
+  getNewChemistryLinks,
+} from "@/lib/game/chemistry";
+import { formatSpinReelTeamName } from "@/lib/clubs/spin-reel-team-name";
+import { formatPlayerPositionLabel } from "@/lib/players/player-positions";
 import { getAgeAtYear, getPlayerAge } from "@/lib/players/player-age";
 import { formatShortYear } from "@/lib/players/prime-year";
 import { getClubColors } from "@/lib/clubs";
@@ -36,6 +43,13 @@ interface SlotTeamYearPickerProps {
   hardMode?: boolean;
   boosted?: boolean;
   eraMode?: boolean;
+  /** False in Era, where chemistry has no effect (v1.40): no link tags, "Top" is rating only. */
+  showChemistry?: boolean;
+  /**
+   * Classic club choice: each entry carries its own club (`entry.target`), so the header names
+   * the position, not a club, and every row shows its club.
+   */
+  clubChoice?: boolean;
   /** Hide Current/Era “season’s form” rating note (e.g. Daily Challenge). */
   hideRatingNote?: boolean;
   /** The position being filled and the squad so far — for the header and team-rating preview. */
@@ -72,6 +86,8 @@ export function SlotTeamYearPicker({
   hardMode,
   boosted = false,
   eraMode = false,
+  showChemistry = true,
+  clubChoice = false,
   hideRatingNote = false,
   slot = null,
   squad,
@@ -113,7 +129,7 @@ export function SlotTeamYearPicker({
 
   // Chemistry gained by signing each option into this slot (adjacent club / era-year links).
   const chemistryFor = useMemo(() => {
-    if (!slot || !squad || hardMode) {
+    if (!slot || !squad || hardMode || !showChemistry) {
       return () => ({ gain: 0, links: [] as ReturnType<typeof getNewChemistryLinks>, partners: [] as string[] });
     }
     return (player: Player) => {
@@ -128,18 +144,29 @@ export function SlotTeamYearPicker({
         partners,
       };
     };
-  }, [slot, squad, hardMode]);
+  }, [slot, squad, hardMode, showChemistry]);
 
-  // "Top" = best rating plus chemistry gain, not the raw OVR.
+  // "Top" = best rating plus what its chemistry is worth (a link ≈ 2 rating points), not raw OVR.
   const topScore = useMemo(
     () =>
       sortedEntries.reduce(
         (best, { player }) =>
-          Math.max(best, player.peakRating + chemistryFor(player).gain),
+          Math.max(best, getChoiceScore(player.peakRating, chemistryFor(player).gain)),
         -Infinity
       ),
     [sortedEntries, chemistryFor]
   );
+
+  // One short centred line on chemistry for club choice (only where this slot can link).
+  const chemistryHint = useMemo(() => {
+    if (!clubChoice || !showChemistry || hardMode || !slot) return null;
+    const linkable = CHEMISTRY_PAIRS.some(([a, b]) => a === slot.slotIndex || b === slot.slotIndex);
+    if (!linkable) return null;
+    return sortedEntries.some(({ player }) => chemistryFor(player).gain > 0)
+      ? "Green tag = club link (chemistry)."
+      : "Same club side by side = chemistry.";
+  }, [clubChoice, showChemistry, hardMode, slot, sortedEntries, chemistryFor]);
+  const clubCount = new Set(entries.map((e) => (e.target ?? target).team)).size;
 
   // Team rating if you sign each player (only once someone is already in the side).
   const impactFor = useMemo(() => {
@@ -182,6 +209,23 @@ export function SlotTeamYearPicker({
       transition={{ duration: 0.28, ease: "easeOut" }}
     >
       <div className="slot-picker__card overflow-hidden rounded-card bg-pitch-900">
+        {clubChoice ? (
+          <header className="px-4 pb-2 pt-3 text-center">
+            <h2 className="font-display text-xl font-bold leading-tight text-white">
+              {slot ? `Pick your ${slot.label}` : "Pick your signing"}
+            </h2>
+            <p className="mt-0.5 text-xs font-semibold text-[color:var(--fl-muted)]">
+              {onlyOption
+                ? `Only option${slot ? ` for ${slot.label}` : ""}`
+                : `${clubCount} clubs, pick one`}
+              {" · spin locked in"}
+            </p>
+            {chemistryHint ? (
+              <p className="mt-1 text-[13px] font-semibold text-lime-300">{chemistryHint}</p>
+            ) : null}
+          </header>
+        ) : (
+        <>
         <TeamColourStrip club={target.team} />
         <header
           className="flex items-center gap-3 px-4 pb-3 pt-3.5"
@@ -205,6 +249,8 @@ export function SlotTeamYearPicker({
             </p>
           </div>
         </header>
+        </>
+        )}
 
         <div className="px-3 pb-3">
           {entries.length === 0 ? (
@@ -221,38 +267,45 @@ export function SlotTeamYearPicker({
                 </p>
               ) : null}
               <ul className="fl-stagger flex flex-col gap-2" aria-label="Players you can sign">
-                {sortedEntries.map(({ player }) => {
+                {sortedEntries.map(({ player, target: entryTarget }) => {
+                  const club = (entryTarget ?? target).team;
                   const chemistry = chemistryFor(player);
                   const isTopPick =
                     !hardMode &&
                     sortedEntries.length > 1 &&
-                    Math.abs(player.peakRating + chemistry.gain - topScore) < 0.001;
-                  const age = ageFor(player, target.year);
-                  const meta = formatPlayerChoiceMetadata(player, { clubOverride: target.team, hardMode });
+                    Math.abs(getChoiceScore(player.peakRating, chemistry.gain) - topScore) < 0.001;
+                  const age = ageFor(player, (entryTarget ?? target).year);
+                  const meta = formatPlayerChoiceMetadata(player, { clubOverride: club, hardMode });
                   const tags = hardMode
                     ? []
                     : getPrimaryPlayerChoiceTags(player, { boosted, topPick: false, allowEasterEggTags: true });
                   const impact = impactFor(player);
                   // No nation code: it pushed the age off a phone screen.
-                  const metaLine = [meta.positionLabel, age !== undefined ? `Age ${age}` : null]
+                  const metaLine = [
+                    clubChoice ? formatSpinReelTeamName(club) : null,
+                    // Club choice adds the club, so the short position keeps it to one line on a phone.
+                    clubChoice ? formatPlayerPositionLabel(player, { short: true }) : meta.positionLabel,
+                    age !== undefined ? `Age ${age}` : null,
+                  ]
                     .filter(Boolean)
                     .join(" · ");
                   return (
                     <li key={player.id}>
                       <button
                         type="button"
+                        data-club={club}
                         disabled={disabled}
                         onClick={() => {
                           playPlayerSelect();
                           onSelect(player);
                         }}
-                        aria-label={`Sign ${player.name}${hardMode ? "" : `, rated ${player.peakRating}`}`}
+                        aria-label={`Sign ${player.name}${clubChoice ? ` from ${club}` : ""}${hardMode ? "" : `, rated ${player.peakRating}`}`}
                         className={`slot-picker__row fl-pressable group flex w-full items-center gap-3 rounded-tile bg-pitch-950 p-2.5 pr-3 text-left transition hover:bg-pitch-800 disabled:opacity-50 ${
                           isTopPick ? "slot-picker__row--top" : ""
                         }`}
                       >
                         <ClubShirt
-                          kit={getClubKit(target.team)}
+                          kit={getClubKit(club)}
                           label={hardMode ? "?" : String(player.peakRating)}
                           size={50}
                           className="shrink-0 drop-shadow-[0_3px_6px_rgba(0,0,0,0.45)]"
@@ -322,7 +375,8 @@ export function SlotTeamYearPicker({
                 })}
               </ul>
 
-              {hideRatingNote ? null : (
+              {/* Club choice: the rating note is under the pitch already; keeps 3 rows on a phone. */}
+              {hideRatingNote || clubChoice ? null : (
                 <div className="mt-2 px-1 text-center">
                   {eraMode ? <EraRatingExplanation compact /> : <CurrentRatingExplanation compact />}
                 </div>

@@ -14,6 +14,10 @@
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { draftSquad, type DraftStrategy } from "./lib/sim-draft";
+
+/** The Gauntlet keeps the club spin on both card sets (Classic plays the "classic-spin" ladder). */
+const GAUNTLET_LADDERS = ["classic-spin", "era"] as const;
+const cardsFor = (mode: (typeof GAUNTLET_LADDERS)[number]) => (mode === "era" ? "era" : "classic");
 import { getAverageSquadRating } from "../src/lib/squad-analysis";
 import { computeChemistry } from "../src/lib/game/chemistry";
 import { simulateSeasonRecord } from "../src/lib/game/season-simulation";
@@ -124,14 +128,14 @@ if (!process.argv.includes("--skip-gauntlet")) {
       opponents: getGauntletOpponents().map((o) => `${o.label} ${o.squadRating} (${round(o.strength, 1)})`),
     })
   );
-  for (const mode of ["classic", "era"] as const) {
+  for (const mode of GAUNTLET_LADDERS) {
     for (const tier of TIERS) {
       let beaten = 0;
       let sweeps = 0;
       let runs = 0;
       let analytic = 0;
       for (let i = 0; i < RUNS; i++) {
-        const squad = draftSquad(`gauntlet-${mode}-${tier}-${i}`, mode, tier);
+        const squad = draftSquad(`gauntlet-${mode}-${tier}-${i}`, cardsFor(mode), tier, { flow: "club-spin" });
         const chances = getGauntletChances(squad, mode);
         analytic += chances.reduce((p, x) => p * x, 1);
         for (let s = 0; s < SEASONS; s++) {

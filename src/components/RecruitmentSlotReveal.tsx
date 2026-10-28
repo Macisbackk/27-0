@@ -32,6 +32,11 @@ const SKIP_GUARD_MS = 250;
 
 interface RecruitmentSlotRevealProps {
   target: SlotRevealTarget;
+  /**
+   * Classic (v1.40): the reel spins positions instead of clubs and lands on the one to fill
+   * (labels = positions with an empty slot). The three-club offer follows in the picker.
+   */
+  positionReel?: { labels: string[]; final: string } | null;
   /** Must match GameBoard spinVariant — Era shows team+year reels; Current is team-only. */
   spinVariant: SpinPoolVariant;
   /** Small status line for an armed pre-game boost (no boost controls). */
@@ -47,6 +52,7 @@ interface RecruitmentSlotRevealProps {
 
 export function RecruitmentSlotReveal({
   target,
+  positionReel = null,
   spinVariant,
   boostStatus = null,
   boostDetail = null,
@@ -56,7 +62,8 @@ export function RecruitmentSlotReveal({
 }: RecruitmentSlotRevealProps) {
   const spinDurationMs = getSpinDurationMs(quickSpin);
   const landHoldMs = getLandHoldMs(quickSpin);
-  const isEraSpin = spinVariant !== "current";
+  const isEraSpin = spinVariant !== "current" && !positionReel;
+  const positionKey = positionReel ? `${positionReel.labels.join("|")}>${positionReel.final}` : "";
   const teamReelRef = useRef<SlotReelHandle>(null);
   const yearReelRef = useRef<SlotReelHandle>(null);
   const shellRef = useRef<HTMLDivElement>(null);
@@ -75,13 +82,9 @@ export function RecruitmentSlotReveal({
 
   const { teamPlan, yearPlan } = useMemo(() => {
     const t0 = spinTimingMark("reel-plan-start");
-    const teams = getSpinTeamsForVariant(spinVariant);
-    const teamPlan = buildSpinReelPlan(
-      teams,
-      target.team,
-      undefined,
-      spinDurationMs
-    );
+    const teamPlan = positionReel
+      ? buildSpinReelPlan(positionReel.labels, positionReel.final, undefined, spinDurationMs)
+      : buildSpinReelPlan(getSpinTeamsForVariant(spinVariant), target.team, undefined, spinDurationMs);
     const yearPlan = isEraSpin
       ? buildSpinReelPlan(
           getSpinYearsForVariant(spinVariant),
@@ -92,7 +95,9 @@ export function RecruitmentSlotReveal({
       : null;
     spinTimingMark("reel-plan-ready", t0);
     return { teamPlan, yearPlan };
-  }, [target.team, target.year, target.teamYearId, spinVariant, isEraSpin, spinDurationMs]);
+    // positionKey stands in for positionReel (a fresh object each render).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [target.team, target.year, target.teamYearId, spinVariant, isEraSpin, spinDurationMs, positionKey]);
 
   useEffect(() => {
     const prefersReducedMotion =
@@ -252,13 +257,17 @@ export function RecruitmentSlotReveal({
           <div aria-hidden className="h-0.5 w-full bg-white/10" />
           <div className="border-b border-white/10 px-4 py-2.5 text-center">
             <p className={`${TYPO.sectionLabel} text-pitch-400`}>
-              {isSpinning
-                ? slotLabel
-                  ? `Spinning for your ${slotLabel}…`
-                  : "Spinning…"
-                : slotLabel
-                  ? `Your ${slotLabel} comes from…`
-                  : "Landed"}
+              {positionReel
+                ? isSpinning
+                  ? "Spinning for a position…"
+                  : "Your next signing is a…"
+                : isSpinning
+                  ? slotLabel
+                    ? `Spinning for your ${slotLabel}…`
+                    : "Spinning…"
+                  : slotLabel
+                    ? `Your ${slotLabel} comes from…`
+                    : "Landed"}
             </p>
             {boostStatus ? (
               <p className={`mt-1 ${TYPO.meta} text-theme-primary/90`}>
@@ -286,9 +295,9 @@ export function RecruitmentSlotReveal({
                 <SlotReel
                   ref={teamReelRef}
                   strip={teamPlan.strip}
-                  formatItem={formatSpinReelTeamName}
+                  formatItem={positionReel ? (item) => item : formatSpinReelTeamName}
                   textClassName="slot-reveal-team-name"
-                  useClubColors
+                  useClubColors={!positionReel}
                 />
               </div>
               {isEraSpin && yearPlan && (
@@ -319,7 +328,7 @@ export function RecruitmentSlotReveal({
               aria-hidden={!landed}
             >
               <p className="truncate px-1 font-display text-lg font-black text-white sm:text-xl">
-                {target.team}
+                {positionReel ? positionReel.final : target.team}
                 {isEraSpin && (
                   <>
                     {" "}

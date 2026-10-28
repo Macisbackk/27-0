@@ -215,6 +215,12 @@ async function main(): Promise<void> {
   });
   check(built.kind === "season" && built.chemistryLinks === 1, "squad halves link counted as chemistry");
   check(built.kind === "season" && built.clubsBySlot[5] === "wigan warriors" && built.clubsBySlot[0] === "wigan warriors", "era suffix stripped from clubs");
+  const chemistryMission = buildDailyMission(DAILY_MISSION_TEMPLATES.find((t) => t.id === "chemistry")!, 1);
+  check(applyMissionEvent(chemistryMission, 0, built) === 0, "chemistry mission ignores Era seasons (no chemistry in Era)");
+  check(
+    applyMissionEvent(chemistryMission, 0, { ...built, era: false } as MissionEvent) === chemistryMission.target,
+    "chemistry mission counts a Classic season's links"
+  );
   const spine = buildDailyMission(DAILY_MISSION_TEMPLATES.find((t) => t.id === "spine")!, null);
   check(applyMissionEvent(spine, 0, built) === spine.target, "spine mission from a real squad");
   const wiganMission = buildDailyMission(DAILY_MISSION_TEMPLATES.find((t) => t.id === "club-players")!, "Wigan Warriors");

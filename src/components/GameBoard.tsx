@@ -134,7 +134,11 @@ import type { SlotRevealTarget } from "@/lib/game/recruitment-slot-reveal";
 import {
   generateSlotTeamYearTargetForSlot,
   autofillSlotRecruitSquad,
+  getPositionSpinOptions,
+  pickPositionSpin,
+  POSITION_SPIN_LABELS,
   placeSlotRecruitPlayerAtSlot,
+  prepareSlotClubChoicePlayers,
   prepareSlotTeamYearPlayers,
 } from "@/lib/game/slot-team-year-pick";
 import {
@@ -143,6 +147,7 @@ import {
   buildBoostedFirstPickPlan,
   buildBoostedSpinPlan,
   clearBoostedFirstPickPlan,
+  listValidBoostedFirstPickSlots,
   isActiveBoostedFirstPick,
   loadBoostedFirstPickPlan,
   markBoostedFirstPickChoicesReady,
@@ -188,7 +193,9 @@ import { QuickModePreGameBoostSetup } from "./QuickModePreGameBoostSetup";
 import { RunProgress } from "./RunProgress";
 import {
   getNextEmptySlotIndex,
+  getRunFormulaMode,
   resolveSpinRequest,
+  usesClubChoiceSpin,
   type RunProgressStage,
 } from "@/lib/game/draft-flow";
 import {
@@ -324,6 +331,22 @@ export function GameBoard({
   const archiveDateKey = isSideMode && sideMode?.kind === "daily-archive" ? sideMode.dateKey : null;
   // One-Club XI spins a club's whole history: Era seasons and the 2026 squad.
   const spinVariant: SpinPoolVariant = oneClub ? "all" : normalEraMode ? "era" : "current";
+  /** Normal Classic: pick one of three cards from three different clubs (draft-flow.ts). */
+  const clubChoiceSpin = usesClubChoiceSpin({
+    slotRecruitMode: mode === "CLASSIC",
+    spinVariant,
+    dailyChallengeMode,
+    weeklyChallengeMode,
+    sideMode: isSideMode,
+    challengeKind: challenge?.kind ?? null,
+  });
+  /** The 27-0 formula ladder for this run's league season (sim-formula.ts). */
+  const formulaMode = getRunFormulaMode({
+    eraCards: normalEraMode || Boolean(oneClub),
+    clubChoice: clubChoiceSpin,
+  });
+  /** Chemistry has no effect in Era (v1.40), so it isn't shown there. One-Club keeps it. */
+  const showChemistry = !normalEraMode || Boolean(oneClub);
   const isDraftMode = mode === "DRAFT";
   /**
    * Boost ownership is snapshotted per run (refreshed only before the first pick). Reading the
@@ -1124,16 +1147,37 @@ export function GameBoard({
       return [];
     }
 
-    if (
+    const activeBoostPlan =
       boostedSpinPlan &&
       boostedSpinPlan.status !== "failed" &&
       boostedSpinPlan.status !== "consumed" &&
       boostedSpinPlan.selectedTeamId === activeSpinTarget.teamYearKey &&
       boostedSpinPlan.slotIndex === selectedSlotIndex &&
       boostedSpinPlan.playerChoiceIds.length > 0
-    ) {
+        ? boostedSpinPlan
+        : null;
+
+    if (clubChoiceSpin) {
+      // Classic: the spun club gives one card (any boost / legend guarantee lands there) and
+      // two other clubs give one each — one usually a club link with a signed neighbour.
+      return prepareSlotClubChoicePlayers(
+        activeSpinTarget,
+        signedPlayerIds,
+        squad,
+        selectedSlotIndex,
+        {
+          seed,
+          spinVariant,
+          legendOnly: !legendSpinUsed && legendSpinSlotIndex === selectedSlotIndex,
+          selectionBoostId: activeBoostPlan?.boostId ?? slotBoostGuaranteeId ?? undefined,
+          guaranteedPlayerId: activeBoostPlan?.guaranteedPlayerId,
+        }
+      );
+    }
+
+    if (activeBoostPlan) {
       return resolveBoostedSpinPlanPlayers(
-        boostedSpinPlan,
+        activeBoostPlan,
         activeSpinTarget,
         signedPlayerIds,
         squad,
@@ -1168,6 +1212,8 @@ export function GameBoard({
     slotBoostGuaranteeId,
     boostedSpinPlan,
     dailyRuleFilter,
+    clubChoiceSpin,
+    spinVariant,
   ]);
 
   useEffect(() => {
@@ -1222,11 +1268,12 @@ export function GameBoard({
     if (!isSlotRecruitMode || !activeSpinTarget || slotRecruitEntries.length === 0) return;
 
     const mismatched = slotRecruitEntries.find(
-      ({ player }) => !getPlayerTeamYearIds(player.id).includes(activeSpinTarget.teamYearId)
+      ({ player, target }) =>
+        !getPlayerTeamYearIds(player.id).includes((target ?? activeSpinTarget).teamYearId)
     );
     if (mismatched) {
       console.warn("Player pool leak", {
-        spinTeamYearId: activeSpinTarget.teamYearId,
+        spinTeamYearId: (mismatched.target ?? activeSpinTarget).teamYearId,
         playerId: mismatched.player.id,
         playerTeamYearIds: getPlayerTeamYearIds(mismatched.player.id),
       });
@@ -1349,7 +1396,7 @@ export function GameBoard({
       if (gauntletMode) {
         // Gauntlet: ten great sides instead of a league season. Decided (and recorded) now, so
         // leaving mid-reveal can't bin a bad run.
-        const run = runGauntlet(finalSquad, seed, normalEraMode ? "era" : "classic");
+        const run = runGauntlet(finalSquad, seed, formulaMode);
         setGauntletResult(run);
         setGauntletRecord(
           recordGauntletRun({ runId, beaten: run.beaten, era: normalEraMode, total: GAUNTLET_LENGTH })
@@ -1362,6 +1409,7 @@ export function GameBoard({
       const result = simulateSeason(finalSquad, seed, {
         draftMode: isDraftMode,
         currentSeasonOnly: !normalEraMode && !oneClub,
+        formulaMode,
         forceOpponentClub: challengeScenario?.forceOpponentClub ?? undefined,
         forceUndefeated: superSamHallasMode,
         joeMellorMode,
@@ -1388,6 +1436,7 @@ export function GameBoard({
       challengeScenario?.forceOpponentClub,
       gauntletMode,
       oneClub,
+      formulaMode,
     ]
   );
 
@@ -1403,6 +1452,7 @@ export function GameBoard({
       const result = simulateSeason(squad, seed, {
         draftMode: isDraftMode,
         currentSeasonOnly: !normalEraMode && !oneClub,
+        formulaMode,
         forceOpponentClub: challengeScenario?.forceOpponentClub ?? undefined,
         forceUndefeated: superSamHallasMode,
         joeMellorMode,
@@ -1419,6 +1469,7 @@ export function GameBoard({
       isDraftMode,
       normalEraMode,
       oneClub,
+      formulaMode,
       challengeScenario?.forceOpponentClub,
       superSamHallasMode,
       joeMellorMode,
@@ -1891,10 +1942,13 @@ export function GameBoard({
         return;
       }
 
+      // Club choice: each card carries its own club-season.
+      const pickedTarget =
+        slotRecruitEntries.find((e) => e.player.id === player.id)?.target ?? activeSpinTarget;
       const newSquad = placeSlotRecruitPlayerAtSlot(
         squad,
         player,
-        activeSpinTarget,
+        pickedTarget,
         selectedSlotIndex
       );
       if (!newSquad) return;
@@ -1958,7 +2012,7 @@ export function GameBoard({
       setChoosing(false);
       setUsedTeamYearKeys((prev) => {
         const next = new Set(prev);
-        next.add(activeSpinTarget.teamYearKey);
+        next.add(pickedTarget.teamYearKey);
         return next;
       });
       if (
@@ -1977,6 +2031,7 @@ export function GameBoard({
       phase,
       isSlotRecruitMode,
       activeSpinTarget,
+      slotRecruitEntries,
       selectedSlotIndex,
       squad,
       slotBoostGuaranteeId,
@@ -2025,13 +2080,19 @@ export function GameBoard({
 
       if (request.reopenLocked) {
         const locked = lockedSlotTargetsRef.current.get(slotIndex)!;
-        const stillValid =
-          !usedTeamYearKeys.has(locked.target.teamYearKey) &&
-          prepareSlotTeamYearPlayers(locked.target, signedPlayerIds, squad, slotIndex, {
-            seed,
-            legendOnly: requireLegendPlayer,
-            ruleFilter: dailyRuleFilter,
-          }).length > 0;
+        // Club choice repeats clubs on purpose (links), so a used club doesn't void the lock.
+        const stillValid = clubChoiceSpin
+          ? prepareSlotClubChoicePlayers(locked.target, signedPlayerIds, squad, slotIndex, {
+              seed,
+              spinVariant,
+              legendOnly: requireLegendPlayer,
+            }).length > 0
+          : !usedTeamYearKeys.has(locked.target.teamYearKey) &&
+            prepareSlotTeamYearPlayers(locked.target, signedPlayerIds, squad, slotIndex, {
+              seed,
+              legendOnly: requireLegendPlayer,
+              ruleFilter: dailyRuleFilter,
+            }).length > 0;
         if (stillValid) {
           setRecruitNotice(null);
           setPickerNotice(
@@ -2054,6 +2115,8 @@ export function GameBoard({
         setPendingSpin(null);
       }
 
+      // Club choice never steers away from clubs already signed: repeats are how links happen.
+      const spinUsedTeamYearKeys = clubChoiceSpin ? new Set<string>() : usedTeamYearKeys;
       let target: SlotRevealTarget | null = null;
       if (armedBoost) {
         const plan = buildBoostedSpinPlan({
@@ -2064,7 +2127,7 @@ export function GameBoard({
           usedIds: signedPlayerIds,
           squad,
           slotIndex,
-          usedTeamYearKeys,
+          usedTeamYearKeys: spinUsedTeamYearKeys,
           options: {
             requireLegendPlayer,
             spinVariant,
@@ -2099,7 +2162,7 @@ export function GameBoard({
           signedPlayerIds,
           squad,
           slotIndex,
-          usedTeamYearKeys,
+          spinUsedTeamYearKeys,
           { requireLegendPlayer, spinVariant, ruleFilter: dailyRuleFilter }
         );
       }
@@ -2149,8 +2212,52 @@ export function GameBoard({
       slotBoostGuaranteeId,
       selectionBoostsUsedThisRun,
       dailyRuleFilter,
+      clubChoiceSpin,
     ]
   );
+
+  /** Classic position reel: with a 90+ / Legend boost armed, only positions it can fill. */
+  const getPositionSpinAllowedSlots = useCallback(
+    (boostId: "qm-90-plus-player" | "qm-goat-hall-of-fame" | null): number[] | null =>
+      boostId
+        ? listValidBoostedFirstPickSlots(boostId, signedPlayerIds, squad, new Set(), {
+            spinVariant,
+            legendSpinSlotIndex,
+            legendSpinUsed,
+          })
+        : null,
+    [signedPlayerIds, squad, spinVariant, legendSpinSlotIndex, legendSpinUsed]
+  );
+
+  /**
+   * Classic: the one Spin button. The reel spins positions and lands on one with an empty slot;
+   * a landed spin stays locked (pressing Spin again reopens it, never re-rolls).
+   */
+  const startPositionSpin = useCallback(() => {
+    if (pendingSpin && lockedSlotTargetsRef.current.has(pendingSpin.slotIndex)) {
+      startSlotRecruitSpin(pendingSpin.slotIndex);
+      return;
+    }
+    const armedBoost =
+      preGameBoost?.status === "armed" || preGameBoost?.status === "applied"
+        ? slotBoostGuaranteeId
+        : null;
+    const pick = pickPositionSpin(seed, spinPickIndex, squad, getPositionSpinAllowedSlots(armedBoost));
+    if (!pick) {
+      setRecruitNotice("No position left to spin.");
+      return;
+    }
+    startSlotRecruitSpin(pick.slotIndex);
+  }, [
+    pendingSpin,
+    preGameBoost,
+    slotBoostGuaranteeId,
+    seed,
+    spinPickIndex,
+    squad,
+    getPositionSpinAllowedSlots,
+    startSlotRecruitSpin,
+  ]);
 
   const handleSlotRespin = useCallback((): boolean => {
     if (
@@ -2165,20 +2272,32 @@ export function GameBoard({
     }
 
     const nextSpinIndex = spinPickIndex + 1;
-    const requireLegendPlayer =
-      !legendSpinUsed &&
-      legendSpinSlotIndex === selectedSlotIndex;
     const armedBoost =
       (preGameBoost?.status === "armed" ||
         preGameBoost?.status === "applied") &&
       slotBoostGuaranteeId
         ? slotBoostGuaranteeId
         : null;
+    // Classic: a respin spins the position reel again too (it may land somewhere else).
+    const respinSlot = clubChoiceSpin
+      ? pickPositionSpin(seed, nextSpinIndex, squad, getPositionSpinAllowedSlots(armedBoost))
+          ?.slotIndex ?? selectedSlotIndex
+      : selectedSlotIndex;
+    const sameSlot = respinSlot === selectedSlotIndex;
+    const requireLegendPlayer =
+      !legendSpinUsed &&
+      legendSpinSlotIndex === respinSlot;
 
-    // Exclude the offer being respinned so we do not land on the same team-year.
-    const respinUsedTeamYearKeys = new Set(usedTeamYearKeys);
-    if (activeSpinTarget) {
+    // Exclude the offer being respinned so we do not land on the same team-year (club choice:
+    // on any of the offered clubs — signed clubs stay in, repeats are how links happen).
+    const respinUsedTeamYearKeys = new Set<string>(clubChoiceSpin ? [] : usedTeamYearKeys);
+    if (activeSpinTarget && sameSlot) {
       respinUsedTeamYearKeys.add(activeSpinTarget.teamYearKey);
+    }
+    if (clubChoiceSpin && sameSlot) {
+      for (const entry of slotRecruitEntries) {
+        if (entry.target) respinUsedTeamYearKeys.add(entry.target.teamYearKey);
+      }
     }
 
     let target: SlotRevealTarget | null = null;
@@ -2191,7 +2310,7 @@ export function GameBoard({
         boostId: armedBoost,
         usedIds: signedPlayerIds,
         squad,
-        slotIndex: selectedSlotIndex,
+        slotIndex: respinSlot,
         usedTeamYearKeys: respinUsedTeamYearKeys,
         options: {
           requireLegendPlayer,
@@ -2221,7 +2340,7 @@ export function GameBoard({
         nextSpinIndex,
         signedPlayerIds,
         squad,
-        selectedSlotIndex,
+        respinSlot,
         respinUsedTeamYearKeys,
         { requireLegendPlayer, spinVariant, ruleFilter: dailyRuleFilter }
       );
@@ -2235,15 +2354,17 @@ export function GameBoard({
     }
     // Only one team-year can fill this slot (e.g. the Era legend slot at Hooker): a respin
     // would land on the same offer, so don't spend one.
-    if (activeSpinTarget && target.teamYearKey === activeSpinTarget.teamYearKey) {
+    if (sameSlot && activeSpinTarget && target.teamYearKey === activeSpinTarget.teamYearKey) {
       setRecruitNotice("No other team can fill this slot — respin not used.");
       return false;
     }
 
     setRecruitNotice(null);
     setPickerNotice(null);
-    lockedSlotTargetsRef.current.set(selectedSlotIndex, { target, boosted: Boolean(armedBoost) });
-    setPendingSpin({ slotIndex: selectedSlotIndex, target });
+    if (!sameSlot) lockedSlotTargetsRef.current.delete(selectedSlotIndex);
+    lockedSlotTargetsRef.current.set(respinSlot, { target, boosted: Boolean(armedBoost) });
+    setPendingSpin({ slotIndex: respinSlot, target });
+    setSelectedSlotIndex(respinSlot);
 
     playReroll();
     setRespinsRemaining((n) => n - 1);
@@ -2279,10 +2400,15 @@ export function GameBoard({
     slotBoostGuaranteeId,
     selectionBoostsUsedThisRun,
     dailyRuleFilter,
+    clubChoiceSpin,
+    slotRecruitEntries,
+    getPositionSpinAllowedSlots,
   ]);
 
   const handleSelectSlot = useCallback(
     (slotIndex: number) => {
+      // Classic spins positions (one Spin button); team-sheet slots aren't spin buttons there.
+      if (clubChoiceSpin) return;
       if (isSlotRecruitMode) {
         startSlotRecruitSpin(slotIndex);
         return;
@@ -2298,6 +2424,7 @@ export function GameBoard({
       playRevealChoices();
     },
     [
+      clubChoiceSpin,
       isSlotRecruitMode,
       startSlotRecruitSpin,
       phase,
@@ -2895,15 +3022,28 @@ export function GameBoard({
   const suggestedSlotIndex =
     isSlotRecruitMode && phase === "pitch" && !squadComplete && !superSamHallasMode
       ? pendingSpin?.slotIndex ??
-        getNextEmptySlotIndex(
+        // Classic spins positions: no suggested slot, only a landed spin waiting.
+        (clubChoiceSpin ? null : getNextEmptySlotIndex(
           squad,
           lastSignedSlot,
           joeMellorMode ? [LOOSE_FORWARD_SLOT_INDEX] : []
-        )
+        ))
       : null;
   const suggestedSlotLabel =
     suggestedSlotIndex !== null
       ? squad.find((s) => s.slotIndex === suggestedSlotIndex)?.label ?? null
+      : null;
+  /** Classic position reel: positions with an empty slot, landing on the spun slot's. */
+  const positionReel =
+    clubChoiceSpin && selectedSlotIndex !== null
+      ? (() => {
+          const slot = squad.find((s) => s.slotIndex === selectedSlotIndex);
+          if (!slot) return null;
+          return {
+            labels: getPositionSpinOptions(squad).map((o) => o.label),
+            final: POSITION_SPIN_LABELS[slot.position],
+          };
+        })()
       : null;
   const runInProgress =
     !isReviewPhase && phase !== "simulation" && (filledCount > 0 || pendingSpin !== null) &&
@@ -3079,6 +3219,7 @@ export function GameBoard({
             averageSquadRating={averageSquadRating}
             chemistryBonus={chemistry.bonus}
             chemistryLinks={chemistry.links.length}
+            showChemistry={showChemistry}
             hardMode={difficulty === "HARD"}
           />
 
@@ -3187,11 +3328,15 @@ export function GameBoard({
                 <>
                   {" "}Rating{" "}
                   <span className="tabular-nums text-theme-primary">{averageSquadRating.toFixed(1)}</span>
-                  {" · "}Chemistry{" "}
-                  <span className="tabular-nums text-lime-300">{formatChemistryBonus(chemistry.bonus)}</span>
-                  <span className="text-[color:var(--fl-muted)]">
-                    {" "}({chemistry.links.length} {chemistry.links.length === 1 ? "link" : "links"})
-                  </span>
+                  {showChemistry ? (
+                    <>
+                      {" · "}Chemistry{" "}
+                      <span className="tabular-nums text-lime-300">{formatChemistryBonus(chemistry.bonus)}</span>
+                      <span className="text-[color:var(--fl-muted)]">
+                        {" "}({chemistry.links.length} {chemistry.links.length === 1 ? "link" : "links"})
+                      </span>
+                    </>
+                  ) : null}
                 </>
               ) : null}
             </p>
@@ -3211,13 +3356,24 @@ export function GameBoard({
           filledCount < TOTAL_SLOTS && (
           <div className="mt-4 flex flex-wrap items-center justify-center gap-1">
             <p className={`w-full text-center ${TYPO.bodySm} font-semibold text-white`}>
-              {pendingSpin
-                ? `Your ${suggestedSlotLabel ?? "last"} spin is waiting. Tap it to sign.`
-                : filledCount === 0
-                  ? "Tap a position to spin"
-                  : `${TOTAL_SLOTS - filledCount} to go${suggestedSlotLabel ? ` · next: ${suggestedSlotLabel}` : ""}`}
+              {clubChoiceSpin
+                ? pendingSpin
+                  ? `Your ${suggestedSlotLabel ?? "last"} spin is waiting. Press Spin to sign.`
+                  : filledCount === 0
+                    ? "Press Spin for a position"
+                    : `${TOTAL_SLOTS - filledCount} to go`
+                : pendingSpin
+                  ? `Your ${suggestedSlotLabel ?? "last"} spin is waiting. Tap it to sign.`
+                  : filledCount === 0
+                    ? "Tap a position to spin"
+                    : `${TOTAL_SLOTS - filledCount} to go${suggestedSlotLabel ? ` · next: ${suggestedSlotLabel}` : ""}`}
             </p>
-            {difficulty !== "HARD" && filledCount > 0 && chemistry.links.length > 0 ? (
+            {clubChoiceSpin && filledCount === 0 && !pendingSpin && difficulty !== "HARD" ? (
+              <p className="w-full text-center text-xs text-[color:var(--fl-muted)]">
+                Pick 1 of 3 players from 3 clubs. Same club side by side = chemistry.
+              </p>
+            ) : null}
+            {showChemistry && difficulty !== "HARD" && filledCount > 0 && chemistry.links.length > 0 ? (
               <p className="w-full text-center text-xs text-lime-300">
                 Chemistry {formatChemistryBonus(chemistry.bonus)}:{" "}
                 {chemistry.links
@@ -3273,6 +3429,7 @@ export function GameBoard({
                 }
                 highlightSlot={suggestedSlotIndex ?? undefined}
                 interactive={
+                  !clubChoiceSpin &&
                   !superSamHallasMode &&
                   phase === "pitch" &&
                   !isDraftMode
@@ -3348,6 +3505,7 @@ export function GameBoard({
             <RecruitmentSlotReveal
               key={revealKey}
               target={slotRecruitTarget}
+              positionReel={positionReel}
               spinVariant={spinVariant}
               boostStatus={spinBoostStatus}
               boostDetail={spinBoostDetail}
@@ -3410,6 +3568,8 @@ export function GameBoard({
                       hardMode={difficulty === "HARD"}
                       boosted={Boolean(boostNotice)}
                       eraMode={normalEraMode}
+                      showChemistry={showChemistry}
+                      clubChoice={clubChoiceSpin}
                       hideRatingNote={dailyChallengeMode || difficulty === "HARD"}
                       slot={
                         selectedSlotIndex !== null
@@ -3528,16 +3688,25 @@ export function GameBoard({
                 Auto-fill<span className="sr-only"> squad</span>
               </GameButton>
             )}
-            {phase === "pitch" && !squadComplete && suggestedSlotIndex !== null && (
+            {phase === "pitch" &&
+              !squadComplete &&
+              (suggestedSlotIndex !== null || (clubChoiceSpin && !superSamHallasMode)) && (
               <GameButton
                 variant="theme"
                 size="sm"
                 fullWidth={false}
-                onClick={() => startSlotRecruitSpin(suggestedSlotIndex)}
+                onClick={() => {
+                  if (clubChoiceSpin) startPositionSpin();
+                  else if (suggestedSlotIndex !== null) startSlotRecruitSpin(suggestedSlotIndex);
+                }}
                 disabled={choosing || hideActionBar}
                 className="min-h-[var(--mobile-tap-target)] flex-1 px-3 text-xs"
               >
-                {pendingSpin ? `Back to ${suggestedSlotLabel ?? "spin"}` : `Spin ${suggestedSlotLabel ?? "next"}`}
+                {pendingSpin
+                  ? `Back to ${suggestedSlotLabel ?? "spin"}`
+                  : clubChoiceSpin
+                    ? "Spin"
+                    : `Spin ${suggestedSlotLabel ?? "next"}`}
               </GameButton>
             )}
             {phase === "pitch" && squadComplete && (
