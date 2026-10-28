@@ -2037,17 +2037,6 @@ html[data-ui-overlay="1"] {
     font-size: clamp(0.72rem, 2.2vw + 0.35rem, 0.95rem);
   }
 
-  /* Classic club choice: three narrow reels side by side (short club names). */
-  .recruitment-spin-reel--triple .slot-reel-item {
-    padding: 0 0.2rem;
-  }
-
-  .recruitment-spin-reel--triple .slot-reveal-team-name {
-    padding-inline: 0;
-    letter-spacing: 0;
-    font-size: clamp(0.56rem, 1.5vw + 0.3rem, 0.8rem);
-  }
-
   .recruitment-spin-year-reel {
     width: 6rem;
     min-width: 6rem;

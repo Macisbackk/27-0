@@ -134,6 +134,9 @@ import type { SlotRevealTarget } from "@/lib/game/recruitment-slot-reveal";
 import {
   generateSlotTeamYearTargetForSlot,
   autofillSlotRecruitSquad,
+  getPositionSpinOptions,
+  pickPositionSpin,
+  POSITION_SPIN_LABELS,
   placeSlotRecruitPlayerAtSlot,
   prepareSlotClubChoicePlayers,
   prepareSlotTeamYearPlayers,
@@ -144,6 +147,7 @@ import {
   buildBoostedFirstPickPlan,
   buildBoostedSpinPlan,
   clearBoostedFirstPickPlan,
+  listValidBoostedFirstPickSlots,
   isActiveBoostedFirstPick,
   loadBoostedFirstPickPlan,
   markBoostedFirstPickChoicesReady,
@@ -2212,6 +2216,49 @@ export function GameBoard({
     ]
   );
 
+  /** Classic position reel: with a 90+ / Legend boost armed, only positions it can fill. */
+  const getPositionSpinAllowedSlots = useCallback(
+    (boostId: "qm-90-plus-player" | "qm-goat-hall-of-fame" | null): number[] | null =>
+      boostId
+        ? listValidBoostedFirstPickSlots(boostId, signedPlayerIds, squad, new Set(), {
+            spinVariant,
+            legendSpinSlotIndex,
+            legendSpinUsed,
+          })
+        : null,
+    [signedPlayerIds, squad, spinVariant, legendSpinSlotIndex, legendSpinUsed]
+  );
+
+  /**
+   * Classic: the one Spin button. The reel spins positions and lands on one with an empty slot;
+   * a landed spin stays locked (pressing Spin again reopens it, never re-rolls).
+   */
+  const startPositionSpin = useCallback(() => {
+    if (pendingSpin && lockedSlotTargetsRef.current.has(pendingSpin.slotIndex)) {
+      startSlotRecruitSpin(pendingSpin.slotIndex);
+      return;
+    }
+    const armedBoost =
+      preGameBoost?.status === "armed" || preGameBoost?.status === "applied"
+        ? slotBoostGuaranteeId
+        : null;
+    const pick = pickPositionSpin(seed, spinPickIndex, squad, getPositionSpinAllowedSlots(armedBoost));
+    if (!pick) {
+      setRecruitNotice("No position left to spin.");
+      return;
+    }
+    startSlotRecruitSpin(pick.slotIndex);
+  }, [
+    pendingSpin,
+    preGameBoost,
+    slotBoostGuaranteeId,
+    seed,
+    spinPickIndex,
+    squad,
+    getPositionSpinAllowedSlots,
+    startSlotRecruitSpin,
+  ]);
+
   const handleSlotRespin = useCallback((): boolean => {
     if (
       !isSlotRecruitMode ||
@@ -2225,23 +2272,29 @@ export function GameBoard({
     }
 
     const nextSpinIndex = spinPickIndex + 1;
-    const requireLegendPlayer =
-      !legendSpinUsed &&
-      legendSpinSlotIndex === selectedSlotIndex;
     const armedBoost =
       (preGameBoost?.status === "armed" ||
         preGameBoost?.status === "applied") &&
       slotBoostGuaranteeId
         ? slotBoostGuaranteeId
         : null;
+    // Classic: a respin spins the position reel again too (it may land somewhere else).
+    const respinSlot = clubChoiceSpin
+      ? pickPositionSpin(seed, nextSpinIndex, squad, getPositionSpinAllowedSlots(armedBoost))
+          ?.slotIndex ?? selectedSlotIndex
+      : selectedSlotIndex;
+    const sameSlot = respinSlot === selectedSlotIndex;
+    const requireLegendPlayer =
+      !legendSpinUsed &&
+      legendSpinSlotIndex === respinSlot;
 
     // Exclude the offer being respinned so we do not land on the same team-year (club choice:
     // on any of the offered clubs — signed clubs stay in, repeats are how links happen).
     const respinUsedTeamYearKeys = new Set<string>(clubChoiceSpin ? [] : usedTeamYearKeys);
-    if (activeSpinTarget) {
+    if (activeSpinTarget && sameSlot) {
       respinUsedTeamYearKeys.add(activeSpinTarget.teamYearKey);
     }
-    if (clubChoiceSpin) {
+    if (clubChoiceSpin && sameSlot) {
       for (const entry of slotRecruitEntries) {
         if (entry.target) respinUsedTeamYearKeys.add(entry.target.teamYearKey);
       }
@@ -2257,7 +2310,7 @@ export function GameBoard({
         boostId: armedBoost,
         usedIds: signedPlayerIds,
         squad,
-        slotIndex: selectedSlotIndex,
+        slotIndex: respinSlot,
         usedTeamYearKeys: respinUsedTeamYearKeys,
         options: {
           requireLegendPlayer,
@@ -2287,7 +2340,7 @@ export function GameBoard({
         nextSpinIndex,
         signedPlayerIds,
         squad,
-        selectedSlotIndex,
+        respinSlot,
         respinUsedTeamYearKeys,
         { requireLegendPlayer, spinVariant, ruleFilter: dailyRuleFilter }
       );
@@ -2301,15 +2354,17 @@ export function GameBoard({
     }
     // Only one team-year can fill this slot (e.g. the Era legend slot at Hooker): a respin
     // would land on the same offer, so don't spend one.
-    if (activeSpinTarget && target.teamYearKey === activeSpinTarget.teamYearKey) {
+    if (sameSlot && activeSpinTarget && target.teamYearKey === activeSpinTarget.teamYearKey) {
       setRecruitNotice("No other team can fill this slot — respin not used.");
       return false;
     }
 
     setRecruitNotice(null);
     setPickerNotice(null);
-    lockedSlotTargetsRef.current.set(selectedSlotIndex, { target, boosted: Boolean(armedBoost) });
-    setPendingSpin({ slotIndex: selectedSlotIndex, target });
+    if (!sameSlot) lockedSlotTargetsRef.current.delete(selectedSlotIndex);
+    lockedSlotTargetsRef.current.set(respinSlot, { target, boosted: Boolean(armedBoost) });
+    setPendingSpin({ slotIndex: respinSlot, target });
+    setSelectedSlotIndex(respinSlot);
 
     playReroll();
     setRespinsRemaining((n) => n - 1);
@@ -2347,10 +2402,13 @@ export function GameBoard({
     dailyRuleFilter,
     clubChoiceSpin,
     slotRecruitEntries,
+    getPositionSpinAllowedSlots,
   ]);
 
   const handleSelectSlot = useCallback(
     (slotIndex: number) => {
+      // Classic spins positions (one Spin button); team-sheet slots aren't spin buttons there.
+      if (clubChoiceSpin) return;
       if (isSlotRecruitMode) {
         startSlotRecruitSpin(slotIndex);
         return;
@@ -2366,6 +2424,7 @@ export function GameBoard({
       playRevealChoices();
     },
     [
+      clubChoiceSpin,
       isSlotRecruitMode,
       startSlotRecruitSpin,
       phase,
@@ -2963,15 +3022,28 @@ export function GameBoard({
   const suggestedSlotIndex =
     isSlotRecruitMode && phase === "pitch" && !squadComplete && !superSamHallasMode
       ? pendingSpin?.slotIndex ??
-        getNextEmptySlotIndex(
+        // Classic spins positions: no suggested slot, only a landed spin waiting.
+        (clubChoiceSpin ? null : getNextEmptySlotIndex(
           squad,
           lastSignedSlot,
           joeMellorMode ? [LOOSE_FORWARD_SLOT_INDEX] : []
-        )
+        ))
       : null;
   const suggestedSlotLabel =
     suggestedSlotIndex !== null
       ? squad.find((s) => s.slotIndex === suggestedSlotIndex)?.label ?? null
+      : null;
+  /** Classic position reel: positions with an empty slot, landing on the spun slot's. */
+  const positionReel =
+    clubChoiceSpin && selectedSlotIndex !== null
+      ? (() => {
+          const slot = squad.find((s) => s.slotIndex === selectedSlotIndex);
+          if (!slot) return null;
+          return {
+            labels: getPositionSpinOptions(squad).map((o) => o.label),
+            final: POSITION_SPIN_LABELS[slot.position],
+          };
+        })()
       : null;
   const runInProgress =
     !isReviewPhase && phase !== "simulation" && (filledCount > 0 || pendingSpin !== null) &&
@@ -3284,15 +3356,21 @@ export function GameBoard({
           filledCount < TOTAL_SLOTS && (
           <div className="mt-4 flex flex-wrap items-center justify-center gap-1">
             <p className={`w-full text-center ${TYPO.bodySm} font-semibold text-white`}>
-              {pendingSpin
-                ? `Your ${suggestedSlotLabel ?? "last"} spin is waiting. Tap it to sign.`
-                : filledCount === 0
-                  ? "Tap a position to spin"
-                  : `${TOTAL_SLOTS - filledCount} to go${suggestedSlotLabel ? ` · next: ${suggestedSlotLabel}` : ""}`}
+              {clubChoiceSpin
+                ? pendingSpin
+                  ? `Your ${suggestedSlotLabel ?? "last"} spin is waiting. Press Spin to sign.`
+                  : filledCount === 0
+                    ? "Press Spin for a position"
+                    : `${TOTAL_SLOTS - filledCount} to go`
+                : pendingSpin
+                  ? `Your ${suggestedSlotLabel ?? "last"} spin is waiting. Tap it to sign.`
+                  : filledCount === 0
+                    ? "Tap a position to spin"
+                    : `${TOTAL_SLOTS - filledCount} to go${suggestedSlotLabel ? ` · next: ${suggestedSlotLabel}` : ""}`}
             </p>
             {clubChoiceSpin && filledCount === 0 && !pendingSpin && difficulty !== "HARD" ? (
               <p className="w-full text-center text-xs text-[color:var(--fl-muted)]">
-                Pick from 3 clubs. Same club side by side = chemistry.
+                Pick 1 of 3 players from 3 clubs. Same club side by side = chemistry.
               </p>
             ) : null}
             {showChemistry && difficulty !== "HARD" && filledCount > 0 && chemistry.links.length > 0 ? (
@@ -3351,6 +3429,7 @@ export function GameBoard({
                 }
                 highlightSlot={suggestedSlotIndex ?? undefined}
                 interactive={
+                  !clubChoiceSpin &&
                   !superSamHallasMode &&
                   phase === "pitch" &&
                   !isDraftMode
@@ -3426,11 +3505,7 @@ export function GameBoard({
             <RecruitmentSlotReveal
               key={revealKey}
               target={slotRecruitTarget}
-              choiceTargets={
-                clubChoiceSpin
-                  ? slotRecruitEntries.flatMap((e) => (e.target ? [e.target] : []))
-                  : undefined
-              }
+              positionReel={positionReel}
               spinVariant={spinVariant}
               boostStatus={spinBoostStatus}
               boostDetail={spinBoostDetail}
@@ -3613,16 +3688,25 @@ export function GameBoard({
                 Auto-fill<span className="sr-only"> squad</span>
               </GameButton>
             )}
-            {phase === "pitch" && !squadComplete && suggestedSlotIndex !== null && (
+            {phase === "pitch" &&
+              !squadComplete &&
+              (suggestedSlotIndex !== null || (clubChoiceSpin && !superSamHallasMode)) && (
               <GameButton
                 variant="theme"
                 size="sm"
                 fullWidth={false}
-                onClick={() => startSlotRecruitSpin(suggestedSlotIndex)}
+                onClick={() => {
+                  if (clubChoiceSpin) startPositionSpin();
+                  else if (suggestedSlotIndex !== null) startSlotRecruitSpin(suggestedSlotIndex);
+                }}
                 disabled={choosing || hideActionBar}
                 className="min-h-[var(--mobile-tap-target)] flex-1 px-3 text-xs"
               >
-                {pendingSpin ? `Back to ${suggestedSlotLabel ?? "spin"}` : `Spin ${suggestedSlotLabel ?? "next"}`}
+                {pendingSpin
+                  ? `Back to ${suggestedSlotLabel ?? "spin"}`
+                  : clubChoiceSpin
+                    ? "Spin"
+                    : `Spin ${suggestedSlotLabel ?? "next"}`}
               </GameButton>
             )}
             {phase === "pitch" && squadComplete && (

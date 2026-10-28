@@ -4,9 +4,10 @@ const GUIDE_ITEMS: { title: string; lines: string[] }[] = [
   {
     title: "Classic",
     lines: [
-      "Tap a position and spin. Fill your 13.",
-      "Classic: pick 1 of 3 players from 3 clubs. Same club side by side = chemistry.",
-      "Era Classic: spin a club from any era, pick a player.",
+      "Classic: press Spin to land on a position. Pick 1 of 3 players from 3 clubs.",
+      "Same club side by side = chemistry.",
+      "Era Classic: tap a position, spin a club from any era, pick a player.",
+      "Fill your 13.",
       "Go 27-0, then win the play-offs.",
     ],
   },

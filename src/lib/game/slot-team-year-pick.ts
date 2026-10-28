@@ -309,6 +309,61 @@ export function prepareSlotTeamYearPlayers(
   return chosen;
 }
 
+/** Position names on Classic's position reel. */
+export const POSITION_SPIN_LABELS: Record<Position, string> = {
+  FULLBACK: "Fullback",
+  WING: "Wing",
+  CENTRE: "Centre",
+  STAND_OFF: "Stand Off",
+  SCRUM_HALF: "Scrum Half",
+  PROP: "Prop",
+  HOOKER: "Hooker",
+  SECOND_ROW: "Second Row",
+  LOOSE_FORWARD: "Loose Forward",
+};
+
+export interface PositionSpinOption {
+  position: Position;
+  label: string;
+  /** The empty slot a signing for this position goes into (first in team-sheet order). */
+  slotIndex: number;
+}
+
+/**
+ * Classic position spin: one option per position that still has an empty slot, in team-sheet
+ * order. `allowedSlots` narrows it (e.g. an armed 90+ boost only spins positions it can fill).
+ */
+export function getPositionSpinOptions(
+  squad: SquadSlot[],
+  allowedSlots?: readonly number[] | null
+): PositionSpinOption[] {
+  const options: PositionSpinOption[] = [];
+  for (const slotIndex of RECRUIT_SLOT_ORDER) {
+    const slot = squad.find((s) => s.slotIndex === slotIndex);
+    if (!slot || slot.player) continue;
+    if (allowedSlots && !allowedSlots.includes(slotIndex)) continue;
+    if (options.some((o) => o.position === slot.position)) continue;
+    options.push({ position: slot.position, label: POSITION_SPIN_LABELS[slot.position], slotIndex });
+  }
+  return options;
+}
+
+/**
+ * Classic: the position reel's result for this spin — uniform over the positions that still
+ * have an empty slot. Seeded by run seed + spin index, so a resumed run spins the same.
+ */
+export function pickPositionSpin(
+  seed: string,
+  spinIndex: number,
+  squad: SquadSlot[],
+  allowedSlots?: readonly number[] | null
+): PositionSpinOption | null {
+  const options = getPositionSpinOptions(squad, allowedSlots);
+  if (options.length === 0) return null;
+  const rng = seedrandom(`${seed}-position-spin-${spinIndex}`);
+  return options[Math.floor(rng() * options.length)]!;
+}
+
 /** Clubs (chemistry keys) of the signed players this slot links with. */
 export function getChemistryNeighbourClubs(squad: SquadSlot[], slotIndex: number): Set<string> {
   const clubs = new Set<string>();

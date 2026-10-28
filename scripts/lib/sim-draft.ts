@@ -1,8 +1,9 @@
 /**
  * Shared Monte Carlo drafting for Classic (current cards) and Era Classic, using the real
  * slot-spin flows:
- *   Classic — club choice: each slot spins, and the player is offered up to three cards that
- *             can play it, each from a different club (prepareSlotClubChoicePlayers).
+ *   Classic — club choice: a position reel picks the next empty position, and the player is
+ *             offered up to three cards that can play it, each from a different club
+ *             (pickPositionSpin + prepareSlotClubChoicePlayers).
  *   Era     — club spin: each slot spins a club-season, and the player is offered up to three
  *             cards from it (prepareSlotTeamYearPlayers). Also Daily / Weekly / Gauntlet /
  *             One-Club on either card set (`flow: "club-spin"`).
@@ -17,6 +18,7 @@ import seedrandom from "seedrandom";
 import { createEmptySquad, RECRUIT_SLOT_ORDER } from "../../src/lib/positions";
 import {
   generateSlotTeamYearTargetForSlot,
+  pickPositionSpin,
   placeSlotRecruitPlayerAtSlot,
   prepareSlotClubChoicePlayers,
   prepareSlotTeamYearPlayers,
@@ -58,7 +60,12 @@ export function draftSquad(
   const usedTeamYears = new Set<string>();
   const rng = seedrandom(`${seed}-pick`);
   let spinIndex = 0;
-  for (const slotIndex of RECRUIT_SLOT_ORDER) {
+  // Club choice: the position reel picks each slot (random order); club spin: team-sheet order.
+  const slotOrder: number[] = flow === "club-choice" ? [] : [...RECRUIT_SLOT_ORDER];
+  for (let step = 0; step < RECRUIT_SLOT_ORDER.length; step++) {
+    const slotIndex =
+      flow === "club-choice" ? pickPositionSpin(seed, spinIndex, squad)?.slotIndex : slotOrder[step];
+    if (slotIndex === undefined) break;
     const usedIds = new Set(squad.filter((s) => s.player).map((s) => s.player!.id));
     const target = generateSlotTeamYearTargetForSlot(
       seed,

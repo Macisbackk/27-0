@@ -106,9 +106,12 @@ try {
   where = "classic";
   await page.goto(`${BASE}/play?e2e=1`, { waitUntil: "networkidle" });
   await page.getByRole("button", { name: /Skip boost|Continue without boost/i }).first().click({ timeout: 4000 }).catch(() => {});
+  // v1.40: Classic has one Spin button (the reel spins positions); team-sheet slots aren't spin buttons.
+  if (await page.getByRole("button", { name: /: empty — tap to spin$/ }).count()) {
+    fail("Classic team sheet still has tap-to-spin slots");
+  }
   for (let round = 0; round < 3; round++) {
-    const slot = page.getByRole("button", { name: /: empty — tap to spin$/ }).first();
-    await slot.click({ timeout });
+    await page.getByRole("button", { name: /^Spin$/ }).click({ timeout });
     await page.waitForTimeout(300);
     await page.getByRole("dialog", { name: "Recruitment spin" }).click({ timeout: 3000 }).catch(() => {}); // tap to skip
     const sign = page.getByRole("button", { name: /^Sign / }).first();

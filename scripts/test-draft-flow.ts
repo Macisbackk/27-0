@@ -13,6 +13,8 @@ import {
 import { getTeamYearPoolFromTarget } from "../src/lib/game/team-year-pools";
 import {
   eligiblePlayersForSlot,
+  getPositionSpinOptions,
+  pickPositionSpin,
   isPersonAlreadySigned,
   placeSlotRecruitPlayerAtSlot,
   prepareSlotClubChoicePlayers,
@@ -387,9 +389,54 @@ assert(getSpinDurationMs(false) === DEFAULT_SPIN_DURATION_MS, "normal reel uncha
   }
   assert(boostSlots > 0 && boostOk, `club choice: the 90+ boost's card is always in the offer (${boostSlots} slots)`);
 
-  // A whole Classic draft through the club choice: 13 signed, no person twice.
+  // The position reel: one option per position with an empty slot, uniform, seeded.
+  const empty = createEmptySquad();
+  const allOptions = getPositionSpinOptions(empty);
+  assert(
+    allOptions.map((o) => o.label).join() ===
+      "Fullback,Wing,Centre,Stand Off,Scrum Half,Prop,Hooker,Second Row,Loose Forward",
+    `position reel lists the nine positions once each (${allOptions.map((o) => o.label).join(", ")})`
+  );
+  assert(
+    allOptions.every((o) => empty.find((s) => s.slotIndex === o.slotIndex)?.position === o.position),
+    "each position option points at an empty slot of that position"
+  );
+  const seen = new Set<string>();
+  let reelDeterministic = true;
+  for (let i = 0; i < 200; i++) {
+    const a = pickPositionSpin("pos-reel", i, empty)!;
+    const b = pickPositionSpin("pos-reel", i, empty)!;
+    if (a.slotIndex !== b.slotIndex) reelDeterministic = false;
+    seen.add(a.label);
+  }
+  assert(reelDeterministic, "position reel: same seed + spin ⇒ same position (lock / resume safe)");
+  assert(seen.size === 9, `position reel lands on every position over 200 spins (${seen.size})`);
+  {
+    let wingsFilled = createEmptySquad();
+    const anyWing = (slotIndex: number) => wingsFilled.find((s) => s.slotIndex === slotIndex)!;
+    for (const idx of [1, 2]) {
+      wingsFilled = wingsFilled.map((s) =>
+        s.slotIndex === idx ? { ...s, player: { id: `w${idx}`, name: `Wing ${idx}` } as Player } : s
+      );
+    }
+    assert(anyWing(1).player !== null, "test squad has both wings signed");
+    const opts = getPositionSpinOptions(wingsFilled);
+    assert(!opts.some((o) => o.position === "WING") && opts.length === 8, "position reel drops a position once its slots are full");
+    let onlyEmpty = true;
+    for (let i = 0; i < 100; i++) {
+      const pick = pickPositionSpin("pos-reel-full", i, wingsFilled)!;
+      if (pick.position === "WING") onlyEmpty = false;
+    }
+    assert(onlyEmpty, "position reel never lands on a full position");
+    const allowed = pickPositionSpin("pos-reel-boost", 0, empty, [8]);
+    assert(allowed?.slotIndex === 8 && allowed.label === "Hooker", "an armed boost narrows the reel to positions it can fill");
+    assert(pickPositionSpin("x", 0, empty, []) === null, "no allowed position ⇒ no spin");
+  }
+
+  // A whole Classic draft through the position reel + club choice: 13 signed, no person twice.
   let squad = createEmptySquad();
-  for (const [n, slotIndex] of FORMATION_SLOT_INDICES.entries()) {
+  for (let n = 0; n < TOTAL_SLOTS; n++) {
+    const slotIndex = pickPositionSpin("club-choice-draft", n, squad)!.slotIndex;
     const usedIds = new Set(squad.filter((s) => s.player).map((s) => s.player!.id));
     const target = generateSlotTeamYearTargetForSlot("club-choice-draft", n, usedIds, squad, slotIndex, new Set(), {
       spinVariant: "current",

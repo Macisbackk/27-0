@@ -13,8 +13,8 @@
  *
  * Each draft flow has its own ladder, because the same squad rating means a different thing
  * depending on the cards you were offered:
- *   classic       — normal Classic (2026 squads): tap a position, pick one of three cards from
- *                   three different clubs, one usually a club link (v1.40)
+ *   classic       — normal Classic (2026 squads): the reel spins a position, pick one of three
+ *                   cards for it from three different clubs, one usually a club link (v1.40)
  *   classic-spin  — 2026 squads through the club spin (one club, three of its cards): Daily /
  *                   Weekly on Classic and the Classic Gauntlet keep this flow and these odds
  *   era           — historic club-seasons through the club spin
@@ -48,14 +48,15 @@ export interface SimFormulaModeScale {
 }
 
 /**
- * Classic (club choice, 400 drafts per tier, v1.40): typical draft 83.05 rating / +1.0
- * chemistry, top card every spin 85.86 / +1.73. Elite 86.0 is the rating that puts the top-card
- * draft on q ≈ 1 with its extra +0.7 chemistry counted: 8·(85.86 − 83.05)/(86.0 − 83.05) + 0.7.
+ * Classic (position spin + club choice, 400 drafts per tier, v1.40): typical draft 83.1 rating
+ * / +1.0 chemistry, top card every spin 85.86 / +1.86. Elite 86.0 puts the top-card draft just
+ * past q = 1 with its extra +0.85 chemistry counted: 8·(85.86 − 83.1)/(86.0 − 83.1) + 0.85 ≈ 8.5
+ * (≈ 30% 27-0, the middle of the 25–35% target).
  * Classic spin and Era: mean ratings of the typical and top-card drafts (unchanged in v1.40;
  * Era's typical chemistry was 0.3 before chemistry stopped counting there).
  */
 export const SIM_FORMULA_MODE_SCALE: Record<SimFormulaMode, SimFormulaModeScale> = {
-  classic: { typicalRating: 83.05, eliteRating: 86.0, typicalChemistry: 1 },
+  classic: { typicalRating: 83.1, eliteRating: 86.0, typicalChemistry: 1 },
   "classic-spin": { typicalRating: 83.1, eliteRating: 85.5, typicalChemistry: 0 },
   era: { typicalRating: 85.6, eliteRating: 87.5, typicalChemistry: 0, opponentEdge: 0.4, noChemistry: true },
 };

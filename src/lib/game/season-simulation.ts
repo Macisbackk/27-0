@@ -8,7 +8,7 @@
  * The maths (constants and helpers live in ./sim-formula.ts):
  *
  *   1. Draft quality   q = (avg squad rating − TYPICAL[ladder]) / (ELITE[ladder] − TYPICAL[ladder])
- *        Classic (club choice: 1 of 3 cards from 3 clubs)   TYPICAL 83.05, ELITE 86.0
+ *        Classic (position spin, 1 of 3 cards from 3 clubs)  TYPICAL 83.1,  ELITE 86.0
  *        Classic spin (Daily / Weekly / Gauntlet on 2026 cards)  TYPICAL 83.1, ELITE 85.5
  *        Era                                                  TYPICAL 85.6,  ELITE 87.5
  *        (typical draft and best-card-every-spin draft, by simulation; Classic's elite also
