@@ -1,0 +1,11 @@
+✓ Career started (double tap on Take charge)
+✓ Pre-season: signed free agent Dane Penrose, £0 fee, budget 505000 → 486000 (wages only)
+✓ Pre-season: transfer window open, market reachable from the hub
+✓ Pre-season → Round 1 with the results above it; reloads keep the stage; double taps safe
+✓ Back/forward keeps the hub
+✓ Hub tabs fit 320px; contracts on the Team tab
+✓ Sim to… played 3 weeks and stopped
+✓ Deadline Day: clock counts down, pauses (and stays paused after a reload), skips an hour, an offer was accepted
+
+1 problem(s)
+- run stopped after [✓ Deadline Day: clock counts down, pauses (and stays paused after a reload), skips an hour, an offer was accepted]: TimeoutError: locator.click: Timeout 30000ms exceeded.
