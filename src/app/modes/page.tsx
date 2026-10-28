@@ -19,6 +19,7 @@ import { getGauntletHref, getOneClubHref } from "@/lib/play-side-modes";
 import { DAILY_ARCHIVE_DAYS, DAILY_ARCHIVE_PAGE } from "@/lib/daily-archive";
 import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 import { BALL_KNOWER_ID } from "@/lib/cosmetics";
+import { BALL_KNOWER_UNLOCK_TEXT, syncBallKnowerUnlock } from "@/lib/ball-knower-unlock";
 import { useCosmetics } from "@/lib/storage/cosmetics-store";
 import { setNormalEraVariant } from "@/lib/storage/preferences";
 import { playUiClick } from "@/lib/sound";
@@ -38,7 +39,7 @@ function Section({ id, title, kicker, children }: { id: string; title: string; k
 
 /**
  * More modes — the side modes that don't get a home-screen card: One-Club XI, the Gauntlet,
- * past Dailies (practice) and Ball Knower once bought.
+ * past Dailies (practice) and Ball Knower (unlocked by a first 27-0).
  */
 export default function ModesPage() {
   const [clubs, setClubs] = useState<OneClubOption[] | null>(null);
@@ -46,6 +47,10 @@ export default function ModesPage() {
   const [records, setRecords] = useState<ModeRecords | null>(null);
   const cosmetics = useCosmetics();
   const ownsBallKnower = cosmetics.owned.includes(BALL_KNOWER_ID);
+  // Earned by a first 27-0 (v1.47): grant it here too for 27-0s from before the change.
+  useEffect(() => {
+    syncBallKnowerUnlock();
+  }, []);
 
   useEffect(() => {
     let live = true;
@@ -185,7 +190,11 @@ export default function ModesPage() {
           </Section>
         ) : null}
 
-        {ownsBallKnower ? (
+        {!ownsBallKnower ? (
+          <Section id="ball-knower-title" title="Ball Knower" kicker="Classic with every rating hidden.">
+            <p className="text-center text-sm font-semibold text-[color:var(--fl-muted)]">🔒 {BALL_KNOWER_UNLOCK_TEXT}</p>
+          </Section>
+        ) : (
           <Section id="ball-knower-title" title="Ball Knower" kicker="Classic with every rating hidden.">
             <div className="grid grid-cols-2 gap-2">
               <Link href="/play?bk=1" className="btn-press flex h-[48px] items-center justify-center rounded-control bg-theme-primary text-sm font-bold text-[color:var(--theme-text-on-primary)]">
@@ -196,7 +205,7 @@ export default function ModesPage() {
               </Link>
             </div>
           </Section>
-        ) : null}
+        )}
       </div>
     </StandardPageShell>
   );

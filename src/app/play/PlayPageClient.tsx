@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { BALL_KNOWER_ID } from "@/lib/cosmetics";
-import { ownsCosmetic } from "@/lib/storage/cosmetics-store";
+import { isBallKnowerUnlocked, syncBallKnowerUnlock } from "@/lib/ball-knower-unlock";
 import { useRouter, useSearchParams } from "next/navigation";
 import { GameStarter } from "@/components/GameStarter";
 import {
@@ -59,9 +58,11 @@ export function PlayPageClient() {
       setBallKnower(false);
       return;
     }
-    const owned = ownsCosmetic(BALL_KNOWER_ID);
+    syncBallKnowerUnlock();
+    const owned = isBallKnowerUnlocked();
     setBallKnower(owned);
-    if (!owned) router.replace("/store");
+    // Earned by going 27-0 once (v1.47), not bought: locked → the Modes page explains how.
+    if (!owned) router.replace("/modes");
   }, [wantsBallKnower, router]);
 
   const wantsSuperSamHallas = superSamHallas === "1";

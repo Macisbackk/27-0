@@ -337,7 +337,7 @@ function ForYouStore({
   const [message, setMessage] = useState<string | null>(null);
 
   const items: ForYouItem[] = useMemo(() => {
-    const cosmetics: ForYouItem[] = COSMETICS.filter((i) => !c.owned.includes(i.id)).map((i) => ({
+    const cosmetics: ForYouItem[] = COSMETICS.filter((i) => !i.notForSale && !c.owned.includes(i.id)).map((i) => ({
       id: i.id,
       kind: i.kind,
       name: i.name,

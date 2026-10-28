@@ -79,7 +79,7 @@ export interface CosmeticPurchaseResult {
 
 export function purchaseCosmetic(id: string): CosmeticPurchaseResult {
   const item = cosmeticById(id);
-  if (!item) return { success: false, reason: "invalid", newBalance: getClubFundsBalance() };
+  if (!item || item.notForSale) return { success: false, reason: "invalid", newBalance: getClubFundsBalance() };
   const state = getCosmetics();
   if (state.owned.includes(id)) return { success: false, reason: "owned", newBalance: getClubFundsBalance() };
   const purchaseId = `cosmetic-${id}`;

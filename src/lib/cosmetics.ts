@@ -16,6 +16,8 @@ export interface CosmeticItem {
   blurb: string;
   price: number;
   tier?: CosmeticTier;
+  /** Earned in the game, never sold (Ball Knower: unlocked by a first 27-0, v1.47). */
+  notForSale?: boolean;
 }
 
 export const KIT_DESIGNER_ID = "kit-designer";
@@ -86,7 +88,7 @@ export const COSMETICS: CosmeticItem[] = [
   { id: "frame-scarf", kind: "frame", name: "Bar scarf", blurb: "Striped edges, like a terrace scarf.", price: 6_000_000 },
   { id: "frame-diamond", kind: "frame", name: "Diamond frame", blurb: "A sparkling white edge. Top of the pile.", price: 15_000_000 },
 
-  { id: BALL_KNOWER_ID, kind: "mode", name: "Ball Knower mode", blurb: "Classic with ratings hidden and no respins.", price: 6_000_000 },
+  { id: BALL_KNOWER_ID, kind: "mode", name: "Ball Knower mode", blurb: "Classic with ratings hidden and no respins. Unlocked by going 27-0.", price: 0, notForSale: true },
 ];
 
 export function cosmeticById(id: string): CosmeticItem | undefined {
@@ -118,7 +120,7 @@ export interface NextStoreUnlock {
 export function nextStoreUnlock(balance: number, owned: readonly string[] = []): NextStoreUnlock | null {
   let best: CosmeticItem | null = null;
   for (const item of COSMETICS) {
-    if (owned.includes(item.id)) continue;
+    if (item.notForSale || owned.includes(item.id)) continue;
     if (!best || item.price < best.price) best = item;
   }
   if (!best) return null;
