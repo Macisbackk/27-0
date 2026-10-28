@@ -43,6 +43,8 @@ export interface SimFormulaModeScale {
   typicalChemistry: number;
   /** Extra strength every opponent has in this mode (Era: a touch harder, owner v1.36). */
   opponentEdge?: number;
+  /** How much each point of chemistry above typical counts (default 1). */
+  chemistryWeight?: number;
   /** Squad chemistry has no effect in this mode (Era, owner v1.40). */
   noChemistry?: boolean;
 }
@@ -54,11 +56,13 @@ export interface SimFormulaModeScale {
  * (≈ 30% 27-0, the middle of the 25–35% target).
  * v1.42: Classic opponents get +0.7 (owner: "Classic now too easy"; players stack club links
  * beyond what the top-card bot does). Top-card 27-0 ≈ 29% → ≈ 23%, good ≈ 2.3% → 1.4%.
+ * v1.43 (owner: "still way too easy"): opponents +2 and chemistry counts half, so stacking
+ * club links can't carry a squad. Top-card draft 27-0 ≈ 28% → ≈ 13%.
  * Classic spin and Era: mean ratings of the typical and top-card drafts (unchanged in v1.40;
  * Era's typical chemistry was 0.3 before chemistry stopped counting there).
  */
 export const SIM_FORMULA_MODE_SCALE: Record<SimFormulaMode, SimFormulaModeScale> = {
-  classic: { typicalRating: 83.1, eliteRating: 86.0, typicalChemistry: 1, opponentEdge: 0.7 },
+  classic: { typicalRating: 83.1, eliteRating: 86.0, typicalChemistry: 1, opponentEdge: 2, chemistryWeight: 0.5 },
   "classic-spin": { typicalRating: 83.1, eliteRating: 85.5, typicalChemistry: 0 },
   era: { typicalRating: 85.6, eliteRating: 87.5, typicalChemistry: 0, opponentEdge: 0.4, noChemistry: true },
 };
@@ -106,7 +110,7 @@ export function getTeamStrength(input: TeamStrengthInput): number {
   return (
     TEAM_STRENGTH_TYPICAL +
     TEAM_STRENGTH_SPREAD * getDraftQuality(input.avgRating, input.mode) +
-    ((input.chemistry ?? 0) - scale.typicalChemistry) +
+    ((input.chemistry ?? 0) - scale.typicalChemistry) * (scale.chemistryWeight ?? 1) +
     (input.ratingDelta ?? 0) -
     (scale.opponentEdge ?? 0)
   );

@@ -174,7 +174,15 @@ for (const { mode, cards, flow } of LADDERS) {
     const simulated = perfect / (SQUADS * SEASONS);
     tierChance[`${mode}-${tier}`] = avg;
     tierMedian[`${mode}-${tier}`] = chances.sort((x, y) => x - y)[Math.floor(SQUADS / 2)]!;
-    const [lo, hi] = BANDS[tier];
+    // Classic was made harder on purpose (owner v1.42–v1.43: "Classic still way too easy").
+    const [lo, hi] =
+      mode === "classic" && tier === "good"
+        ? [0.003, 0.12]
+        : mode === "classic" && tier === "random"
+          ? [0.0003, 0.06]
+          : mode === "classic" && tier === "best"
+          ? [0.08, 0.45]
+          : BANDS[tier];
     assert(
       avg >= lo && avg <= hi,
       `${mode} ${tier} draft: formula 27-0 ${pct(avg)}, simulated ${pct(simulated)} over ${SQUADS * SEASONS} seasons, ${(wins / (SQUADS * SEASONS)).toFixed(1)} wins avg (band ${pct(lo)}–${pct(hi)})`
