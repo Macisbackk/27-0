@@ -25,8 +25,8 @@
  *
  * Calibration (4,000 seasons per tier, scripts/sim-era-classic-perfect-season.ts, v1.40),
  * Classic / Classic spin / Era:
- *   best card every spin   29% / 25% / 26% 27-0, ~25 wins   one of the best two  3.7% / 3.1% / 5.5%
- *   typical (random) draft 0.5% / 0.5% / 2.6%, ~18 wins     weakest card every spin  0%, ~8 wins
+ *   best card every spin   30% / 25% / 26% 27-0, ~25 wins   one of the best two  3.4% / 3.1% / 5.5%
+ *   typical (random) draft 0.6% / 0.5% / 2.6%, ~18 wins     weakest card every spin  0%, ~8 wins
  * (Era's typical rate sits higher because which club-season you spin matters more there than
  * which card you take — a lucky typical Era draft is as strong as a near-perfect one.)
  * Upsets, blowouts and scorelines are flavour picked from the same gap. The chance is for
