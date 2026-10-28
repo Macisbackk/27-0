@@ -121,11 +121,19 @@ export function SlotTeamYearPicker({
   );
   const shortYear = formatShortYear(target.year);
 
-  const sortedEntries = useMemo(
-    () =>
-      [...entries].sort((a, b) => b.player.peakRating - a.player.peakRating),
-    [entries]
-  );
+  // Ball Knower (hardMode): ratings are hidden, so the order mustn't give the best one away.
+  // Shuffle by a hash of the offer (stable across re-renders, different every spin); otherwise
+  // best rating first.
+  const sortedEntries = useMemo(() => {
+    if (!hardMode) return [...entries].sort((a, b) => b.player.peakRating - a.player.peakRating);
+    const offerKey = entries.map((e) => e.player.id).sort().join("|");
+    const hash = (str: string) => {
+      let h = 2166136261;
+      for (let i = 0; i < str.length; i++) h = Math.imul(h ^ str.charCodeAt(i), 16777619);
+      return h >>> 0;
+    };
+    return [...entries].sort((a, b) => hash(`${offerKey}#${a.player.id}`) - hash(`${offerKey}#${b.player.id}`));
+  }, [entries, hardMode]);
 
   // Chemistry gained by signing each option into this slot (adjacent club / era-year links).
   const chemistryFor = useMemo(() => {
