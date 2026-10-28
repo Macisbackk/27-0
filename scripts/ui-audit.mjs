@@ -206,7 +206,7 @@ await page.evaluate(() => {
   );
 });
 await go(page, "/store", 1000);
-await page.getByRole("tab", { name: "Kit & pitch" }).click().catch(() => {});
+await page.getByRole("tab", { name: "Pitches" }).click().catch(() => {});
 await page.waitForTimeout(600);
 await shot(page, "store-kit-and-pitch");
 await go(page, "/play?bk=1&e2e=1", 1500);

@@ -84,7 +84,7 @@ try {
   // Titles + kit designer with tampered colours.
   await page.getByRole("tab", { name: "Titles" }).click();
   await page.getByRole("button", { name: /£500k/ }).first().click().catch(() => {});
-  await page.getByRole("tab", { name: "Kit & pitch" }).click();
+  await page.getByRole("tab", { name: "Kit", exact: true }).click();
   await page.getByRole("button", { name: /£1\.5m/ }).first().click().catch(() => {});
   await page.evaluate((k) => {
     const s = JSON.parse(localStorage.getItem(k) || "{}");
