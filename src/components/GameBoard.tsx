@@ -2264,7 +2264,8 @@ export function GameBoard({
       !isSlotRecruitMode ||
       !respinsAllowed ||
       respinsRemaining <= 0 ||
-      phase !== "choice" ||
+      // Classic can also respin the position straight after it lands (owner, v1.42).
+      !(phase === "choice" || (phase === "reveal" && clubChoiceSpin)) ||
       selectedSlotIndex === null ||
       choosing
     ) {
@@ -3506,6 +3507,11 @@ export function GameBoard({
               key={revealKey}
               target={slotRecruitTarget}
               positionReel={positionReel}
+              positionRespin={
+                clubChoiceSpin && respinsAllowed && difficulty !== "HARD"
+                  ? { left: respinsRemaining, onRespin: () => void handleSlotRespin() }
+                  : null
+              }
               spinVariant={spinVariant}
               boostStatus={spinBoostStatus}
               boostDetail={spinBoostDetail}
