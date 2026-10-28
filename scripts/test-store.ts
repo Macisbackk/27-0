@@ -62,7 +62,7 @@ async function main(): Promise<void> {
   // ---------------------------------------------------------------- nextStoreUnlock
   const cheapest = Math.min(...cos.COSMETICS.map((c) => c.price));
   const starters = cos.COSMETICS.filter((c) => c.tier === "starter");
-  check(starters.length > 0 && starters.every((c) => c.price >= 50_000 && c.price <= 150_000), "starter rung is £50k–£150k");
+  check(starters.length > 0 && starters.every((c) => c.price >= 150_000 && c.price <= 450_000), "starter rung is £150k–£450k");
   check(cos.nextStoreUnlock(0)?.price === cheapest && cos.nextStoreUnlock(0)?.remaining === cheapest, "empty wallet: cheapest item, full price remaining");
   check(cos.nextStoreUnlock(-500)?.remaining === cheapest, "negative balance treated as 0");
   check(cos.nextStoreUnlock(cheapest)?.remaining === 0, "exact balance: affordable");
@@ -85,7 +85,7 @@ async function main(): Promise<void> {
   const bal0 = funds.getClubFundsBalance();
   const buy = store.purchaseCosmetic(cos.CHALK_FRAME_ID);
   check(!buy.success && buy.reason === "owned" && funds.getClubFundsBalance() === bal0, "buying a granted item charges nothing");
-  funds.setClubFundsBalance(75_000);
+  funds.setClubFundsBalance(225_000);
   const r1 = store.purchaseCosmetic("pitch-training");
   const r2 = store.purchaseCosmetic("pitch-training");
   check(r1.success && funds.getClubFundsBalance() === 0 && !r2.success, "exact-balance purchase once");

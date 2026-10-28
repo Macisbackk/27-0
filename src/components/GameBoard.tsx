@@ -3391,6 +3391,26 @@ export function GameBoard({
                 Auto-fill counts as today&apos;s attempt.
               </p>
             ) : null}
+            {/* Laptop / tablet: the phone action bar is hidden, so Classic's Spin lives here too. */}
+            {clubChoiceSpin && !superSamHallasMode ? (
+              <div className="mt-2 hidden w-full items-center justify-center gap-2 sm:flex">
+                <GameButton
+                  variant="theme"
+                  size="md"
+                  fullWidth={false}
+                  onClick={() => startPositionSpin()}
+                  disabled={choosing}
+                  className="min-w-[10rem]"
+                >
+                  {pendingSpin ? `Back to ${suggestedSlotLabel ?? "spin"}` : "Spin"}
+                </GameButton>
+                {autofillAllowed && !pendingSpin ? (
+                  <GameButton variant="secondary" size="md" fullWidth={false} onClick={handleAutofill} disabled={choosing}>
+                    Auto-fill<span className="sr-only"> squad</span>
+                  </GameButton>
+                ) : null}
+              </div>
+            ) : null}
           </div>
         )}
 
