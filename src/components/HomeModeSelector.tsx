@@ -49,6 +49,7 @@ import { getAllStats } from "@/lib/storage/stats";
 import { getPaidRunIds } from "@/lib/storage/club-funds";
 import { getLocalDateKey } from "@/lib/mini-games/date";
 import { BALL_KNOWER_ID } from "@/lib/cosmetics";
+import { syncBallKnowerUnlock } from "@/lib/ball-knower-unlock";
 import { useCosmetics } from "@/lib/storage/cosmetics-store";
 import { DAILY_ARCHIVE_PAGE } from "@/lib/daily-archive";
 import { MODES_PAGE } from "@/lib/play-side-modes";
@@ -259,6 +260,8 @@ export function HomeModeSelector() {
     } catch {
       /* storage blocked: no bonus today, the hub still shows */
     }
+    // A 27-0 from before v1.47 unlocks Ball Knower here (it used to be bought).
+    syncBallKnowerUnlock();
     try {
       setEra(getNormalEraVariant());
     } catch {

@@ -58,12 +58,10 @@ try {
   await setFunds(page, 1_000_000);
   await page.reload({ waitUntil: "networkidle" });
   await page.getByRole("tab", { name: "Modes" }).click();
-  const bkBuy = page.getByRole("button", { name: /£6(\.0)?m/ }).first();
-  if (await bkBuy.isEnabled().catch(() => false)) {
-    await bkBuy.click().catch(() => {});
-    if ((await funds(page)) !== 1_000_000) fail("bought Ball Knower without enough Club Funds");
-  }
-  step("Store: can't buy Ball Knower (£6m) with £1m");
+  // v1.47: Ball Knower is earned by a 27-0, never sold.
+  await page.getByText("Go 27-0 once to unlock.").first().waitFor({ timeout });
+  if (await page.getByRole("button", { name: /^Buy/ }).count()) fail("Modes tab still sells Ball Knower");
+  step("Store: Ball Knower can't be bought (earned by a 27-0)");
 
   await setFunds(page, 12_000_000);
   await page.reload({ waitUntil: "networkidle" });
@@ -95,12 +93,12 @@ try {
   await noSideways(page, "store kit @320");
   step("Store: titles, kit designer, tampered kit colours load safely");
 
-  // ── 2. Ball Knower URL without owning it → back to the Store, never a hidden-rating run for free.
+  // ── 2. Ball Knower URL before a 27-0 → the Modes page, never a hidden-rating run for free.
   where = "ball-knower";
   await page.evaluate((k) => localStorage.removeItem(k), COSMETICS_KEY);
   await page.goto(`${BASE}/play?bk=1`, { waitUntil: "networkidle" });
-  await page.waitForURL(/\/store/, { timeout }).catch(() => fail("/play?bk=1 without owning Ball Knower didn't go to the Store"));
-  step("Ball Knower is locked without buying it");
+  await page.waitForURL(/\/modes/, { timeout }).catch(() => fail("/play?bk=1 before a 27-0 didn't go to the Modes page"));
+  step("Ball Knower is locked until a 27-0");
 
   // ── 3. Classic: tap-to-skip spin, picker double-tap signs once, respin spam, auto-fill, season sim card stays put.
   where = "classic";

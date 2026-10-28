@@ -18,6 +18,7 @@ import {
   pitchStyleForItem,
   type CosmeticItem,
 } from "@/lib/cosmetics";
+import { BALL_KNOWER_UNLOCK_TEXT } from "@/lib/ball-knower-unlock";
 import { equipCosmetic, purchaseCosmetic, setKitDesign, useCosmetics } from "@/lib/storage/cosmetics-store";
 import { playThemePurchaseFail, playThemePurchaseSuccess, playThemeSelect, playUiClick } from "@/lib/sound";
 
@@ -305,14 +306,12 @@ export function FramesStore({ balance }: { balance: number }) {
   );
 }
 
-export function ModesStore({ balance }: { balance: number }) {
+export function ModesStore(props: { balance: number }) {
+  void props; // Ball Knower is earned by a 27-0 now, so the balance isn't needed here.
   const c = useCosmetics();
-  const { message, buy } = useBuy(balance);
-  const item = COSMETICS.find((i) => i.id === BALL_KNOWER_ID)!;
-  const owned = c.owned.includes(item.id);
+  const owned = c.owned.includes(BALL_KNOWER_ID);
   return (
     <Section title="Ball Knower mode" intro="Classic with every rating hidden and no respins. Unranked.">
-      {message ? <p className="mb-2 text-sm text-theme-primary" role="status">{message}</p> : null}
       {owned ? (
         <div className="grid grid-cols-2 gap-2">
           <Link href="/play?bk=1" className="btn-press flex h-11 items-center justify-center rounded-control bg-theme-primary text-sm font-bold text-[color:var(--theme-text-on-primary)]">
@@ -323,7 +322,8 @@ export function ModesStore({ balance }: { balance: number }) {
           </Link>
         </div>
       ) : (
-        <BuyButton item={item} balance={balance} onBuy={buy} />
+        // Earned, not bought (v1.47).
+        <p className="text-center text-sm font-semibold text-[color:var(--fl-muted)]">🔒 {BALL_KNOWER_UNLOCK_TEXT}</p>
       )}
     </Section>
   );

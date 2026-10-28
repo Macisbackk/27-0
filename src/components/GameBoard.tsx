@@ -112,6 +112,8 @@ import {
   playUiClick,
 } from "@/lib/sound";
 import { PlayerChoice } from "./PlayerChoice";
+import { unlockBallKnowerAfterSeason } from "@/lib/ball-knower-unlock";
+import { pushToast } from "@/lib/ui/popup-queue";
 import { RecruitmentSlotReveal } from "./RecruitmentSlotReveal";
 import { SlotTeamYearPicker } from "./SlotTeamYearPicker";
 import { RugbyPitch, TEAM_SHEET_RUGBY_PITCH_PROPS } from "./RugbyPitch";
@@ -1536,6 +1538,11 @@ export function GameBoard({
       const tablePosition =
         leagueTable.find((row) => row.isUserTeam)?.position ??
         result.leaguePosition;
+
+      // A first 27-0 unlocks Ball Knower mode (v1.47). Hidden novelty modes don't count.
+      if (unlockBallKnowerAfterSeason(result.isPerfect, joeMellorMode || superSamHallasMode)) {
+        pushToast({ id: "ball-knower-unlocked", kicker: "Unlocked by your 27-0", title: "Ball Knower mode", detail: "Find it in More modes." });
+      }
 
       void recordCompletedRun(
         {
