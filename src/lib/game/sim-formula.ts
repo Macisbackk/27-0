@@ -62,8 +62,10 @@ export interface SimFormulaModeScale {
  * Era's typical chemistry was 0.3 before chemistry stopped counting there).
  */
 export const SIM_FORMULA_MODE_SCALE: Record<SimFormulaMode, SimFormulaModeScale> = {
-  classic: { typicalRating: 83.1, eliteRating: 86.0, typicalChemistry: 1, opponentEdge: 2, chemistryWeight: 0.5 },
-  "classic-spin": { typicalRating: 83.1, eliteRating: 85.5, typicalChemistry: 0 },
+  classic: { typicalRating: 83.1, eliteRating: 86.0, typicalChemistry: 1, opponentEdge: 2, chemistryWeight: 0.8 },
+  // v1.48: Daily / Gauntlet on 2026 cards get tougher opponents like Classic (owner: same feel);
+  // +1.6 lands their best drafts on Classic's odds (no 3-club choice to lift the rating).
+  "classic-spin": { typicalRating: 83.1, eliteRating: 85.5, typicalChemistry: 0, opponentEdge: 1.6, chemistryWeight: 0.8 },
   era: { typicalRating: 85.6, eliteRating: 87.5, typicalChemistry: 0, opponentEdge: 0.4, noChemistry: true },
 };
 
