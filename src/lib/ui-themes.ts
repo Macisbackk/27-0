@@ -1,7 +1,7 @@
 import { isBlackLike } from "./ui/theme-accent-colors";
 
 export const DEFAULT_UI_THEME_ID = "default";
-export const UI_THEME_PURCHASE_PRICE = 2_500_000;
+export const UI_THEME_PURCHASE_PRICE = 6_000_000;
 
 export interface UiThemeDefinition {
   id: string;

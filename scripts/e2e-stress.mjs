@@ -58,22 +58,22 @@ try {
   await setFunds(page, 1_000_000);
   await page.reload({ waitUntil: "networkidle" });
   await page.getByRole("tab", { name: "Modes" }).click();
-  const bkBuy = page.getByRole("button", { name: /£2(\.0)?m/ }).first();
+  const bkBuy = page.getByRole("button", { name: /£6(\.0)?m/ }).first();
   if (await bkBuy.isEnabled().catch(() => false)) {
     await bkBuy.click().catch(() => {});
     if ((await funds(page)) !== 1_000_000) fail("bought Ball Knower without enough Club Funds");
   }
-  step("Store: can't buy Ball Knower with £1m");
+  step("Store: can't buy Ball Knower (£6m) with £1m");
 
   await setFunds(page, 12_000_000);
   await page.reload({ waitUntil: "networkidle" });
   await page.getByRole("tab", { name: "Frames" }).click();
   const before = await funds(page);
-  const buyGold = page.getByRole("button", { name: /£1(\.0)?m/ }).first();
+  const buyGold = page.getByRole("button", { name: /£3(\.0)?m/ }).first();
   await buyGold.dblclick().catch(() => {});
   await page.waitForTimeout(400);
   const spent = before - (await funds(page));
-  if (spent !== 1_000_000) fail(`double-tapping a £1m frame spent ${spent}`);
+  if (spent !== 3_000_000) fail(`double-tapping a £3m frame spent ${spent}`);
   for (let i = 0; i < 6; i++) await page.getByRole("button", { name: /^(Use|On)$/ }).first().click().catch(() => {});
   const equipped = await page.evaluate((k) => JSON.parse(localStorage.getItem(k) || "{}").equipped?.frame ?? null, COSMETICS_KEY);
   if (equipped !== null && equipped !== "frame-gold") fail(`frame equip spam left ${equipped}`);
@@ -83,9 +83,9 @@ try {
 
   // Titles + kit designer with tampered colours.
   await page.getByRole("tab", { name: "Titles" }).click();
-  await page.getByRole("button", { name: /£500k/ }).first().click().catch(() => {});
-  await page.getByRole("tab", { name: "Kit", exact: true }).click();
   await page.getByRole("button", { name: /£1\.5m/ }).first().click().catch(() => {});
+  await page.getByRole("tab", { name: "Kit", exact: true }).click();
+  await page.getByRole("button", { name: /£4\.5m/ }).first().click().catch(() => {});
   await page.evaluate((k) => {
     const s = JSON.parse(localStorage.getItem(k) || "{}");
     s.kit = { pattern: "<script>", body: "javascript:alert(1)", trim: "#zzzzzz", enabled: true };
