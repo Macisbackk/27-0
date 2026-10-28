@@ -34,13 +34,10 @@ import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { GameButton } from "./ui/GameButton";
 import { FramesStore, InUseBadge, KitStore, ModesStore, PitchStore, TitlesStore } from "./StoreCosmetics";
-import { COSMETICS, nextStoreUnlock, type CosmeticKind } from "@/lib/cosmetics";
-import { purchaseCosmetic, useCosmetics } from "@/lib/storage/cosmetics-store";
 
-type StoreTab = "foryou" | "themes" | "kit" | "pitches" | "titles" | "frames" | "modes";
+type StoreTab = "themes" | "kit" | "pitches" | "titles" | "frames" | "modes";
 
 const STORE_TABS: { id: StoreTab; label: string }[] = [
-  { id: "foryou", label: "For you" },
   { id: "themes", label: "Themes" },
   { id: "kit", label: "Kit" },
   { id: "pitches", label: "Pitches" },
@@ -88,7 +85,7 @@ function ThemePreview({ theme }: { theme: UiThemeDefinition }) {
 
 export function StorePanel() {
   // Opens on what this coach can buy now (themes are £2.5m: a new player can't afford one).
-  const [tab, setTab] = useState<StoreTab>("foryou");
+  const [tab, setTab] = useState<StoreTab>("themes");
   const [balance, setBalance] = useState(0);
   const [selectedId, setSelectedId] = useState("default");
   const [unlocked, setUnlocked] = useState<string[]>(["default"]);
@@ -158,7 +155,7 @@ export function StorePanel() {
 
   return (
     <div>
-      {tab !== "themes" && tab !== "foryou" ? (
+      {tab !== "themes" ? (
         <p className="mb-3 text-center text-sm text-[color:var(--fl-muted)]">
           Club Funds <span className="font-bold text-theme-primary"><CountUp value={balance} format={formatClubFunds} durationMs={700} /></span>
         </p>
@@ -183,18 +180,6 @@ export function StorePanel() {
         ))}
       </div>
       <div key={tab} className="fl-rise">
-      {tab === "foryou" ? (
-        <ForYouStore
-          balance={balance}
-          unlockedThemes={unlocked}
-          purchasingThemeId={purchasingId}
-          onBuyTheme={handlePurchase}
-          onOpenTab={(next) => {
-            playUiClick();
-            setTab(next);
-          }}
-        />
-      ) : null}
       {tab === "kit" ? <KitStore balance={balance} /> : null}
       {tab === "pitches" ? <PitchStore balance={balance} /> : null}
       {tab === "titles" ? <TitlesStore balance={balance} /> : null}
@@ -287,162 +272,6 @@ export function StorePanel() {
         </>
       )}
       </div>
-    </div>
-  );
-}
-
-const KIND_LABEL: Record<CosmeticKind | "theme", string> = {
-  theme: "Theme",
-  kit: "Kit",
-  pitch: "Pitch",
-  title: "Coach title",
-  frame: "Leaderboard frame",
-  mode: "Mode",
-};
-
-const KIND_TAB: Record<CosmeticKind | "theme", StoreTab> = {
-  theme: "themes",
-  kit: "kit",
-  pitch: "pitches",
-  title: "titles",
-  frame: "frames",
-  mode: "modes",
-};
-
-interface ForYouItem {
-  id: string;
-  kind: CosmeticKind | "theme";
-  name: string;
-  price: number;
-}
-
-/**
- * Default Store tab: everything this coach can afford right now (cheapest first), and the
- * next thing to save for. Buying here is the same purchase as on the item's own tab.
- */
-function ForYouStore({
-  balance,
-  unlockedThemes,
-  purchasingThemeId,
-  onBuyTheme,
-  onOpenTab,
-}: {
-  balance: number;
-  unlockedThemes: string[];
-  purchasingThemeId: string | null;
-  onBuyTheme: (theme: UiThemeDefinition) => void;
-  onOpenTab: (tab: StoreTab) => void;
-}) {
-  const c = useCosmetics();
-  const [message, setMessage] = useState<string | null>(null);
-
-  const items: ForYouItem[] = useMemo(() => {
-    const cosmetics: ForYouItem[] = COSMETICS.filter((i) => !i.notForSale && !c.owned.includes(i.id)).map((i) => ({
-      id: i.id,
-      kind: i.kind,
-      name: i.name,
-      price: i.price,
-    }));
-    const themes: ForYouItem[] = UI_THEMES.filter((t) => !unlockedThemes.includes(t.id)).map((t) => ({
-      id: t.id,
-      kind: "theme" as const,
-      name: t.label,
-      price: UI_THEME_PURCHASE_PRICE,
-    }));
-    return [...cosmetics, ...themes].sort((a, b) => a.price - b.price || a.name.localeCompare(b.name));
-  }, [c.owned, unlockedThemes]);
-
-  const affordable = items.filter((i) => i.price <= balance);
-  const next = nextStoreUnlock(balance, c.owned);
-  const saveFor = items.find((i) => i.price > balance) ?? null;
-
-  const buy = (item: ForYouItem) => {
-    playUiClick();
-    setMessage(null);
-    if (item.kind === "theme") {
-      const theme = UI_THEMES.find((t) => t.id === item.id);
-      if (theme) onBuyTheme(theme);
-      return;
-    }
-    const r = purchaseCosmetic(item.id);
-    if (r.success) {
-      playThemePurchaseSuccess();
-      setMessage(`${item.name} unlocked. Find it under ${STORE_TABS.find((t) => t.id === KIND_TAB[item.kind])?.label}.`);
-    } else {
-      playThemePurchaseFail();
-      if (r.reason === "insufficient") setMessage(`You need ${formatClubFunds(item.price - balance)} more for ${item.name}.`);
-    }
-  };
-
-  return (
-    <div className="flex flex-col gap-3 text-left">
-      <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
-        <p className={TYPO.label}>Club Funds</p>
-        <p className="fl-number mt-1 text-[28px] leading-none text-theme-primary tabular-nums">
-          <CountUp value={balance} format={formatClubFunds} durationMs={700} />
-        </p>
-        {saveFor ? (
-          <>
-            <div className="mt-3 h-2 overflow-hidden rounded-full bg-pitch-800" aria-hidden>
-              <div
-                className="h-full rounded-full bg-accent-gold transition-[width] duration-500 ease-out motion-reduce:transition-none"
-                style={{ width: `${Math.min(100, (Math.max(0, balance) / saveFor.price) * 100)}%` }}
-              />
-            </div>
-            <p className={`mt-1.5 ${TYPO.bodySm} text-[color:var(--fl-muted)]`}>
-              Next: {saveFor.name} ({KIND_LABEL[saveFor.kind].toLowerCase()}) · {formatClubFunds(saveFor.price - balance)} to go
-            </p>
-          </>
-        ) : null}
-      </div>
-
-      {message ? (
-        <p className="text-center text-sm text-theme-primary" role="status">
-          {message}
-        </p>
-      ) : null}
-
-      <section className="rounded-card bg-pitch-900 p-4" aria-labelledby="store-for-you">
-        <h2 id="store-for-you" className="text-[17px] font-bold text-white">
-          {affordable.length > 0 ? "You can buy now" : "Nothing in reach yet"}
-        </h2>
-        {affordable.length === 0 ? (
-          <p className="mt-1 text-sm text-[color:var(--fl-muted)]">
-            {next
-              ? `Win games and play puzzles to earn Club Funds. Items start at ${formatClubFunds(next.price)}.`
-              : "You own everything in the Store."}
-          </p>
-        ) : null}
-        <ul className="mt-2 divide-y divide-[color:var(--fl-line)]">
-          {(affordable.length > 0 ? affordable : items.slice(0, 3)).map((item) => {
-            const canAfford = item.price <= balance;
-            return (
-              <li key={`${item.kind}-${item.id}`} className="flex items-center gap-3 py-2.5">
-                <button
-                  type="button"
-                  onClick={() => onOpenTab(KIND_TAB[item.kind])}
-                  className="min-w-0 flex-1 text-left"
-                  aria-label={`${item.name}, ${KIND_LABEL[item.kind]}: see it on its tab`}
-                >
-                  <span className="block truncate text-[15px] font-semibold text-white">{item.name}</span>
-                  <span className="block text-xs text-[color:var(--fl-muted)]">
-                    {KIND_LABEL[item.kind]} · {formatClubFunds(item.price)}
-                  </span>
-                </button>
-                <GameButton
-                  size="sm"
-                  fullWidth={false}
-                  variant={canAfford ? "theme" : "secondary"}
-                  disabled={!canAfford || (item.kind === "theme" && purchasingThemeId === item.id)}
-                  onClick={() => buy(item)}
-                >
-                  {canAfford ? "Buy" : `Need ${formatClubFunds(item.price - balance)} more`}
-                </GameButton>
-              </li>
-            );
-          })}
-        </ul>
-      </section>
     </div>
   );
 }
