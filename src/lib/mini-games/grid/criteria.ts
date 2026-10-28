@@ -1,4 +1,5 @@
 import { getAllClubs } from "@/lib/clubs";
+import { isEligibleMiniGameCurrentTeam } from "../eligibility";
 import type { Position } from "@/lib/types";
 import type { GridCriterion, GridPlayer } from "./types";
 
@@ -74,6 +75,8 @@ function allCandidateCriteria(): GridCriterionDef[] {
   const out: GridCriterionDef[] = [];
 
   for (const club of getAllClubs()) {
+    // Club headers are this season's Super League clubs only (owner, v1.49): no Halifax, Paris…
+    if (!isEligibleMiniGameCurrentTeam(club.name)) continue;
     out.push({
       id: `club:${club.id}`,
       kind: "club",
