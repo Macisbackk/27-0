@@ -322,3 +322,16 @@
     line-height: 1.1;
   }
 }
+
+/* v1.51 (owner): text is centred across the site on phones. Headings and paragraphs centre unless
+   they sit in a row/list/table/form where alignment carries meaning (incl. a label next to a
+   switch or value), or ask for left alignment
+   themselves (text-left / keep-left). Wider screens keep their layout. */
+@media (max-width: 639px) {
+  main
+    :where(h1, h2, h3, h4, h5, h6, p, figcaption, blockquote):not(
+      :where(li, td, th, label, button, a, form, dl, .justify-between, .fixture-results-list, [role="tablist"], [role="list"], .lb-row, .keep-left, .flex:not(.flex-col):has(> .shrink-0)) *
+    ):not(.text-left, .\!text-left, .keep-left) {
+    text-align: center;
+  }
+}
