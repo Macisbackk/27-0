@@ -21,6 +21,8 @@ import { GameButton } from "@/components/ui/GameButton";
 import { TYPO } from "@/lib/ui/typography";
 import Link from "next/link";
 import { DAILY_ARCHIVE_PAGE } from "@/lib/daily-archive";
+import { PAST_DAILIES_MODE_ID } from "@/lib/cosmetics";
+import { useCosmetics } from "@/lib/storage/cosmetics-store";
 
 const MILESTONE_COPY: Record<number, string> = {
   3: "Three days running. The habit is forming.",
@@ -45,6 +47,7 @@ export function DailyStreakStrip({ className = "", compact = false }: DailyStrea
   const [offer, setOffer] = useState<ReturnType<typeof getStreakFreezeOffer> | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [celebrating, setCelebrating] = useState<number | null>(null);
+  const ownsPastDailies = useCosmetics().owned.includes(PAST_DAILIES_MODE_ID);
 
   const refresh = useCallback(() => {
     const next = getDailyChallengeMeta();
@@ -163,9 +166,12 @@ export function DailyStreakStrip({ className = "", compact = false }: DailyStrea
               Play today&apos;s Daily
             </GameButton>
           ) : null}
-          <Link href={DAILY_ARCHIVE_PAGE} className="inline-flex min-h-[44px] items-center text-xs font-semibold text-accent-gold hover:underline">
-            Past Dailies ›
-          </Link>
+          {/* Past Dailies is locked until 3 Dailies are finished (lib/mode-unlocks.ts). */}
+          {ownsPastDailies ? (
+            <Link href={DAILY_ARCHIVE_PAGE} className="inline-flex min-h-[44px] items-center text-xs font-semibold text-accent-gold hover:underline">
+              Past Dailies ›
+            </Link>
+          ) : null}
         </div>
       ) : null}
       {message ? (

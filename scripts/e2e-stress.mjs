@@ -58,10 +58,13 @@ try {
   await setFunds(page, 1_000_000);
   await page.reload({ waitUntil: "networkidle" });
   await page.getByRole("tab", { name: "Modes" }).click();
-  // v1.47: Ball Knower is earned by a 27-0, never sold.
+  // v1.47 / v1.50: every More mode is earned by a challenge, never sold.
   await page.getByText("Go 27-0 once to unlock.").first().waitFor({ timeout });
-  if (await page.getByRole("button", { name: /^Buy/ }).count()) fail("Modes tab still sells Ball Knower");
-  step("Store: Ball Knower can't be bought (earned by a 27-0)");
+  for (const text of ["Win a Grand Final in Classic.", "players from one club."]) {
+    if (!(await page.getByText(text).count())) fail(`Modes tab doesn't show the "${text}" challenge`);
+  }
+  if (await page.getByRole("button", { name: /^Buy/ }).count()) fail("Modes tab still sells a mode");
+  step("Store: modes can't be bought (earned by challenges)");
 
   await setFunds(page, 12_000_000);
   await page.reload({ waitUntil: "networkidle" });
@@ -99,6 +102,14 @@ try {
   await page.goto(`${BASE}/play?bk=1`, { waitUntil: "networkidle" });
   await page.waitForURL(/\/modes/, { timeout }).catch(() => fail("/play?bk=1 before a 27-0 didn't go to the Modes page"));
   step("Ball Knower is locked until a 27-0");
+  // v1.50: One-Club XI, Gauntlet and Past Dailies are locked behind challenges too.
+  for (const path of ["/play?oneclub=wigan-warriors", "/play?gauntlet=1", "/play?gauntlet=1&era=1", "/modes/past-dailies"]) {
+    await page.goto(`${BASE}${path}`, { waitUntil: "networkidle" });
+    await page.waitForURL(/\/modes$/, { timeout }).catch(() => fail(`${path} while locked didn't go to the Modes page`));
+    if (await page.getByRole("button", { name: /Spin|Auto.?fill squad/i }).count()) fail(`${path} started a locked run`);
+  }
+  if ((await page.getByText("🔒").count()) < 3) fail("Modes page doesn't show the locked modes");
+  step("One-Club XI, Gauntlet and Past Dailies are locked until their challenges");
 
   // ── 3. Classic: tap-to-skip spin, picker double-tap signs once, respin spam, auto-fill, season sim card stays put.
   where = "classic";

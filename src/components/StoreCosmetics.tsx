@@ -2,12 +2,11 @@
 
 import Link from "next/link";
 import { frameRowClass } from "@/lib/coach-flair";
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { ClubShirt } from "@/components/ClubShirt";
 import { GameButton } from "@/components/ui/GameButton";
 import { formatClubFunds } from "@/lib/club-funds";
 import {
-  BALL_KNOWER_ID,
   COSMETICS,
   KIT_COLOURS,
   KIT_DESIGNER_ID,
@@ -18,7 +17,8 @@ import {
   pitchStyleForItem,
   type CosmeticItem,
 } from "@/lib/cosmetics";
-import { BALL_KNOWER_UNLOCK_TEXT } from "@/lib/ball-knower-unlock";
+import { MODE_UNLOCKS, syncModeUnlocks } from "@/lib/mode-unlocks";
+import { MODES_PAGE } from "@/lib/play-side-modes";
 import { equipCosmetic, purchaseCosmetic, setKitDesign, useCosmetics } from "@/lib/storage/cosmetics-store";
 import { playThemePurchaseFail, playThemePurchaseSuccess, playThemeSelect, playUiClick } from "@/lib/sound";
 
@@ -307,24 +307,32 @@ export function FramesStore({ balance }: { balance: number }) {
 }
 
 export function ModesStore(props: { balance: number }) {
-  void props; // Ball Knower is earned by a 27-0 now, so the balance isn't needed here.
+  void props; // Modes are earned by challenges (v1.50), so the balance isn't needed here.
   const c = useCosmetics();
-  const owned = c.owned.includes(BALL_KNOWER_ID);
+  useEffect(() => {
+    syncModeUnlocks();
+  }, []);
   return (
-    <Section title="Ball Knower mode" intro="Classic with every rating hidden and no respins. Unranked.">
-      {owned ? (
-        <div className="grid grid-cols-2 gap-2">
-          <Link href="/play?bk=1" className="btn-press flex h-11 items-center justify-center rounded-control bg-theme-primary text-sm font-bold text-[color:var(--theme-text-on-primary)]">
-            Play Classic
-          </Link>
-          <Link href="/play?bk=1&era=1" className="btn-press flex h-11 items-center justify-center rounded-control bg-pitch-800 text-sm font-bold text-white">
-            Play Era Classic
-          </Link>
-        </div>
-      ) : (
-        // Earned, not bought (v1.47).
-        <p className="text-center text-sm font-semibold text-[color:var(--fl-muted)]">🔒 {BALL_KNOWER_UNLOCK_TEXT}</p>
-      )}
+    <Section title="More modes" intro="Earned by challenges, not bought. Unranked.">
+      <ul className="space-y-2">
+        {MODE_UNLOCKS.map((m) => {
+          const owned = c.owned.includes(m.id);
+          return (
+            <li key={m.id} className="rounded-control bg-pitch-950 px-3 py-2.5 text-center">
+              <p className="text-[15px] font-bold text-white">{m.name}</p>
+              <p className={`mt-0.5 text-sm font-semibold ${owned ? "text-theme-primary" : "text-[color:var(--fl-muted)]"}`}>
+                {owned ? "✓ Unlocked" : `🔒 ${m.text}`}
+              </p>
+            </li>
+          );
+        })}
+      </ul>
+      <Link
+        href={MODES_PAGE}
+        className="btn-press mt-3 flex h-11 items-center justify-center rounded-control bg-pitch-800 text-sm font-bold text-white"
+      >
+        Go to More modes
+      </Link>
     </Section>
   );
 }

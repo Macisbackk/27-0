@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { StandardPageShell } from "@/components/ui/StandardPageShell";
 import { PAGE } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -15,6 +16,8 @@ import {
 import { getDailyChallengeHref, getDailyChallengeResultForKey } from "@/lib/daily-challenge";
 import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 import { MODES_PAGE } from "@/lib/play-side-modes";
+import { PAST_DAILIES_MODE_ID } from "@/lib/cosmetics";
+import { isModeUnlocked, syncModeUnlocks } from "@/lib/mode-unlocks";
 import { playUiClick } from "@/lib/sound";
 import { PitchHero } from "@/components/ui/PitchHero";
 import { FixtureGlyph } from "@/components/icons/rugby-icons";
@@ -33,8 +36,15 @@ interface ArchiveRow {
 /** Past Dailies — the last 30 Dailies to replay as practice (same rule, same spins). */
 export default function PastDailiesPage() {
   const [rows, setRows] = useState<ArchiveRow[] | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
+    // Unlocked by finishing 3 Dailies (lib/mode-unlocks.ts): locked → the Modes page says how.
+    syncModeUnlocks();
+    if (!isModeUnlocked(PAST_DAILIES_MODE_ID)) {
+      router.replace(MODES_PAGE);
+      return;
+    }
     try {
       setRows(
         getDailyArchiveDateKeys().map((key) => {
@@ -53,7 +63,7 @@ export default function PastDailiesPage() {
     } catch {
       setRows([]);
     }
-  }, []);
+  }, [router]);
 
   return (
     <StandardPageShell>

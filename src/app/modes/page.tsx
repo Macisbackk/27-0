@@ -18,8 +18,16 @@ import {
 import { getGauntletHref, getOneClubHref } from "@/lib/play-side-modes";
 import { DAILY_ARCHIVE_DAYS, DAILY_ARCHIVE_PAGE } from "@/lib/daily-archive";
 import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
-import { BALL_KNOWER_ID } from "@/lib/cosmetics";
-import { BALL_KNOWER_UNLOCK_TEXT, syncBallKnowerUnlock } from "@/lib/ball-knower-unlock";
+import { BALL_KNOWER_ID, GAUNTLET_MODE_ID, ONE_CLUB_MODE_ID, PAST_DAILIES_MODE_ID } from "@/lib/cosmetics";
+import {
+  BALL_KNOWER_UNLOCK_TEXT,
+  GAUNTLET_UNLOCK_TEXT,
+  ONE_CLUB_UNLOCK_TEXT,
+  PAST_DAILIES_UNLOCK_COUNT,
+  PAST_DAILIES_UNLOCK_TEXT,
+  getModeUnlockProgress,
+  syncModeUnlocks,
+} from "@/lib/mode-unlocks";
 import { useCosmetics } from "@/lib/storage/cosmetics-store";
 import { setNormalEraVariant } from "@/lib/storage/preferences";
 import { playUiClick } from "@/lib/sound";
@@ -37,20 +45,39 @@ function Section({ id, title, kicker, children }: { id: string; title: string; k
   );
 }
 
+/** A locked mode: the challenge that unlocks it, plus progress when it's cheap to show. */
+function Locked({ text, progress }: { text: string; progress?: string }) {
+  return (
+    <div className="text-center">
+      <p className="text-sm font-semibold text-[color:var(--fl-muted)]">🔒 {text}</p>
+      {progress ? <p className="mt-1 text-xs font-bold text-theme-primary">{progress}</p> : null}
+    </div>
+  );
+}
+
 /**
  * More modes — the side modes that don't get a home-screen card: One-Club XI, the Gauntlet,
- * past Dailies (practice) and Ball Knower (unlocked by a first 27-0).
+ * past Dailies (practice) and Ball Knower. Each is unlocked by a challenge (lib/mode-unlocks.ts).
  */
 export default function ModesPage() {
   const [clubs, setClubs] = useState<OneClubOption[] | null>(null);
   const [gauntlet, setGauntlet] = useState<GauntletOpponent[] | null>(null);
   const [records, setRecords] = useState<ModeRecords | null>(null);
   const cosmetics = useCosmetics();
-  const ownsBallKnower = cosmetics.owned.includes(BALL_KNOWER_ID);
-  // Earned by a first 27-0 (v1.47): grant it here too for 27-0s from before the change.
+  // Unlocks are read from this device's storage, so show locks only once it has been read.
+  const [ready, setReady] = useState(false);
+  const [dailiesFinished, setDailiesFinished] = useState(0);
+  // Grant any mode already earned (backfill for challenges met before the locks, v1.50).
   useEffect(() => {
-    syncBallKnowerUnlock();
+    syncModeUnlocks();
+    setDailiesFinished(getModeUnlockProgress().dailiesFinished);
+    setReady(true);
   }, []);
+  const owns = (id: string) => cosmetics.owned.includes(id);
+  const ownsOneClub = owns(ONE_CLUB_MODE_ID);
+  const ownsGauntlet = owns(GAUNTLET_MODE_ID);
+  const ownsPastDailies = owns(PAST_DAILIES_MODE_ID);
+  const ownsBallKnower = owns(BALL_KNOWER_ID);
 
   useEffect(() => {
     let live = true;
@@ -103,7 +130,9 @@ export default function ModesPage() {
           title="One-Club XI"
           kicker="Pick a club. Build its all-time 13."
         >
-          {clubs === null ? (
+          {!ready ? null : !ownsOneClub ? (
+            <Locked text={ONE_CLUB_UNLOCK_TEXT} />
+          ) : clubs === null ? (
             <p className={TYPO.meta}>Loading clubs…</p>
           ) : (
             <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
@@ -139,39 +168,45 @@ export default function ModesPage() {
           title="Gauntlet"
           kicker={`Draft your 13. Beat ${GAUNTLET_LENGTH} great Grand Final winners in a row. Lose once and you're out.`}
         >
-          {gauntlet && gauntlet.length > 0 ? (
-            <p className="text-xs leading-relaxed text-[color:var(--fl-muted)]">
-              {gauntlet.map((o) => o.label).join(" → ")}
-            </p>
-          ) : null}
-          {g && g.runs > 0 ? (
-            <p className="mt-2 text-sm font-bold text-theme-primary">
-              Best: {g.best}/{GAUNTLET_LENGTH}
-              {g.sweeps > 0 ? ` · ${g.sweeps} clean sweep${g.sweeps === 1 ? "" : "s"}` : ""}
-            </p>
-          ) : null}
-          <div className="mt-3 grid grid-cols-2 gap-2">
-            <Link
-              href={getGauntletHref(false)}
-              onClick={() => {
-                playUiClick();
-                setNormalEraVariant(false);
-              }}
-              className="btn-press flex h-[48px] items-center justify-center rounded-control bg-theme-primary font-cond text-[17px] font-bold text-[color:var(--theme-text-on-primary)]"
-            >
-              Classic draft
-            </Link>
-            <Link
-              href={getGauntletHref(true)}
-              onClick={() => {
-                playUiClick();
-                setNormalEraVariant(true);
-              }}
-              className="btn-press flex h-[48px] items-center justify-center rounded-control bg-pitch-800 font-cond text-[17px] font-bold text-white"
-            >
-              Era Classic draft
-            </Link>
-          </div>
+          {!ready ? null : !ownsGauntlet ? (
+            <Locked text={GAUNTLET_UNLOCK_TEXT} />
+          ) : (
+            <>
+              {gauntlet && gauntlet.length > 0 ? (
+                <p className="text-xs leading-relaxed text-[color:var(--fl-muted)]">
+                  {gauntlet.map((o) => o.label).join(" → ")}
+                </p>
+              ) : null}
+              {g && g.runs > 0 ? (
+                <p className="mt-2 text-sm font-bold text-theme-primary">
+                  Best: {g.best}/{GAUNTLET_LENGTH}
+                  {g.sweeps > 0 ? ` · ${g.sweeps} clean sweep${g.sweeps === 1 ? "" : "s"}` : ""}
+                </p>
+              ) : null}
+              <div className="mt-3 grid grid-cols-2 gap-2">
+                <Link
+                  href={getGauntletHref(false)}
+                  onClick={() => {
+                    playUiClick();
+                    setNormalEraVariant(false);
+                  }}
+                  className="btn-press flex h-[48px] items-center justify-center rounded-control bg-theme-primary font-cond text-[17px] font-bold text-[color:var(--theme-text-on-primary)]"
+                >
+                  Classic draft
+                </Link>
+                <Link
+                  href={getGauntletHref(true)}
+                  onClick={() => {
+                    playUiClick();
+                    setNormalEraVariant(true);
+                  }}
+                  className="btn-press flex h-[48px] items-center justify-center rounded-control bg-pitch-800 font-cond text-[17px] font-bold text-white"
+                >
+                  Era Classic draft
+                </Link>
+              </div>
+            </>
+          )}
         </Section>
 
         {SHOW_DAILY_CHALLENGE_UI ? (
@@ -180,22 +215,27 @@ export default function ModesPage() {
             title="Past Dailies"
             kicker={`Replay the last ${DAILY_ARCHIVE_DAYS} Dailies. Practice only.`}
           >
-            <Link
-              href={DAILY_ARCHIVE_PAGE}
-              onClick={() => playUiClick()}
-              className="btn-press flex h-[48px] items-center justify-center rounded-control bg-pitch-800 font-cond text-[17px] font-bold text-white"
-            >
-              Play past Dailies
-            </Link>
+            {!ready ? null : !ownsPastDailies ? (
+              <Locked
+                text={PAST_DAILIES_UNLOCK_TEXT}
+                progress={`Dailies finished: ${dailiesFinished}/${PAST_DAILIES_UNLOCK_COUNT}`}
+              />
+            ) : (
+              <Link
+                href={DAILY_ARCHIVE_PAGE}
+                onClick={() => playUiClick()}
+                className="btn-press flex h-[48px] items-center justify-center rounded-control bg-pitch-800 font-cond text-[17px] font-bold text-white"
+              >
+                Play past Dailies
+              </Link>
+            )}
           </Section>
         ) : null}
 
-        {!ownsBallKnower ? (
-          <Section id="ball-knower-title" title="Ball Knower" kicker="Classic with every rating hidden.">
-            <p className="text-center text-sm font-semibold text-[color:var(--fl-muted)]">🔒 {BALL_KNOWER_UNLOCK_TEXT}</p>
-          </Section>
-        ) : (
-          <Section id="ball-knower-title" title="Ball Knower" kicker="Classic with every rating hidden.">
+        <Section id="ball-knower-title" title="Ball Knower" kicker="Classic with every rating hidden.">
+          {!ready ? null : !ownsBallKnower ? (
+            <Locked text={BALL_KNOWER_UNLOCK_TEXT} />
+          ) : (
             <div className="grid grid-cols-2 gap-2">
               <Link href="/play?bk=1" className="btn-press flex h-[48px] items-center justify-center rounded-control bg-theme-primary text-sm font-bold text-[color:var(--theme-text-on-primary)]">
                 Classic
@@ -204,8 +244,8 @@ export default function ModesPage() {
                 Era Classic
               </Link>
             </div>
-          </Section>
-        )}
+          )}
+        </Section>
       </div>
     </StandardPageShell>
   );

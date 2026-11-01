@@ -48,8 +48,8 @@ import { DIVISION_LABEL } from "@/lib/career/clubs";
 import { getAllStats } from "@/lib/storage/stats";
 import { getPaidRunIds } from "@/lib/storage/club-funds";
 import { getLocalDateKey } from "@/lib/mini-games/date";
-import { BALL_KNOWER_ID } from "@/lib/cosmetics";
-import { syncBallKnowerUnlock } from "@/lib/ball-knower-unlock";
+import { PAST_DAILIES_MODE_ID } from "@/lib/cosmetics";
+import { countUnlockedModes, syncModeUnlocks } from "@/lib/mode-unlocks";
 import { useCosmetics } from "@/lib/storage/cosmetics-store";
 import { DAILY_ARCHIVE_PAGE } from "@/lib/daily-archive";
 import { MODES_PAGE } from "@/lib/play-side-modes";
@@ -260,8 +260,8 @@ export function HomeModeSelector() {
     } catch {
       /* storage blocked: no bonus today, the hub still shows */
     }
-    // A 27-0 from before v1.47 unlocks Ball Knower here (it used to be bought).
-    syncBallKnowerUnlock();
+    // More modes unlock by challenges (v1.50): grant any already met (27-0, Grand Final…).
+    syncModeUnlocks();
     try {
       setEra(getNormalEraVariant());
     } catch {
@@ -310,7 +310,8 @@ export function HomeModeSelector() {
   }, [authLoading, isLoggedIn]);
 
   const cosmetics = useCosmetics();
-  const ownsBallKnower = cosmetics.owned.includes(BALL_KNOWER_ID);
+  const modesUnlocked = countUnlockedModes(cosmetics.owned);
+  const ownsPastDailies = cosmetics.owned.includes(PAST_DAILIES_MODE_ID);
   const daily = hub?.daily ?? null;
   const weekly = hub?.weekly ?? null;
   const firstRun = hub?.firstRun === true;
@@ -515,18 +516,21 @@ export function HomeModeSelector() {
                   {daily?.done || daily?.used ? "Practice" : "Play"}
                 </span>
               </Link>
-              <Link
-                href={DAILY_ARCHIVE_PAGE}
-                onClick={() => playUiClick()}
-                aria-label="Past Dailies"
-                title="Past Dailies"
-                className={`btn-press fl-pressable flex w-12 shrink-0 items-center justify-center rounded-tile bg-pitch-900 text-[color:var(--fl-muted)] hover:bg-pitch-800 hover:text-white ${FOCUS}`}
-              >
-                <Glyph size={20}>
-                  <path d="M3 12a9 9 0 1 0 3-6.7" />
-                  <path d="M3 4v4.5h4.5M12 7.5V12l3 2" />
-                </Glyph>
-              </Link>
+              {/* Past Dailies is locked until 3 Dailies are finished (lib/mode-unlocks.ts). */}
+              {ownsPastDailies ? (
+                <Link
+                  href={DAILY_ARCHIVE_PAGE}
+                  onClick={() => playUiClick()}
+                  aria-label="Past Dailies"
+                  title="Past Dailies"
+                  className={`btn-press fl-pressable flex w-12 shrink-0 items-center justify-center rounded-tile bg-pitch-900 text-[color:var(--fl-muted)] hover:bg-pitch-800 hover:text-white ${FOCUS}`}
+                >
+                  <Glyph size={20}>
+                    <path d="M3 12a9 9 0 1 0 3-6.7" />
+                    <path d="M3 4v4.5h4.5M12 7.5V12l3 2" />
+                  </Glyph>
+                </Link>
+              ) : null}
             </div>
           ) : null}
       {/* Weekly + missions: two compact tiles side by side; missions open into a list. */}
@@ -635,7 +639,7 @@ export function HomeModeSelector() {
             </>
           }
           tint="bg-white/[0.06] text-white"
-          badge={<Badge plain>{ownsBallKnower ? "3 to play" : "Gauntlet & more"}</Badge>}
+          badge={<Badge plain>{`${modesUnlocked.unlocked} of ${modesUnlocked.total} unlocked`}</Badge>}
         />
       </nav>
     </section>

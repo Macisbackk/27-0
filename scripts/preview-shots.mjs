@@ -128,6 +128,23 @@ await shot(phone, "31-menu-full", "/", tap(/open menu/i), true);
 await shot(phone, "40-records", "/records");
 await shot(phone, "41-squad-book", "/squad-book");
 await shot(phone, "42-modes", "/modes");
+// More modes unlocked (v1.50: each is earned by a challenge; seeded here).
+await shot(phone, "42b-modes-unlocked", "/modes", async (page) => {
+  await page.evaluate(() => {
+    const key = "27-0-cosmetics-store";
+    let state = {};
+    try {
+      state = JSON.parse(localStorage.getItem(key) || "{}") || {};
+    } catch {
+      state = {};
+    }
+    const owned = Array.isArray(state.owned) ? state.owned : [];
+    const ids = ["mode-one-club", "mode-gauntlet", "mode-past-dailies", "mode-ball-knower"];
+    localStorage.setItem(key, JSON.stringify({ ...state, owned: [...new Set([...owned, ...ids])] }));
+  });
+  await page.reload({ waitUntil: "networkidle" });
+  await page.waitForTimeout(900);
+});
 await shot(phone, "43-settings", "/settings");
 await shot(phone, "44-quiz", "/quiz");
 await shot(phone, "45-how-to-play", "/", async (page) => {
