@@ -68,7 +68,13 @@ async function main(): Promise<void> {
   check(cos.nextStoreUnlock(cheapest)?.remaining === 0, "exact balance: affordable");
   check(cos.nextStoreUnlock(cheapest - 1)?.remaining === 1, "£1 short");
   check(cos.nextStoreUnlock(1e12)?.remaining === 0, "huge balance");
-  check(cos.COSMETICS.filter((c) => c.notForSale).every((c) => c.id === cos.BALL_KNOWER_ID), "only Ball Knower is earned, not sold");
+  const earnedModes = [cos.BALL_KNOWER_ID, cos.ONE_CLUB_MODE_ID, cos.GAUNTLET_MODE_ID, cos.PAST_DAILIES_MODE_ID];
+  check(
+    cos.COSMETICS.filter((c) => c.notForSale).every((c) => earnedModes.includes(c.id) && c.kind === "mode"),
+    "only the More modes are earned, not sold"
+  );
+  check(earnedModes.every((id) => cos.cosmeticById(id)?.notForSale === true), "every More mode is a notForSale item");
+  check(cos.COSMETICS.filter((c) => c.kind === "mode").every((c) => c.notForSale), "no mode is for sale");
   check(cos.nextStoreUnlock(1000, cos.COSMETICS.map((c) => c.id)) === null, "everything owned: no next unlock");
   check(cos.nextStoreUnlock(0, ["title-rookie"])?.id === "title-ball-boy", "owned starter drops out, tie keeps catalogue order");
   const allButOne = cos.COSMETICS.filter((c) => c.id !== "title-27-0-legend").map((c) => c.id);

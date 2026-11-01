@@ -84,6 +84,18 @@ async function audit(page, label) {
 
 for (const vp of VIEWPORTS) {
   const context = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, isMobile: vp.mobile, hasTouch: vp.mobile });
+  // More modes are earned by challenges (v1.50): own them so /modes/past-dailies opens.
+  await context.addInitScript(() => {
+    try {
+      const key = "27-0-cosmetics-store";
+      const state = JSON.parse(localStorage.getItem(key) || "{}") || {};
+      const owned = Array.isArray(state.owned) ? state.owned : [];
+      const ids = ["mode-one-club", "mode-gauntlet", "mode-past-dailies", "mode-ball-knower"];
+      localStorage.setItem(key, JSON.stringify({ ...state, owned: [...new Set([...owned, ...ids])] }));
+    } catch {
+      /* storage blocked */
+    }
+  });
   const page = await context.newPage();
   for (const route of ROUTES) {
     await page.goto(`${BASE}${route}`, { waitUntil: "domcontentloaded" }).catch(() => {});

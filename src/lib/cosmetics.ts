@@ -16,12 +16,16 @@ export interface CosmeticItem {
   blurb: string;
   price: number;
   tier?: CosmeticTier;
-  /** Earned in the game, never sold (Ball Knower: unlocked by a first 27-0, v1.47). */
+  /** Earned in the game, never sold (the More modes unlocks: Ball Knower v1.47, the rest v1.50). */
   notForSale?: boolean;
 }
 
 export const KIT_DESIGNER_ID = "kit-designer";
 export const BALL_KNOWER_ID = "mode-ball-knower";
+/** More modes, each earned by a challenge (v1.50, lib/mode-unlocks.ts). */
+export const ONE_CLUB_MODE_ID = "mode-one-club";
+export const GAUNTLET_MODE_ID = "mode-gauntlet";
+export const PAST_DAILIES_MODE_ID = "mode-past-dailies";
 /** Thin white border, given free with the login welcome bonus (see storage/login-welcome.ts). */
 export const CHALK_FRAME_ID = "frame-chalk";
 
@@ -88,6 +92,9 @@ export const COSMETICS: CosmeticItem[] = [
   { id: "frame-scarf", kind: "frame", name: "Bar scarf", blurb: "Striped edges, like a terrace scarf.", price: 6_000_000 },
   { id: "frame-diamond", kind: "frame", name: "Diamond frame", blurb: "A sparkling white edge. Top of the pile.", price: 15_000_000 },
 
+  { id: ONE_CLUB_MODE_ID, kind: "mode", name: "One-Club XI", blurb: "Build one club's all-time 13.", price: 0, notForSale: true },
+  { id: GAUNTLET_MODE_ID, kind: "mode", name: "Gauntlet", blurb: "Beat great Grand Final winners in a row.", price: 0, notForSale: true },
+  { id: PAST_DAILIES_MODE_ID, kind: "mode", name: "Past Dailies", blurb: "Replay recent Dailies as practice.", price: 0, notForSale: true },
   { id: BALL_KNOWER_ID, kind: "mode", name: "Ball Knower mode", blurb: "Classic with ratings hidden and no respins. Unlocked by going 27-0.", price: 0, notForSale: true },
 ];
 

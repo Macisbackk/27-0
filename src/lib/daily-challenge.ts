@@ -6,6 +6,7 @@ import {
   DAILY_FREEZE_PRICE,
   DAILY_MAX_FREEZES,
   DEFAULT_DAILY_META,
+  isFinishedDay,
   migrateDailyState,
   normalizeDailyMeta,
   normalizeDailyProgressMap,
@@ -757,6 +758,17 @@ export function getDailyChallengeProgress(date = new Date()): DailyProgress {
 export function hasClaimedDailyChallengeBonus(date = new Date()): boolean {
   const p = getDailyChallengeProgress(date);
   return Boolean(p.leagueLeaders && p.playoffTitle);
+}
+
+/**
+ * How many Dailies this coach has finished (counted attempts only; practice and Past Dailies
+ * don't count). The progress map keeps the last 60 days, so the best streak and perfect-day
+ * count are floors for older players. Unlocks Past Dailies (lib/mode-unlocks.ts).
+ */
+export function countFinishedDailies(): number {
+  const days = Object.values(loadProgressMap()).filter((p) => isFinishedDay(p)).length;
+  const meta = loadRawMeta();
+  return Math.max(days, meta.bestStreak || 0, meta.perfectDays ?? 0);
 }
 
 /** Today's Daily has been finished (counts for the streak). */

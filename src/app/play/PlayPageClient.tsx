@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { isBallKnowerUnlocked, syncBallKnowerUnlock } from "@/lib/ball-knower-unlock";
+import { isModeUnlocked, syncModeUnlocks } from "@/lib/mode-unlocks";
+import { BALL_KNOWER_ID, GAUNTLET_MODE_ID, ONE_CLUB_MODE_ID, PAST_DAILIES_MODE_ID } from "@/lib/cosmetics";
 import { useRouter, useSearchParams } from "next/navigation";
 import { GameStarter } from "@/components/GameStarter";
 import {
@@ -47,23 +48,11 @@ export function PlayPageClient() {
   const challengeParam = searchParams.get("challenge");
   const challenge = useMemo(() => (challengeParam ? decodeChallenge(challengeParam) : null), [challengeParam]);
   const hasChallengeParam = challengeParam !== null;
-  // Ball Knower (Store): Classic with every rating hidden. null = still checking ownership.
+  // Ball Knower: Classic with every rating hidden (unlocked by a 27-0).
   const wantsBallKnower =
     searchParams.get("bk") === "1" && daily !== "1" && weekly !== "1" && !hasChallengeParam;
-  const [ballKnower, setBallKnower] = useState<boolean | null>(wantsBallKnower ? null : false);
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
-  useEffect(() => {
-    if (!wantsBallKnower) {
-      setBallKnower(false);
-      return;
-    }
-    syncBallKnowerUnlock();
-    const owned = isBallKnowerUnlocked();
-    setBallKnower(owned);
-    // Earned by going 27-0 once (v1.47), not bought: locked → the Modes page explains how.
-    if (!owned) router.replace("/modes");
-  }, [wantsBallKnower, router]);
 
   const wantsSuperSamHallas = superSamHallas === "1";
   const wantsJoeMellor = joeMellor === "1" && !wantsSuperSamHallas;
@@ -95,6 +84,28 @@ export function PlayPageClient() {
         : null;
   const badSideModeLink =
     sideModeAllowed && ((oneClubParam !== null && !oneClubOption) || (archiveParam !== null && !archiveKey));
+
+  // More modes are earned by challenges (lib/mode-unlocks.ts). A locked mode's URL goes to the
+  // Modes page, which says how to unlock it: never start a locked run from a link.
+  const requiredUnlock: string | null = wantsBallKnower
+    ? BALL_KNOWER_ID
+    : oneClubOption
+      ? ONE_CLUB_MODE_ID
+      : archiveKey
+        ? PAST_DAILIES_MODE_ID
+        : sideMode?.kind === "gauntlet"
+          ? GAUNTLET_MODE_ID
+          : null;
+  // Storage is only readable once mounted: until then the run waits on "Loading…".
+  const [unlockedFor, setUnlockedFor] = useState<string | null>(null);
+  useEffect(() => {
+    if (!requiredUnlock) return;
+    syncModeUnlocks();
+    if (isModeUnlocked(requiredUnlock)) setUnlockedFor(requiredUnlock);
+    else router.replace(MODES_PAGE);
+  }, [requiredUnlock, router]);
+  const unlockPending = requiredUnlock !== null && unlockedFor !== requiredUnlock;
+  const ballKnower = wantsBallKnower && unlockedFor === BALL_KNOWER_ID;
 
   useEffect(() => {
     // Unknown club / a Daily outside the archive window: back to the list to pick again.
@@ -200,13 +211,13 @@ export function PlayPageClient() {
 
   // The static metadata says "Classic"; name the tab after the variant actually being played.
   useEffect(() => {
-    if (!mounted || ballKnower === null) return;
+    if (!mounted || unlockPending) return;
     document.title = challenge ? `${challengeBannerText(challenge)} — 27-0` : `${title} — 27-0`;
-  }, [mounted, ballKnower, title, challenge]);
+  }, [mounted, unlockPending, title, challenge]);
 
   // The board reads saved runs and Store boosts from this device on its first render; the server
   // can't, so render it only once mounted (otherwise React hydration error #418 on /play).
-  if (!mounted || ballKnower === null || badSideModeLink) {
+  if (!mounted || unlockPending || badSideModeLink) {
     return <p className="p-6 text-center text-pitch-400">Loading…</p>;
   }
 

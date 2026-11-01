@@ -48,6 +48,22 @@ async function go(page, route, ms) {
 const phone = await browser.newContext({ viewport: { width: 375, height: 812 }, isMobile: true, hasTouch: true, deviceScaleFactor: 1 });
 const page = await phone.newPage();
 
+// More modes start locked (v1.50): shoot that, then unlock them all so the mode pages open.
+await go(page, "/modes");
+await shot(page, "modes-locked");
+await page.evaluate(() => {
+  const key = "27-0-cosmetics-store";
+  let state = {};
+  try {
+    state = JSON.parse(localStorage.getItem(key) || "{}") || {};
+  } catch {
+    state = {};
+  }
+  const owned = Array.isArray(state.owned) ? state.owned : [];
+  const ids = ["mode-one-club", "mode-gauntlet", "mode-past-dailies", "mode-ball-knower"];
+  localStorage.setItem(key, JSON.stringify({ ...state, owned: [...new Set([...owned, ...ids])] }));
+});
+
 for (const [route, name] of [
   ["/", "home"],
   ["/manager", "manager"],
@@ -198,7 +214,7 @@ await page.evaluate(() => {
   localStorage.setItem(
     "27-0-cosmetics-store",
     JSON.stringify({
-      owned: ["kit-designer", "pitch-floodlit", "title-deadline-dealer", "frame-foil", "mode-ball-knower"],
+      owned: ["kit-designer", "pitch-floodlit", "title-deadline-dealer", "frame-foil", "mode-ball-knower", "mode-one-club", "mode-gauntlet", "mode-past-dailies"],
       purchaseIds: [],
       equipped: { pitch: "pitch-floodlit", title: "title-deadline-dealer", frame: "frame-foil" },
       kit: { pattern: "v", body: "#0A2540", trim: "#FDB913", enabled: true },

@@ -112,7 +112,7 @@ import {
   playUiClick,
 } from "@/lib/sound";
 import { PlayerChoice } from "./PlayerChoice";
-import { unlockBallKnowerAfterSeason } from "@/lib/ball-knower-unlock";
+import { modeUnlockById, unlockModesAfterPlayoffs, unlockModesAfterSeason } from "@/lib/mode-unlocks";
 import { pushToast } from "@/lib/ui/popup-queue";
 import { RecruitmentSlotReveal } from "./RecruitmentSlotReveal";
 import { SlotTeamYearPicker } from "./SlotTeamYearPicker";
@@ -166,7 +166,7 @@ import {
 } from "@/lib/game/boosted-spin-plan";
 import { pickLegendSpinSlotIndex } from "@/lib/game/legend-spin";
 import { getSpinRuleFilter } from "@/lib/game/daily-rule-filter";
-import { computeChemistry, formatChemistryBonus } from "@/lib/game/chemistry";
+import { computeChemistry, formatChemistryBonus, getChemistryClub } from "@/lib/game/chemistry";
 import type { HalfwayCallId } from "@/lib/game/halfway-call";
 import { DailyRuleBanner } from "./DailyRuleBanner";
 import { GauntletRun } from "./GauntletRun";
@@ -282,6 +282,14 @@ interface GameBoardProps {
    * no leaderboards, streaks, missions, achievements or Club Funds; never resumed.
    */
   sideMode?: SideMode | null;
+}
+
+/** One toast per mode a season just unlocked (lib/mode-unlocks.ts). */
+function showModeUnlockToasts(ids: readonly string[]): void {
+  for (const id of ids) {
+    const unlock = modeUnlockById(id);
+    if (unlock) pushToast({ id: `mode-unlocked-${id}`, kicker: "Unlocked", title: unlock.name, detail: "Find it in More modes." });
+  }
 }
 
 function createRunSeed(runKey: number): string {
@@ -1539,11 +1547,6 @@ export function GameBoard({
         leagueTable.find((row) => row.isUserTeam)?.position ??
         result.leaguePosition;
 
-      // A first 27-0 unlocks Ball Knower mode (v1.47). Hidden novelty modes don't count.
-      if (unlockBallKnowerAfterSeason(result.isPerfect, joeMellorMode || superSamHallasMode)) {
-        pushToast({ id: "ball-knower-unlocked", kicker: "Unlocked by your 27-0", title: "Ball Knower mode", detail: "Find it in More modes." });
-      }
-
       void recordCompletedRun(
         {
           id: runId,
@@ -1590,6 +1593,18 @@ export function GameBoard({
           console.error("[run] Failed to record completed run online:", error);
           setSubmittedOnline(false);
         });
+
+      // More modes unlock (v1.50): a 27-0 → Ball Knower, 20+ wins with 5 from one club →
+      // One-Club XI, a 3rd finished Daily → Past Dailies. After recordCompletedRun, so a counted
+      // Daily is already in the Daily history. Hidden novelty modes don't count.
+      showModeUnlockToasts(
+        unlockModesAfterSeason({
+          wins: result.wins,
+          perfect: result.isPerfect,
+          clubs: finalSquad.map((s) => (s.player ? getChemistryClub(s.player) : null)),
+          hidden: joeMellorMode || superSamHallasMode || mode !== "CLASSIC",
+        })
+      );
 
       if (weeklyChallengeMode && !weeklyRegularSubmittedRef.current) {
         weeklyRegularSubmittedRef.current = true;
@@ -1742,6 +1757,14 @@ export function GameBoard({
           console.error("[run] Failed to record completed run online:", error);
           setSubmittedOnline(false);
         });
+
+      // A Grand Final win in Classic unlocks the Gauntlet (v1.50).
+      showModeUnlockToasts(
+        unlockModesAfterPlayoffs({
+          champion: playoff.isChampion === true || playoff.finish === "Super League Champions",
+          hidden: joeMellorMode || superSamHallasMode || mode !== "CLASSIC",
+        })
+      );
 
       if (weeklyChallengeMode && !weeklyPlayoffSubmittedRef.current) {
         weeklyPlayoffSubmittedRef.current = true;

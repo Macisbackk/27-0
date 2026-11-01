@@ -57,6 +57,10 @@ const GUIDE_ITEMS: { title: string; lines: string[] }[] = [
     ],
   },
   {
+    title: "More modes",
+    lines: ["Beat a challenge in Classic to unlock each one."],
+  },
+  {
     title: "Club Funds",
     lines: ["Earn them by winning and playing daily.", "Spend them in the Store."],
   },

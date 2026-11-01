@@ -86,6 +86,9 @@ jobs:
       - name: Squad Book
         if: success() || failure()
         run: scripts/ci-run.sh "Squad Book" npm run test:squadbook
+      - name: Mode unlocks
+        if: success() || failure()
+        run: scripts/ci-run.sh "Mode unlocks" npm run test:mode-unlocks
       - name: Daily missions
         if: success() || failure()
         run: scripts/ci-run.sh "Daily missions" npm run test:missions

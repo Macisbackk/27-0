@@ -95,6 +95,25 @@ async function tapFirst(page, patterns) {
   return null;
 }
 
+/** Init script: own every More mode (they unlock by challenges, see src/lib/mode-unlocks.ts). */
+function unlockAllModes() {
+  try {
+    const key = "27-0-cosmetics-store";
+    const ids = ["mode-one-club", "mode-gauntlet", "mode-past-dailies", "mode-ball-knower"];
+    let state = {};
+    try {
+      state = JSON.parse(localStorage.getItem(key) || "{}") || {};
+    } catch {
+      state = {};
+    }
+    const owned = Array.isArray(state.owned) ? state.owned : [];
+    if (ids.every((id) => owned.includes(id))) return;
+    localStorage.setItem(key, JSON.stringify({ ...state, owned: [...new Set([...owned, ...ids])] }));
+  } catch {
+    /* storage blocked */
+  }
+}
+
 /* Sharding: SITE_SHARD=crawl|play|rest runs one part (CI runs them side by side); unset = all. */
 const SHARD = process.env.SITE_SHARD || "all";
 const runs = (part) => SHARD === "all" || SHARD === part;
@@ -108,6 +127,8 @@ for (const vp of [
   { name: "desktop", width: 1280, height: 800, mobile: false },
 ]) {
   const context = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, isMobile: vp.mobile, hasTouch: vp.mobile });
+  // More modes are earned by challenges (v1.50): unlock them so the crawl opens the real pages.
+  await context.addInitScript(unlockAllModes);
   const page = wire(await context.newPage());
   for (const route of ROUTES) {
     currentWhere = `${route} @${vp.name}`;
@@ -164,6 +185,25 @@ for (const vp of [
   }
   await context.close();
   note("Bottom nav: items, visibility and no overlap");
+}
+
+/* ------------------------------------------------------------ 1c) locked modes */
+// A new player owns no More modes: each mode's URL goes to /modes, never into a run.
+{
+  const context = await browser.newContext({ viewport: { width: 375, height: 812 }, isMobile: true, hasTouch: true });
+  const page = wire(await context.newPage());
+  for (const route of ["/play?oneclub=wigan-warriors", "/play?gauntlet=1", "/play?gauntlet=1&era=1", "/modes/past-dailies", "/play?bk=1"]) {
+    currentWhere = `locked ${route}`;
+    await page.goto(`${BASE}${route}`, { waitUntil: "domcontentloaded" });
+    const moved = await page.waitForURL(/\/modes$/, { timeout }).then(() => true).catch(() => false);
+    if (!moved) problems.push(`[${currentWhere}] locked mode didn't redirect to /modes (at ${page.url().replace(BASE, "")})`);
+  }
+  await settle(page, 600);
+  const locks = await page.getByText("🔒").count();
+  if (locks < 3) problems.push(`[locked /modes] expected the locked modes to show 🔒 challenges, found ${locks}`);
+  await shot(page, "modes-locked");
+  await context.close();
+  note("Locked modes: URLs redirect to /modes, which shows the challenges");
 }
 
 /* ------------------------------------------------------------ 2) links */
