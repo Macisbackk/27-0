@@ -3,14 +3,15 @@
 import { useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
-import { TROPHY_LABEL, formatMoney, ordinal, prestigeRatingCap, relevantNews, rivalsOf } from "@/lib/career";
-import type { SeasonChallenge } from "@/lib/career/types";
+import { DIVISION_LABEL, TROPHY_LABEL, formatMoney, ordinal, prestigeRatingCap, relevantNews, rivalsOf } from "@/lib/career";
+import type { SeasonChallenge, SeasonOutcome } from "@/lib/career/types";
 import { useCareer } from "@/lib/career/context";
 import { playUiClick, playWarning } from "@/lib/sound";
 import { Card, Eyebrow, ProgressBar, Stars } from "./bits";
 import { ManagerSheet, SheetButtons } from "./Sheet";
 import { HallOfFameCard, LeagueLeadersCard, SquadStatsCard } from "./StatsCards";
 import { TransferRoundUp, WindowStatusLine } from "./TransferNews";
+import { PastSeasonSheet } from "./SeasonStory";
 
 /** "Best margin: 12 / 30" rather than a bare "12/30" for goals that track a best, not a count. */
 function challengeProgressLabel(c: SeasonChallenge): string {
@@ -47,6 +48,7 @@ let lastClubView: ClubView = "overview";
 export function ClubTab({ onOpenVault, onOpenRecords }: { onOpenVault: () => void; onOpenRecords: () => void }) {
   const { state, legacy, abandonCareer } = useCareer();
   const [confirm, setConfirm] = useState(false);
+  const [past, setPast] = useState<SeasonOutcome | null>(null);
   const [view, setViewState] = useState<ClubView>(lastClubView);
   const setView = (v: ClubView) => {
     lastClubView = v;
@@ -198,9 +200,47 @@ export function ClubTab({ onOpenVault, onOpenRecords }: { onOpenVault: () => voi
               <GameButton size="sm" variant="secondary" onClick={() => { playUiClick(); onOpenRecords(); }}>Records</GameButton>
             </div>
           </Card>
+          {s.history.length ? (
+            <Card>
+              <section aria-label="Past seasons" data-testid="past-seasons">
+                <Eyebrow>Past seasons · tap one for the full story</Eyebrow>
+                <ul className="mt-2 space-y-1.5">
+                  {[...s.history].reverse().map((h) => {
+                    const silver = h.trophies.filter((t) => t !== "promotion");
+                    return (
+                      <li key={h.year}>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            playUiClick();
+                            setPast(h);
+                          }}
+                          className="flex w-full items-center gap-2 rounded-control bg-pitch-800 px-3 py-2 text-left hover:bg-pitch-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/50"
+                        >
+                          <span className="w-10 shrink-0 font-display font-bold tabular-nums text-white">{h.year}</span>
+                          <span className="min-w-0 flex-1">
+                            <span className="block truncate text-[13px] text-gray-200">
+                              {ordinal(h.position)} · {DIVISION_LABEL[h.division]}
+                            </span>
+                            <span className="block truncate text-[11px] text-gray-400">
+                              {h.won}W {h.drawn ? `${h.drawn}D ` : ""}{h.lost}L
+                              {h.promoted ? " · promoted" : h.relegated ? " · relegated" : ""}
+                              {silver.length ? <span className="text-accent-gold"> · 🏆 {silver.map((t) => TROPHY_LABEL[t]).join(", ")}</span> : null}
+                            </span>
+                          </span>
+                          <span aria-hidden className="shrink-0 text-gray-500">›</span>
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </section>
+            </Card>
+          ) : null}
           <HallOfFameCard />
         </>
       ) : null}
+      <PastSeasonSheet state={s} outcome={past} onClose={() => setPast(null)} />
 
       {view === "news" ? (
         <>

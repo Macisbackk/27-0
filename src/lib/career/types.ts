@@ -233,6 +233,41 @@ export interface SeasonOutcome {
   boardTarget?: number;
   /** Set once this season has been banked into the cross-career legacy. */
   banked?: boolean;
+  /** Who won what, the play-offs, the cup and every result of yours (seasons before this was kept: none). See story.ts. */
+  story?: SeasonStory;
+}
+
+/** One game kept for the season story: club ids and the score only (small saves). */
+export interface MiniResult {
+  /** Competition / stage. */
+  k: FixtureKind;
+  /** League round, or Challenge Cup round 1–5. */
+  r: number;
+  h: string;
+  a: string;
+  /** Scores (missing while the game is still to be played). */
+  hs?: number;
+  as?: number;
+  /** Won in golden point. */
+  gp?: 1;
+}
+
+/** What a season needs to be told again later: honours, the play-offs, the cup and the user's results. */
+export interface SeasonStory {
+  /** Every game of the user's, in calendar order. */
+  mine: MiniResult[];
+  /** Play-off eliminators, semi-finals and the Grand Final. */
+  playoffs: MiniResult[];
+  /** The Million Pound Game (13th in Super League v Championship runners-up). */
+  mpg?: MiniResult;
+  /** Challenge Cup semi-finals and final. */
+  cup: MiniResult[];
+  /** Final league order: Super League top six, Championship top two. */
+  slTop: string[];
+  chTop: string[];
+  /** Clubs going up to Super League / down to the Championship. */
+  promoted: string[];
+  relegated: string[];
 }
 
 export type TrophyId =

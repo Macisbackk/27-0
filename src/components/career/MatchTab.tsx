@@ -32,6 +32,7 @@ import { ClubLink } from "./ClubSheet";
 import { IncomingBidCard, TransferWindowCard } from "./TransferNews";
 import { PreseasonCard, PreseasonResults } from "./Preseason";
 import { LeagueOverCard, PromotionCard } from "./Stages";
+import { PlayoffsCard } from "./TableTab";
 import { Card, ClubBadge, Eyebrow, FixtureTags, FormDots } from "./bits";
 
 const TACTICS: Array<{ id: Tactic; label: string; hint: string }> = [
@@ -337,6 +338,7 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
       <div className="flex flex-col gap-4">
         {last ? <ResultStrip state={s} fixture={last} flash={flash} /> : null}
         <LeagueOverCard />
+        <PlayoffsCard state={s} />
         {stageBar(
           next
             ? next.kind === "mpg"
@@ -355,6 +357,7 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
       <div className="flex flex-col gap-4">
         {last ? <ResultStrip state={s} fixture={last} flash={flash} /> : null}
         <PromotionCard />
+        <PlayoffsCard state={s} />
         {stageBar(fixture ? "On to the Grand Final" : "Watch the Grand Final", () => passStage("promotion"))}
       </div>
     );
@@ -465,6 +468,8 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
           )}
         </div>
       </div>
+      {/* Once the league is over: the live play-off bracket (who plays who, results so far). */}
+      <PlayoffsCard state={s} />
       <IncomingBidCard />
       <TransferWindowCard onOpenMarket={onOpenMarket} />
       {s.matchdayIndex === 0 ? <PreseasonResults /> : null}

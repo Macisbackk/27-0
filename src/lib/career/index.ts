@@ -23,3 +23,4 @@ export * from "./events";
 export * from "./legend-moves";
 export * from "./news";
 export * from "./stats";
+export * from "./story";
