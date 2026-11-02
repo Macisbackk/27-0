@@ -60,7 +60,7 @@ export function PreseasonCard() {
       </div>
       {!changing ? (
         <div className="mt-3">
-          <ul className="space-y-1.5" aria-label="Your friendlies">
+          <ul className="space-y-1.5 text-left" aria-label="Your friendlies">
             {chosen.length ? (
               chosen.map((o) => {
                 const club = s.clubs[o.opponentId]!;
@@ -158,7 +158,7 @@ export function PreseasonResults() {
   return (
     <section aria-label="Pre-season results" className="fl-rise rounded-card bg-pitch-900 p-4">
       <Eyebrow>Pre-season done</Eyebrow>
-      <ul className="mt-2 space-y-1.5">
+      <ul className="mt-2 space-y-1.5 text-left">
         {pre.results.map((r) => {
           const club = s.clubs[r.opponentId]!;
           const tone = r.us > r.them ? "text-success" : r.us < r.them ? "text-danger" : "text-gray-300";

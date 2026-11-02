@@ -57,10 +57,20 @@ function MobileOverlayShell({
 
   // Sheet-open cue (the close cue plays from handleClose, so only the open edge is tracked here).
   const wasOpen = useRef(false);
+  const openedAt = useRef(0);
   useEffect(() => {
-    if (open && !wasOpen.current) playPopupOpen();
+    if (open && !wasOpen.current) {
+      playPopupOpen();
+      openedAt.current = Date.now();
+    }
     wasOpen.current = open;
   }, [open]);
+  // Card pop-ups are small, so the second tap of a double tap on the button that opened one lands
+  // on the backdrop: ignore backdrop taps for a moment after it opens.
+  const onBackdrop = useCallback(() => {
+    if (variant === "card" && Date.now() - openedAt.current < 450) return;
+    handleClose();
+  }, [variant, handleClose]);
 
   if (!open) return null;
 
@@ -76,7 +86,7 @@ function MobileOverlayShell({
       <div
         className={`fl-backdrop fixed inset-0 ${uiLayerClass("modalBackdrop")} flex justify-center bg-black/75 ${SPACING.modalBackdrop} ${alignClass}`}
         role="presentation"
-        onClick={handleClose}
+        onClick={onBackdrop}
       >
         <div
           ref={panelRef}
