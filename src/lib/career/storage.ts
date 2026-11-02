@@ -86,7 +86,9 @@ async function pushRow(statKey: "save" | "legacy", json: unknown, updatedAt: num
       user_id: userId,
       mode: CLOUD_MODE,
       stat_key: statKey,
-      stat_value: updatedAt,
+      // stat_value is an int4 column: a millisecond timestamp overflowed it, so every Manager
+      // cloud backup failed with a 400 (v1.59). Store whole seconds instead (fits until 2038).
+      stat_value: Math.min(2_147_483_647, Math.floor(updatedAt / 1000)),
       stat_json: json,
       updated_at: new Date().toISOString(),
     },
@@ -110,13 +112,12 @@ async function pullRow<T>(statKey: "save" | "legacy"): Promise<T | null> {
 }
 
 export async function pushCareerToCloud(state: CareerState | null, legacy: CareerLegacy): Promise<void> {
-  try {
-    await pushRow("legacy", legacy, legacy.updatedAt || Date.now());
-    if (state) await pushRow("save", state, state.updatedAt);
-    else await pushRow("save", null, Date.now());
-  } catch (error) {
-    console.error("[career] cloud push failed:", error);
-  }
+  // Independent: a failed legacy row must never stop the career itself being backed up.
+  const results = await Promise.allSettled([
+    pushRow("legacy", legacy, legacy.updatedAt || Date.now()),
+    state ? pushRow("save", state, state.updatedAt) : pushRow("save", null, Date.now()),
+  ]);
+  for (const r of results) if (r.status === "rejected") console.error("[career] cloud push failed:", r.reason);
 }
 
 /** Merge cloud and local: newest career wins; legacy keeps the higher progress. */
