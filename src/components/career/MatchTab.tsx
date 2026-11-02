@@ -85,7 +85,7 @@ function MatchRatings({ state, fixture }: { state: CareerState; fixture: Fixture
   if (!rows.length) return null;
   return (
     <details className="mt-2 text-[12px]" data-testid="match-ratings">
-      <summary className="cursor-pointer font-semibold text-gray-300">Match ratings</summary>
+      <summary className="flex min-h-[40px] cursor-pointer items-center font-semibold text-gray-300">Match ratings</summary>
       <ul className="mx-auto mt-1.5 grid max-w-sm grid-cols-2 gap-x-3 gap-y-0.5 text-left">
         {rows.map((x) => (
           <li key={x.id} className="flex items-center justify-between gap-2">
@@ -381,7 +381,7 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
               <ClubBadge club={opponent} size="lg" />
               <div className="min-w-0 flex-1">
                 <p className="text-xs uppercase tracking-wide text-gray-400">{neutral ? "Neutral venue v" : fixture.home === s.userClubId ? "Home vs" : "Away at"}</p>
-                <p className="font-display text-xl font-bold leading-tight text-white sm:text-2xl"><ClubLink clubId={opponent.id}>{opponent.name}</ClubLink></p>
+                <p className="font-display text-xl font-bold leading-tight text-white sm:text-2xl"><ClubLink clubId={opponent.id} className="inline-flex min-h-[40px] items-center">{opponent.name}</ClubLink></p>
                 {theirRow && fixture.kind === "league" ? (
                   <p className="mt-0.5 flex items-center gap-2 text-xs text-gray-400">
                     {ordinal(theirPos)} · {theirRow.w}W {theirRow.l}L <FormDots form={theirRow.form} />

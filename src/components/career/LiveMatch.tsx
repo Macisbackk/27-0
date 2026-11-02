@@ -205,7 +205,7 @@ export function LiveMatch({
         <>
         <div aria-hidden className="fixed inset-0 z-[59] bg-black/50" />
         <div className="fixed inset-x-0 bottom-0 z-[60] flex justify-center px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
-        <section aria-label={m.pending.title} className="w-full max-w-[40rem] rounded-card border border-[color:var(--fl-line-strong)] bg-pitch-900 p-4 text-center shadow-[0_-12px_40px_rgba(0,0,0,0.5)]">
+        <section role="dialog" aria-modal="true" aria-label={m.pending.title} className="w-full max-w-[40rem] rounded-card border border-[color:var(--fl-line-strong)] bg-pitch-900 p-4 text-center shadow-[0_-12px_40px_rgba(0,0,0,0.5)]">
           <p className="mobile-sheet-card__eyebrow">{m.pending.title}</p>
           <p className="mt-1 text-[16px] font-bold leading-snug text-white">{m.pending.prompt}</p>
           <div className="mt-3 flex flex-col gap-2">
@@ -224,7 +224,7 @@ export function LiveMatch({
           <button
             type="button"
             onClick={skip}
-            className="mt-3 w-full text-center text-xs font-semibold text-[color:var(--fl-muted)] underline-offset-2 hover:underline"
+            className="mt-2 min-h-[44px] w-full text-center text-xs font-semibold text-[color:var(--fl-muted)] underline-offset-2 hover:underline"
           >
             Skip to full time
           </button>

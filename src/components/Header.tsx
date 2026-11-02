@@ -26,7 +26,7 @@ export function Header() {
             <HeaderAuthControls />
           </div>
 
-          <Link href="/" className="flex shrink-0 items-center justify-center" aria-label="27-0 home">
+          <Link href="/" className="flex min-h-[44px] shrink-0 items-center justify-center" aria-label="27-0 home">
             <LogoMark />
           </Link>
 

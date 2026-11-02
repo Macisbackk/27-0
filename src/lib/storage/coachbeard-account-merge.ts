@@ -24,20 +24,33 @@ export interface CoachbeardMergeReport {
   };
 }
 
-function isSecondaryName(name: string): boolean {
-  return name.trim().toLowerCase() === SECONDARY_COACH.toLowerCase();
+function isSecondaryName(name: unknown): boolean {
+  return typeof name === "string" && name.trim().toLowerCase() === SECONDARY_COACH.toLowerCase();
 }
 
-function isPrimaryName(name: string): boolean {
-  return name.trim().toLowerCase() === PRIMARY_COACH.toLowerCase();
+function isPrimaryName(name: unknown): boolean {
+  return typeof name === "string" && name.trim().toLowerCase() === PRIMARY_COACH.toLowerCase();
 }
 
+const isRecord = (v: unknown): v is Record<string, unknown> =>
+  typeof v === "object" && v !== null && !Array.isArray(v);
+
+/**
+ * Reads saved JSON, keeping the fallback's shape: this runs on every page, so a damaged or
+ * hand-edited value (null, a number, an array of junk) must never throw.
+ */
 function loadJson<T>(key: string, fallback: T): T {
   if (typeof window === "undefined") return fallback;
   try {
     const raw = localStorage.getItem(key);
     if (!raw) return fallback;
-    return JSON.parse(raw) as T;
+    const parsed: unknown = JSON.parse(raw);
+    if (Array.isArray(fallback)) return (Array.isArray(parsed) ? parsed.filter(isRecord) : fallback) as T;
+    if (isRecord(fallback)) {
+      if (!isRecord(parsed)) return fallback;
+      return Object.fromEntries(Object.entries(parsed).filter(([, v]) => isRecord(v))) as T;
+    }
+    return parsed as T;
   } catch {
     return fallback;
   }
@@ -161,8 +174,8 @@ function mergeClubFundsLeaderboardLocal(): boolean {
 
   entries[PRIMARY_COACH] = {
     username: PRIMARY_COACH,
-    totalEarned: Math.max(primary?.totalEarned ?? 0, secondary.totalEarned),
-    updatedAt: [primary?.updatedAt ?? "", secondary.updatedAt].sort().pop()!,
+    totalEarned: Math.max(Number(primary?.totalEarned) || 0, Number(secondary.totalEarned) || 0),
+    updatedAt: [String(primary?.updatedAt ?? ""), String(secondary.updatedAt ?? "")].sort().pop()!,
   };
   delete entries[secondaryKey];
   if (primaryKey && primaryKey !== PRIMARY_COACH) {
@@ -184,8 +197,9 @@ function mergeClubFundsState(): void {
       balance: number;
       totalEarned: number;
       paidRunIds: string[];
-    };
-    const paidSet = new Set(state.paidRunIds ?? []);
+    } | null;
+    if (!isRecord(state)) return;
+    const paidSet = new Set(Array.isArray(state.paidRunIds) ? state.paidRunIds : []);
     localStorage.setItem(
       STORAGE_KEYS.clubFunds,
       JSON.stringify({
@@ -216,6 +230,7 @@ function mergeLocalStatsIfNeeded(
   let local: StoredStats;
   try {
     local = JSON.parse(raw) as StoredStats;
+    if (!isRecord(local)) return false;
   } catch {
     return false;
   }
@@ -225,6 +240,7 @@ function mergeLocalStatsIfNeeded(
   if (backupRaw) {
     try {
       secondary = JSON.parse(backupRaw) as StoredStats;
+      if (!isRecord(secondary)) secondary = null;
     } catch {
       secondary = null;
     }

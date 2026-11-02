@@ -869,6 +869,14 @@ button.game-button--era,
   font-weight: 700;
   color: #fff;
 }
+/* Small phones: let a name wrap to a second line rather than cutting "Andy Farrell (1997)" short. */
+@media (max-width: 389px) {
+  .showcase-row__name {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.15;
+  }
+}
 .showcase-row__year {
   font-weight: 600;
   color: var(--mode-era, #e7d9a8);

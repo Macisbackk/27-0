@@ -160,7 +160,7 @@ export function SeasonReview() {
       {data.results.length ? (
         <StoryCard title="Your results" testId="review-results">
           <details className="mt-1" open={data.results.length <= 8}>
-            <summary className="cursor-pointer py-1 text-center text-sm font-semibold text-white sm:text-left">
+            <summary className="flex min-h-[40px] cursor-pointer items-center justify-center py-1 text-center text-sm font-semibold sm:justify-start text-white sm:text-left">
               {data.results.length} games · {recordLine(data.results, s.userClubId)}
             </summary>
             <ResultsList results={data.results} clubs={s.clubs} userClubId={s.userClubId} />

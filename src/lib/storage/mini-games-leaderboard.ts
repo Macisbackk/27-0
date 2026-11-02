@@ -7,6 +7,7 @@ import type { LeaderboardTrackerRow } from "../leaderboard-trackers";
 import { loadWordleStats } from "@/lib/mini-games/wordle/storage";
 import { loadGridStats } from "@/lib/mini-games/grid/storage";
 import { loadQuizStats } from "@/lib/quiz/storage";
+import { isPlainRecord, parseEntryMap } from "./safe-json";
 
 /** Mini-game win boards (score = total wins; Grid = perfect 3×3 grids). */
 export type MiniGameWinsKind = "wordle" | "grid" | "quiz-wins";
@@ -58,7 +59,14 @@ function loadStore(): LocalStore {
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.miniGamesLeaderboard);
     if (!raw) return {};
-    return (JSON.parse(raw) as LocalStore) ?? {};
+    const parsed: unknown = JSON.parse(raw);
+    if (!isPlainRecord(parsed)) return {};
+    const store: LocalStore = {};
+    for (const kind of Object.keys(DB_MODE) as MiniGameWinsKind[]) {
+      const board = parsed[kind];
+      if (isPlainRecord(board)) store[kind] = parseEntryMap<MiniGameWinsEntry>(JSON.stringify(board), { username: "string", wins: "number", updatedAt: "string" });
+    }
+    return store;
   } catch {
     return {};
   }

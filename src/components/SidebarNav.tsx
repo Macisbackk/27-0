@@ -215,8 +215,8 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
               ) : null}
 
               <section aria-labelledby="menu-puzzles">
-                <p id="menu-puzzles" className="mb-1.5 px-1 text-[13px] font-semibold text-[color:var(--fl-muted)]">
-                  <Link href="/mini-games" onClick={handleNavClick} className="hover:text-white">
+                <p id="menu-puzzles" className="px-1 text-[13px] font-semibold text-[color:var(--fl-muted)]">
+                  <Link href="/mini-games" onClick={handleNavClick} className="inline-flex min-h-[40px] items-center hover:text-white">
                     Puzzles
                   </Link>
                 </p>

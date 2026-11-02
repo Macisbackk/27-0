@@ -59,7 +59,7 @@ try {
   await page.getByRole("button", { name: "Skip pre-season" }).click({ timeout: 8000 }).catch(() => {});
   await page.getByRole("button", { name: "Play match" }).waitFor({ timeout: 15000 }).catch(() => {});
   await tap(/^Play match$/);
-  const call = page.getByRole("region", { name: /Penalty|team talk|Closing|Last tackle|Chasing|Big hole|Kick-off|Space in behind|Captain|down to 12|Injury|Fresh legs|Golden point/ });
+  const call = page.getByRole("dialog", { name: /Penalty|team talk|Closing|Last tackle|Chasing|Big hole|Kick-off|Space in behind|Captain|down to 12|Injury|Fresh legs|Golden point/ });
   await call.waitFor({ timeout: 30000 }).catch(() => {});
   await page.waitForTimeout(300);
   await shot("3-manager-live-match");

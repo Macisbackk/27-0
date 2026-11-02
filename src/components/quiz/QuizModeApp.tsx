@@ -354,7 +354,7 @@ function QuizPlayScreen({
           <button
             type="button"
             onClick={onHub}
-            className="text-sm text-pitch-400 underline-offset-2 hover:underline"
+            className="inline-flex min-h-[40px] items-center px-2 text-sm text-pitch-400 underline-offset-2 hover:underline"
           >
             Quiz home
           </button>
@@ -379,7 +379,7 @@ function QuizPlayScreen({
               {formatClubFundsExact(getPrizeForQuestionNumber(questionNumber))}
             </p>
             <details className="mt-3 lg:hidden">
-              <summary className={`cursor-pointer text-center ${TYPO.meta}`}>
+              <summary className={`flex min-h-[40px] cursor-pointer items-center justify-center ${TYPO.meta}`}>
                 Prize ladder
               </summary>
               <div className="mt-2 max-h-48 overflow-y-auto">

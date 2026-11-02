@@ -9,7 +9,7 @@ on:
 jobs:
   shots:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 80
     permissions:
       contents: write
     steps:
@@ -39,7 +39,16 @@ jobs:
           [ -f scripts/manager-break.mjs ] && (timeout 600 node scripts/manager-break.mjs || true)
           # Popup audit (report only: preview-shots/popup-audit.txt).
           [ -f scripts/popup-audit.mjs ] && (timeout 400 node scripts/popup-audit.mjs || true)
+      - name: Whole-site stress test (report only)
+        # Every route at 320 / 390 / 1280 + abuse flows. Report: preview-shots/everything-report.txt.
+        if: success() || failure()
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder
+        run: |
+          [ -f scripts/e2e-everything.mjs ] && (timeout 2700 node scripts/e2e-everything.mjs || true)
       - name: Publish
+        if: success() || failure()
         run: |
           name="${GITHUB_REF_NAME#preview/}"
           branch="preview-shots/$name"

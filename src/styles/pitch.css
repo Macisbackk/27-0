@@ -543,3 +543,13 @@ button[type="submit"].game-button--theme.game-button--sm {
 button[type="submit"].game-button--theme.game-button--sm:hover:not(:disabled) {
   background-color: var(--theme-button-primary-hover-bg, var(--theme-secondary)) !important;
 }
+
+/* Smallest phones (320px): three-way toggles ("Stats · Achievements · Account") must keep a long
+   single word inside its segment instead of spilling past it. */
+@media (max-width: 359px) {
+  .mode-toggle.mode-toggle button {
+    min-width: 0;
+    padding-inline: 0.3rem;
+    font-size: 14px !important;
+  }
+}

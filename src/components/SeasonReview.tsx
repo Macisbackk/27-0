@@ -547,7 +547,7 @@ export function SeasonReview({
                 <Link
                   href="/squad-book"
                   onClick={() => playUiClick()}
-                  className="font-semibold text-theme-primary underline-offset-2 hover:underline"
+                  className="inline-flex min-h-[40px] items-center font-semibold text-theme-primary underline-offset-2 hover:underline"
                 >
                   +{newSquadBookCards} new {newSquadBookCards === 1 ? "card" : "cards"} in your Squad Book →
                 </Link>

@@ -113,7 +113,7 @@ export function CoachCard({
         <span>
           {snap ? `${snap.achievements} of ${snap.achievementsTotal} achievements` : ""}
         </span>
-        <Link href="/store" className="font-semibold text-theme-primary hover:underline">
+        <Link href="/store" className="inline-flex min-h-[40px] items-center font-semibold text-theme-primary hover:underline">
           Change frame or title
         </Link>
       </div>

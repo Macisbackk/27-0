@@ -76,7 +76,7 @@ export function GuestNotice({
         <Link
           href={loginHref(pathname, isDaily)}
           onClick={() => playUiClick()}
-          className="inline-block text-sm font-semibold text-theme-primary hover:underline"
+          className="inline-flex min-h-[40px] items-center text-sm font-semibold text-theme-primary hover:underline"
         >
           {isDaily
             ? "Log in to save your streak and get £100k →"

@@ -202,7 +202,7 @@ export function LoginForm() {
               type="button"
               disabled={busy}
               onClick={() => void handleForgotPassword()}
-              className="fl-pressable text-sm font-semibold text-theme-primary hover:underline disabled:opacity-50"
+              className="fl-pressable inline-flex min-h-[40px] items-center text-sm font-semibold text-theme-primary hover:underline disabled:opacity-50"
             >
               Forgot password?
             </button>
