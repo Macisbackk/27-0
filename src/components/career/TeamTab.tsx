@@ -177,15 +177,26 @@ export function TeamTab() {
             const current = currentId === p.id;
             const xiiiAt = s.lineup.indexOf(p.id);
             const benchAt = bench.indexOf(p.id);
+            // Where the man being replaced ends up, and how he rates there, before you confirm.
+            const outgoing = currentId ? s.players[currentId] : undefined;
+            const movesTo = xiiiAt >= 0 ? LINEUP_SLOTS[xiiiAt]! : null;
+            const outEff = outgoing && movesTo ? effectiveRating(outgoing, movesTo) : null;
+            const swapNote = !outgoing
+              ? ""
+              : movesTo
+                ? ` · ${outgoing.name} to ${movesTo} (${outEff}${outEff! < outgoing.rating ? ", out of position" : ""})`
+                : benchAt >= 0
+                  ? ` · ${outgoing.name} to the bench`
+                  : ` · ${outgoing.name} to the squad`;
             const where = p.ban
               ? `Banned · ${p.ban} game${p.ban > 1 ? "s" : ""}`
               : current
-              ? "Selected here"
-              : xiiiAt >= 0
-                ? `In the XIII (#${xiiiAt + 1}) — will swap`
-                : benchAt >= 0
-                  ? `On the bench (#${14 + benchAt}) — will swap`
-                  : `Age ${p.age}`;
+                ? "Selected here"
+                : xiiiAt >= 0
+                  ? `In the XIII (#${xiiiAt + 1})${swapNote}`
+                  : benchAt >= 0
+                    ? `On the bench (#${14 + benchAt})${swapNote}`
+                    : `Age ${p.age}${swapNote}`;
             return (
               <li key={p.id}>
                 <button
@@ -201,7 +212,10 @@ export function TeamTab() {
                 >
                   <span className="w-8 text-[11px] font-bold uppercase text-gray-400">{p.pos}</span>
                   <span className="min-w-0 flex-1">
-                    <span className="block break-words leading-tight text-white">{p.name}</span>
+                    <span className="block break-words leading-tight text-white">
+                      {p.name}
+                      {eff < p.rating ? <span className="ml-1.5 text-[10px] text-danger">Out of position</span> : null}
+                    </span>
                     <span className="text-[11px] text-gray-500">{where}</span>
                   </span>
                   <RatingPill rating={eff} delta={p.rating - eff || undefined} />
