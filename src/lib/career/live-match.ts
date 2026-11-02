@@ -156,6 +156,11 @@ const clubName = (m: LiveMatch, side: Side) => (side === "home" ? m.homeName : m
 const userSideName = (m: LiveMatch) => clubName(m, m.userSide);
 const oppSideName = (m: LiveMatch) => clubName(m, other(m.userSide));
 const userSheet = (m: LiveMatch) => (m.userSide === "home" ? m.home : m.away);
+/** The user's captain if he's still on the field ("Smith"), for the captain's moments. */
+function captainName(m: LiveMatch, players: Record<string, CareerPlayer>): string | null {
+  const id = userSheet(m).captain;
+  return id && userSheet(m).lineup.includes(id) && players[id] ? players[id]!.name : null;
+}
 
 function addPoints(m: LiveMatch, side: Side, points: number) {
   if (side === "home") m.homeScore += points;
@@ -232,6 +237,8 @@ export function createLiveMatch(params: {
   awayName: string;
   userSide: Side;
   knockout: boolean;
+  /** Magic Weekend: no home advantage. */
+  neutral?: boolean;
   players: Record<string, CareerPlayer>;
   rng: Rng;
 }): LiveMatch {
@@ -282,7 +289,7 @@ export function createLiveMatch(params: {
     goldenPoint: false,
     finished: false,
     base: {
-      homeTries: expectedTries(h.attack, a.defence, true),
+      homeTries: expectedTries(h.attack, a.defence, !params.neutral),
       awayTries: expectedTries(a.attack, h.defence, false),
       homePens: Math.max(0.1, 0.45 + Math.max(0, h.rating - 80) * 0.03 - (params.userSide === "home" ? userPenCut : 0)),
       awayPens: Math.max(0.1, 0.45 + Math.max(0, a.rating - 80) * 0.03 - (params.userSide === "away" ? userPenCut : 0)),
@@ -377,7 +384,7 @@ function buildCall(m: LiveMatch, id: LiveCallId, players: Record<string, CareerP
       return {
         id,
         title: "Captain's challenge?",
-        prompt: `${detail} Your captain thinks there was a knock-on in the build-up.`,
+        prompt: `${detail} ${captainName(m, players) ? `Captain ${captainName(m, players)}` : "Your captain"} thinks there was a knock-on in the build-up.`,
         options: [
           { id: "accept", label: "Accept it", hint: "Save your one challenge for later." },
           { id: "challenge", label: "Challenge it", hint: "Overturned and the try comes off. Lose it and it stands." },
@@ -420,7 +427,7 @@ function buildCall(m: LiveMatch, id: LiveCallId, players: Record<string, CareerP
       return {
         id,
         title: "Half-time team talk",
-        prompt: `${m.homeScore}–${m.awayScore} at the break: you're ${state}.`,
+        prompt: `${m.homeScore}–${m.awayScore} at the break: you're ${state}.${captainName(m, players) ? ` ${captainName(m, players)} gathers them in.` : ""}`,
         options: [
           { id: "calm", label: "Keep it calm", hint: "Tighter defence in the second half." },
           { id: "fire", label: "Fire them up", hint: "More attack, but more penalties given away." },

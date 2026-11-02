@@ -9,7 +9,7 @@ import { ShareSeasonButton } from "@/components/ShareSeasonButton";
 import { GameButton } from "@/components/ui/GameButton";
 import { useArmed } from "@/hooks/useArmed";
 import { isLoggedIn } from "@/lib/auth-session";
-import { DIVISION_LABEL, TROPHY_LABEL, boardTargetLabel, formatMoney, legendCatalog, ordinal, seasonIncome, squadOf, wageBill } from "@/lib/career";
+import { DIVISION_LABEL, MAN_OF_STEEL_LEGACY, TROPHY_LABEL, awardLabel, boardTargetLabel, formatMoney, legendCatalog, ordinal, seasonIncome, squadOf, wageBill } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
 import { playPerfectSeason, playPromotion, playSeasonComplete, playSeasonReviewMajor, playWarning } from "@/lib/sound";
 import { Card, ClubBadge, Eyebrow, CAREER_PAGE_CLASS, CareerBackLink } from "./bits";
@@ -116,6 +116,31 @@ export function SeasonReview() {
         </Card>
       ) : null}
 
+      {o.awards?.length ? (
+        <Card>
+          <section aria-label="Season awards" data-testid="season-awards">
+            <Eyebrow>Season awards</Eyebrow>
+            <ul className="mt-2 divide-y divide-pitch-800">
+              {o.awards.map((a) => {
+                const ours = a.clubId === s.userClubId;
+                return (
+                  <li key={`${a.id}-${a.division}`} className="py-2 text-center sm:flex sm:items-baseline sm:justify-between sm:gap-3 sm:text-left">
+                    <p className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">{awardLabel(a)}</p>
+                    <p className="text-sm">
+                      <span className={`font-semibold ${ours ? "text-accent-gold" : "text-white"}`}>{a.name}</span>
+                      <span className="text-gray-400"> · {a.id === "club-player" ? a.detail : `${a.clubName} · ${a.detail}`}</span>
+                    </p>
+                  </li>
+                );
+              })}
+            </ul>
+            {o.awards.some((a) => a.id === "man-of-steel" && a.division === "super-league" && a.clubId === s.userClubId) ? (
+              <p className="mt-2 text-center text-sm text-accent-gold">Your Man of Steel: +{MAN_OF_STEEL_LEGACY} Legacy.</p>
+            ) : null}
+          </section>
+        </Card>
+      ) : null}
+
       <Card className="border-theme-primary/40">
         <Eyebrow>Next season · {o.year + 1}</Eyebrow>
         {o.boardTarget ? (
@@ -155,6 +180,15 @@ export function SeasonReview() {
             <dt className="text-[11px] uppercase tracking-wide text-gray-500">Legacy to spend</dt>
             <dd className="font-display text-xl font-bold text-accent-gold">{legacy.legacyPoints}</dd>
           </div>
+          {o.derbies && o.derbies.w + o.derbies.d + o.derbies.l > 0 ? (
+            <div data-testid="review-derbies">
+              <dt className="text-[11px] uppercase tracking-wide text-gray-500">Derbies</dt>
+              <dd className="font-display text-xl font-bold text-white">
+                {o.derbies.w}W {o.derbies.d ? `${o.derbies.d}D ` : ""}
+                {o.derbies.l}L
+              </dd>
+            </div>
+          ) : null}
         </dl>
         {o.promoted ? <p className="mt-3 text-sm text-success">Up to Super League. Promotion bonus included.</p> : null}
         {o.relegated ? <p className="mt-3 text-sm text-danger">Down to the Championship. Win it to bounce back.</p> : null}

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { MobileModal } from "@/components/ui/MobileOverlay";
-import { TROPHY_LABEL, formatMoney, ordinal, prestigeRatingCap } from "@/lib/career";
+import { TROPHY_LABEL, formatMoney, ordinal, prestigeRatingCap, rivalsOf } from "@/lib/career";
 import type { SeasonChallenge } from "@/lib/career/types";
 import { useCareer } from "@/lib/career/context";
 import { playUiClick, playWarning } from "@/lib/sound";
@@ -35,6 +35,8 @@ export function ClubTab({ onOpenVault, onOpenRecords }: { onOpenVault: () => voi
   const { state, legacy, abandonCareer } = useCareer();
   const [confirm, setConfirm] = useState(false);
   const s = state!;
+  const rivals = rivalsOf(Object.keys(s.clubs), s.userClubId).map((id) => s.clubs[id]?.name).filter(Boolean);
+  const derbies = s.seasonTrack.derbies ?? { w: 0, d: 0, l: 0 };
 
   return (
     <div className="flex flex-col gap-4">
@@ -129,6 +131,16 @@ export function ClubTab({ onOpenVault, onOpenRecords }: { onOpenVault: () => voi
               <p className="text-gray-200">{formatMoney(s.lastWages)} / season</p>
             </div>
           ) : null}
+        </div>
+        <div className="mt-3 rounded-control bg-pitch-950 px-3 py-2 text-sm" data-testid="derby-record">
+          <p className="text-gray-300">
+            <span className="font-semibold text-white">Derbies this season:</span>{" "}
+            <span className="tabular-nums">
+              {derbies.w}W {derbies.d ? `${derbies.d}D ` : ""}
+              {derbies.l}L
+            </span>
+          </p>
+          {rivals.length ? <p className="mt-0.5 text-[11px] text-gray-400">Rivals: {rivals.join(", ")}. A derby win pays a bonus.</p> : null}
         </div>
         <p className="mt-3 text-xs leading-relaxed text-gray-400">
           Prestige rises with trophies and top-6 finishes. It falls with relegation or a bottom-3 finish.

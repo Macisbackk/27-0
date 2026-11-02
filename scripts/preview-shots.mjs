@@ -187,6 +187,46 @@ await shot(phone, "45-how-to-play", "/", async (page) => {
     await page.getByRole("button", { name: /^Shirt 14,/ }).click({ timeout: 5000 });
     await page.waitForTimeout(600);
   });
+  // Captain row and the Academy list on the Team tab.
+  await shot(narrow, "48e-320-manager-academy", "/manager", async (page) => {
+    await page.getByRole("tab", { name: "Team" }).click({ timeout: 5000 });
+    await page.getByRole("region", { name: "Academy" }).scrollIntoViewIfNeeded({ timeout: 5000 });
+    await page.waitForTimeout(400);
+  });
+  await shot(narrow, "48f-320-manager-captain", "/manager", async (page) => {
+    await page.getByRole("tab", { name: "Team" }).click({ timeout: 5000 });
+    await page.getByTestId("captain").scrollIntoViewIfNeeded({ timeout: 5000 });
+    await page.evaluate(() => window.scrollBy(0, -80));
+    await page.waitForTimeout(400);
+  });
+  // Your next games (Magic Weekend and derbies marked) under the table.
+  await shot(narrow, "48g-320-manager-fixtures", "/manager", async (page) => {
+    await page.getByRole("tab", { name: "Table" }).click({ timeout: 5000 });
+    await page.getByRole("list", { name: "Your next games" }).scrollIntoViewIfNeeded({ timeout: 5000 });
+    await page.waitForTimeout(400);
+  });
+  // Quick-sim to the season review: the awards card.
+  await shot(narrow, "48h-320-manager-awards", "/manager", async (page) => {
+    await page.getByRole("tab", { name: "Match" }).click({ timeout: 5000 }).catch(() => {});
+    let sawMagic = false;
+    for (let i = 0; i < 90; i++) {
+      if (await page.getByRole("region", { name: "Season awards" }).isVisible().catch(() => false)) break;
+      if (!sawMagic && (await page.getByTestId("fixture-banner").isVisible().catch(() => false))) {
+        sawMagic = true;
+        await page.screenshot({ path: `${OUT}/48i-320-manager-special-fixture.png` });
+        console.log("shot 48i-320-manager-special-fixture");
+      }
+      const next = page
+        .getByRole("button", {
+          name: /^(Quick sim|Continue|Shut the window|Skip pre-season|Start the season|On to the play-offs|On to the semi-finals|On to the Million Pound Game|Watch the play-offs|On to the Grand Final|Watch the Grand Final)$/,
+        })
+        .first();
+      if (await next.isVisible().catch(() => false)) await next.click().catch(() => {});
+      await page.waitForTimeout(150);
+    }
+    await page.getByRole("region", { name: "Season awards" }).scrollIntoViewIfNeeded({ timeout: 5000 });
+    await page.waitForTimeout(400);
+  });
   await shot(narrow, "49-320-settings", "/settings", null, true);
   await narrow.close();
 }
