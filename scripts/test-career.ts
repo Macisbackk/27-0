@@ -275,7 +275,7 @@ const simAll = (start: CareerState): CareerState => {
   check(symmetric, "position penalties are symmetric");
   const table: Array<[Pos, Pos, number, number]> = [
     // [player, slot, min, max]
-    ["CE", "WG", 1, 1], ["SO", "SH", 1, 1], ["SR", "LF", 1, 1],
+    ["CE", "WG", 1, 1], ["SO", "SH", 0, 0], ["SH", "SO", 0, 0], ["SR", "LF", 1, 1],
     ["FB", "WG", 1, 2], ["FB", "CE", 1, 2], ["PR", "SR", 1, 2], ["HK", "SH", 1, 2], ["HK", "LF", 1, 2],
     ["SR", "CE", 3, 5], ["HK", "PR", 3, 5], ["WG", "SH", 4, 6],
     ["PR", "FB", 10, 15], ["PR", "WG", 10, 15], ["PR", "SH", 10, 15], ["PR", "SO", 10, 15],
@@ -291,6 +291,13 @@ const simAll = (start: CareerState): CareerState => {
   check(utilities.length >= 20, `real utility players carry their second positions (${utilities.length})`);
   const u = utilities[0]!;
   check(effectiveRating(u, u.alt![0]!) === u.rating && slotPenalty(u, u.alt![0]!) === 0, `${u.name} (${u.pos}/${u.alt!.join("/")}): full rating in his second position`);
+  // The halves swap with no downgrade (owner, v1.62): full rating, so no "Out of position" marker.
+  const so = Object.values(w.players).find((p) => p.pos === "SO" && !p.alt?.length)!;
+  const sh = Object.values(w.players).find((p) => p.pos === "SH" && !p.alt?.length)!;
+  check(
+    slotPenalty(so, "SH") === 0 && effectiveRating(so, "SH") === so.rating && slotPenalty(sh, "SO") === 0 && effectiveRating(sh, "SO") === sh.rating,
+    "stand-off at scrum-half and scrum-half at stand-off: no penalty"
+  );
   // Auto-pick never plays a man far out of position while a natural option sits out.
   let farWithNatural = 0;
   for (const id of Object.keys(w.clubs)) {

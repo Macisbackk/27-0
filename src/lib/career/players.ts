@@ -50,9 +50,10 @@ const isBackPos = (p: Pos) => BACKS.includes(p);
 
 /** Position pairs (alphabetical) that play alike. Anything not listed falls to the defaults below. */
 const PAIR_PENALTY: Record<string, number> = {
+  // The halves swap freely (owner, v1.62): a stand-off at scrum-half, or the other way, plays at full rating.
+  "SH-SO": 0,
   // Close: the same job on the other side of the ball.
   "CE-WG": 1,
-  "SH-SO": 1,
   "LF-SR": 1,
   // Near.
   "CE-FB": 2,
