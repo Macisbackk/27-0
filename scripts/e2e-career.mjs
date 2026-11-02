@@ -74,10 +74,25 @@ async function shot(name) {
     console.log(`screenshot ${name} failed: ${err}`);
   }
 }
+async function dismissEvents() {
+  // v1.55: hub pop-ups (legend signings, random events) sit over the page; Escape takes the default.
+  for (let i = 0; i < 4; i++) {
+    if (!(await page.getByTestId("career-event").isVisible().catch(() => false))) return;
+    await page.keyboard.press("Escape");
+    await page.waitForTimeout(300);
+  }
+}
+
 async function clickButton(name, opts = {}) {
+  await dismissEvents();
   const btn = page.getByRole("button", { name, exact: opts.exact ?? false }).first();
   await btn.waitFor({ state: "visible", timeout });
-  await btn.click();
+  await btn.click({ timeout: 10_000 }).catch(async (e) => {
+    await dismissEvents();
+    await btn.click({ timeout }).catch(() => {
+      throw e;
+    });
+  });
 }
 
 try {
