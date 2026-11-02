@@ -3,6 +3,18 @@
  * Run: npx tsx scripts/test-manager-extras.ts   (CI: npm run test:career)
  */
 import {
+  EVENTS_PER_SEASON,
+  LINEUP_SLOTS,
+  aiLegendSigning,
+  buildMarket,
+  buyPlayer,
+  legendAsPlayer,
+  legendCatalog,
+  legendAtClub,
+  pendingEvent,
+  pushEvent,
+  resolveEvent,
+  rollRandomEvent,
   ACADEMY_LEAVE_AGE,
   ACADEMY_MAX,
   CAPTAIN_BOOST,
@@ -330,6 +342,155 @@ console.log("Rivals and derbies");
   check(d.w + d.d + d.l === all.length, `season derby record covers every derby (${d.w}W ${d.d}D ${d.l}L of ${all.length})`);
   check(end.history[end.history.length - 1]!.derbies?.w === d.w, "derby record stored in the history");
   check(squadOf(end, end.userClubId).length > 0, "season finishes cleanly");
+}
+
+/* ------------------------------------------------------------------ legends */
+console.log("Legends");
+{
+  const base = createCareer({ clubId: "leeds-rhinos", managerName: "T", seed: "legends" });
+  const cards = legendCatalog();
+  let equal = 0;
+  let starts = 0;
+  for (const card of cards) {
+    const s = { ...base, budget: 50_000_000 };
+    const listing = buildMarket(s, [card.id]).find((l) => l.playerId === `legend-${card.id}`);
+    if (!listing) continue;
+    const r = buyPlayer(s, listing);
+    const p = r.state.players[`legend-${card.id}`];
+    if (!r.error && p && p.rating === legendAsPlayer(card).rating) equal++;
+    const slot = r.state.lineup.indexOf(`legend-${card.id}`);
+    if (slot >= 0 && LINEUP_SLOTS[slot] === card.pos) starts++;
+  }
+  check(equal === cards.length, `every legend plays at the vault's rating once signed (${equal}/${cards.length})`);
+  check(starts === cards.length, `every legend goes straight into the XIII in his position (${starts}/${cards.length})`);
+
+  // Sign one, play on: a point a summer, retires after 2–3 seasons with a pop-up, then off the market.
+  const card = cards.find((c) => c.tier === "legend")!;
+  const id = `legend-${card.id}`;
+  let s = buyPlayer({ ...base, budget: 50_000_000 }, buildMarket({ ...base, budget: 50_000_000 }, [card.id]).find((l) => l.playerId === id)!).state;
+  const signed = s.players[id]!;
+  const seasons = signed.retireAfter! - signed.signedYear! + 1;
+  check(seasons === 2 || seasons === 3, `legend signed for ${seasons} seasons (2–3)`);
+  const ratings: number[] = [signed.rating];
+  let guard = 0;
+  while (s.players[id] && guard++ < 5) {
+    s = simAll(s);
+    s = beginOffseason(s);
+    if (s.players[id]) ratings.push(s.players[id]!.rating);
+    else break;
+    s = finishTransfers(finishDepartures(s));
+  }
+  check(!s.players[id] && (s.retiredLegends ?? []).includes(id), `he retires after his last season (played ${ratings.length})`);
+  check(ratings.length === seasons, "…exactly when his deal said");
+  check(ratings.every((r, i) => i === 0 || r === ratings[i - 1]! - 1), `a point a summer, no collapse (${ratings.join(" → ")})`);
+  const retiredPop = (s.events ?? []).find((e) => e.kind === "legend-retired" && e.playerId === id);
+  check(!!retiredPop && retiredPop.text.includes("What a servant"), "retirement pop-up: \"What a servant.\"");
+  check((s.departures?.retired ?? []).some((r) => r.name === card.name), "listed with the summer's retirements");
+  const after = s.phase === "departures" ? finishTransfers(finishDepartures(s)) : s;
+  check(!buildMarket({ ...after, budget: 1e8 }, [card.id]).some((l) => l.playerId === id), "a retired legend never returns to the market");
+
+  // AI clubs: only Super League, only the club he's known for, about one summer in three.
+  let signings = 0;
+  let rivalSignings = 0;
+  let hotSignings = 0;
+  let bad = 0;
+  let onMarket = 0;
+  let pops = 0;
+  const N = 300;
+  const rivals = new Set(rivalsOf(allClubIds(base), base.userClubId));
+  for (let i = 0; i < N; i++) {
+    const t = structuredClone(base);
+    t.year = 3000 + i;
+    t.history = [];
+    const p = aiLegendSigning(t);
+    if (p) {
+      signings++;
+      const at = legendAtClub(t, p.id)!;
+      const card2 = cards.find((c) => `legend-${c.id}` === p.id)!;
+      if (t.clubs[at]!.division !== "super-league" || t.clubs[at]!.name !== card2.club || at === t.userClubId) bad++;
+      if (rivals.has(at)) rivalSignings++;
+      if (p.rating !== legendAsPlayer(card2).rating) bad++;
+      if (buildMarket({ ...t, budget: 1e8 }, [card2.id]).some((l) => l.playerId === p.id)) onMarket++;
+      if (pendingEvent(t)?.kind === "legend-signing" && pendingEvent(t)!.title.includes(p.name)) pops++;
+    }
+    const hot = structuredClone(base);
+    hot.year = 3000 + i;
+    hot.history = [{ ...(hot.history[0] ?? {}), year: hot.year - 1, division: "super-league", position: 1, played: 26, won: 22, drawn: 0, lost: 4, trophies: ["grand-final"], promoted: false, relegated: false, prizeMoney: 0, legacyEarned: 0, challengesDone: 0 }];
+    if (aiLegendSigning(hot)) hotSignings++;
+  }
+  check(signings / N > 0.2 && signings / N < 0.4, `AI legend signing in ${((100 * signings) / N).toFixed(0)}% of summers (about 1 in 3, at most one)`);
+  check(hotSignings > signings, `more likely when you're winning (${((100 * hotSignings) / N).toFixed(0)}%)`);
+  check(bad === 0, "only Super League clubs, only the club he's known for, at the vault rating");
+  check(rivalSignings > 0, `your rivals land some of them (${rivalSignings}/${signings})`);
+  check(onMarket === 0, "a legend at an AI club is off your market");
+  check(pops === signings, "each AI legend signing queues a pop-up");
+  const champOnly = structuredClone(base);
+  for (const c of Object.values(champOnly.clubs)) if (c.id !== champOnly.userClubId) c.division = "championship";
+  let champ = 0;
+  for (let i = 0; i < 50; i++) if (aiLegendSigning({ ...structuredClone(champOnly), year: 4000 + i })) champ++;
+  check(champ === 0, "no legend signs for a club outside Super League");
+}
+
+/* ------------------------------------------------------------------ pop-ups */
+console.log("Pop-ups and random events");
+{
+  const s = structuredClone(createCareer({ clubId: "hull-kr", managerName: "T", seed: "events" }));
+  pushEvent(s, { id: "a", kind: "sponsor", year: s.year, title: "A", text: "a", options: [{ id: "ok", label: "OK" }] });
+  pushEvent(s, { id: "a", kind: "sponsor", year: s.year, title: "A", text: "a", options: [{ id: "ok", label: "OK" }] });
+  pushEvent(s, { id: "b", kind: "sponsor", year: s.year, title: "B", text: "b", options: [{ id: "ok", label: "OK" }] });
+  check((s.events ?? []).length === 2 && pendingEvent(s)?.id === "a", "queued one at a time, same pop-up never twice");
+  const r1 = resolveEvent(s, "a");
+  check(pendingEvent(r1)?.id === "b", "answering one brings up the next");
+  const reloaded = JSON.parse(JSON.stringify(resolveEvent(r1, "b"))) as CareerState;
+  check(!pendingEvent(reloaded) && (reloaded.events ?? []).every((e) => e.seen), "seen pop-ups stay seen after a reload");
+  check(resolveEvent(reloaded, "a") === reloaded, "answering a seen pop-up does nothing");
+
+  // Random events: rare, bounded, each with a clear effect.
+  const t0 = playTo(s, 1);
+  const idx = t0.calendar.findIndex((m, i) => i >= t0.matchdayIndex && userFixture(m, t0.userClubId)?.kind === "league" && userFixture(m, t0.userClubId)!.round >= 3);
+  const at = playTo(t0, idx);
+  const seen = new Map<string, number>();
+  let fired = 0;
+  const badEvents: string[] = [];
+  const N = 1500;
+  for (let i = 0; i < N; i++) {
+    const t = structuredClone(at);
+    t.year = 5000 + i;
+    t.events = [];
+    const budget = t.budget;
+    const e = rollRandomEvent(t, t.matchdayIndex);
+    if (!e) continue;
+    fired++;
+    seen.set(e.kind, (seen.get(e.kind) ?? 0) + 1);
+    if (e.kind === "sponsor" && !(t.budget - budget === e.amount && e.amount! >= 25_000 && e.amount! <= 80_000)) badEvents.push(`sponsor ${e.amount}`);
+    if (e.kind === "transfer-request" && seen.get(e.kind) === 1) {
+      const before = t.players[e.playerId!]!.rating;
+      const kept = resolveEvent(t, e.id, "refuse");
+      check(kept.players[e.playerId!]!.rating === before - 1 && kept.clubs[kept.userClubId]!.squad.includes(e.playerId!), "transfer request refused: he stays, −1 rating");
+      const sold = resolveEvent(t, e.id, "sell");
+      check(sold.clubs[e.clubId!]!.squad.includes(e.playerId!) && sold.budget >= t.budget + e.amount!, "transfer request accepted: sold for the fee");
+    }
+    if (e.kind === "record-bid" && seen.get(e.kind) === 1) {
+      const no = resolveEvent(t, e.id, "reject");
+      check(no.clubs[no.userClubId]!.squad.includes(e.playerId!) && no.budget === t.budget, "record bid rejected: nothing changes");
+      const yes = resolveEvent(t, e.id, "accept");
+      check(yes.clubs[e.clubId!]!.squad.includes(e.playerId!) && yes.budget - t.budget >= e.amount! && e.amount! < 5_000_000, `record bid accepted: +${e.amount}`);
+    }
+    if (e.kind === "wonderkid" && seen.get(e.kind) === 1) {
+      const kid = t.players[e.playerId!]!;
+      check((t.academy ?? []).includes(kid.id) && kid.potential >= 91 && kid.potential <= 94 && kid.rating <= 72, "wonderkid: an academy kid with 91+ potential");
+    }
+    if (e.kind === "takeover" && seen.get(e.kind) === 1) {
+      check(t.clubs[e.clubId!]!.squad.length === at.clubs[e.clubId!]!.squad.length + 1 && rivalsOf(allClubIds(t), t.userClubId).includes(e.clubId!), "takeover: your rival signs one player");
+    }
+    if (e.options.length < 1 || e.options.length > 2) badEvents.push(`${e.kind} buttons`);
+  }
+  check(badEvents.length === 0, `sponsor cash £25k–£80k and 1–2 buttons on every event (${badEvents.slice(0, 3).join(", ")})`);
+  check(fired / N > 0.04 && fired / N < 0.1, `random events after ${((100 * fired) / N).toFixed(1)}% of league games`);
+  check(seen.size === 5, `all five kinds turn up (${[...seen.entries()].map(([k, n]) => `${k} ${n}`).join(", ")})`);
+  const season = simAll(createCareer({ clubId: "st-helens", managerName: "T", seed: "events-season" }));
+  const randoms = (season.events ?? []).filter((e) => e.year === season.year && !e.kind.startsWith("legend"));
+  check(randoms.length <= EVENTS_PER_SEASON, `at most ${EVENTS_PER_SEASON} random events a season (${randoms.length})`);
 }
 
 console.log(`\n${failed === 0 ? "ALL MANAGER EXTRAS TESTS PASSED" : "MANAGER EXTRAS TESTS FAILED"}: ${passed} passed, ${failed} failed`);

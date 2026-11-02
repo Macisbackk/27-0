@@ -61,6 +61,7 @@ import type { CareerLegacy, CareerState, SeasonOutcome, Tactic } from "./types";
 import { createCareer } from "./world";
 import { promoteAcademy as promoteAcademyPure, releaseAcademy as releaseAcademyPure, type AcademyError } from "./academy";
 import { setCaptain as setCaptainPure } from "./captain";
+import { resolveEvent as resolveEventPure } from "./events";
 
 interface CareerContextValue {
   ready: boolean;
@@ -115,6 +116,8 @@ interface CareerContextValue {
   /** Academy: move a prospect into the first-team squad, or let him go. */
   promoteAcademy: (playerId: string) => AcademyError | undefined;
   releaseAcademy: (playerId: string) => void;
+  /** Answer the pop-up on the hub (marks it seen). */
+  resolveEvent: (eventId: string, optionId?: string) => void;
 }
 
 const CareerContext = createContext<CareerContextValue | null>(null);
@@ -357,6 +360,13 @@ export function CareerProvider({ children }: { children: ReactNode }) {
     releaseAcademy: (playerId) => {
       const s = stateRef.current;
       if (s) commit(releaseAcademyPure(s, playerId));
+    },
+    resolveEvent: (eventId, optionId) => {
+      const s = stateRef.current;
+      if (s) {
+        const next = resolveEventPure(s, eventId, optionId);
+        if (next !== s) commit(next);
+      }
     },
     finishTutorial: () => {
       const s = stateRef.current;

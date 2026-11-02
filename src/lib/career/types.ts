@@ -44,6 +44,37 @@ export interface CareerPlayer {
   leftYear?: number;
   /** Games left on a ban (red card): misses his club's next match(es). Older saves: none. */
   ban?: number;
+  /** Legends: the last season he plays (he retires that summer). Older saves derive it from signedYear. */
+  retireAfter?: number;
+}
+
+export type CareerEventKind =
+  | "legend-signing"
+  | "legend-retired"
+  | "transfer-request"
+  | "record-bid"
+  | "sponsor"
+  | "wonderkid"
+  | "takeover";
+
+/** A pop-up on the Manager hub: shown once, one at a time, then marked seen. */
+export interface CareerEvent {
+  id: string;
+  kind: CareerEventKind;
+  year: number;
+  title: string;
+  text: string;
+  /** Club the event is about (badge on the card). */
+  clubId?: string;
+  playerId?: string;
+  /** Player name and rating for the card (he may have gone by the time it shows). */
+  name?: string;
+  rating?: number;
+  /** Fee or cash involved. */
+  amount?: number;
+  /** 1–2 buttons; the first is the default. */
+  options: Array<{ id: string; label: string }>;
+  seen?: boolean;
 }
 
 export interface CareerClub {
@@ -257,6 +288,10 @@ export interface CareerState {
   departures?: Departures;
   /** Academy prospects (in `players`, not in any squad): promote, release or leave them. Older saves: none. */
   academy?: string[];
+  /** Pop-ups for the hub (newest last); seen ones are kept briefly so they never show twice. */
+  events?: CareerEvent[];
+  /** Legends who have retired in this career: gone from every market. */
+  retiredLegends?: string[];
   /** The user's chosen captain (older saves: the best senior starter). */
   captainId?: string;
   /** The board's league target for `year` (finish `target`th or better). Older saves derive it. */

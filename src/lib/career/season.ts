@@ -6,6 +6,7 @@ import { CUP_ROUND_LABELS, buildCalendar } from "./schedule";
 import { DIVISION_LABEL } from "./clubs";
 import { boardTargetForRank } from "./board";
 import { academyIntake } from "./academy";
+import { rollRandomEvent } from "./events";
 import { MAN_OF_STEEL_LEGACY, awardLabel, computeSeasonAwards, userWonManOfSteel } from "./awards";
 import { defaultCaptain, syncCaptain, userCaptain } from "./captain";
 import { DERBY_LEGACY, DERBY_MORALE, derbyBonus, isDerby } from "./rivals";
@@ -673,6 +674,9 @@ function playMatchdayInPlace(next: CareerState, played?: PlayedResult): void {
       if (w && w !== next.userClubId) addNews(next, `${next.clubs[w]!.name} win the ${f.kind === "grand-final" ? "Grand Final" : "Challenge Cup"}.`);
     }
   }
+
+  // Now and then something happens off the field (a pop-up on the hub).
+  rollRandomEvent(next, next.matchdayIndex);
 
   md.played = true;
   next.matchdayIndex++;
