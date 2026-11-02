@@ -232,7 +232,7 @@ try {
     }
     const next = page
       .getByRole("button", {
-        name: /^(Quick sim|Continue|Shut the window|On to the play-offs|On to the Million Pound Game|Watch the play-offs|On to the Grand Final|Watch the Grand Final)$/,
+        name: /^(Quick sim|Continue|Shut the window|On to the play-offs|On to the semi-finals|On to the Million Pound Game|Watch the play-offs|On to the Grand Final|Watch the Grand Final)$/,
       })
       .first();
     if (await next.isVisible().catch(() => false)) await next.click().catch(() => {});
