@@ -179,8 +179,13 @@ export function LiveMatch({
         </div>
       </section>
 
+      {/* The call sits over the bottom of the screen (v1.54): showing/hiding it in the page flow
+          pushed the feed up and down, which read as jitter every time a choice came and went. */}
       {m.pending ? (
-        <section aria-label={m.pending.title} className="rounded-card bg-pitch-900 p-4 ring-2 ring-theme-primary/60">
+        <>
+        <div aria-hidden className="fixed inset-0 z-[59] bg-black/50" />
+        <div className="fixed inset-x-0 bottom-0 z-[60] flex justify-center px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+        <section aria-label={m.pending.title} className="w-full max-w-[40rem] rounded-card bg-pitch-900 p-4 shadow-[0_-12px_40px_rgba(0,0,0,0.5)] ring-2 ring-theme-primary/60">
           <p className="text-[13px] font-semibold text-theme-primary">{m.pending.title}</p>
           <p className="mt-1 text-[15px] font-semibold text-white">{m.pending.prompt}</p>
           <div className="mt-3 flex flex-col gap-2">
@@ -197,6 +202,8 @@ export function LiveMatch({
             ))}
           </div>
         </section>
+        </div>
+        </>
       ) : null}
 
       {m.finished ? (
@@ -211,7 +218,8 @@ export function LiveMatch({
         </section>
       ) : null}
 
-      <section aria-label="Match feed" className="rounded-card bg-pitch-900 p-2">
+      {/* Fixed height: the feed fills in without growing the page as events arrive. */}
+      <section aria-label="Match feed" className="h-[19rem] overflow-hidden rounded-card bg-pitch-900 p-2">
         <ul className="flex flex-col">
           {feed.map((e, i) => (
             <FeedRow key={`${m.events.length - i}`} event={e} homeColor={homeColor} awayColor={awayColor} fresh={i === 0} />
