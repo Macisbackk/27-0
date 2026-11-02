@@ -99,16 +99,16 @@ export function ResultStrip({ state, fixture, flash }: { state: CareerState; fix
   if (flash && flash.moved > 0) chips.push({ text: `Up ${flash.moved} ${flash.moved === 1 ? "place" : "places"}`, tone: "bg-success/15 text-success" });
   if (flash && flash.moved < 0) chips.push({ text: `Down ${-flash.moved} ${flash.moved === -1 ? "place" : "places"}`, tone: "bg-danger/15 text-red-200" });
   return (
-    <section aria-label="Last result" className={`fl-rise rounded-card bg-pitch-900 px-4 py-4 text-center ring-2 ${ring}`}>
+    <section aria-label="Last result" className={`fl-rise rounded-card bg-pitch-900 px-3 py-3 text-center ring-1 sm:px-4 sm:py-4 sm:ring-2 ${ring}`}>
       <p className="text-xs font-semibold text-theme-primary">Last result · {fixture.label}</p>
-      <div className="mt-2 flex items-center justify-center gap-3">
-        <ClubBadge club={isHome ? me : opp} size="md" />
-        <p className={`font-display text-4xl font-bold tabular-nums leading-none sm:text-5xl ${tone}`}>
+      <div className="mt-1.5 flex items-center justify-center gap-2.5 sm:mt-2 sm:gap-3">
+        <ClubBadge club={isHome ? me : opp} size="sm" />
+        <p className={`font-display text-3xl font-bold tabular-nums leading-none sm:text-5xl ${tone}`}>
           {r.homeScore}–{r.awayScore}
         </p>
-        <ClubBadge club={isHome ? opp : me} size="md" />
+        <ClubBadge club={isHome ? opp : me} size="sm" />
       </div>
-      <p className="mt-2 text-[15px] font-bold leading-tight text-white">
+      <p className="mt-1.5 text-[14px] font-bold leading-tight text-white sm:mt-2 sm:text-[15px]">
         <span className={`mr-1.5 rounded-full px-2 py-0.5 text-[12px] uppercase tracking-wide ${pill}`}>{verdict}</span>
         {isHome ? "v" : "at"} <ClubLink clubId={opp.id}>{opp.name}</ClubLink>
       </p>

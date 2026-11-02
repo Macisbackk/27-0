@@ -144,7 +144,14 @@ export function TransferWindow({ mode = "summer", onClose }: { mode?: "summer" |
       {tab === "buy" ? (
         <ul className="grid grid-cols-[minmax(0,1fr)] gap-2">
           {market.length === 0 ? <li className="text-center text-sm text-gray-400">No players available right now.</li> : null}
-          {market.map((l) => {
+          {/* Best first (owner, v1.54): every listing, legends included, by rating. */}
+          {[...market]
+            .map((l) => {
+              const c = l.legend ? legendById(l.playerId.replace(/^legend-/, "")) : undefined;
+              return { l, r: (s.players[l.playerId] ?? (c ? legendAsPlayer(c) : undefined))?.rating ?? 0 };
+            })
+            .sort((a, b) => b.r - a.r)
+            .map(({ l }) => {
             const card = l.legend ? legendById(l.playerId.replace(/^legend-/, "")) : undefined;
             const p = s.players[l.playerId] ?? (card ? legendAsPlayer(card) : undefined);
             const from = l.fromClubId ? s.clubs[l.fromClubId] : null;
