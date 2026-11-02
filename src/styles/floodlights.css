@@ -263,6 +263,10 @@ button.game-button--era,
   background: var(--fl-surface);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
 }
+/* Manager hub: four sections, no Home button (v1.61). */
+.fl-bottom-nav.fl-bottom-nav--four {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
 
 .fl-bottom-nav a {
   display: flex;
