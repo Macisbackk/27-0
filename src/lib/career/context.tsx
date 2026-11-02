@@ -1,5 +1,6 @@
 "use client";
 
+import { pushToast } from "@/lib/ui/popup-queue";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { isLoggedIn } from "../auth-session";
 import { submitCareerLeaderboards } from "../storage/career-leaderboard";
@@ -165,7 +166,10 @@ export function CareerProvider({ children }: { children: ReactNode }) {
   const commit = useCallback(
     (next: CareerState | null, nextLegacy?: CareerLegacy, pushNow = false) => {
       setState(next);
-      saveLocalCareer(next);
+      if (!saveLocalCareer(next)) {
+        // Storage full / blocked (e.g. private browsing): say so instead of losing progress silently.
+        pushToast({ id: "career-save-failed", kicker: "Not saved", title: "Couldn't save on this device", detail: isLoggedIn() ? "It's backed up to your account." : "Log in to back it up." });
+      }
       if (nextLegacy) {
         setLegacy(nextLegacy);
         saveLocalLegacy(nextLegacy);
