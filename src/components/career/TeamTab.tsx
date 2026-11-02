@@ -235,7 +235,7 @@ export function TeamTab() {
                 <button
                   type="button"
                   onClick={() => setPick({ kind: "xiii", index: i })}
-                  className="flex w-full items-center gap-3 py-2 text-left hover:bg-pitch-800/60"
+                  className="flex min-h-[44px] w-full items-center gap-3 py-2 text-left hover:bg-pitch-800/60"
                   aria-label={`Shirt ${i + 1}, ${POS_LABEL[pos]}: ${p?.name ?? "empty"}. Tap to change.`}
                 >
                   <span className="w-6 text-right font-display text-sm font-bold text-gray-500">{i + 1}</span>
@@ -270,7 +270,7 @@ export function TeamTab() {
                   <button
                     type="button"
                     onClick={() => setPick({ kind: "bench", index: i })}
-                    className="flex w-full items-center gap-3 py-2 text-left hover:bg-pitch-800/60"
+                    className="flex min-h-[44px] w-full items-center gap-3 py-2 text-left hover:bg-pitch-800/60"
                     aria-label={`Shirt ${14 + i}, interchange: ${p?.name ?? "empty"}. Tap to change.`}
                   >
                     <span className="w-6 text-right font-display text-sm font-bold text-gray-500">{14 + i}</span>

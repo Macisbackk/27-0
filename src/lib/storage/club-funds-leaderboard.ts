@@ -7,6 +7,7 @@ import { isGuestLeaderboardName } from "./leaderboard";
 import { STORAGE_KEYS } from "./keys";
 import { getClubFundsTotalEarned } from "./club-funds";
 import type { LeaderboardTrackerRow } from "../leaderboard-trackers";
+import { parseEntryMap } from "./safe-json";
 
 const LEADERBOARD_MODE = "club-funds";
 const USER_STATS_MODE = "GLOBAL";
@@ -23,10 +24,11 @@ export interface ClubFundsLeaderboardEntry {
 function loadLocalEntries(): Record<string, ClubFundsLeaderboardEntry> {
   if (typeof window === "undefined") return {};
   try {
-    const raw = localStorage.getItem(STORAGE_KEYS.clubFundsLeaderboard);
-    if (!raw) return {};
-    const parsed = JSON.parse(raw) as Record<string, ClubFundsLeaderboardEntry>;
-    return parsed ?? {};
+    return parseEntryMap<ClubFundsLeaderboardEntry>(localStorage.getItem(STORAGE_KEYS.clubFundsLeaderboard), {
+      username: "string",
+      totalEarned: "number",
+      updatedAt: "string",
+    });
   } catch {
     return {};
   }

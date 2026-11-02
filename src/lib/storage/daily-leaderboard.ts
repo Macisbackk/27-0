@@ -9,6 +9,7 @@ import {
   getDailyChallengeDateKey,
   getDailyChallengeDayResult,
 } from "../daily-challenge";
+import { parseEntryMap } from "./safe-json";
 
 const LEADERBOARD_MODE = "daily";
 const LOCAL_GUEST_KEY = "__local_guest__";
@@ -23,10 +24,11 @@ export interface DailyLeaderboardEntry {
 function loadLocalEntries(): Record<string, DailyLeaderboardEntry> {
   if (typeof window === "undefined") return {};
   try {
-    const raw = localStorage.getItem(STORAGE_KEYS.dailyLeaderboard);
-    if (!raw) return {};
-    const parsed = JSON.parse(raw) as Record<string, DailyLeaderboardEntry>;
-    return parsed ?? {};
+    return parseEntryMap<DailyLeaderboardEntry>(localStorage.getItem(STORAGE_KEYS.dailyLeaderboard), {
+      username: "string",
+      bestStreak: "number",
+      updatedAt: "string",
+    });
   } catch {
     return {};
   }

@@ -7,6 +7,7 @@ import { STORAGE_KEYS } from "./keys";
 import { getAllStats, type StoredStats } from "./stats";
 import type { LeaderboardTrackerRow, LeaderboardTrackerType } from "../leaderboard-trackers";
 import { isTrophyCabinetTracker } from "../leaderboard-trackers";
+import { isPlainRecord, parseEntryMap } from "./safe-json";
 
 const LOCAL_GUEST_KEY = "__local_guest__";
 
@@ -66,10 +67,18 @@ function loadLocalEntries(): Record<
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.trophyCabinetLeaderboard);
     if (!raw) return {};
-    return JSON.parse(raw) as Record<
-      string,
-      Record<TrophyCabinetTracker, TrophyCabinetLeaderboardEntry>
-    >;
+    const parsed: unknown = JSON.parse(raw);
+    if (!isPlainRecord(parsed)) return {};
+    const out: Record<string, Record<TrophyCabinetTracker, TrophyCabinetLeaderboardEntry>> = {};
+    for (const [username, trackers] of Object.entries(parsed)) {
+      if (!isPlainRecord(trackers)) continue;
+      out[username] = parseEntryMap<TrophyCabinetLeaderboardEntry>(JSON.stringify(trackers), {
+        username: "string",
+        trophyCount: "number",
+        updatedAt: "string",
+      }) as Record<TrophyCabinetTracker, TrophyCabinetLeaderboardEntry>;
+    }
+    return out;
   } catch {
     return {};
   }

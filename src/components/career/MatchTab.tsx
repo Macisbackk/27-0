@@ -85,7 +85,7 @@ function MatchRatings({ state, fixture }: { state: CareerState; fixture: Fixture
   if (!rows.length) return null;
   return (
     <details className="mt-2 text-[12px]" data-testid="match-ratings">
-      <summary className="cursor-pointer font-semibold text-gray-300">Match ratings</summary>
+      <summary className="flex min-h-[40px] cursor-pointer items-center font-semibold text-gray-300">Match ratings</summary>
       <ul className="mx-auto mt-1.5 grid max-w-sm grid-cols-2 gap-x-3 gap-y-0.5 text-left">
         {rows.map((x) => (
           <li key={x.id} className="flex items-center justify-between gap-2">

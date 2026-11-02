@@ -148,7 +148,7 @@ try {
   await shot("live-match");
   // Answer the first big call if it shows up, then skip to the end.
   for (let i = 0; i < 40; i++) {
-    const call = page.getByRole("region", { name: /Penalty|team talk|Closing|Last tackle|Chasing|Big hole|Kick-off|Space in behind|Captain|down to 12|Injury|Fresh legs|Golden point|Short side|High shot|Big crowd|Six again|Rain|going wide|blowing|Scrum-half down|Red card/ });
+    const call = page.getByRole("dialog", { name: /Penalty|team talk|Closing|Last tackle|Chasing|Big hole|Kick-off|Space in behind|Captain|down to 12|Injury|Fresh legs|Golden point|Short side|High shot|Big crowd|Six again|Rain|going wide|blowing|Scrum-half down|Red card/ });
     if (await call.isVisible().catch(() => false)) {
       await shot("live-call");
       await call.getByRole("button").first().click();

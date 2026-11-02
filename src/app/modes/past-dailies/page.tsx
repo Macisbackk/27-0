@@ -107,7 +107,7 @@ export default function PastDailiesPage() {
                       {row.title}
                       {row.era ? <span className="ml-1.5 text-xs font-semibold text-accent-gold">Era</span> : null}
                     </span>
-                    <span className="block truncate text-xs text-[color:var(--fl-muted)]">{row.summary}</span>
+                    <span className="line-clamp-2 text-xs leading-snug text-[color:var(--fl-muted)]">{row.summary}</span>
                   </span>
                   <span className="shrink-0 text-right text-xs font-bold">
                     {row.score !== null ? (

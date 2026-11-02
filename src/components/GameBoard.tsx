@@ -3220,7 +3220,7 @@ export function GameBoard({
             {!dailyChallengeMode && !weeklyChallengeMode ? (
               <button
                 type="button"
-                className={`${LINK.subtle} text-xs`}
+                className={`${LINK.subtle} inline-flex min-h-[40px] items-center px-2 text-xs`}
                 onClick={() => {
                   playUiClick();
                   if (resumeModeKey) clearRunResume(resumeModeKey);
@@ -3506,7 +3506,7 @@ export function GameBoard({
                 role="switch"
                 aria-checked={quickSpins}
                 onClick={toggleQuickSpins}
-                className="rounded-full border border-white/10 bg-pitch-950 px-2.5 py-1 text-[11px] font-bold text-gray-300 transition hover:text-white"
+                className="min-h-[40px] rounded-full border border-white/10 bg-pitch-950 px-3.5 py-1 text-[11px] font-bold text-gray-300 transition hover:text-white"
               >
                 Quick spins: {quickSpins ? "On" : "Off"}
               </button>

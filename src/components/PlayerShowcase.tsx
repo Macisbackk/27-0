@@ -407,7 +407,7 @@ export function PlayerShowcase() {
                 setSortKey(key);
                 setSortDir(key === "name" ? "asc" : "desc");
               }}
-              className="showcase-pill !min-h-[34px] !px-3 !text-xs"
+              className="showcase-pill !min-h-[40px] !px-3 !text-xs"
               aria-pressed={sortKey === key}
             >
               {label}
@@ -469,7 +469,7 @@ export function PlayerShowcase() {
         />
         <button
           type="button"
-          className="showcase-pill shrink-0"
+          className="showcase-pill shrink-0 !min-h-[44px]"
           aria-expanded={filtersOpen}
           aria-pressed={filtersOpen || panelFilterCount > 0}
           onClick={() => {

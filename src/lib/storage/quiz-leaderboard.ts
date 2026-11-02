@@ -5,6 +5,7 @@ import { isGuestLeaderboardName } from "./leaderboard";
 import { STORAGE_KEYS } from "./keys";
 import type { LeaderboardTrackerRow } from "../leaderboard-trackers";
 import { formatClubFunds } from "../club-funds";
+import { parseEntryMap } from "./safe-json";
 
 const LEADERBOARD_MODE = "quiz";
 
@@ -20,9 +21,13 @@ export interface QuizLeaderboardEntry {
 function loadLocalEntries(): Record<string, QuizLeaderboardEntry> {
   if (typeof window === "undefined") return {};
   try {
-    const raw = localStorage.getItem(STORAGE_KEYS.quizLeaderboard);
-    if (!raw) return {};
-    return (JSON.parse(raw) as Record<string, QuizLeaderboardEntry>) ?? {};
+    return parseEntryMap<QuizLeaderboardEntry>(localStorage.getItem(STORAGE_KEYS.quizLeaderboard), {
+      username: "string",
+      highestPrize: "number",
+      millionaireRuns: "number",
+      questionsCorrect: "number",
+      updatedAt: "string",
+    });
   } catch {
     return {};
   }

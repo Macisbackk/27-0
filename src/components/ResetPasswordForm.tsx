@@ -109,7 +109,7 @@ export function ResetPasswordForm() {
       <div className={`${CARD.panel} ${SPACING.cardPadding}`}>
         <p className={`${TYPO.cardTitle} text-red-400`}>Password reset failed</p>
         <p className={`mt-2 ${TYPO.body}`}>{error}</p>
-        <Link href="/profile" className={`mt-4 inline-block ${LINK.accent}`}>
+        <Link href="/profile" className={`mt-4 inline-flex min-h-[40px] items-center ${LINK.accent}`}>
           Back to profile →
         </Link>
       </div>

@@ -9,7 +9,7 @@ on:
 jobs:
   shots:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 80
     permissions:
       contents: write
     steps:
@@ -46,7 +46,7 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder
         run: |
-          [ -f scripts/e2e-everything.mjs ] && (timeout 1800 node scripts/e2e-everything.mjs || true)
+          [ -f scripts/e2e-everything.mjs ] && (timeout 2700 node scripts/e2e-everything.mjs || true)
       - name: Publish
         if: success() || failure()
         run: |

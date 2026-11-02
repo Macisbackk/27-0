@@ -31,7 +31,7 @@ export default function ResetPasswordPage() {
           </Suspense>
 
           <p className={`mt-6 text-center ${TYPO.bodySm}`}>
-            <Link href="/login" className={LINK.accent}>
+            <Link href="/login" className={`inline-flex min-h-[40px] items-center ${LINK.accent}`}>
               ← Back to log in
             </Link>
           </p>

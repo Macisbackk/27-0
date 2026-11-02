@@ -87,13 +87,19 @@ function Switch({ on, onToggle, label }: { on: boolean; onToggle: () => void; la
       aria-checked={on}
       aria-label={label}
       onClick={onToggle}
-      className={`relative h-7 w-12 rounded-full border transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/60 ${
-        on ? "border-theme-primary/60 bg-theme-primary" : "border-white/15 bg-pitch-800"
-      }`}
+      className="group relative flex h-11 w-12 shrink-0 items-center focus-visible:outline-none"
     >
+      {/* 44px tall tap area; the visible track stays 28px. */}
       <span
-        className={`absolute top-0.5 h-[22px] w-[22px] rounded-full bg-white shadow transition-[left] ${on ? "left-[22px]" : "left-0.5"}`}
-      />
+        aria-hidden
+        className={`relative block h-7 w-12 rounded-full border transition group-focus-visible:ring-2 group-focus-visible:ring-theme-primary/60 ${
+          on ? "border-theme-primary/60 bg-theme-primary" : "border-white/15 bg-pitch-800"
+        }`}
+      >
+        <span
+          className={`absolute top-0.5 h-[22px] w-[22px] rounded-full bg-white shadow transition-[left] ${on ? "left-[22px]" : "left-0.5"}`}
+        />
+      </span>
     </button>
   );
 }
@@ -118,7 +124,7 @@ function Segmented<T extends string>({
           role="radio"
           aria-checked={value === o.id}
           onClick={() => onChange(o.id)}
-          className={`rounded-full px-3 py-1.5 text-xs font-bold transition ${
+          className={`min-h-[40px] rounded-full px-3 py-1.5 text-xs font-bold transition ${
             value === o.id ? "bg-theme-primary text-black" : "text-gray-400 hover:text-white"
           }`}
         >

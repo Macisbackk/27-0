@@ -233,6 +233,15 @@ html[data-ui-overlay="1"] {
     min-height: var(--manager-mobile-playbar-h);
     height: auto;
   }
+
+  /* A fixed action bar (Classic's Spin bar, the puzzles) must not sit over the footer's last line
+     (the Privacy link was untappable at the end of /play). */
+  body:has(.mobile-action-bar:not(.invisible)) .site-footer {
+    padding-bottom: calc(1.25rem + var(--mobile-button-height, 44px) + 1rem + env(safe-area-inset-bottom));
+  }
+  html[data-bottom-nav="1"] body:has(.mobile-action-bar:not(.invisible)) .site-footer {
+    padding-bottom: calc(1.25rem + var(--manager-mobile-playbar-h));
+  }
 }
 
 @layer base {

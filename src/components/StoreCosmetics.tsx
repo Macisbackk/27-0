@@ -77,7 +77,7 @@ function Swatch({ hex, selected, onClick, label }: { hex: string; selected: bool
       aria-label={label}
       aria-pressed={selected}
       onClick={onClick}
-      className={`h-9 w-9 rounded-full border-2 ${selected ? "border-theme-primary ring-2 ring-theme-primary/40" : "border-white/20"}`}
+      className={`h-10 w-10 rounded-full border-2 ${selected ? "border-theme-primary ring-2 ring-theme-primary/40" : "border-white/20"}`}
       style={{ background: hex }}
     />
   );

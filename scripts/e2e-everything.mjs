@@ -162,6 +162,7 @@ async function newContext(vp, { unlock = true } = {}) {
 }
 
 function wire(page) {
+  page.on("crash", () => problem("page-crash", "the browser tab crashed (out of memory / renderer died)"));
   page.on("pageerror", (err) => {
     const m = err.message.split("\n")[0].slice(0, 220);
     const hyd = /#418|#423|#425|hydrat/i.test(m);
@@ -283,6 +284,7 @@ async function inPageAudit({ mobile }) {
   // 3) Text clipped in / spilling out of buttons.
   const BUTTONISH = "button, [role='button'], [role='tab'], a.btn-press, a[class*='rounded']";
   let clippedN = 0;
+  const truncated = [];
   for (const b of scope.querySelectorAll(BUTTONISH)) {
     if (clippedN >= 8) break;
     if (!isVis(b) || inert(b)) continue;
@@ -292,6 +294,8 @@ async function inPageAudit({ mobile }) {
     let bad = null;
     for (let t = walker.nextNode(); t; t = walker.nextNode()) {
       if (!t.textContent.trim() || !t.parentElement || !isVis(t.parentElement) || srOnly(t.parentElement)) continue;
+      // Deliberate multi-line clamps (line-clamp-2) are fine.
+      if (t.parentElement.closest("[class*='line-clamp']")) continue;
       const range = document.createRange();
       range.selectNodeContents(t);
       for (const rr of range.getClientRects()) {
@@ -305,18 +309,24 @@ async function inPageAudit({ mobile }) {
       }
       // Ellipsis inside the button (text cut short).
       const pe = t.parentElement;
-      if (!bad && getComputedStyle(pe).textOverflow === "ellipsis" && pe.scrollWidth > pe.clientWidth + 1) bad = `"${t.textContent.trim().slice(0, 40)}" is cut off with …`;
+      if (!bad && getComputedStyle(pe).textOverflow === "ellipsis" && pe.scrollWidth > pe.clientWidth + 1) {
+        truncated.push(`${desc(b)}: "${t.textContent.trim().slice(0, 40)}"`);
+        bad = "truncated";
+      }
       if (bad) break;
     }
-    if (bad) {
+    if (bad && bad !== "truncated") {
       clippedN++;
       out.push({ kind: "clipped-text", msg: `${desc(b)}: ${bad}` });
     }
   }
 
+  if (truncated.length) out.push({ kind: "truncated", msg: `${truncated.length} button label(s) cut short with …, e.g. ${truncated[0]}` });
+
   // 4) Tap targets on phones.
   if (mobile) {
     const small = [];
+    let tableSmall = 0;
     for (const el of all) {
       if (!isVis(el) || srOnly(el)) continue;
       const r = el.getBoundingClientRect();
@@ -329,6 +339,11 @@ async function inPageAudit({ mobile }) {
         const lab = el.closest("label") || (el.id && document.querySelector(`label[for='${el.id}']`));
         if (lab && lab.getBoundingClientRect().height >= 40) continue;
       }
+      // Dense data tables (league tables, stat grids) are reported separately, not per cell.
+      if (el.closest("table, [role='table'], [role='grid']")) {
+        tableSmall++;
+        continue;
+      }
       // Nested inside a bigger tappable (row buttons etc.).
       const host = el.parentElement?.closest("button, a[href], label, [role='button']");
       if (host && host.getBoundingClientRect().height >= 40 && host.getBoundingClientRect().width >= 40) continue;
@@ -336,6 +351,7 @@ async function inPageAudit({ mobile }) {
     }
     for (const s of small.slice(0, 10)) out.push({ kind: "tap-target", msg: `under 40px: ${s}` });
     if (small.length > 10) out.push({ kind: "tap-target", msg: `…and ${small.length - 10} more small tap targets` });
+    if (tableSmall) out.push({ kind: "tap-target-table", msg: `${tableSmall} small tap target(s) inside data tables` });
   }
 
   // 5) Covered buttons: walk the page; a control that was on screen but never the top element at
@@ -399,6 +415,16 @@ async function inPageAudit({ mobile }) {
       hidden.push(`${desc(el)} (${Math.round(r.bottom - barTop)}px under ${desc(bars.find((b) => b.getBoundingClientRect().top === barTop))})`);
     }
     for (const h of hidden) out.push({ kind: "under-bottom-bar", msg: `left under a fixed bar at the end of the page: ${h}` });
+  }
+  // Second chance for anything never hit: scroll it into view (inner scrollers like the menu).
+  for (const [el, s] of state) {
+    if (!s.seen || s.ok || !el.isConnected) continue;
+    el.scrollIntoView({ block: "center", inline: "nearest" });
+    await frame();
+    const r = el.getBoundingClientRect();
+    const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+    if (hit && (el === hit || el.contains(hit) || hit.contains(el))) s.ok = true;
+    else s.by = hit;
   }
   let coveredN = 0;
   for (const [el, s] of state) {
@@ -599,7 +625,9 @@ async function playRun(page, route, label, { maxSteps = 90 } = {}) {
       done = true;
       break;
     }
-    const t = await tapFirst(page, RUN_PATTERNS);
+    let t = await tapFirst(page, RUN_PATTERNS);
+    // Classic without Auto-fill: sign the squad by hand (Spin → See players → Sign).
+    if (!t && (await signOne(page))) t = "Spin+Sign";
     if (t) seen.push(t.replace(/\\|\^|\$|\/i/g, "").slice(0, 24));
     await page.waitForTimeout(t ? 650 : 1200);
   }
@@ -614,7 +642,7 @@ async function flow(name, fn, vp = PHONE) {
   try {
     await fn(page, context);
   } catch (e) {
-    const p = problem("flow-stopped", `${name}: ${String(e).split("\n")[0].slice(0, 200)}`, name);
+    const p = problem("flow-stopped", `${name} (at ${where}): ${String(e).split("\n")[0].slice(0, 200)}`, name);
     p.shot ||= await shot(page, `stopped-${name}`);
   }
   await context.close().catch(() => {});
@@ -770,17 +798,21 @@ if (ONLY === "all" || ONLY === "flows") {
       const buy = page.getByRole("button", { name: /£[\d.]+m|^Buy/ }).first();
       if (!(await visible(buy)) || !(await buy.isEnabled().catch(() => false))) continue;
       const label = (await buy.innerText().catch(() => "")).trim();
-      const m = /£([\d.]+)m/.exec(label);
+      const m = /£([\d.]+)(m|k)/.exec(label);
       const b0 = await balance();
-      await buy.click({ force: true, noWaitAfter: true }).catch(() => {});
-      await buy.click({ force: true, noWaitAfter: true }).catch(() => {});
-      await buy.click({ force: true, noWaitAfter: true }).catch(() => {});
+      // One element, three taps (a locator would move on to the next item's Buy button).
+      const handle = await buy.elementHandle();
+      await handle.evaluate((el) => {
+        el.click();
+        el.click();
+        el.click();
+      });
       await page.waitForTimeout(500);
       // A confirm step, if any.
       await tapFirst(page, [/^Confirm|^Buy it|^Yes/i]);
       await page.waitForTimeout(400);
       const spent = b0 - (await balance());
-      if (m && spent > Number(m[1]) * 1_000_000 + 1) problem("double-action", `Store ${tab.trim()}: triple tap on "${label}" spent £${spent.toLocaleString()}`);
+      if (m && spent > Number(m[1]) * (m[2] === "m" ? 1_000_000 : 1_000) + 1) problem("double-action", `Store ${tab.trim()}: triple tap on "${label}" spent £${spent.toLocaleString()}`);
       const use = page.getByRole("button", { name: /^(Use|Equip|On)$/ }).first();
       for (let i = 0; i < 5; i++) await use.click({ force: true, noWaitAfter: true, timeout: 800 }).catch(() => {});
       await page.waitForTimeout(300);
@@ -1016,7 +1048,7 @@ if (ONLY === "all" || ONLY === "flows") {
   });
 
   /* --- Corrupted storage: garbage, wrong-shaped and extreme values in every key. */
-  await flow("Corrupted storage", async (page) => {
+  await flow("Corrupted storage", async (page, context) => {
     // Fill storage by visiting the main screens first, then add every known key.
     for (const r of ["/", "/play", "/manager", "/store", "/mini-games/wordle", "/mini-games/grid", "/mini-games/quiz", "/profile", "/settings"]) {
       await page.goto(`${BASE}${r}`, { waitUntil: "domcontentloaded" });
@@ -1049,55 +1081,66 @@ if (ONLY === "all" || ONLY === "flows") {
     const badRoutes = new Map();
     for (const [vname, val] of VARIANTS) {
       for (const route of ROUTES2) {
-        where = `${route} with ${vname} storage`;
-        await page.goto(`${BASE}/privacy`, { waitUntil: "domcontentloaded" }).catch(() => {});
-        await page.evaluate(([ks, v]) => {
-          for (const k of ks) localStorage.setItem(k, k.includes("muted") ? "maybe" : v);
-        }, [keys, val]);
-        const errsBefore = problems.size;
-        await page.goto(`${BASE}${route}`, { waitUntil: "domcontentloaded" });
-        await settle(page, 900);
-        const dead = await crashed(page);
-        const empty = (await page.locator("main").innerText().catch(() => "")).trim().length < 20;
-        if (dead || empty) {
-          const p = problem("corrupt-storage", `${route}: ${dead ? "error screen" : "blank page"} with ${vname} values in storage`);
-          p.shot ||= await shot(page, `corrupt-${vname}-${route}`);
-          badRoutes.set(route, val);
-        }
-        // Recovery: start using the screen.
-        if (route.startsWith("/play")) {
-          await tapFirst(page, [/Let.?s play/i, /Skip boost|Continue without boost/i]);
-          await signOne(page).catch(() => {});
-          if (await crashed(page)) problem("corrupt-storage", `${route}: can't play after ${vname} storage (crash on first signing)`);
-        }
-        if (route === "/manager") {
-          const club = page.getByRole("list", { name: "Clubs" }).getByRole("button").first();
-          if (await visible(club)) {
-            await club.click().catch(() => {});
-            await btn(page, /Take charge of/).click({ timeout: 3000 }).catch(() => {});
-            await page.waitForTimeout(800);
-            if (await crashed(page)) problem("corrupt-storage", `/manager: can't start a career after ${vname} storage`);
-          } else if (!(await visible(btn(page, /Play match|Quick sim|Continue/)))) {
-            problem("corrupt-storage", `/manager with ${vname} storage: neither the club picker nor a career`).shot ||= await shot(page, `corrupt-manager-${vname}`);
+        try {
+          where = `${route} with ${vname} storage`;
+          await page.goto(`${BASE}/privacy`, { waitUntil: "domcontentloaded" }).catch(() => {});
+          await page.evaluate(([ks, v]) => {
+            for (const k of ks) localStorage.setItem(k, k.includes("muted") ? "maybe" : v);
+          }, [keys, val]);
+          const errsBefore = problems.size;
+          await page.goto(`${BASE}${route}`, { waitUntil: "domcontentloaded" });
+          await settle(page, 900);
+          const dead = await crashed(page);
+          const empty = (await page.locator("main").innerText().catch(() => "")).trim().length < 20;
+          if (dead || empty) {
+            const p = problem("corrupt-storage", `${route}: ${dead ? "error screen" : "blank page"} with ${vname} values in storage`);
+            p.shot ||= await shot(page, `corrupt-${vname}-${route}`);
+            badRoutes.set(route, val);
           }
+          // Recovery: start using the screen.
+          if (route.startsWith("/play")) {
+            await tapFirst(page, [/Let.?s play/i, /Skip boost|Continue without boost/i]);
+            await signOne(page).catch(() => {});
+            if (await crashed(page)) problem("corrupt-storage", `${route}: can't play after ${vname} storage (crash on first signing)`);
+          }
+          if (route === "/manager") {
+            const club = page.getByRole("list", { name: "Clubs" }).getByRole("button").first();
+            if (await visible(club)) {
+              await club.click().catch(() => {});
+              await btn(page, /Take charge of/).click({ timeout: 3000 }).catch(() => {});
+              await page.waitForTimeout(800);
+              if (await crashed(page)) problem("corrupt-storage", `/manager: can't start a career after ${vname} storage`);
+            } else if (!(await visible(btn(page, /Play match|Quick sim|Continue/)))) {
+              problem("corrupt-storage", `/manager with ${vname} storage: neither the club picker nor a career`).shot ||= await shot(page, `corrupt-manager-${vname}`);
+            }
+          }
+          if (problems.size > errsBefore) badRoutes.set(route, val);
+        } catch (e) {
+          problem("corrupt-storage", `${route} with ${vname} storage: ${String(e).split("\n")[0].slice(0, 160)}`);
+          badRoutes.set(route, val);
+          if (page.isClosed()) page = wire(await context.newPage());
         }
-        if (problems.size > errsBefore) badRoutes.set(route, val);
       }
     }
     note(`Corrupted storage: ${keys.length} keys × ${VARIANTS.length} kinds of bad value × ${ROUTES2.length} routes`);
     // Bisect: which key breaks which route.
-    for (const [route, val] of [...badRoutes].slice(0, 6)) {
+    for (const [route, val] of [...badRoutes].slice(0, 3)) {
       const culprits = [];
       for (const k of keys) {
-        await page.goto(`${BASE}/privacy`, { waitUntil: "domcontentloaded" }).catch(() => {});
-        await page.evaluate(() => localStorage.clear());
         let hit = false;
         const onErr = () => (hit = true);
-        page.on("pageerror", onErr);
-        await page.evaluate(([kk, v]) => localStorage.setItem(kk, v), [k, val]);
-        await page.goto(`${BASE}${route}`, { waitUntil: "domcontentloaded" });
-        await settle(page, 500);
-        if (await crashed(page)) hit = true;
+        try {
+          await page.goto(`${BASE}/privacy`, { waitUntil: "domcontentloaded" }).catch(() => {});
+          await page.evaluate(() => localStorage.clear());
+          page.on("pageerror", onErr);
+          await page.evaluate(([kk, v]) => localStorage.setItem(kk, v), [k, val]);
+          await page.goto(`${BASE}${route}`, { waitUntil: "domcontentloaded" });
+          await settle(page, 300);
+          if (await crashed(page)) hit = true;
+        } catch {
+          hit = true;
+          if (page.isClosed()) page = wire(await context.newPage());
+        }
         page.off("pageerror", onErr);
         if (hit) culprits.push(k);
       }
