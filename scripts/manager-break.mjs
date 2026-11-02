@@ -206,7 +206,7 @@ try {
   await page.getByRole("tab", { name: "Match" }).click();
   step("Hub tabs fit 320px; contracts on the Team tab");
   await shot("hub-round1", true);
-  // v1.29: one Quick sim, then the result strip and "Sim to…" (the next decision).
+  // One Quick sim, then the result card.
   for (let i = 0; i < 20 && !(await btn("Quick sim").isEnabled().catch(() => false)); i++) await page.waitForTimeout(100);
   await btn("Quick sim").click();
   await page.getByRole("region", { name: "Last result" }).waitFor({ timeout }).catch(() => fail("no Last result strip after a Quick sim"));
@@ -223,17 +223,10 @@ try {
   }
   await page.getByRole("tab", { name: "Match" }).click();
   await page.waitForTimeout(300);
-  const simTo = page.getByRole("button", { name: /^Sim to / }).first();
-  if (await visible(simTo)) {
-    const md0 = (await save()).matchdayIndex;
-    await page.waitForTimeout(500);
-    await simTo.click();
-    await page.waitForTimeout(800);
-    const md1 = (await save()).matchdayIndex;
-    if (md1 <= md0 + 1) fail(`Sim to… only moved ${md1 - md0} week(s)`);
-    await shot("hub-after-sim-to", true);
-    step(`Sim to… played ${md1 - md0} weeks and stopped`);
-  } else fail("no Sim to… button on a league week");
+  // A league week offers Play match and Quick sim only (no "Sim to…").
+  if (await visible(page.getByRole("button", { name: /^Sim to / }).first())) fail("a Sim to… button is still on the Match tab");
+  if (!(await visible(btn("Play match"))) || !(await visible(btn("Quick sim")))) fail("Play match / Quick sim missing on a league week");
+  step("League week: Play match and Quick sim only");
 
   // Season: walk every stage, reloading and double-tapping at each one.
   const seen = new Set();

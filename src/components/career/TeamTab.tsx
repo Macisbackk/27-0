@@ -30,6 +30,11 @@ function Tags({ p }: { p: CareerPlayer }) {
     <>
       {p.legend ? <span className="ml-1.5 text-[10px] font-bold uppercase text-accent-gold">Legend</span> : null}
       {p.academy ? <span className="ml-1.5 text-[10px] font-bold uppercase text-sky-300">Academy</span> : null}
+      {p.ban ? (
+        <span className="ml-1.5 text-[10px] font-bold uppercase text-danger">
+          Banned · {p.ban} game{p.ban > 1 ? "s" : ""}
+        </span>
+      ) : null}
     </>
   );
 }
@@ -49,7 +54,7 @@ export function TeamTab() {
   // other bench men, then starters (by rating: a bench man covers anywhere).
   const pickSlot = pick?.kind === "xiii" ? LINEUP_SLOTS[pick.index]! : null;
   const fit = (p: CareerPlayer) => (pickSlot ? effectiveRating(p, pickSlot) : p.rating);
-  const group = (p: CareerPlayer) => (pick?.kind !== "bench" ? 0 : inXiii.has(p.id) ? 2 : onBench.has(p.id) ? 1 : 0);
+  const group = (p: CareerPlayer) => (p.ban ? 3 : pick?.kind !== "bench" ? 0 : inXiii.has(p.id) ? 2 : onBench.has(p.id) ? 1 : 0);
   const candidates = pick ? [...squad].sort((a, b) => group(a) - group(b) || fit(b) - fit(a)) : [];
   const currentId = pick ? (pick.kind === "xiii" ? s.lineup[pick.index] : bench[pick.index]) : undefined;
   const sheetTitle = !pick
@@ -172,7 +177,9 @@ export function TeamTab() {
             const current = currentId === p.id;
             const xiiiAt = s.lineup.indexOf(p.id);
             const benchAt = bench.indexOf(p.id);
-            const where = current
+            const where = p.ban
+              ? `Banned · ${p.ban} game${p.ban > 1 ? "s" : ""}`
+              : current
               ? "Selected here"
               : xiiiAt >= 0
                 ? `In the XIII (#${xiiiAt + 1}) — will swap`
@@ -183,7 +190,7 @@ export function TeamTab() {
               <li key={p.id}>
                 <button
                   type="button"
-                  disabled={current}
+                  disabled={current || !!p.ban}
                   onClick={() => {
                     playPlayerSelect();
                     if (pick!.kind === "xiii") setLineupSlot(pick!.index, p.id);

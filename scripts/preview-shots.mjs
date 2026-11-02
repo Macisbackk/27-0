@@ -170,6 +170,17 @@ await shot(phone, "45-how-to-play", "/", async (page) => {
     await page.evaluate(() => window.scrollBy(0, 120));
     await page.waitForTimeout(400);
   });
+  // The last result, big at the top of the Match tab, after a Quick sim of Round 1.
+  await shot(narrow, "48d-320-manager-last-result", "/manager", async (page) => {
+    await page.getByRole("tab", { name: "Match" }).click({ timeout: 5000 }).catch(() => {});
+    const startSeason = page.getByRole("button", { name: /^(Skip pre-season|Start the season)/ }).first();
+    if (await startSeason.isVisible().catch(() => false)) await startSeason.click().catch(() => {});
+    await page.waitForTimeout(800);
+    await page.getByRole("button", { name: "Quick sim" }).click({ timeout: 8000 });
+    await page.getByRole("region", { name: "Last result" }).waitFor({ timeout: 8000 });
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.waitForTimeout(500);
+  });
   await shot(narrow, "48c-320-manager-bench-picker", "/manager", async (page) => {
     await page.getByRole("tab", { name: "Team" }).click({ timeout: 5000 });
     await page.getByRole("button", { name: /^Shirt 14,/ }).click({ timeout: 5000 });
