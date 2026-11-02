@@ -55,7 +55,7 @@ export interface CareerClub {
   squad: string[];
 }
 
-export type FixtureKind = "league" | "cup" | "semi" | "grand-final" | "mpg";
+export type FixtureKind = "league" | "cup" | "eliminator" | "semi" | "grand-final" | "mpg";
 
 export interface FixtureResult {
   homeScore: number;
@@ -99,7 +99,7 @@ export interface Matchday {
   label: string;
   fixtures: Fixture[];
   /** Knockout rounds whose fixtures are drawn when the previous round completes. */
-  pendingDraw?: "cup-r16" | "cup-qf" | "cup-sf" | "cup-final" | "playoff-semis" | "grand-final";
+  pendingDraw?: "cup-r16" | "cup-qf" | "cup-sf" | "cup-final" | "playoff-elims" | "playoff-semis" | "grand-final";
   played: boolean;
 }
 

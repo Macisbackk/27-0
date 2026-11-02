@@ -9,6 +9,7 @@ import {
   clubRating,
   currentStage,
   isBigMatchday,
+  leagueOverPicture,
   lineupRating,
   nextStop,
   ordinal,
@@ -279,11 +280,19 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
   }
   if (stage === "league-over") {
     const next = fixture;
+    const pic = leagueOverPicture(s);
+    const bye = pic.division === "super-league" && pic.position <= 2;
     return (
       <div className="flex flex-col gap-4">
         <LeagueOverCard />
         {stageBar(
-          next ? (next.kind === "mpg" ? "On to the Million Pound Game" : "On to the play-offs") : "Watch the play-offs",
+          next
+            ? next.kind === "mpg"
+              ? "On to the Million Pound Game"
+              : "On to the play-offs"
+            : bye
+              ? "On to the semi-finals"
+              : "Watch the play-offs",
           () => passStage("league-over")
         )}
       </div>

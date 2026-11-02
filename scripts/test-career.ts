@@ -17,6 +17,7 @@ import {
   unlockLegend,
   legendCatalog,
   sortTable,
+  winnerOf,
   clubsIn,
   SQUAD_MIN,
   SQUAD_MAX,
@@ -159,7 +160,7 @@ for (const [i, clubId] of ["salford-rlfc", "wigan-warriors", "north-wales-crusad
   let legacy = emptyLegacy();
   gone.clear(); // real players share ids across careers
   invariants(s, `${clubId} start`);
-  check(s.calendar.length === 33, `${clubId}: 33 matchdays (26 league + 5 cup + 2 play-off)`);
+  check(s.calendar.length === 34, `${clubId}: 34 matchdays (26 league + 5 cup + 3 play-off)`);
   check(s.challenges.length === 3, `${clubId}: 3 season challenges`);
 
   for (let season = 1; season <= 6; season++) {
@@ -334,7 +335,24 @@ for (const clubId of ["london-broncos", "leeds-rhinos", "north-wales-crusaders"]
   check(lo.position >= 1 && lo.verdict.length > 0, "stages: league-over picture has a position and verdict");
   s = markStageSeen(s, "league-over");
   check(currentStage(s) === "fixture", "stages: then the play-offs / Million Pound Game");
+  // Top-six play-offs (v1.52): 3v6 and 4v5 eliminators (top two rest), then 1st and 2nd host the semis.
+  const slOrder = sortTable(s.tables["super-league"]).map((r) => r.clubId);
   s = playMatchday(s);
+  const elims = s.calendar[s.matchdayIndex - 1]!.fixtures.filter((f) => f.kind === "eliminator");
+  check(elims.length === 2, "play-offs: two eliminators");
+  check(
+    elims.some((f) => f.home === slOrder[2] && f.away === slOrder[5]) && elims.some((f) => f.home === slOrder[3] && f.away === slOrder[4]),
+    "play-offs: 3rd hosts 6th, 4th hosts 5th"
+  );
+  check(!elims.some((f) => [f.home, f.away].includes(slOrder[0]!) || [f.home, f.away].includes(slOrder[1]!)), "play-offs: top two have a bye");
+  check(currentStage(s) === "fixture", "play-offs: semi-finals next");
+  s = playMatchday(s);
+  const semis = s.calendar[s.matchdayIndex - 1]!.fixtures.filter((f) => f.kind === "semi");
+  const elimWinners = elims.map(winnerOf);
+  check(semis.length === 2 && semis.map((f) => f.home).sort().join() === [slOrder[0], slOrder[1]].sort().join(), "play-offs: 1st and 2nd host the semis");
+  check(semis.every((f) => elimWinners.includes(f.away)), "play-offs: eliminator winners go to the semis");
+  const lowest = [...elimWinners].sort((a, b) => slOrder.indexOf(b!) - slOrder.indexOf(a!))[0];
+  check(semis.some((f) => f.home === slOrder[0] && f.away === lowest), "play-offs: 1st hosts the lowest-placed winner");
   check(currentStage(s) === "promotion", "stages: promotion and relegation before the Grand Final");
   const pic = promotionPicture(s);
   check(pic.up.length >= 1 && pic.down.length >= 1 && pic.up.length === pic.down.length, "stages: as many go up as down");

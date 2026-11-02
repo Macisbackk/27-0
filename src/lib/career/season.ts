@@ -271,8 +271,32 @@ function drawPending(state: CareerState, md: Matchday) {
       }
       break;
     }
+    case "playoff-elims": {
+      // Top six: 3rd hosts 6th, 4th hosts 5th. 1st and 2nd have a week off (a bye to the semis).
+      const sl = sortTable(state.tables["super-league"]);
+      const ch = sortTable(state.tables.championship);
+      md.fixtures = [
+        mk("eliminator", 1, "Play-off eliminator", sl[2]!.clubId, sl[5]!.clubId, 0, "super-league"),
+        mk("eliminator", 1, "Play-off eliminator", sl[3]!.clubId, sl[4]!.clubId, 1, "super-league"),
+        // 13th in Super League hosts the Championship runners-up for a place in next year's Super League.
+        mk("mpg", 1, "The Million Pound Game", sl[sl.length - 2]!.clubId, ch[1]!.clubId, 2),
+      ];
+      break;
+    }
     case "playoff-semis": {
       const sl = sortTable(state.tables["super-league"]);
+      const order = sl.map((r) => r.clubId);
+      const elims = (state.calendar[md.index - 1]?.fixtures ?? []).filter((f) => f.kind === "eliminator");
+      if (elims.length === 2) {
+        // Re-seed: 1st hosts the lowest-placed eliminator winner, 2nd hosts the other.
+        const winners = elims.map(winnerOf).sort((a, b) => order.indexOf(a!) - order.indexOf(b!));
+        md.fixtures = [
+          mk("semi", 1, "Play-off semi-final", order[0]!, winners[1]!, 0, "super-league"),
+          mk("semi", 1, "Play-off semi-final", order[1]!, winners[0]!, 1, "super-league"),
+        ];
+        break;
+      }
+      // Seasons started before v1.52 have no eliminator week: the old top-four semis + MPG.
       const ch = sortTable(state.tables.championship);
       md.fixtures = [
         mk("semi", 1, "Play-off semi-final", sl[0]!.clubId, sl[3]!.clubId, 0, "super-league"),
@@ -610,7 +634,7 @@ function finishSeason(state: CareerState): CareerState {
   if (trophies.includes("grand-final")) delta += 1;
   if (trophies.includes("league-leaders") || trophies.includes("challenge-cup")) delta += 0.5;
   if (userPromoted) delta += 0.5;
-  if (division === "super-league" && position <= 4 && !trophies.includes("grand-final")) delta += 0.5;
+  if (division === "super-league" && position <= 6 && !trophies.includes("grand-final")) delta += 0.5;
   if (userRelegated) delta -= 1;
   else if (division === "super-league" && position >= table.length - 2) delta -= 0.5;
   s.prestige = Math.max(1, Math.min(5, s.prestige + Math.min(1.5, delta)));

@@ -9,7 +9,8 @@ import { ClubLink } from "./ClubSheet";
 
 function zone(division: Division, pos: number, size: number): { tone: string; label: string } | null {
   if (division === "super-league") {
-    if (pos <= 4) return { tone: "border-l-theme-primary", label: "Play-offs" };
+    if (pos <= 2) return { tone: "border-l-theme-primary", label: "Play-offs · bye" };
+    if (pos <= 6) return { tone: "border-l-theme-primary", label: "Play-offs" };
     if (pos === size - 1) return { tone: "border-l-accent-gold", label: "Million Pound Game" };
     if (pos === size) return { tone: "border-l-danger", label: "Relegation" };
     return null;

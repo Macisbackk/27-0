@@ -13,8 +13,8 @@ export function LeagueOverCard() {
   const table = sortTable(s.tables[pic.division]);
   const opponentId = pic.next ? (pic.next.home === s.userClubId ? pic.next.away : pic.next.home) : null;
   const opponent = opponentId ? s.clubs[opponentId] : null;
-  // The rows that decide things: the top four (or top two) and the bottom two.
-  const keyRows = pic.division === "super-league" ? [0, 1, 2, 3, table.length - 2, table.length - 1] : [0, 1];
+  // The rows that decide things: the top six (or top two) and the bottom two.
+  const keyRows = pic.division === "super-league" ? [0, 1, 2, 3, 4, 5, table.length - 2, table.length - 1] : [0, 1];
   const shown = new Set([...keyRows, pic.position - 1]);
 
   return (
