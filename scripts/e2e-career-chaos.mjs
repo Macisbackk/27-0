@@ -125,6 +125,11 @@ try {
     await page.waitForTimeout(120);
   }
   await page.getByText(/season review/i).first().waitFor({ timeout: 30_000 });
+  // v1.58: full time on the season (last game, Grand Final) comes first, then the review.
+  await page.getByRole("region", { name: "Season over" }).waitFor({ timeout });
+  await noSidewaysScroll(page, "season over @320");
+  await page.getByRole("button", { name: "See the season review" }).click();
+  await page.getByTestId("season-review").waitFor({ timeout });
   await noSidewaysScroll(page, "review @320");
   step(`Championship season via Quick sim (${guard} taps)`);
 

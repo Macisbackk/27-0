@@ -16,6 +16,18 @@ export function LeagueOverCard() {
   // The rows that decide things: the top six (or top two) and the bottom two.
   const keyRows = pic.division === "super-league" ? [0, 1, 2, 3, 4, 5, table.length - 2, table.length - 1] : [0, 1];
   const shown = new Set([...keyRows, pic.position - 1]);
+  // The other division in one line, so both ends of the pyramid are clear.
+  const sl = sortTable(s.tables["super-league"]);
+  const ch = sortTable(s.tables.championship);
+  const nm = (row?: { clubId: string }) => (row ? s.clubs[row.clubId]?.name ?? "?" : "?");
+  const other =
+    pic.division === "super-league"
+      ? ch.length
+        ? `Championship: ${nm(ch[0])} are champions and go up. ${nm(ch[1])} play ${nm(sl[sl.length - 2])} in the Million Pound Game.`
+        : ""
+      : sl.length
+        ? `Super League: ${nm(sl[0])} win the League Leaders' Shield. ${nm(sl[sl.length - 1])} go down; ${nm(sl[sl.length - 2])} play ${nm(ch[1])} in the Million Pound Game.`
+        : "";
 
   return (
     <section aria-label="League over" className="flex flex-col gap-4">
@@ -23,6 +35,7 @@ export function LeagueOverCard() {
         <Eyebrow>{DIVISION_LABEL[pic.division]} · final table</Eyebrow>
         <p className="mt-2 font-display text-4xl font-bold leading-none text-white">{ordinal(pic.position)}</p>
         <p className="mt-2 text-sm text-gray-300">{pic.verdict}</p>
+        {other ? <p className="mt-2 text-[13px] leading-snug text-gray-400" data-testid="other-division">{other}</p> : null}
         {opponent && pic.next ? (
           <div className="mt-4 flex items-center gap-3 rounded-tile bg-pitch-950 p-3">
             <ClubBadge club={opponent} size="md" />

@@ -210,6 +210,22 @@ try {
   if (rows !== 22) throw new Error(`Expected 22 table rows, saw ${rows}`);
   step("Table tab (22 rows)");
   await shot("table");
+  // v1.58: the Table tab's sections (League · Results · Fixtures · Cup).
+  await page.getByRole("tab", { name: "Results", exact: true }).click();
+  const yourResults = page.getByTestId("table-results");
+  await yourResults.waitFor({ timeout });
+  if ((await yourResults.getByRole("listitem").count()) < 1) throw new Error("Results: your results list is empty after a game");
+  const roundResults = page.getByTestId("round-results");
+  await roundResults.waitFor({ timeout });
+  if ((await roundResults.getByRole("listitem").count()) !== 11) throw new Error(`Round results: expected 11 Championship games, saw ${await roundResults.getByRole("listitem").count()}`);
+  await shot("table-results");
+  await page.getByRole("tab", { name: "Fixtures", exact: true }).click();
+  await page.getByRole("list", { name: "Your next games" }).waitFor({ timeout });
+  await page.getByRole("tab", { name: "Cup", exact: true }).click();
+  await page.getByTestId("table-cup").waitFor({ timeout });
+  await page.getByRole("tab", { name: "League", exact: true }).click();
+  await page.locator("table tbody tr").first().waitFor({ timeout });
+  step("Table tab: Results (your results + round results), Fixtures and Cup");
 
   await page.getByRole("tab", { name: "Club" }).click();
   await page.getByText("Season challenges").waitFor({ timeout });
@@ -304,8 +320,40 @@ try {
     await page.waitForTimeout(120);
   }
   await page.getByText(/season review/i).first().waitFor({ timeout: 60_000 });
-  step("Quick-simmed the season → review screen");
+  // v1.58: full time on the season (your last game, the Grand Final) before the review.
+  const over = page.getByRole("region", { name: "Season over" });
+  await over.waitFor({ timeout });
+  await over.getByRole("region", { name: "Last result" }).waitFor({ timeout });
+  await shot("season-over");
+  await clickButton("See the season review");
+  await page.getByTestId("season-review").waitFor({ timeout });
+  step("Quick-simmed the season → full time → review screen");
   await shot("review");
+  // The season's story: who won what, the play-off bracket, the cup and every result.
+  const honours = page.getByTestId("honours-board");
+  await honours.waitFor({ timeout });
+  for (const id of ["grand-final", "league-leaders", "challenge-cup", "championship-title", "promoted", "relegated"]) {
+    if (!(await honours.locator(`[data-honour="${id}"]`).count())) throw new Error(`Honours board is missing ${id}`);
+  }
+  await honours.scrollIntoViewIfNeeded();
+  await shot("review-honours");
+  const bracket = page.getByTestId("review-playoffs").getByTestId("playoff-bracket");
+  await bracket.waitFor({ timeout });
+  const ties = await bracket.getByRole("listitem").count();
+  if (ties !== 5) throw new Error(`Play-off bracket: expected 5 ties (2 eliminators, 2 semis, final), saw ${ties}`);
+  if (!(await bracket.getByTestId("playoff-byes").isVisible())) throw new Error("Play-off bracket: no byes line for the top two");
+  await bracket.scrollIntoViewIfNeeded();
+  await shot("review-playoffs");
+  await page.getByTestId("review-cup").waitFor({ timeout });
+  const results = page.getByTestId("review-results");
+  await results.locator("summary").click();
+  const games = await results.getByTestId("results-list").getByRole("listitem").count();
+  if (games < 21) throw new Error(`Your results: expected every game (21+), saw ${games}`);
+  await results.scrollIntoViewIfNeeded();
+  await shot("review-results");
+  await page.getByTestId("final-tables").getByRole("tab", { name: /Super League/ }).click();
+  if ((await page.getByTestId("final-tables").locator("tbody tr").count()) !== 14) throw new Error("Final tables: Super League switch didn't show 14 clubs");
+  step(`Season review: honours board, play-off bracket, cup, your ${games} results, both final tables`);
   const awards = page.getByRole("region", { name: "Season awards" });
   await awards.waitFor({ timeout });
   if (!(await awards.getByText("Man of Steel").first().isVisible().catch(() => false))) throw new Error("Season awards card has no Man of Steel");
@@ -352,6 +400,21 @@ try {
   const headerText = await page.locator("header").filter({ hasText: /2027/ }).count();
   if (!headerText) throw new Error("Second season header did not show 2027");
   step("Second season (2027) started");
+
+  // Club → Records: last season, tappable, told again.
+  await page.getByRole("tab", { name: "Club" }).click();
+  await page.getByRole("tab", { name: "Records", exact: true }).click();
+  const pastList = page.getByTestId("past-seasons");
+  await pastList.waitFor({ timeout });
+  await pastList.getByRole("button").first().click();
+  const pastSheet = page.getByTestId("past-season");
+  await pastSheet.waitFor({ timeout });
+  await pastSheet.getByTestId("honours-board").waitFor({ timeout });
+  await pastSheet.getByTestId("playoff-bracket").waitFor({ timeout });
+  await shot("past-season");
+  await page.keyboard.press("Escape");
+  await page.getByRole("tab", { name: "Match" }).click();
+  step("Club → Records: a past season opens its story (honours, bracket, results)");
 
   await page.reload({ waitUntil: "networkidle" });
   await page.getByRole("region", { name: "Pre-season friendlies" }).waitFor({ timeout });

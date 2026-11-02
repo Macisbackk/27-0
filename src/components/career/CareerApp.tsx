@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
-import { DIVISION_LABEL, boardGoal, currentStage, formatMoney, isWindowOpen, ordinal, seasonProgress, sortTable, windowStatus } from "@/lib/career";
+import { DIVISION_LABEL, boardGoal, currentStage, formatMoney, isWindowOpen, ordinal, seasonProgress, sortTable, stageSeen, windowStatus } from "@/lib/career";
 import { DailyMissionToast } from "@/components/DailyMissionToast";
 import { CareerProvider, useCareer } from "@/lib/career/context";
 import { CareerErrorBoundary } from "./CareerErrorBoundary";
@@ -12,7 +12,7 @@ import { ClubTab } from "./ClubTab";
 import { ClubSheetProvider } from "./ClubSheet";
 import { LegendVaultSheet, RecordsSheet } from "./LegacySheets";
 import { MatchTab } from "./MatchTab";
-import { SeasonReview } from "./SeasonReview";
+import { SeasonOver, SeasonReview } from "./SeasonReview";
 import { TableTab } from "./TableTab";
 import { TeamTab } from "./TeamTab";
 import { TransferWindow } from "./TransferWindow";
@@ -130,7 +130,9 @@ function CareerRouter() {
   // the new result right below it; a new screen (review, departures, the market and back) opens
   // at the top. Never left mid-page or under the sticky bar.
   const stage = state ? currentStage(state) : null;
-  const spot = state ? `${state.seed}:${state.year}:${state.phase}:${marketOpen && isWindowOpen(state) ? "market" : "hub"}` : "none";
+  const spot = state
+    ? `${state.seed}:${state.year}:${state.phase}${state.phase === "review" && stageSeen(state, "season-over") ? ":review" : ""}:${marketOpen && isWindowOpen(state) ? "market" : "hub"}`
+    : "none";
   const week = state ? `${state.matchdayIndex}:${stage}` : "none";
   const landed = useRef({ spot, week });
   useEffect(() => {
@@ -180,7 +182,8 @@ function CareerRouter() {
       </>
     );
   }
-  if (state.phase === "review") return <ClubSheetProvider><SeasonReview /></ClubSheetProvider>;
+  // Full time on the season first (the last game, the Grand Final), then the review.
+  if (state.phase === "review") return <ClubSheetProvider>{stageSeen(state, "season-over") ? <SeasonReview /> : <SeasonOver />}</ClubSheetProvider>;
   if (state.phase === "departures") return <ClubSheetProvider><Departures /></ClubSheetProvider>;
   if (state.phase === "transfers") return <TransferWindow />;
   if (marketOpen && isWindowOpen(state)) {

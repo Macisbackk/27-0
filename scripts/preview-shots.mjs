@@ -220,9 +220,23 @@ await shot(phone, "45-how-to-play", "/", async (page) => {
   // Your next games (Magic Weekend and derbies marked) under the table.
   await shot(narrow, "48g-320-manager-fixtures", "/manager", async (page) => {
     await page.getByRole("tab", { name: "Table" }).click({ timeout: 5000 });
+    await page.getByRole("tab", { name: "Fixtures", exact: true }).click({ timeout: 5000 });
     await page.getByRole("list", { name: "Your next games" }).scrollIntoViewIfNeeded({ timeout: 5000 });
     await page.waitForTimeout(400);
   });
+  // v1.58: Table → Results (your results, then any round's scores) and the Cup draw.
+  await shot(narrow, "48g2-320-manager-results", "/manager", async (page) => {
+    await page.getByRole("tab", { name: "Table" }).click({ timeout: 5000 });
+    await page.getByRole("tab", { name: "Results", exact: true }).click({ timeout: 5000 });
+    await page.getByTestId("round-results").waitFor({ timeout: 5000 });
+    await page.waitForTimeout(400);
+  }, true);
+  await shot(narrow, "48g3-320-manager-cup", "/manager", async (page) => {
+    await page.getByRole("tab", { name: "Table" }).click({ timeout: 5000 });
+    await page.getByRole("tab", { name: "Cup", exact: true }).click({ timeout: 5000 });
+    await page.getByTestId("table-cup").waitFor({ timeout: 5000 });
+    await page.waitForTimeout(400);
+  }, true);
   // A hub pop-up (an AI club signs a legend), injected into the save.
   await shot(narrow, "48j-320-manager-popup", "/manager", async (page) => {
     await page.evaluate((k) => {
@@ -268,8 +282,26 @@ await shot(phone, "45-how-to-play", "/", async (page) => {
   await shot(narrow, "48h-320-manager-awards", "/manager", async (page) => {
     await page.getByRole("tab", { name: "Match" }).click({ timeout: 5000 }).catch(() => {});
     let sawMagic = false;
+    let sawPlayoffs = false;
     for (let i = 0; i < 90; i++) {
       if (await page.getByRole("region", { name: "Season awards" }).isVisible().catch(() => false)) break;
+      if (!sawPlayoffs && (await page.getByTestId("live-playoffs").isVisible().catch(() => false))) {
+        sawPlayoffs = true;
+        await page.getByTestId("live-playoffs").evaluate((el) => el.scrollIntoView({ block: "start" }));
+        await page.evaluate(() => window.scrollBy(0, -60));
+        await page.waitForTimeout(300);
+        await page.screenshot({ path: `${OUT}/48h0-320-manager-live-playoffs.png` });
+        console.log("shot 48h0-320-manager-live-playoffs");
+      }
+      // v1.58: full time on the season comes before the review.
+      if (await page.getByRole("region", { name: "Season over" }).isVisible().catch(() => false)) {
+        await page.waitForTimeout(400);
+        await page.screenshot({ path: `${OUT}/48h1-320-manager-season-over.png`, fullPage: true });
+        console.log("shot 48h1-320-manager-season-over");
+        await page.getByRole("button", { name: "See the season review" }).click().catch(() => {});
+        await page.waitForTimeout(700);
+        continue;
+      }
       // A hub pop-up (legend signing, random event) waits for an answer: take the default.
       if (await page.getByTestId("career-event").isVisible().catch(() => false)) await page.keyboard.press("Escape");
       if (!sawMagic && (await page.getByTestId("fixture-banner").isVisible().catch(() => false))) {
@@ -286,6 +318,42 @@ await shot(phone, "45-how-to-play", "/", async (page) => {
       await page.waitForTimeout(150);
     }
     await page.getByRole("region", { name: "Season awards" }).scrollIntoViewIfNeeded({ timeout: 5000 });
+    await page.waitForTimeout(400);
+  });
+  // v1.58: the season review, section by section, then the whole page.
+  for (const [name, id] of [["48p-320-review-honours", "review-honours"], ["48q-320-review-playoffs", "review-playoffs"], ["48r-320-review-cup", "review-cup"], ["48s-320-review-results", "review-results"], ["48t-320-review-tables", "review-tables"]]) {
+    await shot(narrow, name, "/manager", async (page) => {
+      const el = page.getByTestId(id);
+      await el.waitFor({ timeout: 5000 });
+      if (id === "review-results") await el.locator("summary").click({ timeout: 3000 }).catch(() => {});
+      await el.evaluate((n) => n.scrollIntoView({ block: "start" }));
+      await page.evaluate(() => window.scrollBy(0, -60));
+      await page.waitForTimeout(400);
+    });
+  }
+  await shot(narrow, "48u-320-review-full", "/manager", null, true);
+  // Next season, then Club → Records → last season's story.
+  await shot(narrow, "48v-320-past-season", "/manager", async (page) => {
+    await page.getByRole("button", { name: "Next: retirements and contracts" }).click({ timeout: 5000 });
+    await page.getByRole("button", { name: /^(Open the transfer window|Continue to the window)$/ }).click({ timeout: 8000 });
+    await page.getByRole("button", { name: /^Let \d+ go · open the window$/ }).click({ timeout: 2000 }).catch(() => {});
+    await page.getByRole("button", { name: /Start (the )?\d{4} season/ }).click({ timeout: 8000 });
+    await page.waitForTimeout(800);
+    for (let i = 0; i < 4 && (await page.getByTestId("career-event").isVisible().catch(() => false)); i++) {
+      await page.keyboard.press("Escape");
+      await page.waitForTimeout(300);
+    }
+    await page.getByRole("tab", { name: "Club" }).click({ timeout: 5000 });
+    await page.getByRole("tab", { name: "Records", exact: true }).click({ timeout: 5000 });
+    await page.getByTestId("past-seasons").getByRole("button").first().click({ timeout: 5000 });
+    await page.getByTestId("past-season").waitFor({ timeout: 5000 });
+    await page.waitForTimeout(500);
+  });
+  await shot(narrow, "48w-320-past-seasons-list", "/manager", async (page) => {
+    await page.getByRole("tab", { name: "Club" }).click({ timeout: 5000 });
+    await page.getByRole("tab", { name: "Records", exact: true }).click({ timeout: 5000 });
+    await page.getByTestId("past-seasons").evaluate((n) => n.scrollIntoView({ block: "start" }));
+    await page.evaluate(() => window.scrollBy(0, -60));
     await page.waitForTimeout(400);
   });
   await shot(narrow, "49-320-settings", "/settings", null, true);

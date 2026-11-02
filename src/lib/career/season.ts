@@ -13,6 +13,7 @@ import { DERBY_LEGACY, DERBY_MORALE, derbyBonus, isDerby } from "./rivals";
 import { isMagicWeekend } from "./schedule";
 import { inferNewsTags, pruneNewsTags, tagNews, withDealDivisions } from "./news";
 import { settleFixture } from "./stats";
+import { buildSeasonStory, calendarIsFinishedSeason } from "./story";
 import type {
   CareerState,
   ChallengeKind,
@@ -374,6 +375,19 @@ export function migrateCareer<T extends CareerState | null>(state: T): T {
   if ((s.transfers ?? []).some((d) => !d.divisions)) {
     const st = s;
     s = { ...s, transfers: (s.transfers ?? []).map((d) => withDealDivisions(st, d)) };
+  }
+  // Season story (v1.58): a season that ended before it was kept, whose calendar is still loaded
+  // (the review, departures or the summer window), gets it now. Older history entries keep what they have.
+  {
+    const last = s.history[s.history.length - 1];
+    if (last && !last.story && s.phase !== "season" && calendarIsFinishedSeason(s, last.year)) {
+      const story = buildSeasonStory(s);
+      s = {
+        ...s,
+        history: s.history.map((h, i) => (i === s.history.length - 1 ? { ...h, story } : h)),
+        lastOutcome: s.lastOutcome && s.lastOutcome.year === last.year && !s.lastOutcome.story ? { ...s.lastOutcome, story } : s.lastOutcome,
+      };
+    }
   }
   return s as T;
 }
@@ -863,6 +877,8 @@ function finishSeason(state: CareerState): CareerState {
     boardTarget: s.board?.year === s.year ? s.board.target : undefined,
     awards,
     derbies: s.seasonTrack.derbies ? { ...s.seasonTrack.derbies } : undefined,
+    // Who won what, the play-offs, the cup and every result of yours: kept for the history.
+    story: buildSeasonStory(s),
   };
   if (trophies.includes("grand-final") && s.firstGrandFinalSeason == null) s.firstGrandFinalSeason = s.seasonNumber;
   s.lastOutcome = outcome;

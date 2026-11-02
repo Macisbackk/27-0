@@ -314,6 +314,14 @@ try {
   }
   for (const k of ["deadline", "league", "promo"]) if (!seen.has(k)) fail(`never saw the ${k} stage`);
   await page.getByText(/season review/i).first().waitFor({ timeout: 30000 });
+  // v1.58: full time on the season first (reload-safe), then a double tap on to the review.
+  await page.getByRole("region", { name: "Season over" }).waitFor({ timeout });
+  await reloadAndCheck("Season over", "Season over");
+  await noSideways("Season over");
+  await shot("season-over");
+  await btn("See the season review").dblclick();
+  await page.getByTestId("season-review").waitFor({ timeout });
+  if (!(await visible(btn("Next: retirements and contracts")))) fail("double tap on Season over skipped the review");
   await reloadAndCheck("Season review");
   await shot("review");
   await shot("review-full", true);

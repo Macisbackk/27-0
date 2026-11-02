@@ -48,8 +48,21 @@ import {
   userCaptain,
   userFixture,
   withTeamFixed,
+  buildSeasonStory,
+  cupRounds,
+  honoursBoard,
+  markStageSeen,
+  miniWinner,
+  playedRounds,
+  playoffBracket,
+  seasonReviewData,
+  sortTable,
+  stageSeen,
+  upcomingGames,
+  winnerOf,
   type CareerState,
   type Fixture,
+  type SeasonStory,
 } from "../src/lib/career";
 import { createLiveMatch, previewCall } from "../src/lib/career/live-match";
 import { sheetStrength, simulateMatch, type TeamSheet } from "../src/lib/career/match";
@@ -121,6 +134,100 @@ console.log("Season awards");
   const legacyWithout = done.lastOutcome!.legacyEarned - MAN_OF_STEEL_LEGACY;
   check(done.lastOutcome!.awards!.some((a) => a.id === "man-of-steel" && a.playerId === star), "your player is Man of Steel");
   check(legacyWithout >= 0 && done.news.some((n) => n.includes("is Man of Steel! +15 Legacy")), `+${MAN_OF_STEEL_LEGACY} Legacy and a news line`);
+}
+
+/* ------------------------------------------------------------- season story */
+console.log("Season story: honours, play-offs, cup, results, history");
+{
+  const s = simAll(createCareer({ clubId: "st-helens", managerName: "T", seed: "story-sl" }));
+  const o = s.lastOutcome!;
+  const st = o.story!;
+  const all = s.calendar.flatMap((m) => m.fixtures);
+  const mineCal = all.filter((f) => f.home === s.userClubId || f.away === s.userClubId);
+  check(!!st, "the season's story is kept on the outcome");
+  check(!!s.history[s.history.length - 1]!.story, "…and on the history entry");
+  check(st.mine.length === mineCal.length && st.mine.every((m) => m.hs != null && m.as != null), `every game of yours with its score (${st.mine.length})`);
+  check(st.mine.every((m, i) => m.h === mineCal[i]!.home && m.hs === mineCal[i]!.result!.homeScore), "results in calendar order, scores as played");
+  const gf = all.find((f) => f.kind === "grand-final")!;
+  const cupFinal = all.find((f) => f.kind === "cup" && f.round === 5)!;
+  const mpg = all.find((f) => f.kind === "mpg")!;
+  const sl = sortTable(s.tables["super-league"]).map((r) => r.clubId);
+  const ch = sortTable(s.tables.championship).map((r) => r.clubId);
+
+  const lines = honoursBoard(o, s.clubs, s.userClubId);
+  const by = (id: string) => lines.find((l) => l.id === id);
+  check(lines.map((l) => l.id).join(",") === "grand-final,league-leaders,challenge-cup,championship-title,mpg,promoted,relegated", `honours board in order (${lines.map((l) => l.id).join(", ")})`);
+  check(by("grand-final")?.clubIds[0] === winnerOf(gf) && /^Beat .+ \d+–\d+/.test(by("grand-final")!.text), `Grand Final winner and score: ${by("grand-final")?.text}`);
+  check(by("league-leaders")?.clubIds[0] === sl[0], "League Leaders' Shield: top of Super League");
+  check(by("challenge-cup")?.clubIds[0] === winnerOf(cupFinal) && by("challenge-cup")!.text.includes("in the final"), `Challenge Cup winner and final score: ${by("challenge-cup")?.text}`);
+  check(by("championship-title")?.clubIds[0] === ch[0], "Championship title: top of the Championship");
+  check(by("mpg")?.clubIds[0] === winnerOf(mpg) && /\d+–\d+/.test(by("mpg")!.text), `Million Pound Game: ${by("mpg")?.text}`);
+  const up = by("promoted")!.clubIds;
+  const down = by("relegated")!.clubIds;
+  check(up.includes(ch[0]!) && down.includes(sl[sl.length - 1]!) && up.length === down.length && up.length <= 2, "promoted and relegated clubs (both divisions)");
+  check(up.every((id) => s.clubs[id]!.division === "super-league") && down.every((id) => s.clubs[id]!.division === "championship"), "…match where the clubs went");
+  check(lines.filter((l) => l.mine).every((l) => l.clubIds.includes(s.userClubId)), "your honours are marked as yours");
+
+  const b = playoffBracket(st);
+  check(b.topSix && b.eliminators.length === 2 && b.semis.length === 2 && !!b.final, "bracket: two eliminators, two semis and the Grand Final");
+  check(b.byes.join() === sl.slice(0, 2).join(), "1st and 2nd have the bye");
+  check(b.semis.every((m) => b.byes.includes(m.h)) && b.semis.every((m) => b.eliminators.some((e) => miniWinner(e) === m.a)), "1st and 2nd host the eliminator winners");
+  check(b.final!.h !== b.final!.a && b.semis.every((m) => [b.final!.h, b.final!.a].includes(miniWinner(m)!)), "semi winners meet in the Grand Final");
+  const elimPairs = b.eliminators.map((m) => [sl.indexOf(m.h) + 1, sl.indexOf(m.a) + 1].join("v")).sort().join(",");
+  check(elimPairs === "3v6,4v5", `eliminators are 3v6 and 4v5 (${elimPairs})`);
+
+  const data = seasonReviewData(o, s.clubs, s.userClubId);
+  check(data.full && data.honours.length === 7 && data.awards.some((a) => a.id === "man-of-steel") && !!data.bracket, "review data: every winner, awards and the bracket");
+  check(data.results.length === st.mine.length && data.cupRun.every((m) => m.k === "cup") && data.cupFinal?.r === 5, "review data: your results, your cup run and the final");
+  check(st.cup.length === 3 && st.cup.filter((m) => m.r === 4).length === 2, "cup: the semi-finals and the final kept");
+  const bytes = JSON.stringify(st).length;
+  check(bytes < 4000, `story stays small (${bytes} bytes)`);
+
+  // An old save sitting on the review screen: the story is rebuilt from the calendar on load.
+  const old = structuredClone(s);
+  delete old.lastOutcome!.story;
+  delete old.history[old.history.length - 1]!.story;
+  const mig = migrateCareer(old);
+  check(JSON.stringify(mig.lastOutcome!.story) === JSON.stringify(st) && JSON.stringify(mig.history.at(-1)!.story) === JSON.stringify(st), "old save on the review: story rebuilt on load");
+  // …or in the summer (departures / transfers): the calendar is still last season's.
+  const summer = structuredClone(beginOffseason(s));
+  delete summer.history[summer.history.length - 1]!.story;
+  check(JSON.stringify(migrateCareer(summer).history.at(-1)!.story) === JSON.stringify(st), "old save in the summer: story rebuilt on load");
+  // A new season: last year's calendar is gone, so an old entry keeps what it has.
+  const next = nextSeason(s);
+  const bare = structuredClone(next);
+  delete bare.history[bare.history.length - 1]!.story;
+  const kept = migrateCareer(bare);
+  check(!kept.history.at(-1)!.story, "old history entries without the story stay as they are");
+  const oldData = seasonReviewData(kept.history.at(-1)!, kept.clubs, kept.userClubId);
+  check(!oldData.full && !oldData.bracket && oldData.results.length === 0, "old entries: no bracket or results, no crash");
+  const own = honoursBoard(kept.history.at(-1)!, kept.clubs, kept.userClubId);
+  check(own.every((l) => l.clubIds[0] === kept.userClubId) && own.length === o.trophies.filter((t) => t !== "promotion" && t !== "perfect-season").length + (o.promoted ? 1 : 0) + (o.relegated ? 1 : 0), "old entries: your own honours from the trophies");
+  check(JSON.stringify(next.history.at(-1)!.story) === JSON.stringify(st), "the story survives into the next season");
+
+  // Seasons from before the top-six play-offs: top-four semis, no eliminators, no byes.
+  const fourStory: SeasonStory = { ...st, playoffs: st.playoffs.filter((m) => m.k !== "eliminator") };
+  const four = playoffBracket(fourStory);
+  check(!four.topSix && four.byes.length === 0 && four.semis.length === 2 && !!four.final, "old top-four play-offs still render (semis and final)");
+
+  // The season-over screen is a stage of its own, seen once.
+  check(!stageSeen(s, "season-over") && stageSeen(markStageSeen(s, "season-over"), "season-over"), "season over: shown once before the review");
+
+  // During the season: round results, the cup draw and your fixtures.
+  const mid = playTo(createCareer({ clubId: "wigan-warriors", managerName: "T", seed: "story-mid" }), 12);
+  const rounds = playedRounds(mid);
+  check(rounds.length > 0 && rounds.every((r) => r.games.every((m) => m.hs != null)), `round results: ${rounds.length} played weeks, every game scored`);
+  const leagueRound = rounds.find((r) => r.label.startsWith("Round "))!;
+  check(leagueRound.games.length === 7 && leagueRound.games.every((m) => m.k === "league" && mid.clubs[m.h]!.division === "super-league"), "a league round shows every game in your division");
+  const cup = cupRounds(mid);
+  check(cup.length >= 2 && cup[0]!.ties.length === 16 && cup[1]!.ties.length === 8, `cup draw: Round 1 (16 ties) and the Round of 16 (8 ties)`);
+  const live = buildSeasonStory(mid);
+  check(live.mine.filter((m) => m.hs != null).length + upcomingGames(mid).length === live.mine.length, "your results + your fixtures = every game of yours drawn so far");
+  check(live.promoted.length === 0 && live.relegated.length === 0, "nobody goes up or down mid-season");
+  // Play-off weeks: the live bracket fills in as the games are played.
+  const playoffs = playTo(mid, mid.calendar.findIndex((m) => m.label.startsWith("Play-off semi")));
+  const lb = playoffBracket(buildSeasonStory(playoffs), playoffs.calendar);
+  check(lb.topSix && lb.eliminators.every((m) => m.hs != null) && lb.semis.length === 2 && lb.semis.every((m) => m.hs == null) && !lb.final, "live bracket: eliminators played, semis drawn, final to come");
 }
 
 /* ------------------------------------------------------------------ academy */

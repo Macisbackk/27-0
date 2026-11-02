@@ -12,7 +12,8 @@ import { preseasonOpen } from "./preseason";
 import { expectedRanking, playMatchday, sortTable, userFixture, winnerOf } from "./season";
 import type { CareerState, Division, Fixture, Matchday } from "./types";
 
-export type StageKey = "preseason" | "league-over" | "promotion";
+/** "season-over": the final whistle screen (your last game, the Grand Final) before the review. */
+export type StageKey = "preseason" | "league-over" | "promotion" | "season-over";
 
 export type MatchStage =
   | "preseason"
