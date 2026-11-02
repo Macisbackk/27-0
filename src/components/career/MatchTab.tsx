@@ -5,16 +5,15 @@ import { GameButton } from "@/components/ui/GameButton";
 import { useArmed } from "@/hooks/useArmed";
 import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
 import {
-  autoPickLineup,
+  autoPickTeam,
   clubRating,
   currentStage,
   isBigMatchday,
   leagueOverPicture,
-  lineupRating,
+  teamRating,
   nextStop,
   ordinal,
   sortTable,
-  squadOf,
   userFixture,
   userStreak,
   type CareerState,
@@ -232,8 +231,9 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
   // Sim to the next decision: only offered on a league week with more than one game before the stop.
   const stopRaw = fixture?.kind === "league" ? nextStop(s) : null;
   const stop = stopRaw && stopRaw.games >= 2 ? stopRaw : null;
-  // A better XIII is sitting in the squad (after a signing, a sale or a renewal).
-  const bestGain = fixture ? lineupRating(autoPickLineup(squadOf(s, s.userClubId)), s.players) - myRating : 0;
+  // A better 17 is sitting in the squad (after a signing, a sale or a renewal).
+  const best = fixture ? autoPickTeam(s) : null;
+  const bestGain = best ? teamRating(best.lineup, best.bench, s.players) - myRating : 0;
 
   if (live && fixture) {
     return (
@@ -314,9 +314,9 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
       <IncomingBidCard />
       <TransferWindowCard onOpenMarket={onOpenMarket} />
       {fixture && bestGain >= 0.3 ? (
-        <section aria-label="Stronger XIII available" className="flex items-center gap-3 rounded-card bg-pitch-900 p-3 ring-1 ring-theme-primary/40">
+        <section aria-label="Stronger team available" className="flex items-center gap-3 rounded-card bg-pitch-900 p-3 ring-1 ring-theme-primary/40">
           <p className="min-w-0 flex-1 text-[13px] text-gray-300">
-            Your best XIII is <span className="font-bold text-theme-primary">+{bestGain.toFixed(1)}</span> stronger.
+            Your best team is <span className="font-bold text-theme-primary">+{bestGain.toFixed(1)}</span> stronger.
           </p>
           <GameButton
             size="sm"
@@ -326,7 +326,7 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
               autoPick();
             }}
           >
-            Pick best XIII
+            Pick best team
           </GameButton>
         </section>
       ) : null}

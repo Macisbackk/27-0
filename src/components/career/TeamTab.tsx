@@ -4,35 +4,57 @@ import { useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { MobileBottomSheet } from "@/components/ui/MobileOverlay";
 import {
+  BENCH_SIZE,
   LINEUP_SLOTS,
   POS_LABEL,
+  clubRating,
   contractLabel,
   contractOf,
   effectiveRating,
-  lineupRating,
   positionPenalty,
   potentialStars,
   squadOf,
+  userBench,
+  type CareerPlayer,
 } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
 import { playAutofill, playPlayerSelect } from "@/lib/sound";
 import { Card, Eyebrow, RatingPill, Stars } from "./bits";
 import { WindowStatusLine } from "./TransferNews";
 
+/** Which shirt the picker is filling: XIII slot 0–12 or bench spot 0–3. */
+type ShirtPick = { kind: "xiii" | "bench"; index: number };
+
+function Tags({ p }: { p: CareerPlayer }) {
+  return (
+    <>
+      {p.legend ? <span className="ml-1.5 text-[10px] font-bold uppercase text-accent-gold">Legend</span> : null}
+      {p.academy ? <span className="ml-1.5 text-[10px] font-bold uppercase text-sky-300">Academy</span> : null}
+    </>
+  );
+}
+
 export function TeamTab() {
-  const { state, setLineupSlot, autoPick } = useCareer();
-  const [slot, setSlot] = useState<number | null>(null);
+  const { state, setLineupSlot, setBenchSlot, autoPick } = useCareer();
+  const [pick, setPick] = useState<ShirtPick | null>(null);
   const s = state!;
   const squad = squadOf(s, s.userClubId);
+  const bench = userBench(s);
   const inXiii = new Set(s.lineup);
-  const others = squad.filter((p) => !inXiii.has(p.id)).sort((a, b) => b.rating - a.rating);
-  const rating = lineupRating(s.lineup, s.players);
+  const onBench = new Set(bench);
+  const others = squad.filter((p) => !inXiii.has(p.id) && !onBench.has(p.id)).sort((a, b) => b.rating - a.rating);
+  const rating = clubRating(s, s.userClubId);
 
-  const pickSlot = slot != null ? LINEUP_SLOTS[slot]! : null;
-  const candidates =
-    pickSlot != null
-      ? [...squad].sort((a, b) => effectiveRating(b, pickSlot) - effectiveRating(a, pickSlot))
-      : [];
+  // XIII shirts sort by fit for the slot; bench spots by rating (a bench man covers anywhere).
+  const pickSlot = pick?.kind === "xiii" ? LINEUP_SLOTS[pick.index]! : null;
+  const fit = (p: CareerPlayer) => (pickSlot ? effectiveRating(p, pickSlot) : p.rating);
+  const candidates = pick ? [...squad].sort((a, b) => fit(b) - fit(a)) : [];
+  const currentId = pick ? (pick.kind === "xiii" ? s.lineup[pick.index] : bench[pick.index]) : undefined;
+  const sheetTitle = !pick
+    ? ""
+    : pick.kind === "xiii"
+      ? `Shirt ${pick.index + 1} · ${POS_LABEL[LINEUP_SLOTS[pick.index]!]}`
+      : `Shirt ${14 + pick.index} · Interchange`;
 
   return (
     <div className="flex flex-col gap-4">
@@ -67,7 +89,7 @@ export function TeamTab() {
               <li key={i}>
                 <button
                   type="button"
-                  onClick={() => setSlot(i)}
+                  onClick={() => setPick({ kind: "xiii", index: i })}
                   className="flex w-full items-center gap-3 py-2 text-left hover:bg-pitch-800/60"
                   aria-label={`Shirt ${i + 1}, ${POS_LABEL[pos]}: ${p?.name ?? "empty"}. Tap to change.`}
                 >
@@ -75,8 +97,7 @@ export function TeamTab() {
                   <span className="w-8 text-[11px] font-bold uppercase text-theme-primary">{pos}</span>
                   <span className="min-w-0 flex-1 break-words leading-tight text-white">
                     {p?.name ?? "—"}
-                    {p?.legend ? <span className="ml-1.5 text-[10px] font-bold uppercase text-accent-gold">Legend</span> : null}
-                    {p?.academy ? <span className="ml-1.5 text-[10px] font-bold uppercase text-sky-300">Academy</span> : null}
+                    {p ? <Tags p={p} /> : null}
                     {penalty ? <span className="ml-1.5 text-[10px] text-danger">plays {p!.pos}</span> : null}
                     {p && contractOf(p) <= 1 ? <span className="ml-1.5 text-[10px] font-bold text-amber-300">Final year</span> : null}
                   </span>
@@ -86,6 +107,33 @@ export function TeamTab() {
             );
           })}
         </ol>
+
+        <section aria-label="Interchange" data-testid="interchange" className="mt-3 border-t border-pitch-700 pt-3">
+          <Eyebrow>Interchange</Eyebrow>
+          <ol className="mt-1 divide-y divide-pitch-800">
+            {Array.from({ length: BENCH_SIZE }, (_, i) => {
+              const p = s.players[bench[i] ?? ""];
+              return (
+                <li key={i}>
+                  <button
+                    type="button"
+                    onClick={() => setPick({ kind: "bench", index: i })}
+                    className="flex w-full items-center gap-3 py-2 text-left hover:bg-pitch-800/60"
+                    aria-label={`Shirt ${14 + i}, interchange: ${p?.name ?? "empty"}. Tap to change.`}
+                  >
+                    <span className="w-6 text-right font-display text-sm font-bold text-gray-500">{14 + i}</span>
+                    <span className="w-8 text-[11px] font-bold uppercase text-gray-400">{p?.pos ?? "—"}</span>
+                    <span className="min-w-0 flex-1 break-words leading-tight text-white">
+                      {p?.name ?? "Empty"}
+                      {p ? <Tags p={p} /> : null}
+                    </span>
+                    {p ? <RatingPill rating={p.rating} /> : null}
+                  </button>
+                </li>
+              );
+            })}
+          </ol>
+        </section>
       </Card>
 
       <Card>
@@ -97,8 +145,7 @@ export function TeamTab() {
               <span className="min-w-0 flex-1">
                 <span className="block break-words leading-tight text-white">
                   {p.name}
-                  {p.legend ? <span className="ml-1.5 text-[10px] font-bold uppercase text-accent-gold">Legend</span> : null}
-                  {p.academy ? <span className="ml-1.5 text-[10px] font-bold uppercase text-sky-300">Academy</span> : null}
+                  <Tags p={p} />
                 </span>
                 <span className="text-[11px] text-gray-500">
                   Age {p.age} · <span className={contractOf(p) <= 1 ? "text-amber-300" : ""}>{contractLabel(contractOf(p))}</span>
@@ -116,16 +163,20 @@ export function TeamTab() {
         </ul>
       </Card>
 
-      <MobileBottomSheet
-        open={slot != null}
-        onClose={() => setSlot(null)}
-        title={slot != null ? `Shirt ${slot + 1} · ${POS_LABEL[LINEUP_SLOTS[slot]!]}` : ""}
-      >
+      <MobileBottomSheet open={pick != null} onClose={() => setPick(null)} title={sheetTitle}>
         <ul className="divide-y divide-pitch-800">
           {candidates.map((p) => {
-            const eff = effectiveRating(p, pickSlot!);
-            const current = s.lineup[slot ?? -1] === p.id;
-            const elsewhere = !current && inXiii.has(p.id);
+            const eff = fit(p);
+            const current = currentId === p.id;
+            const xiiiAt = s.lineup.indexOf(p.id);
+            const benchAt = bench.indexOf(p.id);
+            const where = current
+              ? "Selected here"
+              : xiiiAt >= 0
+                ? `In the XIII (#${xiiiAt + 1}) — will swap`
+                : benchAt >= 0
+                  ? `On the bench (#${14 + benchAt}) — will swap`
+                  : `Age ${p.age}`;
             return (
               <li key={p.id}>
                 <button
@@ -133,17 +184,16 @@ export function TeamTab() {
                   disabled={current}
                   onClick={() => {
                     playPlayerSelect();
-                    setLineupSlot(slot!, p.id);
-                    setSlot(null);
+                    if (pick!.kind === "xiii") setLineupSlot(pick!.index, p.id);
+                    else setBenchSlot(pick!.index, p.id);
+                    setPick(null);
                   }}
                   className="flex w-full items-center gap-3 px-1 py-2.5 text-left hover:bg-pitch-800/60 disabled:opacity-50"
                 >
                   <span className="w-8 text-[11px] font-bold uppercase text-gray-400">{p.pos}</span>
                   <span className="min-w-0 flex-1">
                     <span className="block break-words leading-tight text-white">{p.name}</span>
-                    <span className="text-[11px] text-gray-500">
-                      {current ? "Selected here" : elsewhere ? `In the XIII (#${s.lineup.indexOf(p.id) + 1}) — will swap` : `Age ${p.age}`}
-                    </span>
+                    <span className="text-[11px] text-gray-500">{where}</span>
                   </span>
                   <RatingPill rating={eff} delta={p.rating - eff || undefined} />
                 </button>

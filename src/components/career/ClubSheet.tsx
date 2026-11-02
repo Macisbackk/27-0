@@ -5,12 +5,14 @@ import { MobileBottomSheet } from "@/components/ui/MobileOverlay";
 import {
   DIVISION_LABEL,
   LINEUP_SLOTS,
+  aiBench,
   aiLineup,
   formatMoney,
   newArrivals,
   ordinal,
   seasonDeals,
   sortTable,
+  userBench,
   type CareerState,
 } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
@@ -68,13 +70,14 @@ function ClubSheet({ clubId, onClose }: { clubId: string | null; onClose: () => 
     if (!s || !club) return null;
     const last = s.lastLineups?.[club.id];
     const lineup = last?.lineup ?? (club.id === s.userClubId ? s.lineup : aiLineup(s, club.id));
+    const bench = last ? (last.bench ?? []) : club.id === s.userClubId ? userBench(s) : aiBench(s, club.id);
     const arrivals = newArrivals(s, club.id);
     const deals = seasonDeals(s).filter((d) => d.to === club.id || d.from === club.id);
-    return { last, lineup, arrivals, deals };
+    return { last, lineup, bench, arrivals, deals };
   }, [s, club]);
 
   if (!s || !club || !view) return <MobileBottomSheet open={false} onClose={onClose} title="">{null}</MobileBottomSheet>;
-  const { last, lineup, arrivals, deals } = view;
+  const { last, lineup, bench, arrivals, deals } = view;
   const opponent = last ? s.clubs[last.opponentId] : null;
   const result = last ? (last.us > last.them ? "W" : last.us < last.them ? "L" : "D") : null;
   const stillHere = new Set(club.squad);
@@ -122,6 +125,16 @@ function ClubSheet({ clubId, onClose }: { clubId: string | null; onClose: () => 
             );
           })}
         </ol>
+        {bench.some((id) => s.players[id]) ? (
+          <p className="mt-2 text-xs text-[color:var(--fl-muted)]">
+            Bench:{" "}
+            {bench
+              .map((id) => s.players[id])
+              .filter((p) => !!p)
+              .map((p) => `${p!.name} (${p!.pos})`)
+              .join(", ")}
+          </p>
+        ) : null}
       </section>
 
       <section aria-label="Transfers this season" className="mt-3">
