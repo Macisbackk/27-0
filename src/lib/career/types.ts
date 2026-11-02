@@ -16,6 +16,8 @@ export interface CareerPlayer {
   id: string;
   name: string;
   pos: Pos;
+  /** Other positions he plays as well as his own (utility men): no penalty there. */
+  alt?: Pos[];
   rating: number;
   /** Ceiling for development; hidden-ish in UI (shown as stars for prospects). */
   potential: number;

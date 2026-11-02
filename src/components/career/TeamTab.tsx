@@ -11,7 +11,7 @@ import {
   contractLabel,
   contractOf,
   effectiveRating,
-  positionPenalty,
+  slotPenalty,
   potentialStars,
   squadOf,
   userBench,
@@ -91,7 +91,7 @@ export function TeamTab() {
         <ol className="mt-3 divide-y divide-pitch-800">
           {LINEUP_SLOTS.map((pos, i) => {
             const p = s.players[s.lineup[i] ?? ""];
-            const penalty = p ? positionPenalty(p.pos, pos) : 0;
+            const penalty = p ? slotPenalty(p, pos) : 0;
             return (
               <li key={i}>
                 <button
@@ -105,7 +105,7 @@ export function TeamTab() {
                   <span className="min-w-0 flex-1 break-words leading-tight text-white">
                     {p?.name ?? "—"}
                     {p ? <Tags p={p} /> : null}
-                    {penalty ? <span className="ml-1.5 text-[10px] text-danger">plays {p!.pos}</span> : null}
+                    {penalty ? <span className="ml-1.5 text-[10px] text-danger">Out of position ({p!.pos})</span> : null}
                     {p && contractOf(p) <= 1 ? <span className="ml-1.5 text-[10px] font-bold text-amber-300">Final year</span> : null}
                   </span>
                   {p ? <RatingPill rating={p.rating - penalty} delta={penalty || undefined} /> : null}

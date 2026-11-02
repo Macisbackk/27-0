@@ -65,7 +65,11 @@ import {
   lineupRating,
   BENCH_SIZE,
   LINEUP_SLOTS,
+  positionPenalty,
+  slotPenalty,
+  effectiveRating,
   type CareerState,
+  type Pos,
 } from "../src/lib/career";
 
 /** Players who have retired (or otherwise left the world) in any career this run: they must never come back. */
@@ -258,6 +262,47 @@ const simAll = (start: CareerState): CareerState => {
   if (fx) check(s0.bench.every((id) => (after.players[id]?.apps ?? 0) >= 1), "bench men get an appearance");
   const ll = after.lastLineups?.[after.userClubId];
   check(!!ll && ll.bench?.length === BENCH_SIZE, "last team sheet keeps the bench");
+}
+
+// --- Position fit: one table everywhere.
+{
+  const ALL: Pos[] = ["FB", "WG", "CE", "SO", "SH", "PR", "HK", "SR", "LF"];
+  let symmetric = true;
+  for (const a of ALL) {
+    check(positionPenalty(a, a) === 0, `${a} at ${a}: no penalty`);
+    for (const b of ALL) if (positionPenalty(a, b) !== positionPenalty(b, a)) symmetric = false;
+  }
+  check(symmetric, "position penalties are symmetric");
+  const table: Array<[Pos, Pos, number, number]> = [
+    // [player, slot, min, max]
+    ["CE", "WG", 1, 1], ["SO", "SH", 1, 1], ["SR", "LF", 1, 1],
+    ["FB", "WG", 1, 2], ["FB", "CE", 1, 2], ["PR", "SR", 1, 2], ["HK", "SH", 1, 2], ["HK", "LF", 1, 2],
+    ["SR", "CE", 3, 5], ["HK", "PR", 3, 5], ["WG", "SH", 4, 6],
+    ["PR", "FB", 10, 15], ["PR", "WG", 10, 15], ["PR", "SH", 10, 15], ["PR", "SO", 10, 15],
+    ["WG", "PR", 8, 15], ["SH", "PR", 8, 15], ["CE", "HK", 8, 15], ["FB", "HK", 8, 15], ["WG", "SR", 8, 15],
+  ];
+  for (const [p, slot, lo, hi] of table) {
+    const pen = positionPenalty(p, slot);
+    check(pen >= lo && pen <= hi, `${p} at ${slot}: penalty ${pen} in ${lo}–${hi}`);
+  }
+  // Utility men: no penalty in a listed second position.
+  const w = createCareer({ clubId: "leeds-rhinos", managerName: "T", seed: "positions" });
+  const utilities = Object.values(w.players).filter((p) => p.alt?.length);
+  check(utilities.length >= 20, `real utility players carry their second positions (${utilities.length})`);
+  const u = utilities[0]!;
+  check(effectiveRating(u, u.alt![0]!) === u.rating && slotPenalty(u, u.alt![0]!) === 0, `${u.name} (${u.pos}/${u.alt!.join("/")}): full rating in his second position`);
+  // Auto-pick never plays a man far out of position while a natural option sits out.
+  let farWithNatural = 0;
+  for (const id of Object.keys(w.clubs)) {
+    const squad = squadOf(w, id);
+    const xiii = id === w.userClubId ? w.lineup : aiLineup(w, id);
+    LINEUP_SLOTS.forEach((slot, i) => {
+      const p = w.players[xiii[i] ?? ""];
+      if (!p || slotPenalty(p, slot) < 8) return;
+      if (squad.some((q) => !xiii.includes(q.id) && (q.pos === slot || q.alt?.includes(slot)))) farWithNatural++;
+    });
+  }
+  check(farWithNatural === 0, `auto-pick never plays a man far out of position when a natural one is spare (${farWithNatural})`);
 }
 
 // --- Red cards and bans.

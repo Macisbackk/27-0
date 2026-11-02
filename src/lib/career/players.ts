@@ -45,29 +45,58 @@ export function posFromData(position: string | undefined): Pos {
   return DATA_POS[(position ?? "").toUpperCase()] ?? "SR";
 }
 
-/** Rating penalty for playing `player` at `slot`. */
+const BACKS: readonly Pos[] = ["FB", "WG", "CE", "SO", "SH"];
+const isBackPos = (p: Pos) => BACKS.includes(p);
+
+/** Position pairs (alphabetical) that play alike. Anything not listed falls to the defaults below. */
+const PAIR_PENALTY: Record<string, number> = {
+  // Close: the same job on the other side of the ball.
+  "CE-WG": 1,
+  "SH-SO": 1,
+  "LF-SR": 1,
+  // Near.
+  "CE-FB": 2,
+  "FB-WG": 2,
+  "PR-SR": 2,
+  "HK-SH": 2, // dummy-half
+  "HK-LF": 2, // ball-playing loose forward
+  // Workable.
+  "FB-SO": 3,
+  "CE-SO": 3,
+  "LF-PR": 3,
+  "HK-SO": 4,
+  "HK-PR": 4,
+  "HK-SR": 4,
+  "CE-SR": 4,
+  "LF-SO": 4,
+  "LF-SH": 4,
+};
+/** Defaults: back to back 5, forward to forward 4, back ↔ forward 8, and the really silly ones 12. */
+const FAR = 8;
+const SILLY = 12;
+const SILLY_PAIRS = new Set(["FB-PR", "PR-WG", "PR-SO", "PR-SH", "HK-WG", "SH-SR", "FB-HK"]);
+
+/** Rating penalty for playing a man whose position is `playerPos` at `slot` (symmetric). */
 export function positionPenalty(playerPos: Pos, slot: Pos): number {
   if (playerPos === slot) return 0;
   const pair = [playerPos, slot].sort().join("-");
-  const near: Record<string, number> = {
-    "CE-WG": 1,
-    "CE-FB": 2,
-    "FB-WG": 2,
-    "SH-SO": 1,
-    "FB-SO": 3,
-    "LF-SR": 1,
-    "PR-SR": 2,
-    "LF-PR": 3,
-    "HK-SH": 3,
-    "HK-LF": 3,
-    "CE-SR": 4,
-    "LF-SO": 4,
-  };
-  return near[pair] ?? 8;
+  const listed = PAIR_PENALTY[pair];
+  if (listed != null) return listed;
+  if (SILLY_PAIRS.has(pair)) return SILLY;
+  const backs = isBackPos(playerPos) && isBackPos(slot);
+  const forwards = !isBackPos(playerPos) && !isBackPos(slot);
+  return backs ? 5 : forwards ? 4 : FAR;
 }
 
+/** Penalty for this player in this slot: none in his own or a listed second position (utility men). */
+export function slotPenalty(player: Pick<CareerPlayer, "pos" | "alt">, slot: Pos): number {
+  if (player.alt?.includes(slot)) return 0;
+  return positionPenalty(player.pos, slot);
+}
+
+/** His rating in a slot: the same table everywhere (picker, auto-pick, AI, sims, subs). */
 export function effectiveRating(player: CareerPlayer, slot: Pos): number {
-  return player.rating - positionPenalty(player.pos, slot);
+  return player.rating - slotPenalty(player, slot);
 }
 
 /** Transfer value in pounds. */
@@ -167,14 +196,16 @@ export function generatePlayer(
 }
 
 /**
- * Best available XIII: global greedy over every (slot, player) pairing by effective rating,
+ * Best available XIII: global greedy over every (slot, player) pairing by effective rating
  * so a strong centre can beat a weak natural fullback. Ties favour natural positions.
  */
 export function autoPickLineup(squad: CareerPlayer[]): string[] {
   const pairs: Array<{ i: number; id: string; score: number }> = [];
   LINEUP_SLOTS.forEach((slot, i) => {
     for (const p of squad) {
-      pairs.push({ i, id: p.id, score: effectiveRating(p, slot) + (p.pos === slot ? 0.01 : 0) });
+      // A man far out of position (back at prop, prop on the wing) is a last resort, not a rating trade.
+      const far = slotPenalty(p, slot) >= FAR ? 30 : 0;
+      pairs.push({ i, id: p.id, score: effectiveRating(p, slot) - far + (p.pos === slot ? 0.01 : 0) });
     }
   });
   pairs.sort((a, b) => b.score - a.score || a.i - b.i);
@@ -276,7 +307,7 @@ export function fillLineupGaps(lineup: readonly string[], bench: readonly string
     const best = (list: CareerPlayer[]) =>
       list.sort((a, b) => effectiveRating(b, slot) - effectiveRating(a, slot) || a.id.localeCompare(b.id))[0];
     const fromBench = best(
-      bench.map((id) => byId.get(id)).filter((p): p is CareerPlayer => !!p && !used.has(p.id) && positionPenalty(p.pos, slot) <= 3)
+      bench.map((id) => byId.get(id)).filter((p): p is CareerPlayer => !!p && !used.has(p.id) && slotPenalty(p, slot) <= 3)
     );
     const pick = fromBench ?? best(squad.filter((p) => !used.has(p.id)));
     if (pick) out[i] = pick.id;

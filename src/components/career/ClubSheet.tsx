@@ -7,10 +7,12 @@ import {
   LINEUP_SLOTS,
   aiBench,
   aiLineup,
+  effectiveRating,
   formatMoney,
   newArrivals,
   ordinal,
   seasonDeals,
+  slotPenalty,
   sortTable,
   userBench,
   type CareerState,
@@ -120,7 +122,7 @@ function ClubSheet({ clubId, onClose }: { clubId: string | null; onClose: () => 
                   {isNew ? <span className="ml-1.5 rounded-full bg-theme-primary/15 px-1.5 py-0.5 text-[10px] font-bold text-theme-primary">New</span> : null}
                   {gone ? <span className="ml-1.5 rounded-full bg-pitch-800 px-1.5 py-0.5 text-[10px] font-bold text-[color:var(--fl-muted)]">Since left</span> : null}
                 </span>
-                {p ? <RatingPill rating={p.rating} /> : null}
+                {p ? <RatingPill rating={effectiveRating(p, slot)} delta={slotPenalty(p, slot) || undefined} /> : null}
               </li>
             );
           })}
