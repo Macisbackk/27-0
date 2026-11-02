@@ -182,6 +182,22 @@ await shot(phone, "45-how-to-play", "/", async (page) => {
     await page.evaluate(() => window.scrollBy(0, -70));
     await page.waitForTimeout(500);
   });
+  // The last result's match ratings, opened.
+  await shot(narrow, "48k-320-manager-match-ratings", "/manager", async (page) => {
+    await page.getByRole("tab", { name: "Match" }).click({ timeout: 5000 }).catch(() => {});
+    await page.getByTestId("match-ratings").locator("summary").click({ timeout: 5000 });
+    await page.getByTestId("match-ratings").evaluate((el) => el.scrollIntoView({ block: "center" }));
+    await page.waitForTimeout(400);
+  });
+  // Club tab: player stats, league stats and the Hall of Fame (real club records).
+  for (const [name, id] of [["48l-320-manager-player-stats", "squad-stats"], ["48m-320-manager-league-stats", "league-leaders"], ["48n-320-manager-hall-of-fame", "hall-of-fame"]]) {
+    await shot(narrow, name, "/manager", async (page) => {
+      await page.getByRole("tab", { name: "Club" }).click({ timeout: 5000 });
+      await page.getByTestId(id).first().evaluate((el) => el.scrollIntoView({ block: "start" }));
+      await page.evaluate(() => window.scrollBy(0, -60));
+      await page.waitForTimeout(400);
+    });
+  }
   await shot(narrow, "48c-320-manager-bench-picker", "/manager", async (page) => {
     await page.getByRole("tab", { name: "Team" }).click({ timeout: 5000 });
     await page.getByRole("button", { name: /^Shirt 14,/ }).click({ timeout: 5000 });
@@ -220,6 +236,29 @@ await shot(phone, "45-how-to-play", "/", async (page) => {
       localStorage.setItem(k, JSON.stringify(s));
     }, "27-0-career-v2-save");
     await page.reload({ waitUntil: "networkidle" });
+    await page.getByTestId("career-event").waitFor({ timeout: 5000 });
+    await page.waitForTimeout(500);
+  });
+  // A club record pop-up, injected into the save.
+  await shot(narrow, "48o-320-manager-record-popup", "/manager", async (page) => {
+    await page.evaluate((k) => {
+      const s = JSON.parse(localStorage.getItem(k) || "null");
+      if (!s) return;
+      const p = s.players[s.lineup[1]];
+      s.tutorialDone = true;
+      const surname = p.name.split(" ").slice(-1)[0];
+      s.events = [
+        ...(s.events || []),
+        { id: "preview-record", kind: "club-record", year: s.year, clubId: s.userClubId, playerId: p.id, name: p.name, rating: p.rating, title: `${surname} breaks the club try record!`, text: `He passes the old mark of 207 tries for ${s.clubs[s.userClubId].name}.`, options: [{ id: "ok", label: "Legend" }] },
+      ];
+      localStorage.setItem(k, JSON.stringify(s));
+    }, "27-0-career-v2-save");
+    await page.reload({ waitUntil: "networkidle" });
+    // Clear the legend pop-up from the shot before.
+    if ((await page.getByTestId("career-event").getAttribute("data-kind").catch(() => null)) !== "club-record") {
+      await page.keyboard.press("Escape");
+      await page.waitForTimeout(600);
+    }
     await page.getByTestId("career-event").waitFor({ timeout: 5000 });
     await page.waitForTimeout(500);
   });
