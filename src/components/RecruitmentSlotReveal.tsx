@@ -258,11 +258,9 @@ export function RecruitmentSlotReveal({
         }}
       >
         <div
-          className="recruitment-spin-panel w-full max-w-[min(22rem,92vw)] overflow-hidden rounded-[var(--mobile-radius-medium,10px)] border border-white/12 bg-[var(--mobile-surface-secondary,#080c0d)] shadow-[0_14px_34px_rgba(0,0,0,0.4)]"
-          style={{
-            boxShadow: "0 14px 34px rgba(0,0,0,0.4)",
-            transition: landed ? "border-color 0.35s ease-out" : undefined,
-          }}
+          // Same box as the player picker that follows (spin-card / slot-picker__card): one size from
+          // spin to signing, so nothing jumps (owner, v1.54).
+          className="recruitment-spin-panel spin-card flex flex-col overflow-hidden rounded-card bg-pitch-900"
         >
           {/* No club-colour bar here (owner, v1.39): a neutral top edge before and after the spin. */}
           <div aria-hidden className="h-0.5 w-full bg-white/10" />
@@ -292,7 +290,7 @@ export function RecruitmentSlotReveal({
             ) : null}
           </div>
 
-          <div ref={shellRef} className="px-3 py-4 sm:px-5 sm:py-5">
+          <div ref={shellRef} className="flex flex-1 flex-col justify-center px-3 py-4 sm:px-5 sm:py-5">
             <div
               className={`recruitment-spin-reels flex max-w-full items-stretch justify-center ${
                 isEraSpin ? "gap-2" : ""
@@ -350,8 +348,9 @@ export function RecruitmentSlotReveal({
                 )}
               </p>
             </div>
-            {landed && positionReel && positionRespin ? (
-              <div className="mt-3 flex items-center gap-2">
+            {/* Kept in the layout while spinning (hidden) so the box doesn't grow when it lands. */}
+            {positionReel && positionRespin ? (
+              <div className={`mt-3 flex items-center gap-2 ${landed ? "" : "invisible"}`} aria-hidden={!landed}>
                 <GameButton
                   variant="secondary"
                   size="md"
