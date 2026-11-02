@@ -40,6 +40,8 @@ export interface CareerPlayer {
   /** Club he last left as a free agent (released or sold with no buyer) and when: that club can't re-sign him for nothing the same year. */
   leftClubId?: string;
   leftYear?: number;
+  /** Games left on a ban (red card): misses his club's next match(es). Older saves: none. */
+  ban?: number;
 }
 
 export interface CareerClub {
@@ -66,6 +68,9 @@ export interface FixtureResult {
   /** Won in golden-point extra time (knockouts only). */
   goldenPoint?: boolean;
   motm?: string;
+  /** Players sent off (red card): banned for their club's next game. */
+  homeSentOff?: string[];
+  awaySentOff?: string[];
 }
 
 export interface Fixture {

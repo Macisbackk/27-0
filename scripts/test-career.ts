@@ -260,6 +260,82 @@ const simAll = (start: CareerState): CareerState => {
   check(!!ll && ll.bench?.length === BENCH_SIZE, "last team sheet keeps the bench");
 }
 
+// --- Red cards and bans.
+{
+  let s = createCareer({ clubId: "wigan-warriors", managerName: "T", seed: "bans" });
+  let reds = 0;
+  let teamGames = 0;
+  let servedChecks = 0;
+  let byeChecks = 0;
+  let neverPicked = true;
+  let banSet = true;
+  for (let guard = 0; s.phase === "season" && guard < 60; guard++) {
+    s = closeDeadlineDay(s);
+    const md = s.calendar[s.matchdayIndex];
+    if (!md) break;
+    const bannedBefore = new Map(Object.values(s.players).filter((p) => p.ban).map((p) => [p.id, p.ban!]));
+    const next = playMatchday(s);
+    const played = next.calendar[s.matchdayIndex]!.fixtures.filter((f) => f.result);
+    const playing = new Set(played.flatMap((f) => [f.home, f.away]));
+    for (const f of played) {
+      teamGames += 2;
+      for (const [clubId, off] of [[f.home, f.result!.homeSentOff ?? []], [f.away, f.result!.awaySentOff ?? []]] as const) {
+        reds += off.length;
+        for (const id of off) if (next.players[id] && next.players[id]!.ban !== 1) banSet = false;
+        const sheet = next.lastLineups?.[clubId];
+        if (sheet && sheet.fixtureId === f.id && [...sheet.lineup, ...(sheet.bench ?? [])].some((id) => bannedBefore.has(id))) neverPicked = false;
+      }
+    }
+    // Served: a banned man whose club played this week is free again (unless sent off again); no game, no change.
+    for (const [id, ban] of bannedBefore) {
+      const club = Object.values(next.clubs).find((c) => c.squad.includes(id));
+      if (!club) continue;
+      const sentAgain = played.some((f) => [...(f.result!.homeSentOff ?? []), ...(f.result!.awaySentOff ?? [])].includes(id));
+      if (playing.has(club.id)) {
+        servedChecks++;
+        check(sentAgain || (next.players[id]?.ban ?? 0) === ban - 1, `ban served at the club's next game (${id})`);
+      } else {
+        byeChecks++;
+        check(next.players[id]?.ban === ban, `a week without a game doesn't count towards a ban (${id})`);
+      }
+    }
+    s = next;
+  }
+  check(banSet, "everyone sent off is banned for one game");
+  check(neverPicked, "banned players never appear in a team sheet");
+  const rate = reds / teamGames;
+  check(rate > 0.025 && rate < 0.08, `send-offs about one team in twenty (${reds} in ${teamGames} team-games)`);
+  check(servedChecks > 10, `bans get served (${servedChecks} checks)`);
+  check(byeChecks > 0, `bans wait through weeks with no game (${byeChecks} checks)`);
+
+  // The user's side: a banned starter makes way at kick-off (bench covers) with a news line, then he's back.
+  let u = createCareer({ clubId: "wigan-warriors", managerName: "T", seed: "bans-user" });
+  u = playMatchday(u); // round 1 (pre-season skipped)
+  const banned = u.lineup[5]!;
+  u = structuredClone(u);
+  u.players[banned]!.ban = 1;
+  check(!sheetFor(u, u.userClubId).bench!.includes(banned), "a banned man is never on the bench");
+  const afterBan = playMatchday(u);
+  const userGame = afterBan.calendar[u.matchdayIndex]!.fixtures.find((f) => f.home === u.userClubId || f.away === u.userClubId);
+  if (userGame) {
+    const ll = afterBan.lastLineups![u.userClubId]!;
+    check(!ll.lineup.includes(banned) && !(ll.bench ?? []).includes(banned), "banned starter sat out the user's game");
+    check(afterBan.news.some((n) => n.includes("is banned for this game")), "news says he's banned for this game");
+    check(!afterBan.players[banned]!.ban, "ban over after one game");
+    check(u.bench.includes(ll.lineup[5]!) || !u.bench.length, "his shirt went to a bench man");
+  }
+  // AI clubs leave banned men out too.
+  const ai = Object.keys(u.clubs).find((id) => id !== u.userClubId)!;
+  const aiStar = aiLineup(u, ai)[0]!;
+  const u2 = structuredClone(u);
+  u2.players[aiStar]!.ban = 1;
+  check(!aiLineup(u2, ai).includes(aiStar) && !aiBench(u2, ai).includes(aiStar), "AI clubs leave a banned man out");
+  // Old saves have no bans: nothing breaks.
+  const old = structuredClone(u);
+  for (const p of Object.values(old.players)) delete p.ban;
+  check(playMatchday(old).matchdayIndex === old.matchdayIndex + 1, "a save from before bans plays on");
+}
+
 // --- Calibration over many seasons.
 const slWinsTop: number[] = [];
 const slWinsBottom: number[] = [];

@@ -37,6 +37,34 @@ export function squadOf(state: CareerState, clubId: string) {
   return (state.clubs[clubId]?.squad ?? []).map((id) => state.players[id]!).filter(Boolean);
 }
 
+/** Players who can be picked: the squad minus anyone serving a ban. */
+export function availableSquad(state: CareerState, clubId: string) {
+  return squadOf(state, clubId).filter((p) => !p.ban);
+}
+
+/**
+ * Bans after a match. Each club that played: anyone banned before it has now served a game, and
+ * anyone sent off in it misses the club's next game (a week with no game doesn't count).
+ */
+function applyBans(state: CareerState, f: Fixture) {
+  if (!f.result) return;
+  for (const [clubId, sentOff, oppId] of [
+    [f.home, f.result.homeSentOff ?? [], f.away],
+    [f.away, f.result.awaySentOff ?? [], f.home],
+  ] as const) {
+    for (const id of state.clubs[clubId]?.squad ?? []) {
+      const p = state.players[id];
+      if (p?.ban) p.ban = p.ban > 1 ? p.ban - 1 : undefined;
+    }
+    for (const id of sentOff) {
+      const p = state.players[id];
+      if (!p) continue;
+      p.ban = 1;
+      if (clubId === state.userClubId) addNews(state, `${p.name} sent off v ${state.clubs[oppId]?.name ?? "them"}. Banned for the next game.`);
+    }
+  }
+}
+
 /**
  * AI clubs' best XIII. Squads and ratings don't change mid-season, so cache per season+squad.
  * (Big win for "Sim season" on phones: ~36 picks per matchday otherwise.)
@@ -44,10 +72,11 @@ export function squadOf(state: CareerState, clubId: string) {
 const aiTeamCache = new Map<string, { lineup: string[]; bench: string[] }>();
 function aiTeam(state: CareerState, clubId: string): { lineup: string[]; bench: string[] } {
   const squad = state.clubs[clubId]?.squad ?? [];
-  const key = `${state.seed}|${state.year}|${clubId}|${squad.join(",")}`;
+  const banned = squad.filter((id) => state.players[id]?.ban).join(",");
+  const key = `${state.seed}|${state.year}|${clubId}|${squad.join(",")}|${banned}`;
   const hit = aiTeamCache.get(key);
   if (hit) return hit;
-  const players = squadOf(state, clubId);
+  const players = availableSquad(state, clubId);
   const lineup = autoPickLineup(players);
   const team = { lineup, bench: autoPickBench(players, lineup) };
   if (aiTeamCache.size > 400) aiTeamCache.clear();
@@ -251,7 +280,7 @@ export function startSeason(state: CareerState): CareerState {
  * A line-up of the wrong shape (very old saves) is picked afresh.
  */
 export function repairTeam(state: CareerState, lineup: readonly string[], bench: readonly string[]): { lineup: string[]; bench: string[] } {
-  const squad = squadOf(state, state.userClubId);
+  const squad = availableSquad(state, state.userClubId);
   const ids = new Set(squad.map((p) => p.id));
   let xiii: string[];
   if (lineup.length !== 13) xiii = autoPickLineup(squad);
@@ -311,7 +340,7 @@ export function migrateCareer<T extends CareerState | null>(state: T): T {
 
 /** Best XIII and the best bench to go with it. */
 export function autoPickTeam(state: CareerState): { lineup: string[]; bench: string[] } {
-  const squad = squadOf(state, state.userClubId);
+  const squad = availableSquad(state, state.userClubId);
   const lineup = autoPickLineup(squad);
   return { lineup, bench: autoPickBench(squad, lineup) };
 }
@@ -546,6 +575,10 @@ function playMatchdayInPlace(next: CareerState, played?: PlayedResult): void {
     return;
   }
   drawPending(next, md);
+  for (const id of next.lineup) {
+    const p = next.players[id];
+    if (p?.ban) addNews(next, `${p.name} is banned for this game.`);
+  }
   fixTeam(next);
 
   for (const f of md.fixtures) {
@@ -562,7 +595,10 @@ function playMatchdayInPlace(next: CareerState, played?: PlayedResult): void {
     creditPlayers(next, away, f.result.awayTries);
     if (f.home === next.userClubId) trackUserResult(next, f, home);
     else if (f.away === next.userClubId) trackUserResult(next, f, away);
+    applyBans(next, f);
   }
+  // A man just sent off drops out of your 17 now (the bench covers), so the Team tab is right.
+  fixTeam(next);
 
   // Headline results the user cares about even when not involved.
   for (const f of md.fixtures) {
