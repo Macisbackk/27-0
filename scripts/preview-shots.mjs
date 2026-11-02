@@ -190,9 +190,10 @@ await shot(phone, "45-how-to-play", "/", async (page) => {
     await page.waitForTimeout(400);
   });
   // Club tab: player stats, league stats and the Hall of Fame (real club records).
-  for (const [name, id] of [["48l-320-manager-player-stats", "squad-stats"], ["48m-320-manager-league-stats", "league-leaders"], ["48n-320-manager-hall-of-fame", "hall-of-fame"]]) {
+  for (const [name, id, view] of [["48l-320-manager-player-stats", "squad-stats", "Stats"], ["48m-320-manager-league-stats", "league-leaders", "Stats"], ["48n-320-manager-hall-of-fame", "hall-of-fame", "Records"]]) {
     await shot(narrow, name, "/manager", async (page) => {
       await page.getByRole("tab", { name: "Club" }).click({ timeout: 5000 });
+      await page.getByRole("tab", { name: view, exact: true }).click({ timeout: 5000 });
       await page.getByTestId(id).first().evaluate((el) => el.scrollIntoView({ block: "start" }));
       await page.evaluate(() => window.scrollBy(0, -60));
       await page.waitForTimeout(400);
@@ -206,6 +207,7 @@ await shot(phone, "45-how-to-play", "/", async (page) => {
   // Captain row and the Academy list on the Team tab.
   await shot(narrow, "48e-320-manager-academy", "/manager", async (page) => {
     await page.getByRole("tab", { name: "Team" }).click({ timeout: 5000 });
+    await page.getByRole("tab", { name: "Academy", exact: true }).click({ timeout: 5000 });
     await page.getByRole("region", { name: "Academy" }).scrollIntoViewIfNeeded({ timeout: 5000 });
     await page.waitForTimeout(400);
   });
@@ -627,6 +629,7 @@ for (const [w, h] of [[320, 640], [390, 844]]) {
         await snap(`18-club-${sub.toLowerCase()}`, true);
       }
     }
+    if (await page.getByRole("tab", { name: "Records", exact: true }).isVisible().catch(() => false)) await tab("Records");
     await page.getByRole("button", { name: "Legend Vault" }).first().click({ timeout: 5000 }).catch(() => {});
     await snap("19-vault-sheet");
     await esc();

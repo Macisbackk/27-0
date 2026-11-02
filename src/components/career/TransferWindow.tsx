@@ -6,6 +6,7 @@ import { useArmed } from "@/hooks/useArmed";
 import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
 import {
   SQUAD_MAX,
+  deadlineClock,
   SQUAD_MIN,
   formatMoney,
   legendAsPlayer,
@@ -23,7 +24,7 @@ import {
   type TransferError,
 } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
-import { playLegendAppears, playSeasonStart, playTransferComplete, playWarning } from "@/lib/sound";
+import { playLegendAppears, playSeasonStart, playTransferComplete, playUiClick, playWarning } from "@/lib/sound";
 import { Card, ClubBadge, RatingPill, Stars, CAREER_PAGE_CLASS, CareerBackLink } from "./bits";
 import { ClubLink } from "./ClubSheet";
 import { DeadlineClockFace, DeadlineOffers } from "./TransferNews";
@@ -52,7 +53,7 @@ export function TransferWindow({ mode = "summer", onClose }: { mode?: "summer" |
   useEffect(() => {
     if (mode !== "summer") window.scrollTo(0, 0);
   }, [mode]);
-  const { state, market, buy, sell, finishTransfers } = useCareer();
+  const { state, market, buy, sell, finishTransfers, pauseDeadline } = useCareer();
   const armed = useArmed();
   const [tab, setTab] = useState<"buy" | "sell">("buy");
   const [message, setMessage] = useState<string | null>(null);
@@ -98,7 +99,23 @@ export function TransferWindow({ mode = "summer", onClose }: { mode?: "summer" |
 
       {midseason && deadlineDecisionPending(s) ? (
         <section aria-label="Deadline Day clock" className="flex flex-col gap-3 rounded-card bg-pitch-900 p-3 ring-2 ring-amber-300/60">
-          <DeadlineClockFace compact />
+          <div className="flex items-center gap-3">
+            <div className="min-w-0 flex-1">
+              <DeadlineClockFace compact />
+            </div>
+            {/* The clock can be paused here too, not only on the hub's Deadline Day card. */}
+            <button
+              type="button"
+              aria-label={deadlineClock(s).paused ? "Resume the clock" : "Pause the clock"}
+              onClick={() => {
+                playUiClick();
+                pauseDeadline(!deadlineClock(s).paused);
+              }}
+              className="min-h-[40px] shrink-0 rounded-full bg-pitch-800 px-4 text-[13px] font-semibold text-white hover:bg-pitch-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/60"
+            >
+              {deadlineClock(s).paused ? "Resume" : "Pause"}
+            </button>
+          </div>
           <DeadlineOffers />
         </section>
       ) : null}
@@ -139,7 +156,13 @@ export function TransferWindow({ mode = "summer", onClose }: { mode?: "summer" |
         }}
         ariaLabel="Transfers"
       />
-      {message ? <p className="text-center text-sm text-theme-primary" role="status">{message}</p> : null}
+      {/* Always takes the same room (a hint until there's news) so the list never jumps. */}
+      <p
+        className={`flex min-h-[2.5rem] items-center justify-center text-center text-[13px] leading-snug ${message ? "font-semibold text-theme-primary" : "text-gray-500"}`}
+        role="status"
+      >
+        {message ?? (tab === "buy" ? "Best first. Tap a price to sign him." : "Tap Sell to let a player go.")}
+      </p>
 
       {tab === "buy" ? (
         <ul className="grid grid-cols-[minmax(0,1fr)] gap-2">

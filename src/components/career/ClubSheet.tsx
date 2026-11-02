@@ -1,7 +1,6 @@
 "use client";
 
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
-import { MobileBottomSheet } from "@/components/ui/MobileOverlay";
 import {
   DIVISION_LABEL,
   LINEUP_SLOTS,
@@ -21,6 +20,7 @@ import { useCareer } from "@/lib/career/context";
 import { playUiClick } from "@/lib/sound";
 import { ClubBadge, RatingPill } from "./bits";
 import { HallOfFame } from "./StatsCards";
+import { ManagerSheet } from "./Sheet";
 
 /** Open any club's team sheet from anywhere in Manager Mode. */
 const ClubSheetContext = createContext<(clubId: string) => void>(() => {});
@@ -79,26 +79,31 @@ function ClubSheet({ clubId, onClose }: { clubId: string | null; onClose: () => 
     return { last, lineup, bench, arrivals, deals };
   }, [s, club]);
 
-  if (!s || !club || !view) return <MobileBottomSheet open={false} onClose={onClose} title="">{null}</MobileBottomSheet>;
+  if (!s || !club || !view) return null;
   const { last, lineup, bench, arrivals, deals } = view;
   const opponent = last ? s.clubs[last.opponentId] : null;
   const result = last ? (last.us > last.them ? "W" : last.us < last.them ? "L" : "D") : null;
   const stillHere = new Set(club.squad);
 
   return (
-    <MobileBottomSheet
+    <ManagerSheet
+      list
       open={!!clubId}
       onClose={onClose}
+      eyebrow={DIVISION_LABEL[club.division]}
       title={club.name}
-      pitchHeader
-      headerExtra={<span className="mt-1.5 block"><ClubBadge club={club} size="sm" /></span>}
+      headerExtra={
+        <p className="mt-1.5 flex items-center justify-center gap-2 text-[13px] text-[color:var(--fl-muted)]">
+          <ClubBadge club={club} size="sm" />
+          <span>
+            {tablePosition(s, club.id) ? `${tablePosition(s, club.id)} · ` : ""}
+            {club.squad.length} players
+          </span>
+        </p>
+      }
     >
-      <p className="text-sm text-[color:var(--fl-muted)]">
-        {DIVISION_LABEL[club.division]}
-        {tablePosition(s, club.id) ? ` · ${tablePosition(s, club.id)}` : ""} · {club.squad.length} players
-      </p>
 
-      <section aria-label="Team sheet" className="mt-3 rounded-tile bg-pitch-950 p-3">
+      <section aria-label="Team sheet" className="rounded-tile bg-pitch-950 p-3">
         <p className="text-[13px] font-semibold text-white">
           {last && opponent ? (
             <>
@@ -170,6 +175,6 @@ function ClubSheet({ clubId, onClose }: { clubId: string | null; onClose: () => 
         <p className="text-[13px] font-semibold text-white">Hall of Fame</p>
         <HallOfFame clubId={club.id} compact />
       </section>
-    </MobileBottomSheet>
+    </ManagerSheet>
   );
 }

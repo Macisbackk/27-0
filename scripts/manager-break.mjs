@@ -200,6 +200,7 @@ try {
   }
   // Contract labels on the Team tab.
   await page.getByRole("tab", { name: "Team" }).click();
+  await page.getByRole("tab", { name: /^Squad/ }).click().catch(() => {});
   const teamText = await page.locator("main").innerText();
   if (!/yrs|Final year/.test(teamText)) fail("Team tab shows no contract lengths");
   await shot("team-contracts");
@@ -250,6 +251,7 @@ try {
         await page.waitForTimeout(300);
         // After Deadline Day: shut until the new season.
         await page.getByRole("tab", { name: "Club" }).click();
+        await page.getByRole("tab", { name: "Overview", exact: true }).click().catch(() => {});
         const status = await page.getByTestId("window-status").first().innerText().catch(() => "");
         if (!/Window shut/.test(status) || !/after the season/.test(status)) fail(`after Deadline Day the Club tab says "${status}"`);
         await page.getByTestId("window-status").first().evaluate((el) => el.scrollIntoView({ block: "center" })).catch(() => {});

@@ -131,12 +131,14 @@ async function run(viewport, tag) {
   });
   await tryStep("manager-legend-vault", async () => {
     await page.getByRole("tab", { name: "Club" }).click();
+    await page.getByRole("tab", { name: "Records", exact: true }).click();
     await page.getByRole("button", { name: "Legend Vault" }).click();
   });
   await tryStep("manager-records", async () => {
     await page.getByRole("button", { name: "Records" }).first().click();
   });
   await tryStep("manager-end-career", async () => {
+    await page.getByRole("tab", { name: "Overview", exact: true }).click();
     await page.getByRole("button", { name: "Start a new career" }).click();
   });
   await tryStep("quiz-walk-away", async () => {

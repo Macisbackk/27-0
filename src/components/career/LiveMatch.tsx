@@ -22,7 +22,7 @@ import {
   playTryScored,
   playUiClick,
 } from "@/lib/sound";
-import { ClubBadge } from "./bits";
+import { ClubBadge, scrollUnderHeader } from "./bits";
 
 type Speed = "normal" | "fast";
 
@@ -72,8 +72,11 @@ export function LiveMatch({
   const m = matchRef.current;
   const rng = rngRef.current;
 
+  // Kick-off: the scoreboard goes to the top of the screen, whatever the hub was scrolled to.
+  const rootRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     playMatchStarted();
+    scrollUnderHeader(rootRef.current);
   }, []);
 
   // The clock: one minute per tick until a call is waiting or the match ends.
@@ -137,7 +140,7 @@ export function LiveMatch({
   const awayColor = m.userSide === "away" ? USER : OPP;
 
   return (
-    <div className="flex flex-col gap-3">
+    <div ref={rootRef} className="flex flex-col gap-3">
       <section aria-label="Scoreboard" className="rounded-card bg-pitch-900 p-4">
         <div className="flex items-center justify-between text-xs text-[color:var(--fl-muted)]">
           <span>{fixture.label}</span>
@@ -163,7 +166,20 @@ export function LiveMatch({
         <div className="mt-3 h-1 w-full overflow-hidden rounded-full bg-pitch-950" aria-hidden>
           <div className="h-full rounded-full bg-theme-primary transition-[width] duration-200" style={{ width: `${(m.minute / 80) * 100}%` }} />
         </div>
-        <div className="mt-2.5" aria-hidden>
+        {/* Momentum while the game runs; the verdict in the same fixed-height spot at full time,
+            so nothing below moves when the whistle goes. */}
+        {m.finished ? (
+          <div aria-label="Full time" role="region" className="mt-2.5 flex h-10 flex-col items-center justify-center text-center">
+            <p className={`text-[17px] font-bold leading-tight ${us > them ? "text-success" : us < them ? "text-danger" : "text-white"}`}>
+              {us > them ? "Win!" : us < them ? "Defeat" : "Draw"}
+              {m.goldenPoint ? " · golden point" : ""}
+            </p>
+            <p className="text-[12px] leading-tight text-[color:var(--fl-muted)]">
+              {m.callsWon} of your {m.callsDone.length} calls came off.
+            </p>
+          </div>
+        ) : (
+        <div className="mt-2.5 h-10" aria-hidden>
           <div className="relative h-1.5 w-full overflow-hidden rounded-full bg-pitch-950">
             <div className="absolute inset-y-0 left-1/2 w-px bg-white/20" />
             {homeMomentum > 0 ? (
@@ -180,6 +196,7 @@ export function LiveMatch({
           </div>
           <p className="mt-1 text-center text-[11px] text-[color:var(--fl-muted)]">Momentum</p>
         </div>
+        )}
       </section>
 
       {/* The call sits over the bottom of the screen (v1.54): showing/hiding it in the page flow
@@ -188,9 +205,9 @@ export function LiveMatch({
         <>
         <div aria-hidden className="fixed inset-0 z-[59] bg-black/50" />
         <div className="fixed inset-x-0 bottom-0 z-[60] flex justify-center px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
-        <section aria-label={m.pending.title} className="w-full max-w-[40rem] rounded-card bg-pitch-900 p-4 shadow-[0_-12px_40px_rgba(0,0,0,0.5)] ring-2 ring-theme-primary/60">
-          <p className="text-[13px] font-semibold text-theme-primary">{m.pending.title}</p>
-          <p className="mt-1 text-[15px] font-semibold text-white">{m.pending.prompt}</p>
+        <section aria-label={m.pending.title} className="w-full max-w-[40rem] rounded-card border border-[color:var(--fl-line-strong)] bg-pitch-900 p-4 text-center shadow-[0_-12px_40px_rgba(0,0,0,0.5)]">
+          <p className="mobile-sheet-card__eyebrow">{m.pending.title}</p>
+          <p className="mt-1 text-[16px] font-bold leading-snug text-white">{m.pending.prompt}</p>
           <div className="mt-3 flex flex-col gap-2">
             {m.pending.options.map((o) => (
               <button
@@ -216,17 +233,6 @@ export function LiveMatch({
         </>
       ) : null}
 
-      {m.finished ? (
-        <section aria-label="Full time" className="rounded-card bg-pitch-900 p-4 text-center">
-          <p className={`text-[22px] font-bold ${us > them ? "text-success" : us < them ? "text-danger" : "text-white"}`}>
-            {us > them ? "Win!" : us < them ? "Defeat" : "Draw"}
-            {m.goldenPoint ? " · golden point" : ""}
-          </p>
-          <p className="mt-1 text-sm text-[color:var(--fl-muted)]">
-            {m.callsWon} of your {m.callsDone.length} calls came off.
-          </p>
-        </section>
-      ) : null}
 
       {/* Fixed height: the feed fills in without growing the page as events arrive. */}
       <section aria-label="Match feed" className="h-[19rem] overflow-hidden rounded-card bg-pitch-900 p-2">
@@ -238,7 +244,7 @@ export function LiveMatch({
       </section>
 
       {/* Hidden while a call is open: the call sheet has its own Skip (one button, nothing covered). */}
-      <div className={`mobile-action-bar sm:static sm:border-0 sm:bg-transparent sm:p-0 ${m.pending ? "hidden" : ""}`} role="toolbar">
+      <div className={`mobile-action-bar sm:static sm:border-0 sm:bg-transparent sm:p-0 ${m.pending ? "invisible" : ""}`} role="toolbar">
         <div className="mobile-action-bar__inner flex flex-col gap-2">
           {m.finished ? (
             <GameButton size="lg" onClick={finish}>

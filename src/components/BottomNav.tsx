@@ -113,8 +113,8 @@ export function BottomNav() {
                   onClick={(e) => {
                     e.preventDefault();
                     playUiClick();
+                    // The hub puts the page back at the top itself (CareerApp).
                     managerNav.setTab(item.id);
-                    window.scrollTo({ top: 0, behavior: "smooth" });
                   }}
                 >
                   {active ? <ActivePill /> : null}

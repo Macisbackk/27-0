@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
-import { MobileBottomSheet } from "@/components/ui/MobileOverlay";
 import { DIVISION_LABEL, POS_LABEL, TROPHY_LABEL, awardLabel, formatMoney, legendAtClub, legendAsPlayer, legendCatalog, ordinal, totalMajorTrophies, type TrophyId } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
 import { playAchievementUnlock, playWarning } from "@/lib/sound";
 import { Eyebrow, RatingPill } from "./bits";
+import { ManagerSheet } from "./Sheet";
 import { windowStatus } from "@/lib/career/midseason";
 
 export function LegendVaultSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
@@ -15,22 +15,29 @@ export function LegendVaultSheet({ open, onClose }: { open: boolean; onClose: ()
   const legends = legendCatalog();
 
   return (
-    <MobileBottomSheet
+    <ManagerSheet
+      list
       open={open}
       onClose={() => {
         setMessage(null);
         onClose();
       }}
+      eyebrow="Legacy · every career"
       title="Legend Vault"
-      pitchHeader
-      headerExtra={<span className="pitch-pill mt-1.5 !text-[14px] !text-accent-gold">{legacy.legacyPoints} Legacy pts</span>}
+      headerExtra={
+        <p className="mt-1.5 text-center">
+          <span className="rounded-full bg-accent-gold/15 px-2.5 py-0.5 text-[13px] font-bold tabular-nums text-accent-gold">{legacy.legacyPoints} Legacy pts</span>
+        </p>
+      }
     >
-      <p className="text-sm text-gray-300">
-        Earn Legacy points from trophies and challenges. Unlocked Legends and Greats join your transfer window in
-        <span className="font-semibold text-white"> every </span>career.
+      <p className="text-center text-[13px] leading-relaxed text-gray-300">
+        Earn points from trophies and challenges. Unlocked legends join your market in every career.
       </p>
-      {message ? <p className="mt-2 text-sm text-theme-primary" role="status">{message}</p> : null}
-      <ul className="mt-3 divide-y divide-pitch-800">
+      {/* Space kept for the unlock message so the list doesn't jump when it appears. */}
+      <p className="mt-1.5 flex min-h-[2.5rem] items-center justify-center text-center text-[13px] font-semibold text-theme-primary" role="status">
+        {message ?? ""}
+      </p>
+      <ul className="divide-y divide-pitch-800">
         {legends.map((l) => {
           const owned = legacy.unlockedLegends.includes(l.id);
           const affordable = legacy.legacyPoints >= l.unlockCost;
@@ -85,7 +92,7 @@ export function LegendVaultSheet({ open, onClose }: { open: boolean; onClose: ()
           );
         })}
       </ul>
-    </MobileBottomSheet>
+    </ManagerSheet>
   );
 }
 
@@ -94,9 +101,8 @@ const TROPHY_ORDER: TrophyId[] = ["grand-final", "league-leaders", "challenge-cu
 export function RecordsSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { legacy, state } = useCareer();
   return (
-    <MobileBottomSheet open={open} onClose={onClose} title="Records & trophy cabinet">
-      <Eyebrow>All careers</Eyebrow>
-      <dl className="mt-2 grid grid-cols-2 gap-3 text-sm">
+    <ManagerSheet list open={open} onClose={onClose} eyebrow="All careers" title="Records & trophies">
+      <dl className="grid grid-cols-2 gap-3 text-center text-sm">
         <div>
           <dt className="text-[11px] uppercase tracking-wide text-gray-500">Major trophies</dt>
           <dd className="font-display text-xl font-bold text-accent-gold">{totalMajorTrophies(legacy)}</dd>
@@ -125,16 +131,16 @@ export function RecordsSheet({ open, onClose }: { open: boolean; onClose: () => 
 
       <ul className="mt-4 grid grid-cols-2 gap-2 text-sm">
         {TROPHY_ORDER.map((t) => (
-          <li key={t} className="flex items-center justify-between rounded-lg bg-pitch-800 px-3 py-2">
-            <span className="text-gray-300">{TROPHY_LABEL[t]}</span>
-            <span className="font-display font-bold text-white">{legacy.trophies[t]}</span>
+          <li key={t} className="flex items-center justify-between gap-2 rounded-control bg-pitch-800 px-3 py-2">
+            <span className="min-w-0 text-left text-[13px] leading-tight text-gray-300">{TROPHY_LABEL[t]}</span>
+            <span className="shrink-0 font-display font-bold tabular-nums text-white">{legacy.trophies[t]}</span>
           </li>
         ))}
       </ul>
 
       {state && state.history.length ? (
         <>
-          <div className="mt-5"><Eyebrow>This career · {state.clubs[state.userClubId]?.name}</Eyebrow></div>
+          <div className="mt-5 text-center"><Eyebrow>This career · {state.clubs[state.userClubId]?.name}</Eyebrow></div>
           <ul className="mt-2 divide-y divide-pitch-800 text-sm">
             {[...state.history].reverse().map((h) => (
               <li key={h.year} className="flex items-center justify-between gap-2 py-2">
@@ -146,13 +152,13 @@ export function RecordsSheet({ open, onClose }: { open: boolean; onClose: () => 
           </ul>
           {state.history.some((h) => h.awards?.length) ? (
             <section aria-label="Past award winners" data-testid="records-awards">
-              <div className="mt-5"><Eyebrow>Awards · past winners</Eyebrow></div>
+              <div className="mt-5 text-center"><Eyebrow>Awards · past winners</Eyebrow></div>
               <ul className="mt-2 space-y-1.5">
                 {[...state.history]
                   .reverse()
                   .filter((h) => h.awards?.length)
                   .map((h, i) => (
-                    <li key={h.year} className="rounded-lg bg-pitch-800 px-3 py-2">
+                    <li key={h.year} className="rounded-control bg-pitch-800 px-3 py-2">
                       <details open={i === 0}>
                         <summary className="cursor-pointer text-sm font-semibold text-white">
                           {h.year} · Man of Steel {h.awards!.find((a) => a.id === "man-of-steel" && a.division === "super-league")?.name ?? "—"}
@@ -174,6 +180,6 @@ export function RecordsSheet({ open, onClose }: { open: boolean; onClose: () => 
           ) : null}
         </>
       ) : null}
-    </MobileBottomSheet>
+    </ManagerSheet>
   );
 }

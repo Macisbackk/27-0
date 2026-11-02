@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
-import { MobileBottomSheet } from "@/components/ui/MobileOverlay";
+import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
 import {
   ACADEMY_LEAVE_AGE,
   BENCH_SIZE,
@@ -29,6 +29,12 @@ import { useCareer } from "@/lib/career/context";
 import { playAutofill, playPlayerSelect } from "@/lib/sound";
 import { Card, Eyebrow, RatingPill, Stars } from "./bits";
 import { WindowStatusLine } from "./TransferNews";
+import { ManagerSheet } from "./Sheet";
+
+/** The Team tab in three short views instead of one long scroll (v1.57). */
+type TeamView = "matchday" | "squad" | "academy";
+/** Remembered while the hub is open, so coming back to Team shows the same view. */
+let lastTeamView: TeamView = "matchday";
 
 /** Which shirt the picker is filling: XIII slot 0–12 or bench spot 0–3. */
 type ShirtPick = { kind: "xiii" | "bench"; index: number };
@@ -37,14 +43,14 @@ function Tags({ p, captain }: { p: CareerPlayer; captain?: boolean }) {
   return (
     <>
       {captain ? (
-        <span className="ml-1.5 rounded bg-accent-gold/20 px-1 text-[10px] font-bold text-accent-gold" title="Captain" aria-label="Captain">
+        <span className="ml-1.5 whitespace-nowrap rounded bg-accent-gold/20 px-1 text-[10px] font-bold text-accent-gold" title="Captain" aria-label="Captain">
           C
         </span>
       ) : null}
-      {p.legend ? <span className="ml-1.5 text-[10px] font-bold uppercase text-accent-gold">Legend</span> : null}
-      {p.academy ? <span className="ml-1.5 text-[10px] font-bold uppercase text-sky-300">Academy</span> : null}
+      {p.legend ? <span className="ml-1.5 whitespace-nowrap text-[10px] font-bold uppercase text-accent-gold">Legend</span> : null}
+      {p.academy ? <span className="ml-1.5 whitespace-nowrap text-[10px] font-bold uppercase text-sky-300">Academy</span> : null}
       {p.ban ? (
-        <span className="ml-1.5 text-[10px] font-bold uppercase text-danger">
+        <span className="ml-1.5 whitespace-nowrap text-[10px] font-bold uppercase text-danger">
           Banned · {p.ban} game{p.ban > 1 ? "s" : ""}
         </span>
       ) : null}
@@ -68,9 +74,12 @@ function AcademyCard() {
         <p className="mt-1 text-xs text-gray-400">
           New kids join every pre-season. Promote them to play. First-team games help them grow. They leave at {ACADEMY_LEAVE_AGE}.
         </p>
-        {message ? <p className="mt-2 text-center text-sm text-theme-primary" role="status">{message}</p> : null}
+        {/* Same room whether or not there's news, so the list doesn't jump on a tap. */}
+        <p className={`mt-1 flex min-h-[2.25rem] items-center justify-center text-center text-[13px] leading-snug ${message ? "font-semibold text-theme-primary" : "text-gray-500"}`} role="status">
+          {message ?? (kids.length ? "Promote to play him. Release to free a place." : "")}
+        </p>
         {kids.length ? (
-          <ul className="mt-2 divide-y divide-pitch-800">
+          <ul className="divide-y divide-pitch-800">
             {kids.map((p) => {
               const cost = promotionCost(s, p);
               return (
@@ -138,6 +147,11 @@ export function TeamTab() {
   const { state, setLineupSlot, setBenchSlot, autoPick, setCaptain } = useCareer();
   const [pick, setPick] = useState<ShirtPick | null>(null);
   const [pickCaptain, setPickCaptain] = useState(false);
+  const [view, setViewState] = useState<TeamView>(lastTeamView);
+  const setView = (v: TeamView) => {
+    lastTeamView = v;
+    setViewState(v);
+  };
   const s = state!;
   const captainId = chosenCaptain(s);
   const leader = userCaptain(s);
@@ -160,13 +174,25 @@ export function TeamTab() {
     ? ""
     : pick.kind === "xiii"
       ? `Shirt ${pick.index + 1} · ${POS_LABEL[LINEUP_SLOTS[pick.index]!]}`
-      : `Shirt ${14 + pick.index} · Interchange`;
+      : `Shirt ${14 + pick.index}`;
 
   return (
     <div className="flex flex-col gap-4">
+      <GameSegmentedControl<TeamView>
+        options={[
+          { id: "matchday", label: "Starting 17" },
+          { id: "squad", label: `Squad · ${others.length}` },
+          { id: "academy", label: "Academy" },
+        ]}
+        value={view}
+        onChange={setView}
+        fullWidth
+        ariaLabel="Team sections"
+      />
       <section aria-label="Transfer window" className="rounded-card bg-pitch-900 px-4 py-2.5">
         <WindowStatusLine />
       </section>
+      {view === "matchday" ? (
       <Card>
         <div className="flex items-center justify-between gap-2">
           <div>
@@ -196,7 +222,7 @@ export function TeamTab() {
               <span className="block text-[11px] text-gray-500">+{CAPTAIN_BOOST} team rating when he plays.</span>
             )}
           </p>
-          <GameButton size="sm" variant="secondary" fullWidth={false} onClick={() => setPickCaptain(true)}>
+          <GameButton size="sm" variant="secondary" fullWidth={false} className="shrink-0 whitespace-nowrap" onClick={() => setPickCaptain(true)}>
             Change
           </GameButton>
         </div>
@@ -217,8 +243,8 @@ export function TeamTab() {
                   <span className="min-w-0 flex-1 break-words leading-tight text-white">
                     {p?.name ?? "—"}
                     {p ? <Tags p={p} captain={p.id === leader} /> : null}
-                    {penalty ? <span className="ml-1.5 text-[10px] text-danger">Out of position ({p!.pos})</span> : null}
-                    {p && contractOf(p) <= 1 ? <span className="ml-1.5 text-[10px] font-bold text-amber-300">Final year</span> : null}
+                    {penalty ? <span className="ml-1.5 whitespace-nowrap text-[10px] text-danger">Out of position ({p!.pos})</span> : null}
+                    {p && contractOf(p) <= 1 ? <span className="ml-1.5 whitespace-nowrap text-[10px] font-bold text-amber-300">Final year</span> : null}
                   </span>
                   {p ? <RatingPill rating={p.rating - penalty} delta={penalty || undefined} /> : null}
                 </button>
@@ -254,9 +280,12 @@ export function TeamTab() {
           </ol>
         </section>
       </Card>
+      ) : null}
 
+      {view === "squad" ? (
       <Card>
         <Eyebrow>Rest of the squad · {others.length}</Eyebrow>
+        <p className="mt-1 text-xs text-gray-400">Not in your matchday 17. Pick them from a shirt on Starting 17.</p>
         <ul className="mt-2 divide-y divide-pitch-800">
           {others.map((p) => (
             <li key={p.id} className="flex items-center gap-3 py-2">
@@ -281,10 +310,11 @@ export function TeamTab() {
           ))}
         </ul>
       </Card>
+      ) : null}
 
-      <AcademyCard />
+      {view === "academy" ? <AcademyCard /> : null}
 
-      <MobileBottomSheet open={pickCaptain} onClose={() => setPickCaptain(false)} title="Pick your captain">
+      <ManagerSheet list open={pickCaptain} onClose={() => setPickCaptain(false)} eyebrow={`Captain · +${CAPTAIN_BOOST} team rating`} title="Pick your captain">
         <ul className="divide-y divide-pitch-800">
           {[...squad]
             .sort((a, b) => Number(inXiii.has(b.id)) - Number(inXiii.has(a.id)) || b.rating - a.rating)
@@ -312,9 +342,9 @@ export function TeamTab() {
               </li>
             ))}
         </ul>
-      </MobileBottomSheet>
+      </ManagerSheet>
 
-      <MobileBottomSheet open={pick != null} onClose={() => setPick(null)} title={sheetTitle}>
+      <ManagerSheet list open={pick != null} onClose={() => setPick(null)} eyebrow={pick?.kind === "bench" ? "Interchange" : "Starting XIII"} title={sheetTitle}>
         <ul className="divide-y divide-pitch-800">
           {candidates.map((p) => {
             const eff = fit(p);
@@ -358,7 +388,7 @@ export function TeamTab() {
                   <span className="min-w-0 flex-1">
                     <span className="block break-words leading-tight text-white">
                       {p.name}
-                      {eff < p.rating ? <span className="ml-1.5 text-[10px] text-danger">Out of position</span> : null}
+                      {eff < p.rating ? <span className="ml-1.5 whitespace-nowrap text-[10px] text-danger">Out of position</span> : null}
                     </span>
                     <span className="text-[11px] text-gray-500">{where}</span>
                   </span>
@@ -368,7 +398,7 @@ export function TeamTab() {
             );
           })}
         </ul>
-      </MobileBottomSheet>
+      </ManagerSheet>
     </div>
   );
 }

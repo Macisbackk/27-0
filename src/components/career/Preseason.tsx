@@ -15,7 +15,7 @@ import {
 } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
 import { playUiClick } from "@/lib/sound";
-import { ClubBadge } from "./bits";
+import { ClubBadge, Eyebrow } from "./bits";
 
 const TONE: Record<FriendlyOption["label"], string> = {
   "Big test": "text-amber-300",
@@ -49,7 +49,7 @@ export function PreseasonCard() {
 
   return (
     <section aria-label="Pre-season friendlies" className="fl-rise rounded-card bg-pitch-900 p-4">
-      <p className="text-[13px] font-semibold text-theme-primary">Pre-season</p>
+      <Eyebrow>Pre-season</Eyebrow>
       <h2 className="mt-0.5 text-[18px] font-bold text-white">Pick your friendlies</h2>
       <div className="mt-1 text-sm text-[color:var(--fl-muted)]">
         Up to {MAX_FRIENDLIES}. Each adds +{SHARPNESS_PER_FRIENDLY} rating for 3 rounds, plus cash.{" "}
@@ -121,7 +121,8 @@ export function PreseasonCard() {
         })}
       </ul>
       )}
-      <div className="mt-3 grid grid-cols-2 gap-2">
+      {/* Stacked on phones (main action on top) so neither label wraps at 320px. */}
+      <div className="mt-3 flex flex-col-reverse gap-2 sm:grid sm:grid-cols-2">
         <GameButton
           variant="secondary"
           size="md"
@@ -156,7 +157,7 @@ export function PreseasonResults() {
   if (!pre || pre.year !== s.year || !pre.results.length || s.matchdayIndex > 0) return null;
   return (
     <section aria-label="Pre-season results" className="fl-rise rounded-card bg-pitch-900 p-4">
-      <p className="text-[13px] font-semibold text-theme-primary">Pre-season done</p>
+      <Eyebrow>Pre-season done</Eyebrow>
       <ul className="mt-2 space-y-1.5">
         {pre.results.map((r) => {
           const club = s.clubs[r.opponentId]!;

@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
-import { MobileModal } from "@/components/ui/MobileOverlay";
+import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
 import { TROPHY_LABEL, formatMoney, ordinal, prestigeRatingCap, relevantNews, rivalsOf } from "@/lib/career";
 import type { SeasonChallenge } from "@/lib/career/types";
 import { useCareer } from "@/lib/career/context";
 import { playUiClick, playWarning } from "@/lib/sound";
 import { Card, Eyebrow, ProgressBar, Stars } from "./bits";
+import { ManagerSheet, SheetButtons } from "./Sheet";
 import { HallOfFameCard, LeagueLeadersCard, SquadStatsCard } from "./StatsCards";
 import { TransferRoundUp, WindowStatusLine } from "./TransferNews";
 
@@ -32,15 +33,35 @@ function challengeProgressLabel(c: SeasonChallenge): string {
   }
 }
 
+/** The Club tab in four short views instead of one long scroll (v1.57). */
+type ClubView = "overview" | "stats" | "records" | "news";
+const CLUB_VIEWS: Array<{ id: ClubView; label: string }> = [
+  { id: "overview", label: "Overview" },
+  { id: "stats", label: "Stats" },
+  { id: "records", label: "Records" },
+  { id: "news", label: "News" },
+];
+/** Remembered while the hub is open, so coming back to Club shows the same view. */
+let lastClubView: ClubView = "overview";
+
 export function ClubTab({ onOpenVault, onOpenRecords }: { onOpenVault: () => void; onOpenRecords: () => void }) {
   const { state, legacy, abandonCareer } = useCareer();
   const [confirm, setConfirm] = useState(false);
+  const [view, setViewState] = useState<ClubView>(lastClubView);
+  const setView = (v: ClubView) => {
+    lastClubView = v;
+    setViewState(v);
+  };
   const s = state!;
   const rivals = rivalsOf(Object.keys(s.clubs), s.userClubId).map((id) => s.clubs[id]?.name).filter(Boolean);
   const derbies = s.seasonTrack.derbies ?? { w: 0, d: 0, l: 0 };
 
   return (
     <div className="flex flex-col gap-4">
+      <GameSegmentedControl<ClubView> options={CLUB_VIEWS} value={view} onChange={setView} fullWidth ariaLabel="Club sections" />
+
+      {view === "overview" ? (
+      <>
       <Card>
         <Eyebrow>Season challenges</Eyebrow>
         <p className="mt-1 text-xs text-gray-400">Optional. Hit them for cash and Legacy points.</p>
@@ -150,51 +171,67 @@ export function ClubTab({ onOpenVault, onOpenRecords }: { onOpenVault: () => voi
         </p>
       </Card>
 
-      <Card className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <Eyebrow>Legacy · every career</Eyebrow>
-          <p className="mt-1 text-sm text-gray-300">
-            <span className="font-display text-xl font-bold text-accent-gold">{legacy.legacyPoints}</span> points to spend on legends
-          </p>
-        </div>
-        <div className="flex gap-2">
-          <GameButton size="sm" variant="secondary" fullWidth={false} onClick={() => { playUiClick(); onOpenVault(); }}>Legend Vault</GameButton>
-          <GameButton size="sm" variant="secondary" fullWidth={false} onClick={() => { playUiClick(); onOpenRecords(); }}>Records</GameButton>
-        </div>
-      </Card>
-
-      <SquadStatsCard />
-
-      <LeagueLeadersCard />
-
-      <HallOfFameCard />
-
-      <TransferRoundUp />
-
-      <Card>
-        <Eyebrow>News</Eyebrow>
-        <ul className="mt-2 space-y-1.5 text-sm text-gray-300" data-testid="career-news">
-          {relevantNews(s).slice(0, 12).map((line, i) => (
-            <li key={i} className={i === 0 ? "text-white" : ""}>{line}</li>
-          ))}
-        </ul>
-      </Card>
-
       <div className="text-center">
-        <button type="button" onClick={() => { playWarning(); setConfirm(true); }} className="text-xs text-gray-500 underline-offset-2 hover:text-danger hover:underline">
+        <button type="button" onClick={() => { playWarning(); setConfirm(true); }} className="min-h-[40px] px-3 text-xs text-gray-500 underline-offset-2 hover:text-danger hover:underline">
           Start a new career
         </button>
       </div>
+      </>
+      ) : null}
 
-      <MobileModal open={confirm} onClose={() => setConfirm(false)} title="Start a new career?">
-        <p className="text-sm text-gray-300">
+      {view === "stats" ? (
+        <>
+          <SquadStatsCard />
+          <LeagueLeadersCard />
+        </>
+      ) : null}
+
+      {view === "records" ? (
+        <>
+          <Card className="text-center">
+            <Eyebrow>Legacy · every career</Eyebrow>
+            <p className="mt-1 text-sm text-gray-300">
+              <span className="font-display text-2xl font-bold tabular-nums text-accent-gold">{legacy.legacyPoints}</span> points to spend on legends
+            </p>
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              <GameButton size="sm" variant="secondary" onClick={() => { playUiClick(); onOpenVault(); }}>Legend Vault</GameButton>
+              <GameButton size="sm" variant="secondary" onClick={() => { playUiClick(); onOpenRecords(); }}>Records</GameButton>
+            </div>
+          </Card>
+          <HallOfFameCard />
+        </>
+      ) : null}
+
+      {view === "news" ? (
+        <>
+          <TransferRoundUp />
+          <Card>
+            <Eyebrow>News</Eyebrow>
+            <ul className="mt-2 divide-y divide-pitch-800 text-[13px] leading-snug text-gray-300" data-testid="career-news">
+              {relevantNews(s).slice(0, 12).map((line, i) => (
+                <li key={i} className={`py-1.5 ${i === 0 ? "text-white" : ""}`}>{line}</li>
+              ))}
+            </ul>
+          </Card>
+        </>
+      ) : null}
+
+      <ManagerSheet
+        open={confirm}
+        onClose={() => setConfirm(false)}
+        eyebrow="Your career"
+        title="Start a new career?"
+        footer={
+          <SheetButtons>
+            <GameButton variant="danger" onClick={() => { setConfirm(false); abandonCareer(); }}>End career</GameButton>
+            <GameButton variant="secondary" onClick={() => setConfirm(false)}>Keep playing</GameButton>
+          </SheetButtons>
+        }
+      >
+        <p className="text-center text-sm leading-relaxed text-gray-300">
           This career ends for good. You keep Legacy points, legends, trophies and records.
         </p>
-        <div className="mt-4 grid grid-cols-2 gap-2">
-          <GameButton variant="secondary" onClick={() => setConfirm(false)}>Keep playing</GameButton>
-          <GameButton variant="danger" onClick={() => { setConfirm(false); abandonCareer(); }}>End career</GameButton>
-        </div>
-      </MobileModal>
+      </ManagerSheet>
     </div>
   );
 }
