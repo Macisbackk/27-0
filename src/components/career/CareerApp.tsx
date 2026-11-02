@@ -16,7 +16,7 @@ import { SeasonReview } from "./SeasonReview";
 import { TableTab } from "./TableTab";
 import { TeamTab } from "./TeamTab";
 import { TransferWindow } from "./TransferWindow";
-import { WindowStatusLine, useDeadlineDriver } from "./TransferNews";
+import { useDeadlineDriver } from "./TransferNews";
 import { ClubBadge, ProgressBar, Stars, CAREER_PAGE_CLASS, CareerBackLink } from "./bits";
 import { CareerTutorial } from "./CareerTutorial";
 import { PitchMark } from "@/components/ui/PitchHero";
@@ -96,7 +96,7 @@ function SeasonStrip() {
           {!started ? "New season" : leagueDone ? (goal.onTrack ? "Target met" : "Missed") : goal.onTrack ? "On track" : `${gap} ${gap === 1 ? "place" : "places"} off`}
         </span>
       </div>
-      <WindowStatusLine className="mt-2 border-t border-white/10 pt-2" />
+      {/* The transfer window has its own card lower down the Match tab (v1.54: no duplicate pill). */}
     </section>
   );
 }

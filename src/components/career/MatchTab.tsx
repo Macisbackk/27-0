@@ -323,27 +323,8 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
 
   return (
     <div className="flex flex-col gap-4">
+      {/* Order (v1.54): last result → next match → game plan → stronger-team nudge → transfers. */}
       {last ? <ResultStrip state={s} fixture={last} flash={flash} /> : null}
-      {s.matchdayIndex === 0 ? <PreseasonResults /> : null}
-      <IncomingBidCard />
-      <TransferWindowCard onOpenMarket={onOpenMarket} />
-      {fixture && bestGain >= 0.3 ? (
-        <section aria-label="Stronger team available" className="flex items-center gap-3 rounded-card bg-pitch-900 p-3 ring-1 ring-theme-primary/40">
-          <p className="min-w-0 flex-1 text-[13px] text-gray-300">
-            Your best team is <span className="font-bold text-theme-primary">+{bestGain.toFixed(1)}</span> stronger.
-          </p>
-          <GameButton
-            size="sm"
-            fullWidth={false}
-            onClick={() => {
-              playAutofill();
-              autoPick();
-            }}
-          >
-            Pick best team
-          </GameButton>
-        </section>
-      ) : null}
       <Card className={big ? "border-accent-gold/60" : ""}>
         <div className="flex items-center justify-between gap-2">
           <Eyebrow>{md ? md.label : "Season complete"}</Eyebrow>
@@ -392,6 +373,23 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
         />
       ) : null}
       {fixture ? <p className="-mt-2 text-center text-xs text-gray-400">{TACTICS.find((t) => t.id === s.tactic)!.hint}</p> : null}
+      {fixture && bestGain >= 0.3 ? (
+        <section aria-label="Stronger team available" className="flex items-center gap-3 rounded-card bg-pitch-900 p-3 ring-1 ring-theme-primary/40">
+          <p className="min-w-0 flex-1 text-[13px] text-gray-300">
+            Your best team is <span className="font-bold text-theme-primary">+{bestGain.toFixed(1)}</span> stronger.
+          </p>
+          <GameButton
+            size="sm"
+            fullWidth={false}
+            onClick={() => {
+              playAutofill();
+              autoPick();
+            }}
+          >
+            Pick best team
+          </GameButton>
+        </section>
+      ) : null}
 
       <div className="mobile-action-bar sm:static sm:border-0 sm:bg-transparent sm:p-0" role="toolbar">
         <div className="mobile-action-bar__inner flex flex-col gap-2">
@@ -418,7 +416,9 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
           )}
         </div>
       </div>
-
+      <IncomingBidCard />
+      <TransferWindowCard onOpenMarket={onOpenMarket} />
+      {s.matchdayIndex === 0 ? <PreseasonResults /> : null}
     </div>
   );
 }
