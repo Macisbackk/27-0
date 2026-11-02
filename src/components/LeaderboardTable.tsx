@@ -475,7 +475,7 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
         <button
           type="button"
           onClick={() => setFiltersOpen(true)}
-          className="btn-press shrink-0 rounded-full border border-pitch-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-pitch-800 min-h-[36px]"
+          className="btn-press shrink-0 rounded-full border border-pitch-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-pitch-800 min-h-[44px]"
           aria-haspopup="dialog"
         >
           Filters

@@ -58,7 +58,7 @@ const HonourYearsCollapsibleChip = memo(function HonourYearsCollapsibleChip({
             : `${label} — ${years.length} awards`
         }
         onClick={toggle}
-        className="inline-flex max-w-full cursor-pointer border-0 bg-transparent p-0"
+        className="inline-flex min-h-[40px] max-w-full cursor-pointer items-center border-0 bg-transparent p-0"
       >
         <RLTag variant={variant} compact={compactMobile} className="gap-0.5">
           {label}{" "}

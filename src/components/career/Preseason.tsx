@@ -54,7 +54,7 @@ export function PreseasonCard() {
       <div className="mt-1 text-sm text-[color:var(--fl-muted)]">
         Up to {MAX_FRIENDLIES}. Each adds +{SHARPNESS_PER_FRIENDLY} rating for 3 rounds, plus cash.{" "}
         <details className="inline">
-          <summary className="inline-flex min-h-[40px] cursor-pointer items-center px-1 font-semibold text-gray-300 underline-offset-2 hover:underline">More</summary>
+          <summary className="inline-flex min-h-[40px] min-w-[44px] cursor-pointer items-center justify-center px-1 font-semibold text-gray-300 underline-offset-2 hover:underline">More</summary>
           <span className="mt-1 block">Home games pay gate money. Away games pay a fee. Big tests pay more.</span>
         </details>
       </div>
@@ -86,7 +86,7 @@ export function PreseasonCard() {
               setChanging(true);
             }}
             aria-expanded={false}
-            className="mt-2 text-sm font-semibold text-theme-primary underline-offset-2 hover:underline"
+            className="mt-1 inline-flex min-h-[40px] items-center text-sm font-semibold text-theme-primary underline-offset-2 hover:underline"
           >
             Change
           </button>

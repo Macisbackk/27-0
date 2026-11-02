@@ -248,7 +248,11 @@ async function inPageAudit({ mobile }) {
   if (de.scrollWidth > de.clientWidth + 1) out.push({ kind: "overflow", msg: `page scrolls sideways (${de.scrollWidth}px content in ${de.clientWidth}px)` });
 
   // An open modal: only its contents are expected to be reachable.
-  const modal = [...document.querySelectorAll("[role='dialog'], [role='alertdialog'], dialog[open]")].find((d) => isVis(d) && (d.getAttribute("aria-modal") === "true" || d.tagName === "DIALOG"));
+  // (Size only: a dialog still fading in counts.)
+  const modal = [...document.querySelectorAll("[role='dialog'], [role='alertdialog'], dialog[open]")].find((d) => {
+    const r = d.getBoundingClientRect();
+    return r.width > 0 && r.height > 0 && getComputedStyle(d).display !== "none" && (d.getAttribute("aria-modal") === "true" || d.tagName === "DIALOG");
+  });
   const scope = modal || document.body;
 
   const INTERACTIVE = "a[href], button, input:not([type='hidden']), select, textarea, [role='button'], [role='tab'], [role='switch'], [role='checkbox'], [role='radio'], [role='link'], [role='menuitem'], [role='option'], summary";
@@ -333,7 +337,8 @@ async function inPageAudit({ mobile }) {
       if (r.width >= 40 && r.height >= 40) continue;
       const cs = getComputedStyle(el);
       // Inline links inside running text are exempt (WCAG 2.5.8 inline exception).
-      if (el.tagName === "A" && cs.display === "inline" && el.parentElement && /\S/.test((el.parentElement.textContent || "").replace(el.textContent || "", ""))) continue;
+      // (Also club names you can tap inside a sentence, e.g. "Leeds want Smith and offer…".)
+      if (/^inline/.test(cs.display) && el.parentElement && /\S/.test((el.parentElement.textContent || "").replace(el.textContent || "", "")) && r.height < 30) continue;
       // A checkbox/radio inside a big enough label is fine.
       if (el.tagName === "INPUT" && /checkbox|radio|range/.test(el.type)) {
         const lab = el.closest("label") || (el.id && document.querySelector(`label[for='${el.id}']`));

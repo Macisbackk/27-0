@@ -608,7 +608,7 @@ function TierChip({
     <button
       type="button"
       onClick={onClick}
-      className="showcase-pill !min-h-[34px] !px-3 !text-xs"
+      className="showcase-pill !min-h-[40px] !px-3 !text-xs"
       aria-pressed={active}
     >
       {children}

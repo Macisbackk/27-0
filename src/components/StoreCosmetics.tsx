@@ -134,7 +134,7 @@ export function KitStore({ balance }: { balance: number }) {
                       playUiClick();
                       setKitDesign({ pattern: p.id });
                     }}
-                    className={`min-h-[40px] rounded-full px-3.5 text-sm font-semibold ${c.kit.pattern === p.id ? "bg-theme-primary text-[color:var(--theme-text-on-primary)]" : "bg-pitch-800 text-white"}`}
+                    className={`min-h-[40px] min-w-[44px] rounded-full px-3.5 text-sm font-semibold ${c.kit.pattern === p.id ? "bg-theme-primary text-[color:var(--theme-text-on-primary)]" : "bg-pitch-800 text-white"}`}
                   >
                     {p.label}
                   </button>

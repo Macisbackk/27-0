@@ -43,7 +43,7 @@ export function SiteFooter() {
         <p className="mt-3 flex items-center justify-center gap-3 text-[11px] font-medium tabular-nums tracking-wide text-pitch-500">
           <span>{GAME_VERSION}</span>
           <span aria-hidden>·</span>
-          <Link href="/privacy" className="inline-flex min-h-[24px] items-center hover:text-white">
+          <Link href="/privacy" className="inline-flex min-h-[40px] items-center px-1 hover:text-white">
             Privacy
           </Link>
         </p>
