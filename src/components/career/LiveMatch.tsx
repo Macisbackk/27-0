@@ -2,7 +2,7 @@
 
 import { useEffect, useReducer, useRef, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
-import { repairLineup, sheetFor, type CareerState, type Fixture } from "@/lib/career";
+import { repairTeam, sheetFor, type CareerState, type Fixture } from "@/lib/career";
 import {
   createLiveMatch,
   liveResult,
@@ -51,9 +51,9 @@ export function LiveMatch({
 
   if (!rngRef.current || !matchRef.current) {
     const rng = rngFor(state.seed, state.year, fixture.id, "live");
-    const lineup = repairLineup(state, state.lineup);
+    const team = repairTeam(state, state.lineup, state.bench ?? []);
     const sheet = (clubId: string) =>
-      clubId === state.userClubId ? { ...sheetFor(state, clubId), lineup } : sheetFor(state, clubId);
+      clubId === state.userClubId ? { ...sheetFor(state, clubId), ...team } : sheetFor(state, clubId);
     rngRef.current = rng;
     matchRef.current = createLiveMatch({
       home: sheet(fixture.home),

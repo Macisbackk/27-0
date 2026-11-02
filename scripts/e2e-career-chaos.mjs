@@ -107,18 +107,17 @@ try {
   await pageB.close();
   step("Second tab follows the first");
 
-  // 4) Championship career driven by "Sim to…" (the next decision) and Quick sim; no-game weeks play through.
+  // 4) Championship career driven by Quick sim (there is no "Sim to…" button); no-game weeks play through.
   await page.getByRole("tab", { name: "Club" }).click();
   await page.getByRole("button", { name: "Start a new career" }).click();
   await page.getByRole("button", { name: "End career" }).click();
   await startCareer(page, "championship", 21);
   let guard = 0;
-  while (guard++ < 80) {
+  while (guard++ < 200) {
     if (await page.getByText(/season review/i).first().isVisible().catch(() => false)) break;
-    const simTo = page.getByRole("button", { name: /^Sim to / }).first();
+    if (await page.getByRole("button", { name: /^Sim to / }).first().isVisible().catch(() => false)) errors.push("a Sim to… button is back on the Match tab");
     const next = page.getByRole("button", { name: /^(Quick sim|Continue|Shut the window|On to the play-offs|On to the semi-finals|On to the Million Pound Game|Watch the play-offs|On to the Grand Final|Watch the Grand Final)$/ }).first();
-    if (await simTo.isVisible().catch(() => false)) await simTo.click().catch(() => {});
-    else if (await next.isVisible().catch(() => false)) await next.click().catch(() => {});
+    if (await next.isVisible().catch(() => false)) await next.click().catch(() => {});
     if (await page.getByText("No game for you this week").isVisible().catch(() => false)) errors.push("a no-game week was shown (should play through)");
     await page.waitForTimeout(120);
   }

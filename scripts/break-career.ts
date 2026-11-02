@@ -36,7 +36,7 @@ import {
   buildWorld,
   SQUAD_MIN,
   SQUAD_MAX,
-  repairLineup,
+  withTeamFixed,
   tickDeadline,
   pauseDeadline,
   acceptOffer,
@@ -80,6 +80,10 @@ function invariants(s: CareerState, where: string) {
   const lineupMatters = !(s.phase === "departures" && me.squad.length < 13);
   if (lineupMatters && (s.lineup.length !== 13 || new Set(s.lineup).size !== 13 || !s.lineup.every((id) => me.squad.includes(id))))
     fail(`${where}: bad lineup (${s.lineup.length}, uniq ${new Set(s.lineup).size}, notInSquad ${s.lineup.filter((id) => !me.squad.includes(id)).length}, squad ${me.squad.length}, phase ${s.phase})`);
+  // Interchange: 4 unique squad players outside the XIII whenever the squad has 17.
+  const bench = s.bench ?? [];
+  if (lineupMatters && me.squad.length >= 17 && (bench.length !== 4 || new Set(bench).size !== 4 || !bench.every((id) => me.squad.includes(id) && !s.lineup.includes(id))))
+    fail(`${where}: bad bench (${bench.length}, uniq ${new Set(bench).size}, notInSquad ${bench.filter((id) => !me.squad.includes(id)).length}, inXiii ${bench.filter((id) => s.lineup.includes(id)).length}, phase ${s.phase})`);
   if (!Number.isFinite(s.budget)) fail(`${where}: budget ${s.budget}`);
   for (const id of me.squad) {
     const p = s.players[id];
@@ -160,7 +164,7 @@ function actionsFor(s: CareerState, rng: () => number, legends: string[]): Array
       out.push(["pause", () => pauseDeadline(s, rng() < 0.5)]);
       const offers = liveOffers(s);
       if (offers.length) {
-        out.push(["accept-offer", () => { const n = acceptOffer(s, pick(offers).id).state; return { ...n, lineup: repairLineup(n, n.lineup) }; }]);
+        out.push(["accept-offer", () => { return withTeamFixed(acceptOffer(s, pick(offers).id).state); }]);
         out.push(["reject-offer", () => rejectOffer(s, pick(offers).id)]);
       }
       out.push(["accept-stale-offer", () => acceptOffer(s, "nope").state]);
@@ -170,7 +174,7 @@ function actionsFor(s: CareerState, rng: () => number, legends: string[]): Array
     out.push(["sim-big", () => simToNextBigGame(s)]);
     if (rng() < 0.05) out.push(["sim-rest", () => simRestOfSeason(s)]);
     if (s.incomingBid) {
-      out.push(["accept-bid", () => { const n = acceptBid(s); return { ...n, lineup: repairLineup(n, n.lineup) }; }]);
+      out.push(["accept-bid", () => { return withTeamFixed(acceptBid(s)); }]);
       out.push(["reject-bid", () => rejectBid(s)]);
     }
     if (isWindowOpen(s)) {
@@ -459,7 +463,7 @@ notes.push(`A) random walks: ${steps} actions in ${((Date.now() - t0) / 1000).to
         const r = acceptOffer(s, o.id);
         if (!r.error) {
           accepted++;
-          s = { ...r.state, lineup: repairLineup(r.state, r.state.lineup) };
+          s = withTeamFixed(r.state);
           if (!s.clubs[o.clubId]!.squad.includes(o.playerId)) fail("B10: accepted player didn't join the bidder");
           if (s.clubs[o.clubId]!.squad.length !== buyerBefore + 1) fail("B10: bidder squad size wrong");
           if (s.budget !== budget + o.fee + wagesSaved) fail("B10: fee (plus wages saved) not paid");

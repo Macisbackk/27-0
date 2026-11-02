@@ -159,6 +159,34 @@ await shot(phone, "45-how-to-play", "/", async (page) => {
   await shot(narrow, "46-320-home", "/", null, true);
   await shot(narrow, "47-320-store", "/store");
   await shot(narrow, "48-320-manager", "/manager");
+  // Team tab at 320px: the XIII, then the Interchange (shirts 14–17) under it.
+  await shot(narrow, "48b-320-manager-team-bench", "/manager", async (page) => {
+    await page.getByRole("list", { name: "Clubs" }).getByRole("button").first().click({ timeout: 5000 });
+    await page.getByRole("button", { name: /Take charge of/ }).click({ timeout: 5000 });
+    await page.getByRole("dialog", { name: "Manager Mode walkthrough" }).getByRole("button", { name: "Skip" }).click({ timeout: 8000 }).catch(() => {});
+    await page.waitForTimeout(600);
+    await page.getByRole("tab", { name: "Team" }).click({ timeout: 5000 });
+    await page.getByRole("region", { name: "Interchange" }).scrollIntoViewIfNeeded({ timeout: 5000 });
+    await page.evaluate(() => window.scrollBy(0, 120));
+    await page.waitForTimeout(400);
+  });
+  // The last result, big at the top of the Match tab, after a Quick sim of Round 1.
+  await shot(narrow, "48d-320-manager-last-result", "/manager", async (page) => {
+    await page.getByRole("tab", { name: "Match" }).click({ timeout: 5000 }).catch(() => {});
+    const startSeason = page.getByRole("button", { name: /^(Skip pre-season|Start the season)/ }).first();
+    if (await startSeason.isVisible().catch(() => false)) await startSeason.click().catch(() => {});
+    await page.waitForTimeout(800);
+    await page.getByRole("button", { name: "Quick sim" }).click({ timeout: 8000 });
+    await page.getByRole("region", { name: "Last result" }).waitFor({ timeout: 8000 });
+    await page.getByRole("region", { name: "Last result" }).evaluate((el) => el.scrollIntoView({ block: "start" }));
+    await page.evaluate(() => window.scrollBy(0, -70));
+    await page.waitForTimeout(500);
+  });
+  await shot(narrow, "48c-320-manager-bench-picker", "/manager", async (page) => {
+    await page.getByRole("tab", { name: "Team" }).click({ timeout: 5000 });
+    await page.getByRole("button", { name: /^Shirt 14,/ }).click({ timeout: 5000 });
+    await page.waitForTimeout(600);
+  });
   await shot(narrow, "49-320-settings", "/settings", null, true);
   await narrow.close();
 }

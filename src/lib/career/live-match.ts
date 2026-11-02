@@ -9,6 +9,7 @@
  * Deterministic: the same rng and the same calls always give the same match.
  */
 import { expectedTries, pickMotm, pickScorer, sheetStrength, type TeamSheet } from "./match";
+import { BENCH_PAR, LINEUP_SLOTS, benchRating, effectiveRating, lineupRating } from "./players";
 import { randInt, shuffle, type Rng } from "./rng";
 import type { CareerPlayer, FixtureResult } from "./types";
 
@@ -40,7 +41,18 @@ export type LiveCallId =
   | "team-talk"
   | "interchange"
   | "late"
-  | "golden-point";
+  | "golden-point"
+  | "short-side"
+  | "high-shot"
+  | "crowd"
+  | "six-again"
+  | "weather"
+  | "defence-line"
+  | "late-penalty"
+  | "fatigue"
+  | "halfback-injury"
+  | "red-us"
+  | "red-them";
 
 export interface LiveCall {
   id: LiveCallId;
@@ -99,7 +111,12 @@ export interface LiveMatch {
   /** Last opponent try (minute + scorer + points), for the captain's challenge. */
   lastOppTry: { minute: number; scorer: string; points: number } | null;
   /** Random incidents already used (each at most once a match). */
-  incidents: { bin: boolean; injury: boolean };
+  incidents: { bin: boolean; injury: boolean; red?: boolean };
+  /** Red card: the side down to 12 for the rest of the match, and who went. */
+  redSide?: Side | null;
+  sentOff?: { home: string[]; away: string[] };
+  /** The user's player who went off injured (for the like-for-like change). */
+  injured?: string;
   /** -1 (them) … 1 (you), for the momentum bar. */
   momentum: number;
   goldenPoint: boolean;
@@ -115,6 +132,8 @@ export interface LiveMatch {
     awayRating: number;
     userAttackRating: number;
     oppDefenceRating: number;
+    /** How much the user's bench lifts the side when it comes on (1 = a typical bench, 0 = nobody). */
+    benchLift: number;
   };
 }
 
@@ -174,18 +193,34 @@ function scoreTry(m: LiveMatch, side: Side, rng: Rng, players: Record<string, Ca
 /* ------------------------------------------------------------------- set-up */
 
 /** First-half moments: two of these per match, in a random order and at random minutes. */
-const FIRST_HALF_POOL: LiveCallId[] = ["kick-off", "penalty", "forty-twenty", "penalty"];
+const FIRST_HALF_POOL: LiveCallId[] = ["kick-off", "penalty", "forty-twenty", "penalty", "short-side", "high-shot", "crowd"];
+/** Second-half moments: one of these in 40% of matches (as many calls as before; fresh legs most often). */
+const SECOND_HALF_POOL: LiveCallId[] = [
+  "interchange",
+  "interchange",
+  "interchange",
+  "six-again",
+  "weather",
+  "defence-line",
+  "late-penalty",
+  "fatigue",
+  "halfback-injury",
+];
 
 function planSchedule(rng: Rng): ScheduledCall[] {
   const picks = [...new Set(shuffle(rng, FIRST_HALF_POOL))].slice(0, 2);
   const schedule: ScheduledCall[] = [];
   for (const id of picks) {
     if (id === "kick-off") schedule.push({ id, minute: 0 });
+    else if (id === "crowd") schedule.push({ id, minute: 3 });
     else if (schedule.some((s) => s.minute >= 10)) schedule.push({ id, minute: randInt(rng, 24, 34) });
     else schedule.push({ id, minute: randInt(rng, 10, 22) });
   }
   schedule.push({ id: "team-talk", minute: 40 });
-  if (rng() < 0.4) schedule.push({ id: "interchange", minute: randInt(rng, 48, 56) });
+  if (rng() < 0.4) {
+    const id = SECOND_HALF_POOL[Math.floor(rng() * SECOND_HALF_POOL.length)]!;
+    schedule.push({ id, minute: id === "late-penalty" ? randInt(rng, 71, 75) : randInt(rng, 48, 56) });
+  }
   schedule.push({ id: "late", minute: randInt(rng, 62, 70) });
   return schedule.sort((a, b) => a.minute - b.minute);
 }
@@ -207,9 +242,11 @@ export function createLiveMatch(params: {
   const opp = params.userSide === "home" ? a : h;
   // The penalty call is an extra shot at goal for the user, so their open-play penalty rate drops to match.
   const userPenCut = 0.6;
+  const userSheetIn = params.userSide === "home" ? home : away;
   return {
-    home,
-    away,
+    // Own copies: an injury change swaps a bench man into the XIII for the rest of the match.
+    home: { ...home, lineup: [...home.lineup], bench: home.bench ? [...home.bench] : undefined },
+    away: { ...away, lineup: [...away.lineup], bench: away.bench ? [...away.bench] : undefined },
     homeName: params.homeName,
     awayName: params.awayName,
     userSide: params.userSide,
@@ -238,7 +275,9 @@ export function createLiveMatch(params: {
     challengeUsed: false,
     challengeOffers: 0,
     lastOppTry: null,
-    incidents: { bin: false, injury: false },
+    incidents: { bin: false, injury: false, red: false },
+    redSide: null,
+    sentOff: { home: [], away: [] },
     momentum: 0,
     goldenPoint: false,
     finished: false,
@@ -253,8 +292,47 @@ export function createLiveMatch(params: {
       awayRating: a.rating,
       userAttackRating: user.attack,
       oppDefenceRating: opp.defence,
+      benchLift: benchLift(userSheetIn, players),
     },
   };
+}
+
+/** 1 for a typical bench, more for a strong one, less for a weak or short one, 0 for none. */
+export function benchLift(sheet: TeamSheet, players: Record<string, CareerPlayer>): number {
+  if (!sheet.bench) return 1;
+  if (!sheet.bench.some((id) => players[id])) return 0;
+  const diff = benchRating(sheet.bench, players) - lineupRating(sheet.lineup, players) + BENCH_PAR;
+  return Math.max(0.3, Math.min(1.5, 1 + diff / 8));
+}
+
+/** "Smith", "Smith and Jones". */
+function names(players: Record<string, CareerPlayer>, ids: string[]): string {
+  const list = ids.map((id) => name(players, id));
+  return list.length <= 1 ? (list[0] ?? "") : `${list.slice(0, -1).join(", ")} and ${list[list.length - 1]}`;
+}
+
+/** The user's bench forwards, best first (anyone on the bench if there are fewer than two). */
+function benchForwards(m: LiveMatch, players: Record<string, CareerPlayer>, count: number): string[] {
+  const bench = (userSheet(m).bench ?? []).filter((id) => players[id]);
+  const fwd = bench.filter((id) => ["PR", "SR", "LF", "HK"].includes(players[id]!.pos));
+  const rest = bench.filter((id) => !fwd.includes(id));
+  return [...fwd, ...rest].slice(0, count);
+}
+
+/** Bring a bench man on for the injured player: the best fit for his shirt. Returns the sub's id. */
+function injuryChange(m: LiveMatch, players: Record<string, CareerPlayer>, prefer?: (p: CareerPlayer) => boolean): { sub: string; gap: number } | null {
+  const sheet = userSheet(m);
+  const hurt = m.injured;
+  const slotIndex = hurt ? sheet.lineup.indexOf(hurt) : -1;
+  const bench = (sheet.bench ?? []).filter((id) => players[id]);
+  if (slotIndex < 0 || bench.length === 0) return null;
+  const slot = LINEUP_SLOTS[slotIndex]!;
+  const pool = prefer && bench.some((id) => prefer(players[id]!)) ? bench.filter((id) => prefer(players[id]!)) : bench;
+  const sub = [...pool].sort((a, b) => effectiveRating(players[b]!, slot) - effectiveRating(players[a]!, slot))[0]!;
+  const gap = Math.max(0, effectiveRating(players[hurt!]!, slot) - effectiveRating(players[sub]!, slot));
+  sheet.lineup = sheet.lineup.map((id) => (id === hurt ? sub : id));
+  sheet.bench = (sheet.bench ?? []).filter((id) => id !== sub);
+  return { sub, gap };
 }
 
 /* ----------------------------------------------------------------- the calls */
@@ -354,10 +432,130 @@ function buildCall(m: LiveMatch, id: LiveCallId, players: Record<string, CareerP
       return {
         id,
         title: "Fresh legs",
-        prompt: "Your middles are blowing. When do the bench forwards go on?",
+        prompt: (() => {
+          const fresh = benchForwards(m, players, 2);
+          return fresh.length
+            ? `Your middles are blowing. ${names(players, fresh)} ${fresh.length > 1 ? "are" : "is"} ready. When?`
+            : "Your middles are blowing. When do the bench forwards go on?";
+        })(),
         options: [
           { id: "now", label: "Now", hint: "A lift for the next 15 minutes." },
           { id: "later", label: "Save them for the last 15", hint: "Finish strong when it matters." },
+        ],
+      };
+    case "short-side":
+      return {
+        id,
+        title: "Short side on",
+        prompt: "Play-the-ball ten metres in from touch. Their winger's drifted in.",
+        options: [
+          { id: "swing", label: "Swing it wide", hint: "The long way round. Keeps the pressure on." },
+          { id: "short-raid", label: "Raid the short side", hint: "Two on one if it works. Lose it and they run it back." },
+        ],
+      };
+    case "high-shot": {
+      const star = [...userSheet(m).lineup].filter((x) => players[x]).sort((a, b) => players[b]!.rating - players[a]!.rating)[0];
+      return {
+        id,
+        title: "High shot",
+        prompt: `High shot on ${star ? name(players, star) : "your best player"}. Penalty to you, 30 out.`,
+        options: [
+          { id: "two", label: "Take the two", hint: "Points on the board while he gets his breath." },
+          { id: "touch", label: "Kick to touch", hint: "Camp on their line and make them pay." },
+        ],
+      };
+    }
+    case "crowd":
+      return {
+        id,
+        title: "Big crowd in",
+        prompt: "The ground's full and the noise is up. How do you use it?",
+        options: [
+          { id: "composed", label: "Stay composed", hint: "Stick to the plan. A bit tighter in defence." },
+          { id: "feed", label: "Feed off it", hint: "Play with fire. Sharper attack, more penalties given away." },
+        ],
+      };
+    case "six-again":
+      return {
+        id,
+        title: "Six again",
+        prompt: "Ref calls six again. They keep slowing the ruck.",
+        options: [
+          { id: "middle", label: "Run hard at the middle", hint: "Keep the pressure on their line." },
+          { id: "spread", label: "Spread it early", hint: "Catch them short at the edges. Could go to waste." },
+        ],
+      };
+    case "weather":
+      return {
+        id,
+        title: "Rain's in",
+        prompt: "The rain's come in. The ball's like soap.",
+        options: [
+          { id: "tighten", label: "Tighten up", hint: "Fewer passes, fewer errors. Fewer points both ways." },
+          { id: "throw", label: "Keep throwing it about", hint: "Back your hands. More handling errors at the back." },
+        ],
+      };
+    case "defence-line":
+      return {
+        id,
+        title: "They're going wide",
+        prompt: "They're shifting it wide every set. How does your line defend?",
+        options: [
+          { id: "hold-line", label: "Hold the line", hint: "Slide across. Steady." },
+          { id: "rush", label: "Rush up", hint: "Shut them down at source. Gets beaten if they're quick." },
+        ],
+      };
+    case "late-penalty": {
+      const state = diff > 0 ? `${diff} up` : diff < 0 ? `${-diff} down` : "all square";
+      return {
+        id,
+        title: "Late penalty",
+        prompt: `Penalty to you, ${clock}. You're ${state}.`,
+        options: [
+          { id: "two", label: "Take the two", hint: "Safe points." },
+          { id: "touch", label: "Kick to touch", hint: "Five tackles on their line, and time off the clock." },
+          { id: "tap", label: "Tap and go", hint: "Try or bust." },
+        ],
+      };
+    }
+    case "fatigue":
+      return {
+        id,
+        title: "They're blowing",
+        prompt: "Their middles are out on their feet.",
+        options: [
+          { id: "steady", label: "Keep it steady", hint: "Don't give them a breather. Tight defence." },
+          { id: "tempo", label: "Up the tempo", hint: "Quick play-the-balls. Gaps open both ways." },
+        ],
+      };
+    case "halfback-injury":
+      return {
+        id,
+        title: "Scrum-half down",
+        prompt: `${detail || "Your scrum-half is down."} He can't carry on.`,
+        options: [
+          { id: "half-bench", label: "Bench man to half", hint: "Best fit off the bench. Small drop in quality." },
+          { id: "half-hooker", label: "Hooker to half", hint: "A bench forward on. Tighter, less creative." },
+        ],
+      };
+    case "red-us":
+      return {
+        id,
+        title: "Red card",
+        prompt: `${detail} Twelve men for the rest.`,
+        options: [
+          { id: "red-hold", label: "Hold the shape", hint: "Defend first. Kick long." },
+          { id: "red-attack", label: "Keep attacking", hint: "Don't sit back. Risky." },
+        ],
+      };
+    case "red-them":
+      return {
+        id,
+        title: "They're down to 12",
+        prompt: `${detail} Twelve men for the rest.`,
+        options: [
+          { id: "red-patient", label: "Stay patient", hint: "Wear them down. Tight at the back." },
+          { id: "red-wide", label: "Go wide", hint: "Find the extra man. More tries, more risk." },
         ],
       };
     case "golden-point":
@@ -422,6 +620,21 @@ function buildCall(m: LiveMatch, id: LiveCallId, players: Record<string, CareerP
 function openScheduledCall(m: LiveMatch, players: Record<string, CareerPlayer>): boolean {
   for (const s of m.schedule) {
     if (s.minute !== m.minute || m.callsDone.includes(s.id)) continue;
+    if (s.id === "halfback-injury") {
+      // One injury a match: if someone's already gone off, this moment doesn't happen.
+      const sheet = userSheet(m);
+      const half = sheet.lineup[6] && players[sheet.lineup[6]] ? sheet.lineup[6] : sheet.lineup.find((x) => players[x]);
+      if (m.incidents.injury || !half) {
+        m.callsDone.push(s.id);
+        continue;
+      }
+      m.incidents.injury = true;
+      m.injured = half;
+      const text = `${name(players, half)} goes down injured.`;
+      m.events.push({ minute: m.minute, side: m.userSide, kind: "info", text });
+      m.pending = buildCall(m, s.id, players, text);
+      return true;
+    }
     m.pending = buildCall(m, s.id, players);
     return true;
   }
@@ -569,19 +782,31 @@ export function resolveCall(m: LiveMatch, optionId: string, rng: Rng, players: R
       say("Best form of defence. Keep the ball and attack.");
       break;
     /* injury */
-    case "like-for-like":
-      m.userAttack *= 0.97;
-      say("Like-for-like change off the bench.");
+    case "like-for-like": {
+      // The drop depends on how close the bench man is to the player he replaces.
+      const change = injuryChange(m, players);
+      if (change) {
+        m.userAttack *= 1 - Math.min(0.08, 0.005 + change.gap * 0.006);
+        say(`${name(players, change.sub)} on for ${name(players, m.injured ?? "")}.`);
+      } else {
+        m.userAttack *= 0.94;
+        say("Nobody left on the bench. Someone fills in.");
+      }
       break;
-    case "reshuffle":
+    }
+    case "reshuffle": {
+      const change = injuryChange(m, players);
       m.userDefence *= 1.07;
-      say("Backs reshuffled. The attack stays sharp.");
+      say(change ? `Backs reshuffled, ${name(players, change.sub)} on. The attack stays sharp.` : "Backs reshuffled. The attack stays sharp.");
       break;
-    case "forward":
+    }
+    case "forward": {
+      const change = injuryChange(m, players, (p) => ["PR", "SR", "LF", "HK"].includes(p.pos));
       m.userAttack *= 0.93;
       m.userDefence *= 0.94;
-      say("Extra forward on. Tighter, blunter.");
+      say(change ? `Extra forward on: ${name(players, change.sub)}. Tighter, blunter.` : "Extra forward on. Tighter, blunter.");
       break;
+    }
     /* half-time */
     case "calm":
       m.userDefence *= 0.92;
@@ -608,19 +833,24 @@ export function resolveCall(m: LiveMatch, optionId: string, rng: Rng, players: R
       break;
     /* interchange */
     case "now":
-      m.boostFrom = m.minute;
-      m.boostUntil = m.minute + 15;
-      m.boostAttack = 1.15;
-      m.boostDefence = 0.9;
-      say("Bench forwards on. Fresh legs through the middle.");
+    case "later": {
+      // Fresher legs, scaled by how good the bench is.
+      const lift = m.base.benchLift;
+      const fresh = benchForwards(m, players, 2);
+      if (lift <= 0 || (userSheet(m).bench && fresh.length === 0)) {
+        say("No fresh legs on the bench.");
+        break;
+      }
+      const now = option.id === "now";
+      m.boostFrom = now ? m.minute : 65;
+      m.boostUntil = now ? m.minute + 15 : 80;
+      m.boostAttack = 1 + (now ? 0.15 : 0.18) * lift;
+      m.boostDefence = 1 - (now ? 0.1 : 0.12) * lift;
+      const who = fresh.length ? names(players, fresh) : "";
+      if (now) say(who ? `Bench forwards on: ${who}.` : "Bench forwards on. Fresh legs through the middle.");
+      else say(who ? `${who} held back for the final 15.` : "Bench held back for the final 15.");
       break;
-    case "later":
-      m.boostFrom = 65;
-      m.boostUntil = 80;
-      m.boostAttack = 1.18;
-      m.boostDefence = 0.88;
-      say("Bench held back for the final 15.");
-      break;
+    }
     /* late */
     case "shut":
       m.userAttack *= 0.6;
@@ -675,6 +905,125 @@ export function resolveCall(m: LiveMatch, optionId: string, rng: Rng, players: R
       m.userDefence *= 1.4;
       say("Throw everything at it.");
       break;
+    /* short side */
+    case "swing":
+      m.pressureUntil = m.minute + 1;
+      say("Swung wide. They scramble, but hold.");
+      break;
+    case "short-raid":
+      if (rng() < Math.max(0.15, Math.min(0.45, 0.3 + edge * 0.02))) {
+        say("Short-side raid — two on one and over they go!");
+        scoreTry(m, side, rng, players);
+        m.callsWon++;
+      } else {
+        say("Short-side raid, bundled into touch. Their ball.", "miss");
+        m.underPressureUntil = m.minute + 2;
+      }
+      break;
+    /* crowd */
+    case "composed":
+      m.userDefence *= 0.97;
+      m.userAttack *= 0.97;
+      say("Heads down. Stick to the plan.");
+      break;
+    case "feed":
+      m.userAttack *= 1.06;
+      m.oppPenalties *= 1.15;
+      say("They feed off the noise. Flying into everything.");
+      nudgeMomentum(m, side, 0.15);
+      break;
+    /* six again */
+    case "middle":
+      m.pressureUntil = m.minute + 4;
+      say("Straight through the middle. They're going backwards.");
+      break;
+    case "spread":
+      if (rng() < Math.max(0.15, Math.min(0.4, 0.26 + edge * 0.02))) {
+        say("Spread early — caught them short on the edge!");
+        scoreTry(m, side, rng, players);
+        m.callsWon++;
+      } else {
+        say("Spread early, forward pass. Chance gone.", "miss");
+      }
+      break;
+    /* weather */
+    case "tighten":
+      m.userAttack *= 0.92;
+      m.userDefence *= 0.9;
+      say("Tight and ugly. One-out carries, kick long.");
+      break;
+    case "throw":
+      m.userAttack *= 1.04;
+      m.userDefence *= 1.1;
+      say("Still throwing it about in the wet.");
+      break;
+    /* defence line */
+    case "hold-line":
+      m.userDefence *= 0.98;
+      say("Slide and hold. Nothing on the edges.");
+      break;
+    case "rush":
+      if (rng() < 0.5) {
+        m.userDefence *= 0.85;
+        say("Rush defence — shut them down behind the line.");
+        nudgeMomentum(m, side, 0.2);
+        m.callsWon++;
+      } else {
+        m.userDefence *= 1.1;
+        m.underPressureUntil = m.minute + 3;
+        say("Rush defence, and they step straight through it.", "miss");
+      }
+      break;
+    /* fatigue */
+    case "steady":
+      m.userDefence *= 0.97;
+      m.userAttack *= 0.97;
+      say("No breather. Steady, tight sets.");
+      break;
+    case "tempo":
+      m.userAttack *= 1.08;
+      m.userDefence *= 1.04;
+      say("Up the tempo. Quick play-the-balls.");
+      break;
+    /* scrum-half injury (the bench covers) */
+    case "half-bench": {
+      const change = injuryChange(m, players, (p) => ["SH", "SO", "HK", "FB"].includes(p.pos));
+      if (change) {
+        m.userAttack *= 1 - Math.min(0.08, 0.005 + change.gap * 0.006);
+        say(`${name(players, change.sub)} on at half.`);
+      } else {
+        m.userAttack *= 0.94;
+        say("Nobody left on the bench. Someone fills in at half.");
+      }
+      break;
+    }
+    case "half-hooker": {
+      const change = injuryChange(m, players, (p) => ["PR", "SR", "LF", "HK"].includes(p.pos));
+      m.userAttack *= 0.94;
+      m.userDefence *= 0.97;
+      say(change ? `Hooker to half, ${name(players, change.sub)} on.` : "Hooker to half.");
+      break;
+    }
+    /* red cards */
+    case "red-hold":
+      m.userAttack *= 0.95;
+      m.userDefence *= 0.92;
+      say("Hold the shape. Kick long, defend.");
+      break;
+    case "red-attack":
+      m.userAttack *= 1.05;
+      m.userDefence *= 1.06;
+      say("Twelve men, still attacking.");
+      break;
+    case "red-patient":
+      m.userDefence *= 0.97;
+      say("Patience. Make the extra man tell.");
+      break;
+    case "red-wide":
+      m.userAttack *= 1.1;
+      m.userDefence *= 1.03;
+      say("Go wide and find the extra man.");
+      break;
     /* golden point */
     case "gp-drop":
     case "gp-patient":
@@ -708,9 +1057,26 @@ function maybeIncident(m: LiveMatch, rng: Rng, players: Record<string, CareerPla
   if (!m.incidents.injury && rng() < 0.3 / 66) {
     m.incidents.injury = true;
     const hurt = randomPlayer(rng, userSheet(m), players);
+    m.injured = hurt || undefined;
     const who = hurt ? name(players, hurt) : "One of your players";
     m.events.push({ minute: m.minute, side: m.userSide, kind: "info", text: `${who} goes down injured.` });
     m.pending = buildCall(m, "injury", players, `${who} goes down injured.`);
+    return true;
+  }
+  // Red card (about one team in twenty, as in the instant sim): 12 men for the rest, banned next game.
+  if (!m.incidents.red && !m.binSide && rng() < 0.1 / 66) {
+    m.incidents.red = true;
+    const side: Side = rng() < 0.5 ? m.userSide : other(m.userSide);
+    const sheet = side === "home" ? m.home : m.away;
+    const offender = randomPlayer(rng, sheet, players);
+    if (!offender) return false;
+    sheet.lineup = sheet.lineup.map((x) => (x === offender ? "" : x));
+    m.redSide = side;
+    (m.sentOff ??= { home: [], away: [] })[side].push(offender);
+    const text = `Red card! ${name(players, offender)} is sent off.`;
+    m.events.push({ minute: m.minute, side, kind: "card", text });
+    nudgeMomentum(m, side, -0.3);
+    m.pending = buildCall(m, userIs(m, side) ? "red-us" : "red-them", players, text.replace("Red card! ", ""));
     return true;
   }
   return false;
@@ -735,6 +1101,8 @@ export function stepMinute(m: LiveMatch, rng: Rng, players: Record<string, Caree
     if (!user && m.minute <= m.underPressureUntil) tryRate *= 2.2;
     // A side down to 12 concedes more and creates less.
     if (binned) tryRate *= m.binSide === side ? 0.7 : 1.6;
+    // A red card: down to 12 for good (milder than a sin bin, it lasts longer).
+    if (m.redSide) tryRate *= m.redSide === side ? 0.82 : 1.25;
     if (rng() < tryRate) scoreTry(m, side, rng, players);
 
     let penRate = (side === "home" ? m.base.homePens : m.base.awayPens) / MINUTES;
@@ -843,6 +1211,8 @@ export function liveResult(m: LiveMatch, rng: Rng, players: Record<string, Caree
     awayTries: [...m.awayTries],
     goldenPoint: m.goldenPoint || undefined,
     motm,
+    homeSentOff: m.sentOff?.home.length ? [...m.sentOff.home] : undefined,
+    awaySentOff: m.sentOff?.away.length ? [...m.sentOff.away] : undefined,
   };
 }
 
@@ -859,4 +1229,20 @@ export const ALL_CALL_IDS: LiveCallId[] = [
   "interchange",
   "late",
   "golden-point",
+  "short-side",
+  "high-shot",
+  "crowd",
+  "six-again",
+  "weather",
+  "defence-line",
+  "late-penalty",
+  "fatigue",
+  "halfback-injury",
+  "red-us",
+  "red-them",
 ];
+
+/** For tests and previews: the call a moment would put to the manager right now. */
+export function previewCall(m: LiveMatch, id: LiveCallId, players: Record<string, CareerPlayer>): LiveCall {
+  return buildCall(m, id, players, "Something happened.");
+}

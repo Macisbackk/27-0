@@ -65,7 +65,7 @@ function build(): Record<string, string> {
     console.log(`${file}: ${(before / 1024).toFixed(0)} KB → ${(after / 1024).toFixed(0)} KB`);
   }
   // Manager Mode only reads these fields from the raw 2026 squads (src/lib/career/world.ts SquadRow).
-  const CAREER_FIELDS = ["id", "name", "club", "position", "peakRating", "birthYear", "nationality", "availableInGame"];
+  const CAREER_FIELDS = ["id", "name", "club", "position", "positions", "peakRating", "birthYear", "nationality", "availableInGame"];
   const current = JSON.parse(readFileSync(join(ROOT, "data", "current-squads.json"), "utf8")) as Raw[];
   const career = current.map((row) => {
     const pick: Raw = {};

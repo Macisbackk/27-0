@@ -8,7 +8,6 @@ import {
   triggerCareerStartedAchievements,
 } from "../achievements/achievementTriggers";
 import { bankSeason, emptyLegacy, unlockLegend as unlockLegendPure, type RecordBreaks } from "./legacy";
-import { autoPickLineup } from "./players";
 import {
   beginOffseason,
   buildMarket,
@@ -19,7 +18,16 @@ import {
   type MarketListing,
   type TransferError,
 } from "./offseason";
-import { playMatchday, repairLineup, simRestOfSeason, simToNextBigGame, squadOf, type PlayedResult } from "./season";
+import {
+  autoPickTeam,
+  migrateCareer,
+  placeInTeam,
+  playMatchday,
+  simRestOfSeason,
+  simToNextBigGame,
+  withTeamFixed,
+  type PlayedResult,
+} from "./season";
 import {
   acceptBid as acceptBidPure,
   acceptOffer as acceptOfferPure,
@@ -70,6 +78,8 @@ interface CareerContextValue {
   playLive: (played: PlayedResult) => void;
   setTactic: (t: Tactic) => void;
   setLineupSlot: (slot: number, playerId: string) => void;
+  /** Put a player on the interchange bench (spot 0–3); swaps if he's already in the 17. */
+  setBenchSlot: (spot: number, playerId: string) => void;
   autoPick: () => void;
   goToOffseason: () => void;
   buy: (listing: MarketListing) => TransferError | undefined;
@@ -181,7 +191,7 @@ export function CareerProvider({ children }: { children: ReactNode }) {
 
   // Load + cloud sync.
   useEffect(() => {
-    const local = loadLocalCareer();
+    const local = migrateCareer(loadLocalCareer());
     const localLegacy = loadLocalLegacy();
     setState(local);
     setLegacy(localLegacy);
@@ -193,6 +203,7 @@ export function CareerProvider({ children }: { children: ReactNode }) {
       if (!isLoggedIn()) return;
       const result = await syncCareerFromCloud(stateRef.current, legacyRef.current);
       if (result.changed) {
+        result.state = migrateCareer(result.state);
         setState(result.state);
         setLegacy(result.legacy);
         saveLocalCareer(result.state);
@@ -217,7 +228,7 @@ export function CareerProvider({ children }: { children: ReactNode }) {
     // Another tab saved: adopt it so two open tabs never overwrite each other's progress.
     const onStorage = (e: StorageEvent) => {
       if (e.key === SAVE_KEY) {
-        const next = loadLocalCareer();
+        const next = migrateCareer(loadLocalCareer());
         setState(next);
         stateRef.current = next;
       } else if (e.key === LEGACY_KEY) {
@@ -292,7 +303,7 @@ export function CareerProvider({ children }: { children: ReactNode }) {
       const s = stateRef.current;
       if (!s) return "gone";
       const r = acceptOfferPure(s, offerId);
-      if (!r.error) commit({ ...r.state, lineup: repairLineup(r.state, r.state.lineup) });
+      if (!r.error) commit(withTeamFixed(r.state));
       return r.error;
     },
     rejectOffer: (offerId) => {
@@ -338,15 +349,16 @@ export function CareerProvider({ children }: { children: ReactNode }) {
     setLineupSlot: (slot, playerId) => {
       const s = stateRef.current;
       if (!s) return;
-      const lineup = [...s.lineup];
-      const existing = lineup.indexOf(playerId);
-      if (existing >= 0) lineup[existing] = lineup[slot]!; // swap
-      lineup[slot] = playerId;
-      commit({ ...s, lineup: repairLineup(s, lineup), updatedAt: Date.now() });
+      commit({ ...s, ...placeInTeam(s, "xiii", slot, playerId), updatedAt: Date.now() });
+    },
+    setBenchSlot: (spot, playerId) => {
+      const s = stateRef.current;
+      if (!s) return;
+      commit({ ...s, ...placeInTeam(s, "bench", spot, playerId), updatedAt: Date.now() });
     },
     autoPick: () => {
       const s = stateRef.current;
-      if (s) commit({ ...s, lineup: autoPickLineup(squadOf(s, s.userClubId)), updatedAt: Date.now() });
+      if (s) commit({ ...s, ...autoPickTeam(s), updatedAt: Date.now() });
     },
     goToOffseason: () => {
       const s = stateRef.current;
@@ -393,7 +405,7 @@ export function CareerProvider({ children }: { children: ReactNode }) {
       const s = stateRef.current;
       if (!s) return;
       const next = acceptBidPure(s);
-      commit({ ...next, lineup: repairLineup(next, next.lineup) });
+      commit(withTeamFixed(next));
     },
     rejectBid: () => {
       const s = stateRef.current;

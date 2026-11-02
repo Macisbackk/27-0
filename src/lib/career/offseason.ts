@@ -1,10 +1,10 @@
 import { legendAsPlayer, legendById } from "./legends";
 import {
+  BENCH_SIZE,
   LINEUP_SLOTS,
   SQUAD_MAX,
   SQUAD_MIN,
   SQUAD_TEMPLATE,
-  autoPickLineup,
   effectiveRating,
   formatMoney,
   generatePlayer,
@@ -17,7 +17,7 @@ import { pick, randInt, rngFor, shuffle } from "./rng";
 import { contractOf, newDealLength, runDownContracts } from "./contracts";
 import { buyersFor, pickBuyer } from "./buyers";
 import { isWindowOpen, recordDeal, windowStatus } from "./midseason";
-import { repairLineup, squadOf, startSeason, userClub } from "./season";
+import { autoPickTeam, fixTeam, repairTeam, squadOf, startSeason, userClub } from "./season";
 import type { CareerPlayer, CareerState, Pos } from "./types";
 
 export interface MarketListing {
@@ -166,7 +166,7 @@ export function beginOffseason(state: CareerState): CareerState {
   s.departures = { year: s.year, retired, expiring, academy: intakeIds };
   s.year += 1;
   s.seasonNumber += 1;
-  s.lineup = repairLineup(s, s.lineup);
+  fixTeam(s);
   s.phase = "departures";
   s.news = [
     intake.length ? `Academy graduates: ${intake.join(", ")}.` : "No room in the squad for academy graduates this year.",
@@ -217,7 +217,7 @@ export function finishDepartures(state: CareerState): CareerState {
     const p = s.players[id];
     if (p && !(typeof p.contract === "number" && p.contract > 0)) p.contract = contractOf(p);
   }
-  s.lineup = repairLineup(s, s.lineup.filter((id) => me.squad.includes(id)));
+  fixTeam(s);
   s.phase = "transfers";
   s.news = [
     `Transfer window open until Round 1 kicks off. Budget ${formatMoney(s.budget)}.`,
@@ -339,16 +339,42 @@ export function buyPlayer(
     cost.fee > 0
       ? `Signed ${np.name} for ${formatMoney(cost.fee)}${wageNote}.`
       : `Signed ${np.name} on a free: ${formatMoney(playerWage(np))}/yr wages${wageNote}.`,
-    ...(startsNow ? [`${np.name} goes straight into your starting XIII.`] : []),
+    ...(startsNow === "xiii"
+      ? [`${np.name} goes straight into your starting XIII.`]
+      : startsNow === "bench"
+        ? [`${np.name} goes on the bench.`]
+        : []),
     ...s.news,
   ].slice(0, 30);
   s.updatedAt = Date.now();
   return { state: s };
 }
 
-/** Swap a new signing into the XIII when he outrates the weakest starter in his position's slots. */
-function putInLineupIfBetter(s: CareerState, np: CareerPlayer): boolean {
-  const lineup = repairLineup(s, s.lineup ?? []);
+/**
+ * Swap a new signing into the XIII when he outrates the weakest starter in his position's slots
+ * (the man he replaces drops to the bench if he's better than the weakest bench man). A signing
+ * who doesn't start but beats the weakest bench man goes on the bench.
+ */
+function putInLineupIfBetter(s: CareerState, np: CareerPlayer): "xiii" | "bench" | null {
+  const team = repairTeam(s, s.lineup ?? [], s.bench ?? []);
+  const lineup = team.lineup;
+  let bench = team.bench.filter((id) => id !== np.id);
+  const wasOnBench = bench.length < team.bench.length;
+  const tryBench = (id: string): boolean => {
+    const p = s.players[id];
+    if (!p) return false;
+    if (bench.length < BENCH_SIZE) {
+      bench.push(id);
+      return true;
+    }
+    let weakest = 0;
+    bench.forEach((b, i) => {
+      if ((s.players[b]?.rating ?? 0) < (s.players[bench[weakest]!]?.rating ?? 0)) weakest = i;
+    });
+    if (p.rating <= (s.players[bench[weakest]!]?.rating ?? 0)) return false;
+    bench = bench.map((b, i) => (i === weakest ? id : b));
+    return true;
+  };
   let worst = -1;
   let worstScore = Infinity;
   LINEUP_SLOTS.forEach((slot, i) => {
@@ -360,13 +386,20 @@ function putInLineupIfBetter(s: CareerState, np: CareerPlayer): boolean {
       worst = i;
     }
   });
-  if (worst < 0 || effectiveRating(np, np.pos) <= worstScore) {
-    s.lineup = lineup;
-    return false;
+  let placed: "xiii" | "bench" | null = null;
+  if (worst >= 0 && effectiveRating(np, np.pos) > worstScore) {
+    const dropped = lineup[worst];
+    lineup[worst] = np.id;
+    if (dropped) tryBench(dropped);
+    placed = "xiii";
+  } else if (wasOnBench || tryBench(np.id)) {
+    if (wasOnBench) bench.push(np.id);
+    placed = "bench";
   }
-  lineup[worst] = np.id;
-  s.lineup = lineup;
-  return true;
+  const fixed = repairTeam(s, lineup, bench);
+  s.lineup = fixed.lineup;
+  s.bench = fixed.bench;
+  return placed;
 }
 
 export function sellPrice(state: CareerState, playerId: string): number {
@@ -432,7 +465,7 @@ export function sellPlayer(state: CareerState, playerId: string): SaleResult {
       line = `Sold ${p.name} for ${formatMoney(price)}. He's now a free agent.`;
     }
   }
-  s.lineup = repairLineup(s, s.lineup.filter((id) => id !== playerId));
+  fixTeam(s);
   s.news = [line, ...s.news].slice(0, 30);
   s.updatedAt = Date.now();
   return { state: s, soldTo, reason, fee: price };
@@ -446,7 +479,7 @@ export function finishTransfers(state: CareerState): CareerState {
   aiSignFreeAgents(s);
   for (const id of Object.keys(s.clubs)) if (id !== s.userClubId) topUpSquad(s, id);
   // New season, best XIII (so new signings play); the user can still change it.
-  s.lineup = autoPickLineup(squadOf(s, s.userClubId));
+  Object.assign(s, autoPickTeam(s));
   const next = startSeason(s);
   next.news = [`The window stays open through pre-season and shuts when Round 1 kicks off.`, ...next.news].slice(0, 30);
   return next;

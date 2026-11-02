@@ -45,29 +45,58 @@ export function posFromData(position: string | undefined): Pos {
   return DATA_POS[(position ?? "").toUpperCase()] ?? "SR";
 }
 
-/** Rating penalty for playing `player` at `slot`. */
+const BACKS: readonly Pos[] = ["FB", "WG", "CE", "SO", "SH"];
+const isBackPos = (p: Pos) => BACKS.includes(p);
+
+/** Position pairs (alphabetical) that play alike. Anything not listed falls to the defaults below. */
+const PAIR_PENALTY: Record<string, number> = {
+  // Close: the same job on the other side of the ball.
+  "CE-WG": 1,
+  "SH-SO": 1,
+  "LF-SR": 1,
+  // Near.
+  "CE-FB": 2,
+  "FB-WG": 2,
+  "PR-SR": 2,
+  "HK-SH": 2, // dummy-half
+  "HK-LF": 2, // ball-playing loose forward
+  // Workable.
+  "FB-SO": 3,
+  "CE-SO": 3,
+  "LF-PR": 3,
+  "HK-SO": 4,
+  "HK-PR": 4,
+  "HK-SR": 4,
+  "CE-SR": 4,
+  "LF-SO": 4,
+  "LF-SH": 4,
+};
+/** Defaults: back to back 5, forward to forward 4, back ↔ forward 8, and the really silly ones 12. */
+const FAR = 8;
+const SILLY = 12;
+const SILLY_PAIRS = new Set(["FB-PR", "PR-WG", "PR-SO", "PR-SH", "HK-WG", "SH-SR", "FB-HK"]);
+
+/** Rating penalty for playing a man whose position is `playerPos` at `slot` (symmetric). */
 export function positionPenalty(playerPos: Pos, slot: Pos): number {
   if (playerPos === slot) return 0;
   const pair = [playerPos, slot].sort().join("-");
-  const near: Record<string, number> = {
-    "CE-WG": 1,
-    "CE-FB": 2,
-    "FB-WG": 2,
-    "SH-SO": 1,
-    "FB-SO": 3,
-    "LF-SR": 1,
-    "PR-SR": 2,
-    "LF-PR": 3,
-    "HK-SH": 3,
-    "HK-LF": 3,
-    "CE-SR": 4,
-    "LF-SO": 4,
-  };
-  return near[pair] ?? 8;
+  const listed = PAIR_PENALTY[pair];
+  if (listed != null) return listed;
+  if (SILLY_PAIRS.has(pair)) return SILLY;
+  const backs = isBackPos(playerPos) && isBackPos(slot);
+  const forwards = !isBackPos(playerPos) && !isBackPos(slot);
+  return backs ? 5 : forwards ? 4 : FAR;
 }
 
+/** Penalty for this player in this slot: none in his own or a listed second position (utility men). */
+export function slotPenalty(player: Pick<CareerPlayer, "pos" | "alt">, slot: Pos): number {
+  if (player.alt?.includes(slot)) return 0;
+  return positionPenalty(player.pos, slot);
+}
+
+/** His rating in a slot: the same table everywhere (picker, auto-pick, AI, sims, subs). */
 export function effectiveRating(player: CareerPlayer, slot: Pos): number {
-  return player.rating - positionPenalty(player.pos, slot);
+  return player.rating - slotPenalty(player, slot);
 }
 
 /** Transfer value in pounds. */
@@ -167,14 +196,16 @@ export function generatePlayer(
 }
 
 /**
- * Best available XIII: global greedy over every (slot, player) pairing by effective rating,
+ * Best available XIII: global greedy over every (slot, player) pairing by effective rating
  * so a strong centre can beat a weak natural fullback. Ties favour natural positions.
  */
 export function autoPickLineup(squad: CareerPlayer[]): string[] {
   const pairs: Array<{ i: number; id: string; score: number }> = [];
   LINEUP_SLOTS.forEach((slot, i) => {
     for (const p of squad) {
-      pairs.push({ i, id: p.id, score: effectiveRating(p, slot) + (p.pos === slot ? 0.01 : 0) });
+      // A man far out of position (back at prop, prop on the wing) is a last resort, not a rating trade.
+      const far = slotPenalty(p, slot) >= FAR ? 30 : 0;
+      pairs.push({ i, id: p.id, score: effectiveRating(p, slot) - far + (p.pos === slot ? 0.01 : 0) });
     }
   });
   pairs.sort((a, b) => b.score - a.score || a.i - b.i);
@@ -196,6 +227,92 @@ export function lineupRating(lineup: string[], players: Record<string, CareerPla
     sum += p ? effectiveRating(p, slot) : 50;
   });
   return sum / LINEUP_SLOTS.length;
+}
+
+/* ------------------------------------------------------------ interchange */
+
+/** Four men on the interchange bench: a matchday 17. */
+export const BENCH_SIZE = 4;
+
+export const isMiddleForward = (p: Pick<CareerPlayer, "pos">) => p.pos === "PR" || p.pos === "SR" || p.pos === "LF";
+const isBack = (p: CareerPlayer) => p.pos === "FB" || p.pos === "WG" || p.pos === "CE" || p.pos === "SO" || p.pos === "SH";
+
+/**
+ * Fill the bench around the XIII: keep `keep` (if still valid), then two middle forwards, a hooker,
+ * a back or half, and the best of the rest for any spot left. Best rating first in each role.
+ */
+export function autoPickBench(squad: CareerPlayer[], lineup: readonly string[], keep: readonly string[] = []): string[] {
+  const inXiii = new Set(lineup);
+  const byId = new Map(squad.map((p) => [p.id, p]));
+  const picked: CareerPlayer[] = [];
+  for (const id of keep) {
+    const p = byId.get(id);
+    if (p && !inXiii.has(id) && !picked.includes(p) && picked.length < BENCH_SIZE) picked.push(p);
+  }
+  const pool = squad
+    .filter((p) => !inXiii.has(p.id) && !picked.includes(p))
+    .sort((a, b) => b.rating - a.rating || a.id.localeCompare(b.id));
+  const take = (want: (p: CareerPlayer) => boolean) => {
+    if (picked.length >= BENCH_SIZE) return;
+    const i = pool.findIndex(want);
+    if (i >= 0) picked.push(pool.splice(i, 1)[0]!);
+  };
+  while (picked.filter(isMiddleForward).length < 2 && picked.length < BENCH_SIZE && pool.some(isMiddleForward)) take(isMiddleForward);
+  if (!picked.some((p) => p.pos === "HK")) take((p) => p.pos === "HK");
+  if (!picked.some(isBack)) take(isBack);
+  while (picked.length < BENCH_SIZE && pool.length) take(() => true);
+  return picked.map((p) => p.id);
+}
+
+/** Average rating of the bench (empty spots count as 50). */
+export function benchRating(bench: readonly string[], players: Record<string, CareerPlayer>): number {
+  let sum = 0;
+  for (let i = 0; i < BENCH_SIZE; i++) {
+    const p = players[bench[i] ?? ""];
+    sum += p ? p.rating : 50;
+  }
+  return sum / BENCH_SIZE;
+}
+
+/** How much the bench counts towards team strength. */
+export const BENCH_WEIGHT = 0.12;
+/** A typical bench sits about this far below its XIII (2.3–2.4 at the start), so it adds nothing. */
+export const BENCH_PAR = 2.5;
+
+/**
+ * The bench's share of team strength: positive when the bench is closer to the XIII than usual,
+ * negative when it's weak or short. No bench given (not a career team sheet) = no effect.
+ */
+export function benchBonus(xiii: number, bench: readonly string[] | undefined, players: Record<string, CareerPlayer>): number {
+  if (!bench) return 0;
+  return BENCH_WEIGHT * (benchRating(bench, players) - xiii + BENCH_PAR);
+}
+
+/** Team strength: the XIII plus the bench term (the same formula for every club). */
+export function teamRating(lineup: string[], bench: readonly string[] | undefined, players: Record<string, CareerPlayer>): number {
+  const xiii = lineupRating(lineup, players);
+  return xiii + benchBonus(xiii, bench, players);
+}
+
+/**
+ * Fill empty XIII spots (""): from the bench first when he can play there (his own or a nearby
+ * position), otherwise the best man left in the squad.
+ */
+export function fillLineupGaps(lineup: readonly string[], bench: readonly string[], squad: CareerPlayer[]): string[] {
+  const out = [...lineup];
+  const byId = new Map(squad.map((p) => [p.id, p]));
+  LINEUP_SLOTS.forEach((slot, i) => {
+    if (out[i]) return;
+    const used = new Set(out);
+    const best = (list: CareerPlayer[]) =>
+      list.sort((a, b) => effectiveRating(b, slot) - effectiveRating(a, slot) || a.id.localeCompare(b.id))[0];
+    const fromBench = best(
+      bench.map((id) => byId.get(id)).filter((p): p is CareerPlayer => !!p && !used.has(p.id) && slotPenalty(p, slot) <= 3)
+    );
+    const pick = fromBench ?? best(squad.filter((p) => !used.has(p.id)));
+    if (pick) out[i] = pick.id;
+  });
+  return out;
 }
 
 /** "Stars" for a prospect's potential, 1–5. */

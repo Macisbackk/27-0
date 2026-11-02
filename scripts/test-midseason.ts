@@ -1,6 +1,6 @@
 /** In-season transfers: Deadline Day only. AI deals land, offers work, squads stay legal, last line-ups recorded. */
 import { buildWorld, createCareer } from "../src/lib/career/world";
-import { playMatchday, repairLineup } from "../src/lib/career/season";
+import { playMatchday, withTeamFixed } from "../src/lib/career/season";
 import { SQUAD_MAX, SQUAD_MIN } from "../src/lib/career/players";
 import { acceptOffer, closeDeadlineDay, deadlineDecisionPending, isDeadlineDay, isWindowOpen, liveOffers, rejectOffer, seasonDeals, tickDeadline, windowBounds, windowStatus } from "../src/lib/career/midseason";
 import { beginOffseason, buildMarket, buyPlayer, finishDepartures, finishTransfers, isFreeAgentListing, sellPlayer } from "../src/lib/career/offseason";
@@ -58,7 +58,7 @@ for (const [n, choice] of choices.filter((_, i) => i % 4 === 0).slice(0, 8).entr
         if (bidsSeen % 2 === 0) {
           const r = acceptOffer(s, o.id);
           if (!r.error) {
-            s = { ...r.state, lineup: repairLineup(r.state, r.state.lineup) };
+            s = withTeamFixed(r.state);
             if (s.budget <= before) fail("accepting an offer didn't pay");
             accepted++;
           }

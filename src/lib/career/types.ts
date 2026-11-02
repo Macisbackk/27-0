@@ -16,6 +16,8 @@ export interface CareerPlayer {
   id: string;
   name: string;
   pos: Pos;
+  /** Other positions he plays as well as his own (utility men): no penalty there. */
+  alt?: Pos[];
   rating: number;
   /** Ceiling for development; hidden-ish in UI (shown as stars for prospects). */
   potential: number;
@@ -40,6 +42,8 @@ export interface CareerPlayer {
   /** Club he last left as a free agent (released or sold with no buyer) and when: that club can't re-sign him for nothing the same year. */
   leftClubId?: string;
   leftYear?: number;
+  /** Games left on a ban (red card): misses his club's next match(es). Older saves: none. */
+  ban?: number;
 }
 
 export interface CareerClub {
@@ -66,6 +70,9 @@ export interface FixtureResult {
   /** Won in golden-point extra time (knockouts only). */
   goldenPoint?: boolean;
   motm?: string;
+  /** Players sent off (red card): banned for their club's next game. */
+  homeSentOff?: string[];
+  awaySentOff?: string[];
 }
 
 export interface Fixture {
@@ -176,6 +183,8 @@ export interface CareerState {
   tactic: Tactic;
   /** 13 player ids in shirt order 1–13 (see LINEUP_SLOTS). */
   lineup: string[];
+  /** Interchange bench: 4 squad players not in the XIII (shirts 14–17). Older saves get one on load. */
+  bench: string[];
   clubs: Record<string, CareerClub>;
   players: Record<string, CareerPlayer>;
   /** Unsigned players (released / free agents) still in the world. */
@@ -322,6 +331,8 @@ export interface LastLineup {
   us: number;
   them: number;
   lineup: string[];
+  /** Interchange (saves from before the bench have none). */
+  bench?: string[];
   at: number;
 }
 

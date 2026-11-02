@@ -12,6 +12,8 @@ type SquadRow = {
   name: string;
   club: string;
   position?: string;
+  /** Every position he plays (utility men list more than one). */
+  positions?: string[];
   peakRating: number;
   birthYear?: number;
   nationality?: string;
@@ -20,6 +22,13 @@ type SquadRow = {
 
 export const START_YEAR = 2026;
 
+/** A utility man's other positions (none for most players). */
+function utilityPositions(row: SquadRow): { alt?: Pos[] } {
+  const own = posFromData(row.position);
+  const alt = [...new Set((row.positions ?? []).map(posFromData))].filter((p) => p !== own);
+  return alt.length ? { alt } : {};
+}
+
 function realPlayer(row: SquadRow, rng: () => number): CareerPlayer {
   const age = row.birthYear ? Math.max(17, START_YEAR - row.birthYear) : 26;
   const headroom = age <= 21 ? 3 + Math.floor(rng() * 6) : age <= 24 ? Math.floor(rng() * 4) : age <= 27 ? Math.floor(rng() * 2) : 0;
@@ -27,6 +36,7 @@ function realPlayer(row: SquadRow, rng: () => number): CareerPlayer {
     id: row.id,
     name: row.name,
     pos: posFromData(row.position),
+    ...utilityPositions(row),
     rating: row.peakRating,
     potential: Math.min(95, row.peakRating + headroom),
     age,
@@ -157,6 +167,8 @@ export function createCareer(opts: { clubId: string; managerName: string; seed?:
     prestige: choice.prestige,
     tactic: "balanced",
     lineup: autoPickLineup(clubs[choice.id]!.squad.map((id) => players[id]!)),
+    // Filled with the XIII's best back-up when the season starts.
+    bench: [],
     clubs,
     players,
     freeAgents: [],

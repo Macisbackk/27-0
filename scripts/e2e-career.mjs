@@ -133,7 +133,7 @@ try {
   await shot("live-match");
   // Answer the first big call if it shows up, then skip to the end.
   for (let i = 0; i < 40; i++) {
-    const call = page.getByRole("region", { name: /Penalty|team talk|Closing|Last tackle|Chasing|Big hole|Kick-off|Space in behind|Captain|down to 12|Injury|Fresh legs|Golden point/ });
+    const call = page.getByRole("region", { name: /Penalty|team talk|Closing|Last tackle|Chasing|Big hole|Kick-off|Space in behind|Captain|down to 12|Injury|Fresh legs|Golden point|Short side|High shot|Big crowd|Six again|Rain|going wide|blowing|Scrum-half down|Red card/ });
     if (await call.isVisible().catch(() => false)) {
       await shot("live-call");
       await call.getByRole("button").first().click();
@@ -160,6 +160,23 @@ try {
   await sheetOptions.first().waitFor({ timeout });
   await page.keyboard.press("Escape");
   step("Team tab + player picker");
+
+  // Interchange: four bench shirts (14–17) under the XIII; tapping one swaps in a squad player.
+  const bench = page.getByRole("region", { name: "Interchange" });
+  await bench.waitFor({ timeout });
+  const benchShirts = bench.getByRole("button", { name: /^Shirt 1[4-7], interchange: / });
+  if ((await benchShirts.count()) !== 4) throw new Error(`Expected 4 bench shirts, saw ${await benchShirts.count()}`);
+  const shirt14 = bench.getByRole("button", { name: /^Shirt 14,/ });
+  const before14 = await shirt14.getAttribute("aria-label");
+  await shirt14.click();
+  const pickFor14 = page.getByRole("dialog").getByRole("button", { name: /Age \d+/ }).first();
+  await pickFor14.waitFor({ timeout });
+  await pickFor14.click();
+  await page.waitForTimeout(300);
+  const after14 = await shirt14.getAttribute("aria-label");
+  if (after14 === before14) throw new Error("Picking a squad player for shirt 14 didn't change the bench");
+  await shot("team-bench");
+  step("Interchange: 4 bench shirts, swap from the squad");
 
   await page.getByRole("tab", { name: "Table" }).click();
   await page.locator("table").first().waitFor({ timeout });
