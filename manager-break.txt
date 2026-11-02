@@ -1,0 +1,16 @@
+✓ Career started (double tap on Take charge)
+✓ Pre-season: signed free agent Frank Pilkington, £0 fee, budget 495000 → 467000 (wages only)
+✓ Pre-season: transfer window open, market reachable from the hub
+✓ Pre-season → Round 1 with the results above it; reloads keep the stage; double taps safe
+✓ Back/forward keeps the hub
+✓ Hub tabs fit 320px; contracts on the Team tab
+✓ League week: Play match and Quick sim only
+✓ Deadline Day: clock counts down, pauses (and stays paused after a reload), skips an hour, an offer was accepted
+✓ Market sale: "Archie Sykes joins Dewsbury Rams for £125k. They were after an upgrade at second row."
+✓ Season played through every stage (deadline, league, promo) with reloads and double taps
+✓ Departures: 9 out of contract; renew double tap, two tabs
+✓ Transfer window opens once; squad at least 20
+✓ Season 2 opens on pre-season (double tap safe)
+
+0 problem(s)
+
