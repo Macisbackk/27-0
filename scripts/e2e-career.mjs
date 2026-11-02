@@ -211,6 +211,8 @@ try {
   let shotWindow = false;
   for (let i = 0; i < 80; i++) {
     if (await page.getByText(/season review/i).first().isVisible().catch(() => false)) break;
+    // A hub pop-up (legend signing, random event) waits for an answer: take the default.
+    if (await page.getByTestId("career-event").isVisible().catch(() => false)) await page.keyboard.press("Escape");
     if (!shotWindow && (await page.getByRole("region", { name: "Deadline Day coming" }).isVisible().catch(() => false))) {
       shotWindow = true;
       await shot("window-open");

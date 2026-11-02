@@ -115,6 +115,8 @@ try {
   let guard = 0;
   while (guard++ < 200) {
     if (await page.getByText(/season review/i).first().isVisible().catch(() => false)) break;
+    // A hub pop-up (legend signing, random event) waits for an answer: take the default.
+    if (await page.getByTestId("career-event").isVisible().catch(() => false)) await page.keyboard.press("Escape");
     if (await page.getByRole("button", { name: /^Sim to / }).first().isVisible().catch(() => false)) errors.push("a Sim to… button is back on the Match tab");
     const next = page.getByRole("button", { name: /^(Quick sim|Continue|Shut the window|On to the play-offs|On to the semi-finals|On to the Million Pound Game|Watch the play-offs|On to the Grand Final|Watch the Grand Final)$/ }).first();
     if (await next.isVisible().catch(() => false)) await next.click().catch(() => {});

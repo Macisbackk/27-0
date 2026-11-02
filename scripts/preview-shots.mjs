@@ -205,12 +205,32 @@ await shot(phone, "45-how-to-play", "/", async (page) => {
     await page.getByRole("list", { name: "Your next games" }).scrollIntoViewIfNeeded({ timeout: 5000 });
     await page.waitForTimeout(400);
   });
+  // A hub pop-up (an AI club signs a legend), injected into the save.
+  await shot(narrow, "48j-320-manager-popup", "/manager", async (page) => {
+    await page.evaluate((k) => {
+      const s = JSON.parse(localStorage.getItem(k) || "null");
+      if (!s) return;
+      const clubs = Object.values(s.clubs);
+      const club = clubs.find((c) => c.id !== s.userClubId && c.name === "Wigan Warriors") || clubs.find((c) => c.id !== s.userClubId);
+      s.tutorialDone = true;
+      s.events = [
+        ...(s.events || []),
+        { id: "preview-legend", kind: "legend-signing", year: s.year, clubId: club.id, name: "Sam Tomkins", rating: 91, title: `${club.name} sign Sam Tomkins!`, text: `A club legend is back at ${club.name}.`, options: [{ id: "ok", label: "Bring it on" }] },
+      ];
+      localStorage.setItem(k, JSON.stringify(s));
+    }, "27-0-career-v2-save");
+    await page.reload({ waitUntil: "networkidle" });
+    await page.getByTestId("career-event").waitFor({ timeout: 5000 });
+    await page.waitForTimeout(500);
+  });
   // Quick-sim to the season review: the awards card.
   await shot(narrow, "48h-320-manager-awards", "/manager", async (page) => {
     await page.getByRole("tab", { name: "Match" }).click({ timeout: 5000 }).catch(() => {});
     let sawMagic = false;
     for (let i = 0; i < 90; i++) {
       if (await page.getByRole("region", { name: "Season awards" }).isVisible().catch(() => false)) break;
+      // A hub pop-up (legend signing, random event) waits for an answer: take the default.
+      if (await page.getByTestId("career-event").isVisible().catch(() => false)) await page.keyboard.press("Escape");
       if (!sawMagic && (await page.getByTestId("fixture-banner").isVisible().catch(() => false))) {
         sawMagic = true;
         await page.screenshot({ path: `${OUT}/48i-320-manager-special-fixture.png` });

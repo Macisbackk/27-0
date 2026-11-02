@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { MobileBottomSheet } from "@/components/ui/MobileOverlay";
-import { DIVISION_LABEL, POS_LABEL, TROPHY_LABEL, awardLabel, formatMoney, legendAsPlayer, legendCatalog, ordinal, totalMajorTrophies, type TrophyId } from "@/lib/career";
+import { DIVISION_LABEL, POS_LABEL, TROPHY_LABEL, awardLabel, formatMoney, legendAtClub, legendAsPlayer, legendCatalog, ordinal, totalMajorTrophies, type TrophyId } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
 import { playAchievementUnlock, playWarning } from "@/lib/sound";
 import { Eyebrow, RatingPill } from "./bits";
@@ -46,6 +46,13 @@ export function LegendVaultSheet({ open, onClose }: { open: boolean; onClose: ()
                 </span>
                 <span className="text-[11px] text-gray-400">
                   {POS_LABEL[l.pos]} · {l.club} · plays at {legendAsPlayer(l).rating} · signing fee {formatMoney(l.signingFee)}
+                  {(() => {
+                    if (!state) return null;
+                    const at = legendAtClub(state, `legend-${l.id}`);
+                    if (at && at !== state.userClubId) return <span className="block text-amber-300">At {state.clubs[at]?.name} this season</span>;
+                    if ((state.retiredLegends ?? []).includes(`legend-${l.id}`)) return <span className="block text-gray-500">Retired in this career</span>;
+                    return null;
+                  })()}
                 </span>
               </span>
               {owned ? (
