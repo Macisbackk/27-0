@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { MobileBottomSheet } from "@/components/ui/MobileOverlay";
-import { DIVISION_LABEL, POS_LABEL, TROPHY_LABEL, formatMoney, legendAsPlayer, legendCatalog, ordinal, totalMajorTrophies, type TrophyId } from "@/lib/career";
+import { DIVISION_LABEL, POS_LABEL, TROPHY_LABEL, awardLabel, formatMoney, legendAtClub, legendAsPlayer, legendCatalog, ordinal, totalMajorTrophies, type TrophyId } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
 import { playAchievementUnlock, playWarning } from "@/lib/sound";
 import { Eyebrow, RatingPill } from "./bits";
@@ -46,6 +46,13 @@ export function LegendVaultSheet({ open, onClose }: { open: boolean; onClose: ()
                 </span>
                 <span className="text-[11px] text-gray-400">
                   {POS_LABEL[l.pos]} · {l.club} · plays at {legendAsPlayer(l).rating} · signing fee {formatMoney(l.signingFee)}
+                  {(() => {
+                    if (!state) return null;
+                    const at = legendAtClub(state, `legend-${l.id}`);
+                    if (at && at !== state.userClubId) return <span className="block text-amber-300">At {state.clubs[at]?.name} this season</span>;
+                    if ((state.retiredLegends ?? []).includes(`legend-${l.id}`)) return <span className="block text-gray-500">Retired in this career</span>;
+                    return null;
+                  })()}
                 </span>
               </span>
               {owned ? (
@@ -137,6 +144,34 @@ export function RecordsSheet({ open, onClose }: { open: boolean; onClose: () => 
               </li>
             ))}
           </ul>
+          {state.history.some((h) => h.awards?.length) ? (
+            <section aria-label="Past award winners" data-testid="records-awards">
+              <div className="mt-5"><Eyebrow>Awards · past winners</Eyebrow></div>
+              <ul className="mt-2 space-y-1.5">
+                {[...state.history]
+                  .reverse()
+                  .filter((h) => h.awards?.length)
+                  .map((h, i) => (
+                    <li key={h.year} className="rounded-lg bg-pitch-800 px-3 py-2">
+                      <details open={i === 0}>
+                        <summary className="cursor-pointer text-sm font-semibold text-white">
+                          {h.year} · Man of Steel {h.awards!.find((a) => a.id === "man-of-steel" && a.division === "super-league")?.name ?? "—"}
+                        </summary>
+                        <ul className="mt-1.5 space-y-1 text-[13px]">
+                          {h.awards!.map((a) => (
+                            <li key={`${a.id}-${a.division}`} className="text-gray-300">
+                              <span className="text-gray-500">{awardLabel(a)}:</span>{" "}
+                              <span className={a.clubId === state.userClubId ? "font-semibold text-accent-gold" : "text-white"}>{a.name}</span>
+                              {a.id === "club-player" ? "" : ` (${a.clubName})`}
+                            </li>
+                          ))}
+                        </ul>
+                      </details>
+                    </li>
+                  ))}
+              </ul>
+            </section>
+          ) : null}
         </>
       ) : null}
     </MobileBottomSheet>

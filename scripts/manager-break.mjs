@@ -232,6 +232,8 @@ try {
   const seen = new Set();
   for (let i = 0; i < 500; i++) {
     if (await visible(page.getByText(/season review/i).first())) break;
+    // A hub pop-up (legend signing, random event) waits for an answer: take the default.
+    if (await page.getByTestId("career-event").isVisible().catch(() => false)) await page.keyboard.press("Escape");
     if (await visible(page.getByRole("region", { name: "Deadline Day", exact: true }))) {
       if (!seen.has("deadline")) {
         seen.add("deadline");

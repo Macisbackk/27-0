@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
-import { DIVISION_LABEL, sortTable, winnerOf, type Division } from "@/lib/career";
+import { DIVISION_LABEL, MAGIC_ROUND, sortTable, userFixture, winnerOf, type Division } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
-import { Card, ClubBadge, Eyebrow, FormDots } from "./bits";
+import { Card, ClubBadge, Eyebrow, FixtureTags, FormDots } from "./bits";
 import { ClubLink } from "./ClubSheet";
 
 function zone(division: Division, pos: number, size: number): { tone: string; label: string } | null {
@@ -43,6 +43,13 @@ export function TableTab() {
   } else if (s.matchdayIndex > 5) {
     cupLine = "Not in this year's Challenge Cup.";
   }
+
+  // Your next few games, with Magic Weekend and derbies marked.
+  const upcoming = s.calendar
+    .slice(s.matchdayIndex)
+    .map((md) => userFixture(md, s.userClubId))
+    .filter((f): f is NonNullable<typeof f> => !!f && !f.result)
+    .slice(0, 5);
 
   return (
     <div className="flex flex-col gap-4">
@@ -117,6 +124,28 @@ export function TableTab() {
           )}
         </p>
       </Card>
+      {upcoming.length ? (
+        <Card>
+          <Eyebrow>Your next games</Eyebrow>
+          <ul className="mt-2 divide-y divide-pitch-800" aria-label="Your next games">
+            {upcoming.map((f) => {
+              const home = f.home === s.userClubId;
+              const opp = s.clubs[home ? f.away : f.home]!;
+              return (
+                <li key={f.id} className="flex flex-wrap items-center gap-x-2 gap-y-1 py-2 text-sm">
+                  <span className="w-16 shrink-0 text-[11px] text-gray-500">{f.kind === "league" ? `Round ${f.round}` : f.label.replace("Challenge Cup ", "Cup ")}</span>
+                  <ClubBadge club={opp} size="sm" />
+                  <span className="min-w-0 flex-1 truncate text-gray-200">
+                    {home ? "v" : "at"} {opp.name}
+                  </span>
+                  <FixtureTags state={s} fixture={f} />
+                </li>
+              );
+            })}
+          </ul>
+          <p className="mt-2 text-[11px] text-gray-400">Round {MAGIC_ROUND} is Magic Weekend: neutral venue for every game.</p>
+        </Card>
+      ) : null}
       <Card>
         <Eyebrow>Challenge Cup</Eyebrow>
         <p className="mt-1 text-sm text-gray-300">{cupLine}</p>

@@ -59,6 +59,9 @@ import {
 } from "./storage";
 import type { CareerLegacy, CareerState, SeasonOutcome, Tactic } from "./types";
 import { createCareer } from "./world";
+import { promoteAcademy as promoteAcademyPure, releaseAcademy as releaseAcademyPure, type AcademyError } from "./academy";
+import { setCaptain as setCaptainPure } from "./captain";
+import { resolveEvent as resolveEventPure } from "./events";
 
 interface CareerContextValue {
   ready: boolean;
@@ -108,6 +111,13 @@ interface CareerContextValue {
   release: (playerId: string) => void;
   /** Summer: done with departures, open the transfer window. */
   finishDepartures: () => void;
+  /** Give the armband to a squad player. */
+  setCaptain: (playerId: string) => void;
+  /** Academy: move a prospect into the first-team squad, or let him go. */
+  promoteAcademy: (playerId: string) => AcademyError | undefined;
+  releaseAcademy: (playerId: string) => void;
+  /** Answer the pop-up on the hub (marks it seen). */
+  resolveEvent: (eventId: string, optionId?: string) => void;
 }
 
 const CareerContext = createContext<CareerContextValue | null>(null);
@@ -332,6 +342,31 @@ export function CareerProvider({ children }: { children: ReactNode }) {
     finishDepartures: () => {
       const s = stateRef.current;
       if (s) commit(finishDeparturesPure(s));
+    },
+    setCaptain: (playerId) => {
+      const s = stateRef.current;
+      if (s) {
+        const next = setCaptainPure(s, playerId);
+        if (next !== s) commit(next);
+      }
+    },
+    promoteAcademy: (playerId) => {
+      const s = stateRef.current;
+      if (!s) return "not-found";
+      const r = promoteAcademyPure(s, playerId);
+      if (!r.error) commit(r.state);
+      return r.error;
+    },
+    releaseAcademy: (playerId) => {
+      const s = stateRef.current;
+      if (s) commit(releaseAcademyPure(s, playerId));
+    },
+    resolveEvent: (eventId, optionId) => {
+      const s = stateRef.current;
+      if (s) {
+        const next = resolveEventPure(s, eventId, optionId);
+        if (next !== s) commit(next);
+      }
     },
     finishTutorial: () => {
       const s = stateRef.current;

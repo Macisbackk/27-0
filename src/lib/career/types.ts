@@ -44,6 +44,37 @@ export interface CareerPlayer {
   leftYear?: number;
   /** Games left on a ban (red card): misses his club's next match(es). Older saves: none. */
   ban?: number;
+  /** Legends: the last season he plays (he retires that summer). Older saves derive it from signedYear. */
+  retireAfter?: number;
+}
+
+export type CareerEventKind =
+  | "legend-signing"
+  | "legend-retired"
+  | "transfer-request"
+  | "record-bid"
+  | "sponsor"
+  | "wonderkid"
+  | "takeover";
+
+/** A pop-up on the Manager hub: shown once, one at a time, then marked seen. */
+export interface CareerEvent {
+  id: string;
+  kind: CareerEventKind;
+  year: number;
+  title: string;
+  text: string;
+  /** Club the event is about (badge on the card). */
+  clubId?: string;
+  playerId?: string;
+  /** Player name and rating for the card (he may have gone by the time it shows). */
+  name?: string;
+  rating?: number;
+  /** Fee or cash involved. */
+  amount?: number;
+  /** 1–2 buttons; the first is the default. */
+  options: Array<{ id: string; label: string }>;
+  seen?: boolean;
 }
 
 export interface CareerClub {
@@ -73,6 +104,21 @@ export interface FixtureResult {
   /** Players sent off (red card): banned for their club's next game. */
   homeSentOff?: string[];
   awaySentOff?: string[];
+}
+
+export type AwardId = "man-of-steel" | "young-player" | "top-try-scorer" | "club-player";
+
+/** One end-of-season award. */
+export interface SeasonAward {
+  id: AwardId;
+  /** Division the award is for (club-player: the user's division). */
+  division: Division;
+  playerId: string;
+  name: string;
+  clubId: string;
+  clubName: string;
+  /** Short line, e.g. "18 tries in 27 games". */
+  detail: string;
 }
 
 export interface Fixture {
@@ -148,6 +194,10 @@ export interface SeasonOutcome {
   legacyEarned: number;
   challengesDone: number;
   topTryScorer?: { name: string; tries: number };
+  /** League awards (Super League, plus the Championship when the user played there) and the club's Player of the Season. */
+  awards?: SeasonAward[];
+  /** Derby record this season. */
+  derbies?: { w: number; d: number; l: number };
   /** The board's league target for the season (finish this place or better), when one was set. */
   boardTarget?: number;
   /** Set once this season has been banked into the cross-career legacy. */
@@ -202,6 +252,12 @@ export interface CareerState {
     academyDebutIds: string[];
     pointsScored: number;
     cupRoundReached: number;
+    /** Derby record (older saves: none yet). */
+    derbies?: { w: number; d: number; l: number };
+    /** Legacy from Magic Weekend and derby wins, added at season end. */
+    bonusLegacy?: number;
+    /** A derby win lifts the next game: matchday index it applies to. */
+    moraleAt?: number;
   };
   /** season → review (end of season) → departures (retirements, contracts) → transfers → season. */
   phase: "season" | "review" | "departures" | "transfers";
@@ -230,6 +286,14 @@ export interface CareerState {
   stagesSeen?: string[];
   /** The summer's comings and goings, shown before the transfer window opens. */
   departures?: Departures;
+  /** Academy prospects (in `players`, not in any squad): promote, release or leave them. Older saves: none. */
+  academy?: string[];
+  /** Pop-ups for the hub (newest last); seen ones are kept briefly so they never show twice. */
+  events?: CareerEvent[];
+  /** Legends who have retired in this career: gone from every market. */
+  retiredLegends?: string[];
+  /** The user's chosen captain (older saves: the best senior starter). */
+  captainId?: string;
   /** The board's league target for `year` (finish `target`th or better). Older saves derive it. */
   board?: { year: number; target: number };
 }

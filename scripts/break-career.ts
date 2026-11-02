@@ -80,9 +80,9 @@ function invariants(s: CareerState, where: string) {
   const lineupMatters = !(s.phase === "departures" && me.squad.length < 13);
   if (lineupMatters && (s.lineup.length !== 13 || new Set(s.lineup).size !== 13 || !s.lineup.every((id) => me.squad.includes(id))))
     fail(`${where}: bad lineup (${s.lineup.length}, uniq ${new Set(s.lineup).size}, notInSquad ${s.lineup.filter((id) => !me.squad.includes(id)).length}, squad ${me.squad.length}, phase ${s.phase})`);
-  // Interchange: 4 unique squad players outside the XIII whenever the squad has 17.
+  // Interchange: 4 unique squad players outside the XIII whenever 17 are available (banned men can't be picked).
   const bench = s.bench ?? [];
-  if (lineupMatters && me.squad.length >= 17 && (bench.length !== 4 || new Set(bench).size !== 4 || !bench.every((id) => me.squad.includes(id) && !s.lineup.includes(id))))
+  if (lineupMatters && me.squad.filter((id) => !s.players[id]?.ban).length >= 17 && (bench.length !== 4 || new Set(bench).size !== 4 || !bench.every((id) => me.squad.includes(id) && !s.lineup.includes(id))))
     fail(`${where}: bad bench (${bench.length}, uniq ${new Set(bench).size}, notInSquad ${bench.filter((id) => !me.squad.includes(id)).length}, inXiii ${bench.filter((id) => s.lineup.includes(id)).length}, phase ${s.phase})`);
   if (!Number.isFinite(s.budget)) fail(`${where}: budget ${s.budget}`);
   for (const id of me.squad) {

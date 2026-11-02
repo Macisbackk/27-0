@@ -5,6 +5,12 @@ import { rngFor, shuffle } from "./rng";
 import { CUP_ROUND_LABELS, buildCalendar } from "./schedule";
 import { DIVISION_LABEL } from "./clubs";
 import { boardTargetForRank } from "./board";
+import { academyIntake } from "./academy";
+import { rollRandomEvent } from "./events";
+import { MAN_OF_STEEL_LEGACY, awardLabel, computeSeasonAwards, userWonManOfSteel } from "./awards";
+import { defaultCaptain, syncCaptain, userCaptain } from "./captain";
+import { DERBY_LEGACY, DERBY_MORALE, derbyBonus, isDerby } from "./rivals";
+import { isMagicWeekend } from "./schedule";
 import type {
   CareerState,
   ChallengeKind,
@@ -69,8 +75,8 @@ function applyBans(state: CareerState, f: Fixture) {
  * AI clubs' best XIII. Squads and ratings don't change mid-season, so cache per season+squad.
  * (Big win for "Sim season" on phones: ~36 picks per matchday otherwise.)
  */
-const aiTeamCache = new Map<string, { lineup: string[]; bench: string[] }>();
-function aiTeam(state: CareerState, clubId: string): { lineup: string[]; bench: string[] } {
+const aiTeamCache = new Map<string, { lineup: string[]; bench: string[]; captain?: string }>();
+function aiTeam(state: CareerState, clubId: string): { lineup: string[]; bench: string[]; captain?: string } {
   const squad = state.clubs[clubId]?.squad ?? [];
   const banned = squad.filter((id) => state.players[id]?.ban).join(",");
   const key = `${state.seed}|${state.year}|${clubId}|${squad.join(",")}|${banned}`;
@@ -78,7 +84,8 @@ function aiTeam(state: CareerState, clubId: string): { lineup: string[]; bench: 
   if (hit) return hit;
   const players = availableSquad(state, clubId);
   const lineup = autoPickLineup(players);
-  const team = { lineup, bench: autoPickBench(players, lineup) };
+  // Every AI club has a captain too: its best senior starter (the same small lift as yours).
+  const team = { lineup, bench: autoPickBench(players, lineup), captain: defaultCaptain(lineup, state.players) };
   if (aiTeamCache.size > 400) aiTeamCache.clear();
   aiTeamCache.set(key, team);
   return team;
@@ -252,6 +259,8 @@ export function startSeason(state: CareerState): CareerState {
     academyDebutIds: [],
     pointsScored: 0,
     cupRoundReached: 0,
+    derbies: { w: 0, d: 0, l: 0 },
+    bonusLegacy: 0,
   };
   next.challenges = buildChallenges(next);
   {
@@ -266,6 +275,8 @@ export function startSeason(state: CareerState): CareerState {
   next.budget += income - wages;
   next.lastWages = wages;
   next.lastIncome = income;
+  // Pre-season: a new batch of kids joins the academy.
+  academyIntake(next);
   addNews(
     next,
     `${next.year} season begins in the ${DIVISION_LABEL[userClub(next).division]}. Board income ${formatMoney(income)}, wages ${formatMoney(wages)}.`
@@ -306,11 +317,14 @@ export function fixTeam(s: CareerState): void {
   const team = repairTeam(s, s.lineup ?? [], s.bench ?? []);
   s.lineup = team.lineup;
   s.bench = team.bench;
+  syncCaptain(s);
 }
 
 /** A copy with the XIII and bench repaired (for saves, sales and deals that changed the squad). */
 export function withTeamFixed(state: CareerState): CareerState {
-  return { ...state, ...repairTeam(state, state.lineup ?? [], state.bench ?? []) };
+  const s = { ...state, ...repairTeam(state, state.lineup ?? [], state.bench ?? []) };
+  syncCaptain(s);
+  return s;
 }
 
 /**
@@ -332,10 +346,22 @@ export function placeInTeam(state: CareerState, where: "xiii" | "bench", index: 
   return repairTeam(state, lineup, bench.filter(Boolean));
 }
 
-/** Bring a loaded save up to date: saves from before the interchange get a bench picked. */
+/**
+ * Bring a loaded save up to date: saves from before the interchange get a bench picked; saves
+ * from before the academy get an empty list, and a captain (the best senior starter).
+ * Awards, derby records and Magic Weekend need nothing: older seasons simply have none.
+ */
 export function migrateCareer<T extends CareerState | null>(state: T): T {
-  if (!state || Array.isArray(state.bench)) return state;
-  return withTeamFixed({ ...state, bench: [] }) as T;
+  if (!state) return state;
+  let s: CareerState = state;
+  if (!Array.isArray(s.bench)) s = withTeamFixed({ ...s, bench: [] });
+  if (!Array.isArray(s.academy) || s.academy.some((id) => !s.players[id])) {
+    s = { ...s, academy: (Array.isArray(s.academy) ? s.academy : []).filter((id) => !!s.players[id]) };
+  }
+  if (!s.captainId || !s.clubs[s.userClubId]?.squad.includes(s.captainId)) {
+    s = { ...s, captainId: defaultCaptain(s.lineup ?? [], s.players) };
+  }
+  return s as T;
 }
 
 /** Best XIII and the best bench to go with it. */
@@ -432,11 +458,13 @@ export function sheetFor(state: CareerState, clubId: string): TeamSheet {
   if (clubId === state.userClubId) {
     const pre = state.preseason;
     // Pre-season friendlies: a little match sharpness for the opening three matchdays.
-    const boost = pre && pre.year === state.year && state.matchdayIndex < 3 ? pre.results.length * 0.5 : 0;
-    return { clubId, lineup: state.lineup, bench: userBench(state), tactic: state.tactic, boost };
+    const sharp = pre && pre.year === state.year && state.matchdayIndex < 3 ? pre.results.length * 0.5 : 0;
+    // A derby win lifts the next game.
+    const morale = state.seasonTrack?.moraleAt === state.matchdayIndex ? DERBY_MORALE : 0;
+    return { clubId, lineup: state.lineup, bench: userBench(state), tactic: state.tactic, boost: sharp + morale, captain: userCaptain(state) };
   }
   const team = aiTeam(state, clubId);
-  return { clubId, lineup: team.lineup, bench: team.bench, tactic: "balanced" };
+  return { clubId, lineup: team.lineup, bench: team.bench, tactic: "balanced", captain: team.captain };
 }
 
 function applyLeagueResult(state: CareerState, f: Fixture) {
@@ -499,6 +527,25 @@ function trackUserResult(state: CareerState, f: Fixture, sheet: TeamSheet) {
     if (state.players[id]?.academy && !t.academyDebutIds.includes(id)) t.academyDebutIds.push(id);
   }
 
+  // Derbies: a record for the season, and a win pays a bonus, a little Legacy and a lift next game.
+  if (isDerby(state, f)) {
+    const d = (t.derbies ??= { w: 0, d: 0, l: 0 });
+    if (won) d.w++;
+    else if (drew) d.d++;
+    else d.l++;
+    if (won) {
+      const cash = derbyBonus(userClub(state).division);
+      state.budget += cash;
+      t.bonusLegacy = (t.bonusLegacy ?? 0) + DERBY_LEGACY;
+      t.moraleAt = nextUserMatchday(state);
+      addNews(state, `Derby win over ${state.clubs[opponent]?.name ?? "them"}! +${formatMoney(cash)}, +${DERBY_LEGACY} Legacy.`);
+    }
+  }
+  if (isMagicWeekend(f) && won) {
+    t.bonusLegacy = (t.bonusLegacy ?? 0) + MAGIC_WEEKEND_LEGACY;
+    addNews(state, `Magic Weekend win! +${MAGIC_WEEKEND_LEGACY} Legacy.`);
+  }
+
   for (const c of state.challenges) {
     if (c.done) continue;
     switch (c.kind) {
@@ -536,6 +583,18 @@ function trackUserResult(state: CareerState, f: Fixture, sheet: TeamSheet) {
   const oppName = state.clubs[opponent]?.name ?? opponent;
   const verdict = won ? "beat" : drew ? "drew with" : "lost to";
   addNews(state, `${f.label}: ${userClub(state).short} ${verdict} ${oppName} ${us}–${them}${r.goldenPoint ? " (golden point)" : ""}.`);
+}
+
+/** Legacy for winning your Magic Weekend game. */
+export const MAGIC_WEEKEND_LEGACY = 10;
+
+/** Index of the user's next matchday after this one (a knockout round still to be drawn counts). */
+function nextUserMatchday(state: CareerState): number {
+  for (let i = state.matchdayIndex + 1; i < state.calendar.length; i++) {
+    const md = state.calendar[i]!;
+    if (userFixture(md, state.userClubId) || md.pendingDraw) return i;
+  }
+  return state.matchdayIndex + 1;
 }
 
 /** The user's fixture on a matchday, if any. */
@@ -580,6 +639,14 @@ function playMatchdayInPlace(next: CareerState, played?: PlayedResult): void {
     if (p?.ban) addNews(next, `${p.name} is banned for this game.`);
   }
   fixTeam(next);
+  {
+    // A banned (or dropped) captain: someone else leads the side this week.
+    const cap = next.captainId ? next.players[next.captainId] : undefined;
+    const lead = userCaptain(next);
+    if (userFixture(md, next.userClubId) && cap?.ban && lead && lead !== cap.id) {
+      addNews(next, `Captain ${cap.name} is banned. ${next.players[lead]!.name} leads the side.`);
+    }
+  }
 
   for (const f of md.fixtures) {
     const rng = rngFor(next.seed, next.year, f.id);
@@ -588,7 +655,7 @@ function playMatchdayInPlace(next: CareerState, played?: PlayedResult): void {
     f.result =
       played && played.fixtureId === f.id
         ? structuredClone(played.result)
-        : simulateMatch(rng, home, away, next.players, { knockout: isKnockout(f.kind) });
+        : simulateMatch(rng, home, away, next.players, { knockout: isKnockout(f.kind), neutral: isMagicWeekend(f) });
     recordLineups(next, f, home, away);
     applyLeagueResult(next, f);
     creditPlayers(next, home, f.result.homeTries);
@@ -607,6 +674,9 @@ function playMatchdayInPlace(next: CareerState, played?: PlayedResult): void {
       if (w && w !== next.userClubId) addNews(next, `${next.clubs[w]!.name} win the ${f.kind === "grand-final" ? "Grand Final" : "Challenge Cup"}.`);
     }
   }
+
+  // Now and then something happens off the field (a pop-up on the hub).
+  rollRandomEvent(next, next.matchdayIndex);
 
   md.played = true;
   next.matchdayIndex++;
@@ -727,6 +797,10 @@ function finishSeason(state: CareerState): CareerState {
   if (userPromoted) trophies.push("promotion");
   if (row.p > 0 && row.w === row.p) trophies.push("perfect-season");
 
+  // Awards, while every club is still in the division it played in.
+  const awards = computeSeasonAwards(s);
+  const mos = userWonManOfSteel(s, awards);
+
   for (const id of promoted) s.clubs[id]!.division = "super-league";
   for (const id of relegated) s.clubs[id]!.division = "championship";
 
@@ -747,7 +821,11 @@ function finishSeason(state: CareerState): CareerState {
     }
   }
   const challengeLegacy = s.challenges.filter((c) => c.done).reduce((sum, c) => sum + c.rewardLegacy, 0);
-  const legacyEarned = trophies.reduce((sum, t) => sum + LEGACY_FOR_TROPHY[t], 0) + challengeLegacy;
+  const legacyEarned =
+    trophies.reduce((sum, t) => sum + LEGACY_FOR_TROPHY[t], 0) +
+    challengeLegacy +
+    (s.seasonTrack.bonusLegacy ?? 0) +
+    (mos ? MAN_OF_STEEL_LEGACY : 0);
 
   // Prestige
   let delta = 0;
@@ -779,12 +857,17 @@ function finishSeason(state: CareerState): CareerState {
     challengesDone: s.challenges.filter((c) => c.done).length,
     topTryScorer: top && top.tries > 0 ? { name: top.name, tries: top.tries } : undefined,
     boardTarget: s.board?.year === s.year ? s.board.target : undefined,
+    awards,
+    derbies: s.seasonTrack.derbies ? { ...s.seasonTrack.derbies } : undefined,
   };
   if (trophies.includes("grand-final") && s.firstGrandFinalSeason == null) s.firstGrandFinalSeason = s.seasonNumber;
   s.lastOutcome = outcome;
   s.history = [...s.history, outcome];
   s.phase = "review";
   addNews(s, `${s.year} season over: ${ordinal(position)} in the ${DIVISION_LABEL[division]}.`);
+  const steel = awards.find((a) => a.id === "man-of-steel" && a.division === "super-league");
+  if (steel) addNews(s, `${awardLabel(steel)}: ${steel.name} (${steel.clubName}).`);
+  if (mos) addNews(s, `${mos.name} is Man of Steel! +${MAN_OF_STEEL_LEGACY} Legacy.`);
   return s;
 }
 

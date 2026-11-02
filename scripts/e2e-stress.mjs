@@ -259,6 +259,8 @@ try {
   // Drive to Deadline Day with Quick sim; nothing should get past it until the window is shut.
   let reached = false;
   for (let i = 0; i < 90 && !reached; i++) {
+    // A hub pop-up (legend signing, random event) waits for an answer: take the default.
+    if (await page.getByTestId("career-event").isVisible().catch(() => false)) await page.keyboard.press("Escape");
     if (await page.getByRole("button", { name: "Shut the window" }).first().isVisible().catch(() => false)) {
       reached = true;
       break;

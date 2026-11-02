@@ -13,10 +13,13 @@ import {
   wageBill,
   wagesDueNow,
 } from "./players";
-import { pick, randInt, rngFor, shuffle } from "./rng";
+import { randInt, rngFor, shuffle } from "./rng";
 import { contractOf, newDealLength, runDownContracts } from "./contracts";
 import { buyersFor, pickBuyer } from "./buyers";
 import { isWindowOpen, recordDeal, windowStatus } from "./midseason";
+import { academySummer } from "./academy";
+import { pushEvent } from "./events";
+import { aiLegendSigning, legendAvailable, legendSummer, signLegend } from "./legend-moves";
 import { autoPickTeam, fixTeam, repairTeam, squadOf, startSeason, userClub } from "./season";
 import type { CareerPlayer, CareerState, Pos } from "./types";
 
@@ -45,7 +48,9 @@ function developPlayer(rngRoll: () => number, p: CareerPlayer) {
   p.age += 1;
   if (p.age <= 23) {
     const room = Math.max(0, p.potential - p.rating);
-    p.rating += Math.min(room, Math.floor(rngRoll() * 4) + (room > 6 ? 1 : 0));
+    // Academy kids who got first-team games last season come on faster.
+    const games = p.academy && p.age <= 22 ? (p.apps >= 12 ? 2 : p.apps >= 5 ? 1 : 0) : 0;
+    p.rating += Math.min(room, Math.floor(rngRoll() * 4) + (room > 6 ? 1 : 0) + games);
   } else if (p.age <= 28) {
     const room = Math.max(0, p.potential - p.rating);
     if (room > 0 && rngRoll() < 0.4) p.rating += 1;
@@ -91,7 +96,17 @@ function topUpSquad(state: CareerState, clubId: string, target = 24) {
     const neediest = (Object.keys(SQUAD_TEMPLATE) as Pos[]).sort(
       (a, b) => counts[a] - SQUAD_TEMPLATE[a] - (counts[b] - SQUAD_TEMPLATE[b])
     )[0]!;
-    const p = generatePlayer(rng, { clubId, pos: neediest, level, maxPotential: Math.round(level + 5), idPrefix: `g${state.year}` });
+    // AI clubs' academies: the first man up each summer is one of their own kids (18–19). He starts
+    // a little below the first team and tops out around it, so the world's level doesn't creep up.
+    const kid = guard === 1 && clubId !== state.userClubId;
+    const p = generatePlayer(rng, {
+      clubId,
+      pos: neediest,
+      level: kid ? level - 3 : level,
+      maxPotential: Math.round(level + (kid ? 3 : 5)),
+      idPrefix: `g${state.year}`,
+      ...(kid ? { age: randInt(rng, 18, 19) } : {}),
+    });
     state.players[p.id] = p;
     club.squad.push(p.id);
     counts[neediest]++;
@@ -107,11 +122,35 @@ export function beginOffseason(state: CareerState): CareerState {
   const s: CareerState = structuredClone(state);
   const rng = rngFor(s.seed, s.year, "offseason");
   const retired: NonNullable<CareerState["departures"]>["retired"] = [];
+  const legendNews: string[] = [];
 
   for (const club of Object.values(s.clubs)) {
     club.squad = club.squad.filter((id) => {
       const p = s.players[id];
       if (!p) return false;
+      // Legends keep their level (a point a summer) and retire 2–3 seasons after signing.
+      if (p.legend) {
+        if (!legendSummer(s, p)) return true;
+        if (club.id === s.userClubId) {
+          retired.push({ name: p.name, pos: p.pos, age: p.age, rating: p.rating });
+          pushEvent(s, {
+            id: `legend-retired:${s.year}:${p.id}`,
+            kind: "legend-retired",
+            year: s.year,
+            clubId: club.id,
+            playerId: p.id,
+            name: p.name,
+            rating: p.rating,
+            title: `${p.name} retires`,
+            text: `${p.name} retires. What a servant.`,
+            options: [{ id: "ok", label: "Thanks, legend" }],
+          });
+        } else {
+          legendNews.push(`${p.name} retires at ${club.name}.`);
+        }
+        delete s.players[id];
+        return false;
+      }
       developPlayer(rng, p);
       if (retires(rng, p)) {
         if (club.id === s.userClubId) retired.push({ name: p.name, pos: p.pos, age: p.age, rating: p.rating });
@@ -136,41 +175,27 @@ export function beginOffseason(state: CareerState): CareerState {
   // Contracts count down; the user decides on anyone whose deal has run out.
   const expiring = runDownContracts(s);
 
-  // Academy: two prospects for the user every summer. Better clubs attract better kids.
-  const club = userClub(s);
-  const intake: string[] = [];
-  const intakeIds: string[] = [];
-  for (let i = 0; i < 2 && club.squad.length < SQUAD_MAX; i++) {
-    const pos = pick(rng, LINEUP_SLOTS);
-    const p = generatePlayer(rng, {
-      clubId: club.id,
-      pos,
-      level: 64 + s.prestige,
-      age: 17 + Math.floor(rng() * 2),
-      academy: true,
-      idPrefix: `ac${s.year}`,
-    });
-    p.potential = Math.min(94, 76 + Math.round(s.prestige * 2) + randInt(rng, 0, 8));
-    p.contract = 3;
-    s.players[p.id] = p;
-    club.squad.push(p.id);
-    intake.push(`${p.name} (${p.pos})`);
-    intakeIds.push(p.id);
+  // Academy prospects grow too (the new intake arrives in pre-season); 20-year-olds still there leave.
+  for (const id of s.academy ?? []) {
+    const p = s.players[id];
+    if (p) developPlayer(rng, p);
   }
+  const academyLeft = academySummer(s);
 
   for (const id of Object.keys(s.clubs)) if (id !== s.userClubId) topUpSquad(s, id);
   purgeOrphans(s);
   // Last season's team sheets would show retired and departed men: club sheets start afresh.
   s.lastLineups = undefined;
 
-  s.departures = { year: s.year, retired, expiring, academy: intakeIds };
+  s.departures = { year: s.year, retired, expiring, academy: [] };
   s.year += 1;
   s.seasonNumber += 1;
   fixTeam(s);
   s.phase = "departures";
   s.news = [
-    intake.length ? `Academy graduates: ${intake.join(", ")}.` : "No room in the squad for academy graduates this year.",
+    ...(academyLeft.length ? [`Left the academy: ${academyLeft.join(", ")}.`] : []),
     ...(retired.length ? [`Retired: ${retired.map((r) => r.name).join(", ")}.`] : []),
+    ...legendNews,
     ...(expiring.length ? [`Out of contract: ${expiring.map((id) => s.players[id]?.name).join(", ")}.`] : []),
     ...s.news,
   ].slice(0, 30);
@@ -180,7 +205,7 @@ export function beginOffseason(state: CareerState): CareerState {
 
 /** Drop records of players who are in no squad and not a free agent (retired, or lost by older versions). */
 function purgeOrphans(s: CareerState) {
-  const keep = new Set<string>(s.freeAgents);
+  const keep = new Set<string>([...s.freeAgents, ...(s.academy ?? [])]);
   for (const c of Object.values(s.clubs)) for (const id of c.squad) keep.add(id);
   for (const id of Object.keys(s.players)) if (!keep.has(id)) delete s.players[id];
   s.freeAgents = [...new Set(s.freeAgents)].filter((id) => !!s.players[id]);
@@ -255,10 +280,10 @@ export function buildMarket(state: CareerState, unlockedLegends: string[], salt 
     listings.push({ playerId: id, fromClubId: null, price: 0, wages: playerWage(p) });
   }
 
-  // Unlocked legends (not already at the club).
+  // Unlocked legends (not at a club, yours or anyone's, and not retired in this career).
   for (const legendId of unlockedLegends) {
     const card = legendById(legendId);
-    if (!card || userSquad.has(`legend-${card.id}`)) continue;
+    if (!card || userSquad.has(`legend-${card.id}`) || !legendAvailable(state, `legend-${card.id}`)) continue;
     listings.push({ playerId: `legend-${card.id}`, fromClubId: null, price: card.signingFee, wages: playerWage(legendAsPlayer(card)), legend: true });
   }
 
@@ -305,8 +330,9 @@ export function buyPlayer(
     const card = legendById(listing.playerId.replace(/^legend-/, ""));
     if (!card) return { state, error: "not-available" };
     // Already at a club (double tap / stale listing)? Then he isn't available.
-    if (Object.values(s.clubs).some((c) => c.squad.includes(`legend-${card.id}`))) return { state, error: "not-available" };
-    s.players[`legend-${card.id}`] = legendAsPlayer(card);
+    if (!legendAvailable(s, `legend-${card.id}`)) return { state, error: "not-available" };
+    // Exactly the vault's "plays at" rating, on a deal that runs until he retires.
+    s.players[`legend-${card.id}`] = signLegend(s, card);
     s.freeAgents = s.freeAgents.filter((id) => id !== `legend-${card.id}`);
   } else {
     const p = s.players[listing.playerId];
@@ -328,8 +354,8 @@ export function buyPlayer(
   np.fee = cost.fee;
   np.leftClubId = undefined;
   np.leftYear = undefined;
-  // New signings come on a fresh deal (legends for two seasons).
-  np.contract = listing.legend ? 2 : Math.max(2, newDealLength(np.age));
+  // New signings come on a fresh deal (legends until they retire).
+  if (!listing.legend) np.contract = Math.max(2, newDealLength(np.age));
   if (s.phase === "season") s.lastWages = wageBill(squadOf(s, s.userClubId));
   // A signing who's better than the weakest starter in his position goes straight into the XIII
   // (a 94-rated legend used to sit in the squad until you picked him yourself).
@@ -387,7 +413,8 @@ function putInLineupIfBetter(s: CareerState, np: CareerPlayer): "xiii" | "bench"
     }
   });
   let placed: "xiii" | "bench" | null = null;
-  if (worst >= 0 && effectiveRating(np, np.pos) > worstScore) {
+  // A legend always starts in his position (the weakest man there drops to the bench).
+  if (worst >= 0 && (np.legend || effectiveRating(np, np.pos) > worstScore)) {
     const dropped = lineup[worst];
     lineup[worst] = np.id;
     if (dropped) tryBench(dropped);
@@ -477,6 +504,8 @@ export function finishTransfers(state: CareerState): CareerState {
   const s: CareerState = structuredClone(state);
   // Still the summer window: AI clubs pick up free agents they need (no fee), then top up.
   aiSignFreeAgents(s);
+  // Now and then a Super League club brings one of its legends home.
+  aiLegendSigning(s);
   for (const id of Object.keys(s.clubs)) if (id !== s.userClubId) topUpSquad(s, id);
   // New season, best XIII (so new signings play); the user can still change it.
   Object.assign(s, autoPickTeam(s));

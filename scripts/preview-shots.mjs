@@ -187,6 +187,66 @@ await shot(phone, "45-how-to-play", "/", async (page) => {
     await page.getByRole("button", { name: /^Shirt 14,/ }).click({ timeout: 5000 });
     await page.waitForTimeout(600);
   });
+  // Captain row and the Academy list on the Team tab.
+  await shot(narrow, "48e-320-manager-academy", "/manager", async (page) => {
+    await page.getByRole("tab", { name: "Team" }).click({ timeout: 5000 });
+    await page.getByRole("region", { name: "Academy" }).scrollIntoViewIfNeeded({ timeout: 5000 });
+    await page.waitForTimeout(400);
+  });
+  await shot(narrow, "48f-320-manager-captain", "/manager", async (page) => {
+    await page.getByRole("tab", { name: "Team" }).click({ timeout: 5000 });
+    await page.getByTestId("captain").scrollIntoViewIfNeeded({ timeout: 5000 });
+    await page.evaluate(() => window.scrollBy(0, -80));
+    await page.waitForTimeout(400);
+  });
+  // Your next games (Magic Weekend and derbies marked) under the table.
+  await shot(narrow, "48g-320-manager-fixtures", "/manager", async (page) => {
+    await page.getByRole("tab", { name: "Table" }).click({ timeout: 5000 });
+    await page.getByRole("list", { name: "Your next games" }).scrollIntoViewIfNeeded({ timeout: 5000 });
+    await page.waitForTimeout(400);
+  });
+  // A hub pop-up (an AI club signs a legend), injected into the save.
+  await shot(narrow, "48j-320-manager-popup", "/manager", async (page) => {
+    await page.evaluate((k) => {
+      const s = JSON.parse(localStorage.getItem(k) || "null");
+      if (!s) return;
+      const clubs = Object.values(s.clubs);
+      const club = clubs.find((c) => c.id !== s.userClubId && c.name === "Wigan Warriors") || clubs.find((c) => c.id !== s.userClubId);
+      s.tutorialDone = true;
+      s.events = [
+        ...(s.events || []),
+        { id: "preview-legend", kind: "legend-signing", year: s.year, clubId: club.id, name: "Sam Tomkins", rating: 91, title: `${club.name} sign Sam Tomkins!`, text: `A club legend is back at ${club.name}.`, options: [{ id: "ok", label: "Bring it on" }] },
+      ];
+      localStorage.setItem(k, JSON.stringify(s));
+    }, "27-0-career-v2-save");
+    await page.reload({ waitUntil: "networkidle" });
+    await page.getByTestId("career-event").waitFor({ timeout: 5000 });
+    await page.waitForTimeout(500);
+  });
+  // Quick-sim to the season review: the awards card.
+  await shot(narrow, "48h-320-manager-awards", "/manager", async (page) => {
+    await page.getByRole("tab", { name: "Match" }).click({ timeout: 5000 }).catch(() => {});
+    let sawMagic = false;
+    for (let i = 0; i < 90; i++) {
+      if (await page.getByRole("region", { name: "Season awards" }).isVisible().catch(() => false)) break;
+      // A hub pop-up (legend signing, random event) waits for an answer: take the default.
+      if (await page.getByTestId("career-event").isVisible().catch(() => false)) await page.keyboard.press("Escape");
+      if (!sawMagic && (await page.getByTestId("fixture-banner").isVisible().catch(() => false))) {
+        sawMagic = true;
+        await page.screenshot({ path: `${OUT}/48i-320-manager-special-fixture.png` });
+        console.log("shot 48i-320-manager-special-fixture");
+      }
+      const next = page
+        .getByRole("button", {
+          name: /^(Quick sim|Continue|Shut the window|Skip pre-season|Start the season|On to the play-offs|On to the semi-finals|On to the Million Pound Game|Watch the play-offs|On to the Grand Final|Watch the Grand Final)$/,
+        })
+        .first();
+      if (await next.isVisible().catch(() => false)) await next.click().catch(() => {});
+      await page.waitForTimeout(150);
+    }
+    await page.getByRole("region", { name: "Season awards" }).scrollIntoViewIfNeeded({ timeout: 5000 });
+    await page.waitForTimeout(400);
+  });
   await shot(narrow, "49-320-settings", "/settings", null, true);
   await narrow.close();
 }

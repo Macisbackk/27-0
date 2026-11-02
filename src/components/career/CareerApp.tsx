@@ -19,6 +19,7 @@ import { TransferWindow } from "./TransferWindow";
 import { useDeadlineDriver } from "./TransferNews";
 import { ClubBadge, ProgressBar, Stars, CAREER_PAGE_CLASS, CareerBackLink } from "./bits";
 import { CareerTutorial } from "./CareerTutorial";
+import { EventPopup } from "./EventPopup";
 import { PitchMark } from "@/components/ui/PitchHero";
 import { BoardGlyph } from "@/components/icons/rugby-icons";
 import { setManagerNav, type ManagerTab } from "@/lib/ui/manager-nav";
@@ -196,6 +197,7 @@ function CareerRouter() {
       {sheets}
       <DailyMissionToast />
       <CareerTutorial onTab={setTab} />
+      {state.tutorialDone ? <EventPopup /> : null}
     </div>
     </ClubSheetProvider>
   );
