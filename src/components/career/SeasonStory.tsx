@@ -85,7 +85,7 @@ export function ResultRow({ m, clubs, userClubId }: { m: MiniResult; clubs: Club
   const opp = clubOf(clubs, side.opponent);
   return (
     <li className="flex items-center gap-2 py-1.5 text-[13px]">
-      <span className="w-14 shrink-0 text-[11px] text-gray-500">{miniLabel(m, true)}</span>
+      <span className="w-12 shrink-0 text-[11px] leading-tight text-gray-500">{miniLabel(m, true)}</span>
       <span className={`inline-flex w-6 shrink-0 justify-center rounded-full py-0.5 text-[11px] font-bold ${side.outcome ? OUTCOME_TONE[side.outcome] : "bg-white/5 text-gray-500"}`}>
         {side.outcome ?? "–"}
       </span>
@@ -198,8 +198,13 @@ export function PlayoffBracketView({ bracket, clubs, userClubId }: { bracket: Pl
           )}
           {bracket.byes.length === 2 ? (
             <p className="mt-1 text-center text-[12px] leading-snug text-gray-400" data-testid="playoff-byes">
-              Bye to the semis: <span className={bracket.byes[0] === userClubId ? "font-semibold text-accent-gold" : "text-gray-200"}>{name(bracket.byes[0])}</span> (1st) and{" "}
-              <span className={bracket.byes[1] === userClubId ? "font-semibold text-accent-gold" : "text-gray-200"}>{name(bracket.byes[1])}</span> (2nd)
+              Byes to the semis:{" "}
+              {bracket.byes.map((id, i) => (
+                <span key={id} className="whitespace-nowrap">
+                  {i ? " · " : ""}
+                  <ClubName club={clubOf(clubs, id)} className={id === userClubId ? "font-semibold text-accent-gold" : "text-gray-200"} /> ({i ? "2nd" : "1st"})
+                </span>
+              ))}
             </p>
           ) : null}
         </>

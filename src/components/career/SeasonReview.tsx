@@ -287,13 +287,13 @@ export function SeasonOver() {
       <section aria-label="Season over" className="flex flex-col gap-4">
         <div className="text-center">
           <p className="text-xs font-semibold text-theme-primary">{o.year} · season over</p>
-          <h1 className="mt-1 font-display text-3xl font-bold leading-tight text-white">{title}</h1>
+          <h1 className="mt-1 font-display text-2xl font-bold leading-tight text-white sm:text-3xl">{title}</h1>
           <p className="mt-1 text-sm text-gray-300">
             {ordinal(o.position)} in the {DIVISION_LABEL[o.division]}
             {o.promoted ? " · promoted" : o.relegated ? " · relegated" : ""}
           </p>
         </div>
-        {last ? <ResultStrip state={s} fixture={last} /> : null}
+        {/* Who won it all comes first; then your own last game. */}
         {showGf && gfMini ? (
           <Card className="border border-accent-gold/40">
             <section aria-label="Grand Final result">
@@ -305,6 +305,7 @@ export function SeasonOver() {
             </section>
           </Card>
         ) : null}
+        {last ? <ResultStrip state={s} fixture={last} /> : null}
         {cupFinal && last?.id !== cupFinal.id ? (
           <p className="text-center text-[13px] text-gray-400">
             Challenge Cup: {s.clubs[cupFinal.result!.homeScore > cupFinal.result!.awayScore ? cupFinal.home : cupFinal.away]?.name} won the final.
