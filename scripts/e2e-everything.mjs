@@ -334,7 +334,7 @@ async function inPageAudit({ mobile }) {
     for (const el of all) {
       if (!isVis(el) || srOnly(el)) continue;
       const r = el.getBoundingClientRect();
-      if (r.width >= 40 && r.height >= 40) continue;
+      if (r.width >= 39.5 && r.height >= 39.5) continue; // sub-pixel rounding of a 40px box
       const cs = getComputedStyle(el);
       // Inline links inside running text are exempt (WCAG 2.5.8 inline exception).
       // (Also club names you can tap inside a sentence, e.g. "Leeds want Smith and offer…".)

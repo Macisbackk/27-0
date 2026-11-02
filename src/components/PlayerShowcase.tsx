@@ -407,7 +407,7 @@ export function PlayerShowcase() {
                 setSortKey(key);
                 setSortDir(key === "name" ? "asc" : "desc");
               }}
-              className="showcase-pill !min-h-[40px] !px-3 !text-xs"
+              className="showcase-pill !min-h-[40px] min-w-[44px] !px-3 !text-xs"
               aria-pressed={sortKey === key}
             >
               {label}
@@ -608,7 +608,7 @@ function TierChip({
     <button
       type="button"
       onClick={onClick}
-      className="showcase-pill !min-h-[40px] !px-3 !text-xs"
+      className="showcase-pill !min-h-[40px] min-w-[44px] !px-3 !text-xs"
       aria-pressed={active}
     >
       {children}

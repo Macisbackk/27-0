@@ -381,7 +381,7 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
               <ClubBadge club={opponent} size="lg" />
               <div className="min-w-0 flex-1">
                 <p className="text-xs uppercase tracking-wide text-gray-400">{neutral ? "Neutral venue v" : fixture.home === s.userClubId ? "Home vs" : "Away at"}</p>
-                <p className="font-display text-xl font-bold leading-tight text-white sm:text-2xl"><ClubLink clubId={opponent.id}>{opponent.name}</ClubLink></p>
+                <p className="font-display text-xl font-bold leading-tight text-white sm:text-2xl"><ClubLink clubId={opponent.id} className="inline-flex min-h-[40px] items-center">{opponent.name}</ClubLink></p>
                 {theirRow && fixture.kind === "league" ? (
                   <p className="mt-0.5 flex items-center gap-2 text-xs text-gray-400">
                     {ordinal(theirPos)} · {theirRow.w}W {theirRow.l}L <FormDots form={theirRow.form} />
