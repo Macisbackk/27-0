@@ -30,20 +30,22 @@ export function LegendVaultSheet({ open, onClose }: { open: boolean; onClose: ()
         </p>
       }
     >
-      <p className="text-center text-[13px] leading-relaxed text-gray-300">
-        Earn points from trophies and challenges. Unlocked legends join your market in every career.
+      {/* The unlock message takes the intro's place (same room), so the list never jumps. */}
+      <p
+        className={`flex min-h-[3.75rem] items-center justify-center text-center text-[13px] leading-snug ${message ? "font-semibold text-theme-primary" : "text-gray-300"}`}
+        role="status"
+      >
+        {message ?? "Earn points from trophies and challenges. Unlocked legends join your market in every career."}
       </p>
-      {/* Space kept for the unlock message so the list doesn't jump when it appears. */}
-      <p className="mt-1.5 flex min-h-[2.5rem] items-center justify-center text-center text-[13px] font-semibold text-theme-primary" role="status">
-        {message ?? ""}
-      </p>
-      <ul className="divide-y divide-pitch-800">
+      <ul className="mt-1 divide-y divide-pitch-800">
         {legends.map((l) => {
           const owned = legacy.unlockedLegends.includes(l.id);
           const affordable = legacy.legacyPoints >= l.unlockCost;
           return (
-            <li key={l.id} className="flex items-center gap-3 py-2.5 text-left">
-              <RatingPill rating={l.peak} />
+            <li key={l.id} className="flex items-start gap-3 py-2.5 text-left">
+              <span className="pt-0.5">
+                <RatingPill rating={l.peak} />
+              </span>
               <span className="min-w-0 flex-1">
                 <span className="block truncate font-semibold text-white">
                   {l.name}
@@ -51,7 +53,7 @@ export function LegendVaultSheet({ open, onClose }: { open: boolean; onClose: ()
                     <span className="ml-1.5 text-[10px] font-bold uppercase tracking-wide text-accent-gold">Great</span>
                   ) : null}
                 </span>
-                <span className="text-[11px] text-gray-400">
+                <span className="block text-[11px] leading-snug text-gray-400">
                   {POS_LABEL[l.pos]} · {l.club} · plays at {legendAsPlayer(l).rating} · signing fee {formatMoney(l.signingFee)}
                   {(() => {
                     if (!state) return null;
@@ -61,33 +63,35 @@ export function LegendVaultSheet({ open, onClose }: { open: boolean; onClose: ()
                     return null;
                   })()}
                 </span>
+                <span className="mt-1.5 flex">
+                {owned ? (
+                  <span className="text-[11px] font-bold uppercase tracking-wide text-success">Unlocked</span>
+                ) : (
+                  <GameButton
+                    size="sm"
+                    fullWidth={false}
+                    variant={affordable ? "era" : "secondary"}
+                    disabled={!affordable}
+                    onClick={() => {
+                      const err = unlockLegend(l.id);
+                      if (err) {
+                        playWarning();
+                        setMessage(err === "points" ? "Not enough Legacy points yet." : "Couldn't unlock that legend.");
+                      } else {
+                        playAchievementUnlock();
+                        setMessage(
+                          state && windowStatus(state).open
+                            ? `${l.name} unlocked! Sign him in the market now. He'll go straight into your XIII.`
+                            : `${l.name} unlocked! He'll be in the market when the window opens (pre-season or Deadline Day).`
+                        );
+                      }
+                    }}
+                  >
+                    Unlock · {l.unlockCost} pts
+                  </GameButton>
+                )}
+                </span>
               </span>
-              {owned ? (
-                <span className="text-xs font-bold uppercase tracking-wide text-success">Unlocked</span>
-              ) : (
-                <GameButton
-                  size="sm"
-                  fullWidth={false}
-                  variant={affordable ? "era" : "secondary"}
-                  disabled={!affordable}
-                  onClick={() => {
-                    const err = unlockLegend(l.id);
-                    if (err) {
-                      playWarning();
-                      setMessage(err === "points" ? "Not enough Legacy points yet." : "Couldn't unlock that legend.");
-                    } else {
-                      playAchievementUnlock();
-                      setMessage(
-                        state && windowStatus(state).open
-                          ? `${l.name} unlocked! Sign him in the market now. He'll go straight into your XIII.`
-                          : `${l.name} unlocked! He'll be in the market when the window opens (pre-season or Deadline Day).`
-                      );
-                    }
-                  }}
-                >
-                  {l.unlockCost} Legacy pts
-                </GameButton>
-              )}
             </li>
           );
         })}

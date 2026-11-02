@@ -223,7 +223,7 @@ export function TransferWindow({ mode = "summer", onClose }: { mode?: "summer" |
                   {p.legend ? <span className="ml-1.5 text-[10px] font-bold uppercase text-accent-gold">Legend</span> : null}
                   {p.academy ? <span className="ml-1.5 text-[10px] font-bold uppercase text-sky-300">Academy</span> : null}
                 </span>
-                <span className="text-[11px] text-gray-400">
+                <span className="block text-[11px] leading-snug text-gray-400">
                   Age {p.age}
                   {p.age <= 21 ? <> · <Stars value={potentialStars(p.potential)} /></> : null}
                   {wagesDueNow(s, p) > 0 ? ` · saves ${formatMoney(wagesDueNow(s, p))} wages` : ""}

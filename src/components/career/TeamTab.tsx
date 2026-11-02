@@ -240,11 +240,18 @@ export function TeamTab() {
                 >
                   <span className="w-6 text-right font-display text-sm font-bold text-gray-500">{i + 1}</span>
                   <span className="w-8 text-[11px] font-bold uppercase text-theme-primary">{pos}</span>
-                  <span className="min-w-0 flex-1 break-words leading-tight text-white">
-                    {p?.name ?? "—"}
-                    {p ? <Tags p={p} captain={p.id === leader} /> : null}
-                    {penalty ? <span className="ml-1.5 whitespace-nowrap text-[10px] text-danger">Out of position ({p!.pos})</span> : null}
-                    {p && contractOf(p) <= 1 ? <span className="ml-1.5 whitespace-nowrap text-[10px] font-bold text-amber-300">Final year</span> : null}
+                  <span className="min-w-0 flex-1 leading-tight">
+                    <span className="block break-words text-white">
+                      {p?.name ?? "—"}
+                      {p ? <Tags p={p} captain={p.id === leader} /> : null}
+                    </span>
+                    {/* Notes on their own line, so the name never breaks around them. */}
+                    {penalty || (p && contractOf(p) <= 1) ? (
+                      <span className="mt-0.5 flex flex-wrap gap-x-2 text-[10px] font-bold">
+                        {penalty ? <span className="text-danger">Out of position ({p!.pos})</span> : null}
+                        {p && contractOf(p) <= 1 ? <span className="text-amber-300">Final year</span> : null}
+                      </span>
+                    ) : null}
                   </span>
                   {p ? <RatingPill rating={p.rating - penalty} delta={penalty || undefined} /> : null}
                 </button>
@@ -295,7 +302,7 @@ export function TeamTab() {
                   {p.name}
                   <Tags p={p} />
                 </span>
-                <span className="text-[11px] text-gray-500">
+                <span className="block text-[11px] leading-snug text-gray-500">
                   Age {p.age} · <span className={contractOf(p) <= 1 ? "text-amber-300" : ""}>{contractLabel(contractOf(p))}</span>
                   {p.apps ? ` · ${p.apps} apps, ${p.tries} tries` : ""}
                   {p.age <= 21 ? (
@@ -333,7 +340,7 @@ export function TeamTab() {
                   <span className="w-8 text-[11px] font-bold uppercase text-gray-400">{p.pos}</span>
                   <span className="min-w-0 flex-1">
                     <span className="block break-words leading-tight text-white">{p.name}</span>
-                    <span className="text-[11px] text-gray-500">
+                    <span className="block text-[11px] leading-snug text-gray-500">
                       {p.id === captainId ? "Captain" : inXiii.has(p.id) ? "In the XIII" : "Not in the XIII"} · Age {p.age}
                     </span>
                   </span>
@@ -390,7 +397,7 @@ export function TeamTab() {
                       {p.name}
                       {eff < p.rating ? <span className="ml-1.5 whitespace-nowrap text-[10px] text-danger">Out of position</span> : null}
                     </span>
-                    <span className="text-[11px] text-gray-500">{where}</span>
+                    <span className="block text-[11px] leading-snug text-gray-500">{where}</span>
                   </span>
                   <RatingPill rating={eff} delta={p.rating - eff || undefined} />
                 </button>

@@ -435,7 +435,7 @@
   }
 }
 
-.mobile-sheet-card__header {
+.mobile-sheet--card .mobile-sheet-card__header {
   position: relative;
   padding: 16px 52px 12px;
   text-align: center;

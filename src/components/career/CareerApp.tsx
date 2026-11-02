@@ -194,7 +194,7 @@ function CareerRouter() {
 
   return (
     <ClubSheetProvider>
-    <div className={tab === "match" ? CAREER_PAGE_CLASS : CAREER_PAGE_CLASS_NO_BAR}>
+    <div className={tab === "match" && stage !== "preseason" && stage !== "deadline" ? CAREER_PAGE_CLASS : CAREER_PAGE_CLASS_NO_BAR}>
       <CareerBackLink />
       <HubHeader />
       {/* Phones use the bottom bar for these (BottomNav reads lib/ui/manager-nav). */}

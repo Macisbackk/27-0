@@ -163,7 +163,7 @@ export function SeasonReview() {
       </Card>
 
       <Card>
-        <dl className="grid grid-cols-2 gap-4 text-sm">
+        <dl className="grid grid-cols-2 gap-4 text-center text-sm sm:text-left">
           <div>
             <dt className="text-[11px] uppercase tracking-wide text-gray-500">Prize money</dt>
             <dd className="font-display text-xl font-bold text-white">{formatMoney(o.prizeMoney)}</dd>

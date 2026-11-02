@@ -132,7 +132,7 @@ export function ClubTab({ onOpenVault, onOpenRecords }: { onOpenVault: () => voi
       <Card>
         <Eyebrow>The club</Eyebrow>
         <WindowStatusLine className="mt-2" />
-        <div className="mt-3 grid grid-cols-2 gap-3 text-sm">
+        <div className="mt-3 grid grid-cols-2 gap-3 text-center text-sm sm:text-left">
           <div>
             <p className="text-[11px] uppercase tracking-wide text-gray-500">Transfer budget</p>
             <p className={`font-display text-xl font-bold ${s.budget < 0 ? "text-danger" : "text-white"}`}>{formatMoney(s.budget)}</p>
