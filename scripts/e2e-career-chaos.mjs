@@ -116,7 +116,7 @@ try {
   while (guard++ < 80) {
     if (await page.getByText(/season review/i).first().isVisible().catch(() => false)) break;
     const simTo = page.getByRole("button", { name: /^Sim to / }).first();
-    const next = page.getByRole("button", { name: /^(Quick sim|Continue|Shut the window|On to the play-offs|On to the Million Pound Game|Watch the play-offs|On to the Grand Final|Watch the Grand Final)$/ }).first();
+    const next = page.getByRole("button", { name: /^(Quick sim|Continue|Shut the window|On to the play-offs|On to the semi-finals|On to the Million Pound Game|Watch the play-offs|On to the Grand Final|Watch the Grand Final)$/ }).first();
     if (await simTo.isVisible().catch(() => false)) await simTo.click().catch(() => {});
     else if (await next.isVisible().catch(() => false)) await next.click().catch(() => {});
     if (await page.getByText("No game for you this week").isVisible().catch(() => false)) errors.push("a no-game week was shown (should play through)");

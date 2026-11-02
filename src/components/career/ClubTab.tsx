@@ -131,7 +131,7 @@ export function ClubTab({ onOpenVault, onOpenRecords }: { onOpenVault: () => voi
           ) : null}
         </div>
         <p className="mt-3 text-xs leading-relaxed text-gray-400">
-          Prestige rises with trophies and top-4 finishes. It falls with relegation or a bottom-3 finish.
+          Prestige rises with trophies and top-6 finishes. It falls with relegation or a bottom-3 finish.
           <br />
           It brings more income. Players rated up to <span className="font-semibold text-white">{prestigeRatingCap(s.prestige)}</span> will join you now.
         </p>

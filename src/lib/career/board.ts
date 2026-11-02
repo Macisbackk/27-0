@@ -20,7 +20,7 @@ export function boardTargetForRank(division: Division, expectedRank: number, siz
 /** "Reach the play-offs", "Finish in the top 6", "Stay up"… */
 export function boardTargetLabel(division: Division, target: number, size: number): string {
   if (division === "super-league") {
-    if (target <= 4) return "Reach the play-offs (top 4)";
+    if (target === 6) return "Reach the play-offs (top 6)";
     if (target >= size - 2) return `Stay up (${target}th or better)`;
     return `Finish in the top ${target}`;
   }

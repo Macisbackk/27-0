@@ -77,7 +77,9 @@ export function buildCalendar(
     else if (cupIndex === 3) push(CUP_ROUND_LABELS[3], [], "cup-sf");
   }
   push(CUP_ROUND_LABELS[4], [], "cup-final");
-  push("Play-off semi-finals & Million Pound Game", [], "playoff-semis");
+  // Top-six play-offs (v1.52): 3v6 and 4v5 eliminators while the top two rest, then the semis.
+  push("Play-off eliminators & Million Pound Game", [], "playoff-elims");
+  push("Play-off semi-finals", [], "playoff-semis");
   push("Super League Grand Final", [], "grand-final");
   return matchdays;
 }

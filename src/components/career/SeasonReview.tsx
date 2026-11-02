@@ -66,9 +66,9 @@ export function SeasonReview() {
       : o.relegated
         ? "Bounce straight back: win the Championship."
         : club.division === "super-league"
-          ? o.position <= 4
+          ? o.position <= 6
             ? "So close. Can you win the Grand Final?"
-            : "Next: crack the top 4 and reach Old Trafford."
+            : "Next: crack the top 6 and reach Old Trafford."
           : o.position <= 2
             ? "One step away. Go up next year."
             : "Next: push for promotion.";

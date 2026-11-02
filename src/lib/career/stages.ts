@@ -36,7 +36,11 @@ export function markStageSeen(state: CareerState, key: StageKey): CareerState {
 
 function isPlayoffMatchday(md: Matchday | undefined): boolean {
   if (!md) return false;
-  return md.pendingDraw === "playoff-semis" || md.fixtures.some((f) => f.kind === "semi" || f.kind === "mpg");
+  return (
+    md.pendingDraw === "playoff-elims" ||
+    md.pendingDraw === "playoff-semis" ||
+    md.fixtures.some((f) => f.kind === "eliminator" || f.kind === "semi" || f.kind === "mpg")
+  );
 }
 
 function isGrandFinalMatchday(md: Matchday | undefined): boolean {
@@ -68,7 +72,7 @@ export interface LeagueOverPicture {
   division: Division;
   position: number;
   size: number;
-  /** The user's next game (play-off semi or Million Pound Game), if any. */
+  /** The user's next game (play-off eliminator or Million Pound Game), if any. */
   next?: Fixture;
   /** What the final position means, in one line. */
   verdict: string;
@@ -91,13 +95,15 @@ export function leagueOverPicture(state: CareerState): LeagueOverPicture {
           : "Not enough to go up this time. Your season is over.";
   } else {
     verdict =
-      position <= 4
-        ? `Into the play-offs. A semi-final for a place at Old Trafford.`
-        : position === table.length
+      position <= 2
+        ? "Top two. A week off, then a home semi-final."
+        : position <= 6
+          ? "Into the play-offs. Win the eliminator to reach the semis."
+          : position === table.length
           ? "Bottom of the table. Relegated to the Championship."
           : position === table.length - 1
             ? "Second-bottom. Win the Million Pound Game to stay up."
-            : "Out of the top four. Safe, but the play-offs go on without you.";
+            : "Out of the top six. Safe, but the play-offs go on without you.";
   }
   return { division, position, size: table.length, next, verdict };
 }
