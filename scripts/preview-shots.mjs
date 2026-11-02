@@ -547,4 +547,121 @@ await shot(phone, "72-settings-toggle-on", "/settings", async (page) => {
   await ctx.close();
 }
 
+// Manager Mode tidy audit (v1.57): every hub screen and pop-up at 320 and 390 wide, plus where the
+// page lands after Quick sim / a live match / switching tabs (viewport shots, not full page).
+for (const [w, h] of [[320, 640], [390, 844]]) {
+  const ctx = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+  const page = await ctx.newPage();
+  const snap = async (name, fullPage = false) => {
+    await page.waitForTimeout(450);
+    await page.screenshot({ path: `${OUT}/90-${w}-${name}.png`, fullPage }).catch(() => {});
+    console.log("shot", `90-${w}-${name}`);
+  };
+  const tab = (name) => page.getByRole("tab", { name, exact: true }).first().click({ timeout: 5000 });
+  const esc = async () => {
+    await page.keyboard.press("Escape");
+    await page.waitForTimeout(300);
+  };
+  const clearPopups = async () => {
+    for (let i = 0; i < 4 && (await page.getByTestId("career-event").isVisible().catch(() => false)); i++) await esc();
+  };
+  try {
+    await page.goto(BASE + "/manager", { waitUntil: "networkidle", timeout: 30000 });
+    await page.getByRole("list", { name: "Clubs" }).getByRole("button").first().click({ timeout: 5000 });
+    await page.getByRole("button", { name: /Take charge of/ }).click({ timeout: 5000 });
+    await page.getByRole("dialog", { name: "Manager Mode walkthrough" }).getByRole("button", { name: "Skip" }).click({ timeout: 8000 }).catch(() => {});
+    await snap("01-preseason", true);
+    await page.getByRole("button", { name: "Open market" }).first().click({ timeout: 5000 }).catch(() => {});
+    await snap("02-market");
+    await page.evaluate(() => window.scrollTo(0, 600));
+    await page.getByRole("button", { name: /Back to pre-season/ }).click({ timeout: 5000 }).catch(() => {});
+    await snap("03-back-from-market");
+    await page.getByRole("button", { name: /^Skip pre-season/ }).click({ timeout: 5000 }).catch(() => {});
+    await page.waitForTimeout(800);
+    await snap("04-round1", true);
+    await page.evaluate(() => window.scrollTo(0, 700));
+    await page.getByRole("button", { name: "Quick sim" }).click({ timeout: 8000 }).catch(() => {});
+    await page.waitForTimeout(900);
+    await clearPopups();
+    await snap("05-after-quick-sim");
+    await snap("06-match-full", true);
+    await page.evaluate(() => window.scrollTo(0, 700));
+    await page.getByRole("button", { name: "Play match" }).click({ timeout: 8000 }).catch(() => {});
+    await page.waitForTimeout(2500);
+    await snap("07-live");
+    for (let i = 0; i < 40; i++) {
+      const call = page.locator("section[aria-label] button.btn-press").first();
+      if (await call.isVisible().catch(() => false)) {
+        await snap("08-live-call");
+        break;
+      }
+      await page.waitForTimeout(500);
+    }
+    await page.getByRole("button", { name: "Skip to full time" }).first().click({ timeout: 5000 }).catch(() => {});
+    await page.waitForTimeout(600);
+    await snap("09-live-full-time");
+    await page.getByRole("button", { name: "Continue", exact: true }).click({ timeout: 5000 }).catch(() => {});
+    await page.waitForTimeout(900);
+    await clearPopups();
+    await snap("10-after-live");
+    await page.evaluate(() => window.scrollTo(0, 500));
+    await tab("Team");
+    await snap("11-team-tab-landing");
+    await snap("12-team-full", true);
+    await page.getByRole("button", { name: "Change", exact: true }).first().click({ timeout: 5000 }).catch(() => {});
+    await snap("13-captain-sheet");
+    await esc();
+    await page.getByRole("button", { name: /^Shirt 1,/ }).click({ timeout: 5000 }).catch(() => {});
+    await snap("14-shirt-sheet");
+    await esc();
+    await tab("Table");
+    await snap("15-table-full", true);
+    await page.locator("table tbody tr").nth(2).getByRole("button").first().click({ timeout: 5000 }).catch(() => {});
+    await snap("16-club-sheet");
+    await esc();
+    await tab("Club");
+    await snap("17-club-full", true);
+    for (const sub of ["Stats", "Records", "News"]) {
+      if (await page.getByRole("tab", { name: sub, exact: true }).isVisible().catch(() => false)) {
+        await tab(sub);
+        await snap(`18-club-${sub.toLowerCase()}`, true);
+      }
+    }
+    await page.getByRole("button", { name: "Legend Vault" }).first().click({ timeout: 5000 }).catch(() => {});
+    await snap("19-vault-sheet");
+    await esc();
+    await page.getByRole("button", { name: "Records", exact: true }).first().click({ timeout: 5000 }).catch(() => {});
+    await snap("20-records-sheet");
+    await esc();
+    if (await page.getByRole("tab", { name: "Overview", exact: true }).isVisible().catch(() => false)) await tab("Overview");
+    await page.getByRole("button", { name: "Start a new career" }).click({ timeout: 5000 }).catch(() => {});
+    await snap("21-new-career-confirm");
+    await esc();
+    // Hub pop-ups, injected: a legend signing (one button) and a two-choice event.
+    await page.evaluate((k) => {
+      const s = JSON.parse(localStorage.getItem(k) || "null");
+      if (!s) return;
+      const club = Object.values(s.clubs).find((c) => c.id !== s.userClubId);
+      s.events = [
+        ...(s.events || []),
+        { id: "tidy-legend", kind: "legend-signing", year: s.year, clubId: club.id, name: "Sam Tomkins", rating: 91, title: `${club.name} sign Sam Tomkins!`, text: `A club legend is back at ${club.name}.`, options: [{ id: "ok", label: "Bring it on" }] },
+        { id: "tidy-choice", kind: "record-bid", year: s.year, clubId: club.id, playerId: s.lineup[0], name: s.players[s.lineup[0]].name, rating: s.players[s.lineup[0]].rating, amount: 450000, title: "Record bid!", text: `${club.name} offer a club-record fee. Take the money?`, options: [{ id: "reject", label: "Reject" }, { id: "accept", label: "Accept · £450k" }] },
+      ];
+      localStorage.setItem(k, JSON.stringify(s));
+    }, "27-0-career-v2-save");
+    await page.reload({ waitUntil: "networkidle" });
+    await page.getByTestId("career-event").waitFor({ timeout: 5000 }).catch(() => {});
+    await snap("22-popup-legend");
+    await esc();
+    await page.getByTestId("career-event").waitFor({ timeout: 3000 }).catch(() => {});
+    await snap("23-popup-choice");
+    await esc();
+    await tab("Match");
+    await snap("24-match-after-tab");
+  } catch (e) {
+    console.log("skip tidy", w, String(e).slice(0, 200));
+  }
+  await ctx.close();
+}
+
 await browser.close();
