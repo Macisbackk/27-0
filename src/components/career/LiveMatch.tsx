@@ -201,6 +201,13 @@ export function LiveMatch({
               </button>
             ))}
           </div>
+          <button
+            type="button"
+            onClick={skip}
+            className="mt-3 w-full text-center text-xs font-semibold text-[color:var(--fl-muted)] underline-offset-2 hover:underline"
+          >
+            Skip to full time
+          </button>
         </section>
         </div>
         </>
@@ -227,7 +234,8 @@ export function LiveMatch({
         </ul>
       </section>
 
-      <div className="mobile-action-bar sm:static sm:border-0 sm:bg-transparent sm:p-0" role="toolbar">
+      {/* Hidden while a call is open: the call sheet has its own Skip (one button, nothing covered). */}
+      <div className={`mobile-action-bar sm:static sm:border-0 sm:bg-transparent sm:p-0 ${m.pending ? "hidden" : ""}`} role="toolbar">
         <div className="mobile-action-bar__inner flex flex-col gap-2">
           {m.finished ? (
             <GameButton size="lg" onClick={finish}>
