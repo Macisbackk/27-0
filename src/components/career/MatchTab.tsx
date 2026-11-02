@@ -8,7 +8,13 @@ import {
   autoPickTeam,
   clubRating,
   currentStage,
+  derbyBonus,
   isBigMatchday,
+  isDerby,
+  isMagicWeekend,
+  formatMoney,
+  DERBY_LEGACY,
+  MAGIC_WEEKEND_LEGACY,
   leagueOverPicture,
   teamRating,
   ordinal,
@@ -26,7 +32,7 @@ import { ClubLink } from "./ClubSheet";
 import { IncomingBidCard, TransferWindowCard } from "./TransferNews";
 import { PreseasonCard, PreseasonResults } from "./Preseason";
 import { LeagueOverCard, PromotionCard } from "./Stages";
-import { Card, ClubBadge, Eyebrow, FormDots } from "./bits";
+import { Card, ClubBadge, Eyebrow, FixtureTags, FormDots } from "./bits";
 
 const TACTICS: Array<{ id: Tactic; label: string; hint: string }> = [
   { id: "attack", label: "Attack", hint: "More tries for you — and for them." },
@@ -96,6 +102,8 @@ export function ResultStrip({ state, fixture, flash }: { state: CareerState; fix
       tone: streak.kind === "W" ? "bg-success/15 text-success" : streak.kind === "L" ? "bg-danger/15 text-red-200" : "bg-white/10 text-gray-200",
     });
   }
+  if (isDerby(state, fixture)) chips.push({ text: result === "W" ? "Derby win" : result === "L" ? "Derby defeat" : "Derby draw", tone: pill });
+  if (isMagicWeekend(fixture)) chips.push({ text: "Magic Weekend", tone: "bg-violet-400/15 text-violet-200" });
   if (flash && flash.moved > 0) chips.push({ text: `Up ${flash.moved} ${flash.moved === 1 ? "place" : "places"}`, tone: "bg-success/15 text-success" });
   if (flash && flash.moved < 0) chips.push({ text: `Down ${-flash.moved} ${flash.moved === -1 ? "place" : "places"}`, tone: "bg-danger/15 text-red-200" });
   return (
@@ -234,7 +242,9 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
   const table = sortTable(s.tables[myDiv]);
   const theirRow = opponentId ? table.find((r) => r.clubId === opponentId) : undefined;
   const theirPos = opponentId ? table.findIndex((r) => r.clubId === opponentId) + 1 : 0;
-  const edge = myRating - theirRating + (fixture?.home === s.userClubId ? 0.9 : -0.9);
+  const neutral = fixture ? isMagicWeekend(fixture) : false;
+  const derby = fixture ? isDerby(s, fixture) : false;
+  const edge = myRating - theirRating + (neutral ? 0 : fixture?.home === s.userClubId ? 0.9 : -0.9);
   const outlook = edge > 2 ? "Favourites" : edge > 0.5 ? "Slight favourites" : edge > -0.5 ? "Coin flip" : edge > -2 ? "Underdogs" : "Big underdogs";
   const big = isBigMatchday(s, md);
   const stage = currentStage(s);
@@ -328,14 +338,17 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
       <Card className={big ? "border-accent-gold/60" : ""}>
         <div className="flex items-center justify-between gap-2">
           <Eyebrow>{md ? md.label : "Season complete"}</Eyebrow>
-          {big ? <span className="rounded-full bg-accent-gold/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-accent-gold">Big game</span> : null}
+          <span className="flex flex-wrap items-center justify-end gap-1">
+            {fixture ? <FixtureTags state={s} fixture={fixture} /> : null}
+            {big ? <span className="rounded-full bg-accent-gold/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-accent-gold">Big game</span> : null}
+          </span>
         </div>
         {fixture && opponent ? (
           <>
             <div className="mt-3 flex items-center gap-3">
               <ClubBadge club={opponent} size="lg" />
               <div className="min-w-0 flex-1">
-                <p className="text-xs uppercase tracking-wide text-gray-400">{fixture.home === s.userClubId ? "Home vs" : "Away at"}</p>
+                <p className="text-xs uppercase tracking-wide text-gray-400">{neutral ? "Neutral venue v" : fixture.home === s.userClubId ? "Home vs" : "Away at"}</p>
                 <p className="font-display text-xl font-bold leading-tight text-white sm:text-2xl"><ClubLink clubId={opponent.id}>{opponent.name}</ClubLink></p>
                 {theirRow && fixture.kind === "league" ? (
                   <p className="mt-0.5 flex items-center gap-2 text-xs text-gray-400">
@@ -344,6 +357,13 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
                 ) : null}
               </div>
             </div>
+            {neutral || derby ? (
+              <p data-testid="fixture-banner" className="mt-3 rounded-control bg-pitch-950 px-3 py-2 text-center text-[13px] text-gray-300">
+                {neutral ? `Magic Weekend: neutral venue, no home advantage. Win for +${MAGIC_WEEKEND_LEGACY} Legacy.` : ""}
+                {neutral && derby ? " " : ""}
+                {derby ? `Derby day. Win for +${formatMoney(derbyBonus(myDiv))} and +${DERBY_LEGACY} Legacy.` : ""}
+              </p>
+            ) : null}
             <div className="mt-4 grid grid-cols-3 items-center gap-2 text-center">
               <div>
                 <p className="font-display text-xl font-bold tabular-nums text-white">{myRating.toFixed(1)}</p>

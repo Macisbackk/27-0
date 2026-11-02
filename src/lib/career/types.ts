@@ -75,6 +75,21 @@ export interface FixtureResult {
   awaySentOff?: string[];
 }
 
+export type AwardId = "man-of-steel" | "young-player" | "top-try-scorer" | "club-player";
+
+/** One end-of-season award. */
+export interface SeasonAward {
+  id: AwardId;
+  /** Division the award is for (club-player: the user's division). */
+  division: Division;
+  playerId: string;
+  name: string;
+  clubId: string;
+  clubName: string;
+  /** Short line, e.g. "18 tries in 27 games". */
+  detail: string;
+}
+
 export interface Fixture {
   id: string;
   kind: FixtureKind;
@@ -148,6 +163,10 @@ export interface SeasonOutcome {
   legacyEarned: number;
   challengesDone: number;
   topTryScorer?: { name: string; tries: number };
+  /** League awards (Super League, plus the Championship when the user played there) and the club's Player of the Season. */
+  awards?: SeasonAward[];
+  /** Derby record this season. */
+  derbies?: { w: number; d: number; l: number };
   /** The board's league target for the season (finish this place or better), when one was set. */
   boardTarget?: number;
   /** Set once this season has been banked into the cross-career legacy. */
@@ -202,6 +221,12 @@ export interface CareerState {
     academyDebutIds: string[];
     pointsScored: number;
     cupRoundReached: number;
+    /** Derby record (older saves: none yet). */
+    derbies?: { w: number; d: number; l: number };
+    /** Legacy from Magic Weekend and derby wins, added at season end. */
+    bonusLegacy?: number;
+    /** A derby win lifts the next game: matchday index it applies to. */
+    moraleAt?: number;
   };
   /** season → review (end of season) → departures (retirements, contracts) → transfers → season. */
   phase: "season" | "review" | "departures" | "transfers";
@@ -230,6 +255,10 @@ export interface CareerState {
   stagesSeen?: string[];
   /** The summer's comings and goings, shown before the transfer window opens. */
   departures?: Departures;
+  /** Academy prospects (in `players`, not in any squad): promote, release or leave them. Older saves: none. */
+  academy?: string[];
+  /** The user's chosen captain (older saves: the best senior starter). */
+  captainId?: string;
   /** The board's league target for `year` (finish `target`th or better). Older saves derive it. */
   board?: { year: number; target: number };
 }

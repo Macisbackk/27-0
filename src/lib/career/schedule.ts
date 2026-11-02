@@ -29,6 +29,12 @@ export function roundRobin(clubIds: string[]): Array<Array<[string, string]>> {
 export const CUP_AFTER_ROUND = [4, 9, 14, 19] as const;
 export const CUP_ROUND_LABELS = ["Challenge Cup Round 1", "Challenge Cup Round of 16", "Challenge Cup Quarter-final", "Challenge Cup Semi-final", "Challenge Cup Final"] as const;
 
+/** Magic Weekend: every league game this round is at a neutral venue (no home advantage). */
+export const MAGIC_ROUND = 12;
+export function isMagicWeekend(f: Pick<Fixture, "kind" | "round">): boolean {
+  return f.kind === "league" && f.round === MAGIC_ROUND;
+}
+
 export const SL_ROUNDS = 26;
 export const CHAMP_ROUNDS = 21;
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useReducer, useRef, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
-import { repairTeam, sheetFor, type CareerState, type Fixture } from "@/lib/career";
+import { isMagicWeekend, repairTeam, sheetFor, userCaptain, type CareerState, type Fixture } from "@/lib/career";
 import {
   createLiveMatch,
   liveResult,
@@ -53,7 +53,9 @@ export function LiveMatch({
     const rng = rngFor(state.seed, state.year, fixture.id, "live");
     const team = repairTeam(state, state.lineup, state.bench ?? []);
     const sheet = (clubId: string) =>
-      clubId === state.userClubId ? { ...sheetFor(state, clubId), ...team } : sheetFor(state, clubId);
+      clubId === state.userClubId
+        ? { ...sheetFor(state, clubId), ...team, captain: userCaptain({ ...state, ...team }) }
+        : sheetFor(state, clubId);
     rngRef.current = rng;
     matchRef.current = createLiveMatch({
       home: sheet(fixture.home),
@@ -62,6 +64,7 @@ export function LiveMatch({
       awayName: state.clubs[fixture.away]!.name,
       userSide: fixture.home === state.userClubId ? "home" : "away",
       knockout: fixture.kind !== "league",
+      neutral: isMagicWeekend(fixture),
       players: state.players,
       rng,
     });

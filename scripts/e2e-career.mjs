@@ -178,6 +178,15 @@ try {
   await shot("team-bench");
   step("Interchange: 4 bench shirts, swap from the squad");
 
+  // Captain row and the Academy list (3–4 prospects every pre-season).
+  await page.getByTestId("captain").waitFor({ timeout });
+  const academy = page.getByRole("region", { name: "Academy" });
+  await academy.scrollIntoViewIfNeeded({ timeout });
+  const prospects = await academy.getByRole("button", { name: "Promote" }).count();
+  if (prospects < 3 || prospects > 4) throw new Error(`Expected 3–4 academy prospects, saw ${prospects}`);
+  await shot("team-academy");
+  step(`Captain on the Team tab; Academy with ${prospects} prospects`);
+
   await page.getByRole("tab", { name: "Table" }).click();
   await page.locator("table").first().waitFor({ timeout });
   const rows = await page.locator("table tbody tr").count();
@@ -258,6 +267,12 @@ try {
   await page.getByText(/season review/i).first().waitFor({ timeout: 60_000 });
   step("Quick-simmed the season → review screen");
   await shot("review");
+  const awards = page.getByRole("region", { name: "Season awards" });
+  await awards.waitFor({ timeout });
+  if (!(await awards.getByText("Man of Steel").first().isVisible().catch(() => false))) throw new Error("Season awards card has no Man of Steel");
+  await awards.scrollIntoViewIfNeeded();
+  await shot("review-awards");
+  step("Season review: awards card (Man of Steel, Player of the Season)");
 
   if (!shotLeagueOver || !shotPromotion) throw new Error("League-over / promotion stages were not shown");
   await clickButton("Next: retirements and contracts");

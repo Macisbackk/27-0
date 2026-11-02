@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
-import type { CareerClub } from "@/lib/career";
+import { isDerby, isMagicWeekend, type CareerClub, type CareerState, type Fixture } from "@/lib/career";
 
 /** Round club crest stand-in: club colours + 3-letter code. */
 export function ClubBadge({
@@ -112,5 +112,26 @@ export function CareerBackLink({ label = "Home", href = "/" }: { label?: string;
         <span aria-hidden>‹</span> {label}
       </Link>
     </nav>
+  );
+}
+
+/** Small pills for a special fixture: Magic Weekend (neutral venue) and Derby. Nothing otherwise. */
+export function FixtureTags({ state, fixture }: { state: Pick<CareerState, "clubs">; fixture: Fixture }) {
+  const magic = isMagicWeekend(fixture);
+  const derby = isDerby(state, fixture);
+  if (!magic && !derby) return null;
+  return (
+    <span className="inline-flex flex-wrap items-center justify-center gap-1">
+      {magic ? (
+        <span data-testid="magic-weekend" className="rounded-full bg-violet-400/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-violet-200">
+          Magic Weekend
+        </span>
+      ) : null}
+      {derby ? (
+        <span data-testid="derby-badge" className="rounded-full bg-danger/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-red-200">
+          Derby
+        </span>
+      ) : null}
+    </span>
   );
 }

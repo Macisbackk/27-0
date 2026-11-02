@@ -4,10 +4,18 @@ import { useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { MobileBottomSheet } from "@/components/ui/MobileOverlay";
 import {
+  ACADEMY_LEAVE_AGE,
   BENCH_SIZE,
+  CAPTAIN_BOOST,
   LINEUP_SLOTS,
   POS_LABEL,
+  SQUAD_MAX,
+  academyPlayers,
+  chosenCaptain,
   clubRating,
+  formatMoney,
+  promotionCost,
+  userCaptain,
   contractLabel,
   contractOf,
   effectiveRating,
@@ -25,9 +33,14 @@ import { WindowStatusLine } from "./TransferNews";
 /** Which shirt the picker is filling: XIII slot 0–12 or bench spot 0–3. */
 type ShirtPick = { kind: "xiii" | "bench"; index: number };
 
-function Tags({ p }: { p: CareerPlayer }) {
+function Tags({ p, captain }: { p: CareerPlayer; captain?: boolean }) {
   return (
     <>
+      {captain ? (
+        <span className="ml-1.5 rounded bg-accent-gold/20 px-1 text-[10px] font-bold text-accent-gold" title="Captain" aria-label="Captain">
+          C
+        </span>
+      ) : null}
       {p.legend ? <span className="ml-1.5 text-[10px] font-bold uppercase text-accent-gold">Legend</span> : null}
       {p.academy ? <span className="ml-1.5 text-[10px] font-bold uppercase text-sky-300">Academy</span> : null}
       {p.ban ? (
@@ -39,10 +52,96 @@ function Tags({ p }: { p: CareerPlayer }) {
   );
 }
 
-export function TeamTab() {
-  const { state, setLineupSlot, setBenchSlot, autoPick } = useCareer();
-  const [pick, setPick] = useState<ShirtPick | null>(null);
+/** The academy list: promote a prospect to the squad, release him, or leave him to grow. */
+function AcademyCard() {
+  const { state, promoteAcademy, releaseAcademy } = useCareer();
+  const [message, setMessage] = useState<string | null>(null);
+  const [confirmRelease, setConfirmRelease] = useState<string | null>(null);
   const s = state!;
+  const kids = academyPlayers(s).sort((a, b) => b.potential - a.potential || b.rating - a.rating);
+  const squadSize = s.clubs[s.userClubId]!.squad.length;
+  const full = squadSize >= SQUAD_MAX;
+  return (
+    <Card>
+      <section aria-label="Academy" data-testid="academy">
+        <Eyebrow>Academy · {kids.length}</Eyebrow>
+        <p className="mt-1 text-xs text-gray-400">
+          New kids join every pre-season. Promote them to play. First-team games help them grow. They leave at {ACADEMY_LEAVE_AGE}.
+        </p>
+        {message ? <p className="mt-2 text-center text-sm text-theme-primary" role="status">{message}</p> : null}
+        {kids.length ? (
+          <ul className="mt-2 divide-y divide-pitch-800">
+            {kids.map((p) => {
+              const cost = promotionCost(s, p);
+              return (
+                <li key={p.id} className="flex flex-wrap items-center gap-x-3 gap-y-1.5 py-2">
+                  <span className="w-8 text-[11px] font-bold uppercase text-gray-400">{p.pos}</span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block break-words leading-tight text-white">{p.name}</span>
+                    <span className="inline-flex items-center gap-1 text-[11px] text-gray-500">
+                      Age {p.age} · <Stars value={potentialStars(p.potential)} label={`Potential ${potentialStars(p.potential)} stars`} />
+                    </span>
+                  </span>
+                  <RatingPill rating={p.rating} />
+                  <span className="flex w-full justify-end gap-2 sm:w-auto">
+                    <GameButton
+                      size="sm"
+                      fullWidth={false}
+                      disabled={full}
+                      onClick={() => {
+                        const err = promoteAcademy(p.id);
+                        setConfirmRelease(null);
+                        setMessage(
+                          err === "squad-full"
+                            ? `Squad full (${SQUAD_MAX}). Sell or release someone first.`
+                            : err === "budget"
+                              ? `Not enough budget for his wages (${formatMoney(cost)}).`
+                              : err
+                                ? "Can't promote him right now."
+                                : `${p.name} joins the squad.`
+                        );
+                      }}
+                    >
+                      Promote
+                    </GameButton>
+                    <GameButton
+                      size="sm"
+                      variant={confirmRelease === p.id ? "danger" : "secondary"}
+                      fullWidth={false}
+                      onClick={() => {
+                        if (confirmRelease !== p.id) {
+                          setConfirmRelease(p.id);
+                          return;
+                        }
+                        releaseAcademy(p.id);
+                        setConfirmRelease(null);
+                        setMessage(`${p.name} released.`);
+                      }}
+                    >
+                      {confirmRelease === p.id ? "Sure?" : "Release"}
+                    </GameButton>
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <p className="mt-2 text-center text-sm text-gray-400">No prospects right now.</p>
+        )}
+        {full && kids.length ? <p className="mt-2 text-center text-[11px] text-amber-300">Squad full ({SQUAD_MAX}). Make room to promote.</p> : null}
+      </section>
+    </Card>
+  );
+}
+
+export function TeamTab() {
+  const { state, setLineupSlot, setBenchSlot, autoPick, setCaptain } = useCareer();
+  const [pick, setPick] = useState<ShirtPick | null>(null);
+  const [pickCaptain, setPickCaptain] = useState(false);
+  const s = state!;
+  const captainId = chosenCaptain(s);
+  const leader = userCaptain(s);
+  const captain = captainId ? s.players[captainId] : undefined;
   const squad = squadOf(s, s.userClubId);
   const bench = userBench(s);
   const inXiii = new Set(s.lineup);
@@ -88,7 +187,20 @@ export function TeamTab() {
             Auto-pick best
           </GameButton>
         </div>
-        <ol className="mt-3 divide-y divide-pitch-800">
+        <div className="mt-3 flex items-center justify-between gap-2 rounded-control bg-pitch-950 px-3 py-2" data-testid="captain">
+          <p className="min-w-0 text-sm text-gray-300">
+            <span className="font-semibold text-white">Captain:</span> {captain?.name ?? "—"}
+            {leader && leader !== captainId ? (
+              <span className="block text-[11px] text-amber-300">{s.players[leader]?.name} leads while he&apos;s out.</span>
+            ) : (
+              <span className="block text-[11px] text-gray-500">+{CAPTAIN_BOOST} team rating when he plays.</span>
+            )}
+          </p>
+          <GameButton size="sm" variant="secondary" fullWidth={false} onClick={() => setPickCaptain(true)}>
+            Change
+          </GameButton>
+        </div>
+        <ol className="mt-2 divide-y divide-pitch-800">
           {LINEUP_SLOTS.map((pos, i) => {
             const p = s.players[s.lineup[i] ?? ""];
             const penalty = p ? slotPenalty(p, pos) : 0;
@@ -104,7 +216,7 @@ export function TeamTab() {
                   <span className="w-8 text-[11px] font-bold uppercase text-theme-primary">{pos}</span>
                   <span className="min-w-0 flex-1 break-words leading-tight text-white">
                     {p?.name ?? "—"}
-                    {p ? <Tags p={p} /> : null}
+                    {p ? <Tags p={p} captain={p.id === leader} /> : null}
                     {penalty ? <span className="ml-1.5 text-[10px] text-danger">Out of position ({p!.pos})</span> : null}
                     {p && contractOf(p) <= 1 ? <span className="ml-1.5 text-[10px] font-bold text-amber-300">Final year</span> : null}
                   </span>
@@ -169,6 +281,38 @@ export function TeamTab() {
           ))}
         </ul>
       </Card>
+
+      <AcademyCard />
+
+      <MobileBottomSheet open={pickCaptain} onClose={() => setPickCaptain(false)} title="Pick your captain">
+        <ul className="divide-y divide-pitch-800">
+          {[...squad]
+            .sort((a, b) => Number(inXiii.has(b.id)) - Number(inXiii.has(a.id)) || b.rating - a.rating)
+            .map((p) => (
+              <li key={p.id}>
+                <button
+                  type="button"
+                  disabled={p.id === captainId}
+                  onClick={() => {
+                    playPlayerSelect();
+                    setCaptain(p.id);
+                    setPickCaptain(false);
+                  }}
+                  className="flex w-full items-center gap-3 px-1 py-2.5 text-left hover:bg-pitch-800/60 disabled:opacity-50"
+                >
+                  <span className="w-8 text-[11px] font-bold uppercase text-gray-400">{p.pos}</span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block break-words leading-tight text-white">{p.name}</span>
+                    <span className="text-[11px] text-gray-500">
+                      {p.id === captainId ? "Captain" : inXiii.has(p.id) ? "In the XIII" : "Not in the XIII"} · Age {p.age}
+                    </span>
+                  </span>
+                  <RatingPill rating={p.rating} />
+                </button>
+              </li>
+            ))}
+        </ul>
+      </MobileBottomSheet>
 
       <MobileBottomSheet open={pick != null} onClose={() => setPick(null)} title={sheetTitle}>
         <ul className="divide-y divide-pitch-800">

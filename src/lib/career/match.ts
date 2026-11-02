@@ -11,7 +11,12 @@ export interface TeamSheet {
   boost?: number;
   /** Interchange (shirts 14–17). Counts a little towards strength; career sheets always set it. */
   bench?: string[];
+  /** Captain: a small lift while he's on the field (every club has one). */
+  captain?: string;
 }
+
+/** Rating lift for having your captain in the XIII. Every club gets it, so it's fair. */
+export const CAPTAIN_BOOST = 0.3;
 
 const TRY_WEIGHT: Record<Pos, number> = {
   WG: 3.2, CE: 2.3, FB: 2.1, SO: 1.4, SH: 1.2, LF: 1.0, SR: 1.15, HK: 0.75, PR: 0.6,
@@ -33,7 +38,8 @@ export function sheetStrength(sheet: TeamSheet, players: Record<string, CareerPl
     count++;
   });
   const xiii = total / count;
-  const rating = xiii + benchBonus(xiii, sheet.bench, players) + (sheet.boost ?? 0);
+  const captain = sheet.captain && sheet.lineup.includes(sheet.captain) && players[sheet.captain] ? CAPTAIN_BOOST : 0;
+  const rating = xiii + benchBonus(xiii, sheet.bench, players) + (sheet.boost ?? 0) + captain;
   const attackMod = sheet.tactic === "attack" ? 1.0 : sheet.tactic === "defend" ? -0.8 : 0;
   const defenceMod = sheet.tactic === "defend" ? 1.0 : sheet.tactic === "attack" ? -0.8 : 0;
   return { rating, attack: rating + attackMod, defence: rating + defenceMod };
@@ -86,7 +92,8 @@ export function simulateMatch(
   home: TeamSheet,
   away: TeamSheet,
   players: Record<string, CareerPlayer>,
-  opts: { knockout: boolean }
+  /** neutral: Magic Weekend, no home advantage. */
+  opts: { knockout: boolean; neutral?: boolean }
 ): FixtureResult {
   // Red cards: rare (about one team in twenty). The side is a man short for the rest of the game.
   const homeRed = rollSendOff(rng, home, players);
@@ -96,7 +103,7 @@ export function simulateMatch(
   if (homeRed) home = withoutPlayer(home, homeRed.id);
   if (awayRed) away = withoutPlayer(away, awayRed.id);
 
-  const homeTryMean = expectedTries(h.attack, a.defence, true);
+  const homeTryMean = expectedTries(h.attack, a.defence, !opts.neutral);
   const awayTryMean = expectedTries(a.attack, h.defence, false);
 
   const homeTryCount = poisson(rng, homeTryMean);
@@ -122,7 +129,7 @@ export function simulateMatch(
   let goldenPoint = false;
   if (opts.knockout && homeScore === awayScore) {
     goldenPoint = true;
-    const homeWins = rng() < 0.5 + (h.rating - a.rating) * 0.06 + 0.04;
+    const homeWins = rng() < 0.5 + (h.rating - a.rating) * 0.06 + (opts.neutral ? 0 : 0.04);
     if (homeWins) homeScore += 1;
     else awayScore += 1;
   }
