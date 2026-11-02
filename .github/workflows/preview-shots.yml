@@ -9,7 +9,7 @@ on:
 jobs:
   shots:
     runs-on: ubuntu-latest
-    timeout-minutes: 50
+    timeout-minutes: 30
     permissions:
       contents: write
     steps:
@@ -39,9 +39,6 @@ jobs:
           [ -f scripts/manager-break.mjs ] && (timeout 600 node scripts/manager-break.mjs || true)
           # Popup audit (report only: preview-shots/popup-audit.txt).
           [ -f scripts/popup-audit.mjs ] && (timeout 400 node scripts/popup-audit.mjs || true)
-          # TEMP (manager-tidy): Manager e2e suites, report only.
-          (timeout 600 node scripts/e2e-career.mjs > preview-shots/e2e-career.txt 2>&1; echo "exit $?" >> preview-shots/e2e-career.txt) || true
-          (timeout 420 node scripts/e2e-career-chaos.mjs > preview-shots/e2e-chaos.txt 2>&1; echo "exit $?" >> preview-shots/e2e-chaos.txt) || true
       - name: Publish
         run: |
           name="${GITHUB_REF_NAME#preview/}"
