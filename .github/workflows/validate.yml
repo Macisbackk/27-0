@@ -95,6 +95,9 @@ jobs:
       - name: Coach-name moderation
         if: success() || failure()
         run: scripts/ci-run.sh "Coach-name moderation" npm run test:moderation
+      - name: Corrupted local storage
+        if: success() || failure()
+        run: scripts/ci-run.sh "Corrupted local storage" npm run test:storage
 
   build:
     runs-on: ubuntu-latest
