@@ -94,13 +94,14 @@ function topUpSquad(state: CareerState, clubId: string, target = 24) {
     const neediest = (Object.keys(SQUAD_TEMPLATE) as Pos[]).sort(
       (a, b) => counts[a] - SQUAD_TEMPLATE[a] - (counts[b] - SQUAD_TEMPLATE[b])
     )[0]!;
-    // AI clubs' academies: the first man up each summer is one of their own kids (18–19, room to grow).
+    // AI clubs' academies: the first man up each summer is one of their own kids (18–19). He starts
+    // a little below the first team and tops out around it, so the world's level doesn't creep up.
     const kid = guard === 1 && clubId !== state.userClubId;
     const p = generatePlayer(rng, {
       clubId,
       pos: neediest,
-      level,
-      maxPotential: Math.round(level + (kid ? 7 : 5)),
+      level: kid ? level - 3 : level,
+      maxPotential: Math.round(level + (kid ? 3 : 5)),
       idPrefix: `g${state.year}`,
       ...(kid ? { age: randInt(rng, 18, 19) } : {}),
     });
