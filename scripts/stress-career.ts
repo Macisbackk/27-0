@@ -7,7 +7,7 @@
 import {
   createCareer, playMatchday, simToNextBigGame, simRestOfSeason as simRestRaw, closeDeadlineDay, beginOffseason, finishDepartures, finishTransfers,
   buildMarket, buyPlayer, sellPlayer, sellPrice, bankSeason, emptyLegacy, unlockLegend, legendCatalog,
-  autoPickLineup, squadOf, clubsIn, clubRating, repairLineup, SQUAD_MIN, SQUAD_MAX, LINEUP_SLOTS,
+  squadOf, clubsIn, clubRating, placeInTeam, autoPickTeam, SQUAD_MIN, SQUAD_MAX,
   buildWorld, type CareerState, type CareerLegacy, type Tactic,
 } from "../src/lib/career";
 
@@ -37,6 +37,7 @@ function invariants(s: CareerState, where: string) {
   const me = s.clubs[s.userClubId]!;
   if (me.squad.length < SQUAD_MIN || me.squad.length > SQUAD_MAX) fail(`${where}: user squad ${me.squad.length}`);
   if (s.lineup.length !== 13 || new Set(s.lineup).size !== 13 || !s.lineup.every((id) => me.squad.includes(id))) fail(`${where}: bad lineup`);
+  if (s.bench.length !== 4 || new Set([...s.lineup, ...s.bench]).size !== 17 || !s.bench.every((id) => me.squad.includes(id))) fail(`${where}: bad bench`);
   for (const p of Object.values(s.players)) {
     if (!Number.isFinite(p.rating) || p.rating < 40 || p.rating > 99) fail(`${where}: ${p.name} rating ${p.rating}`);
     if (!Number.isFinite(p.age) || p.age < 15 || p.age > 45) fail(`${where}: ${p.name} age ${p.age}`);
@@ -75,14 +76,11 @@ for (let run = 0; run < 40; run++) {
         else if (r < 0.7) s = { ...s, tactic: pick<Tactic>(["attack", "balanced", "defend"]) };
         else if (r < 0.9) {
           const squad = squadOf(s, s.userClubId);
-          const slot = Math.floor(rng() * 13);
           const p = pick(squad);
-          const lineup = [...s.lineup];
-          const ex = lineup.indexOf(p.id);
-          if (ex >= 0) lineup[ex] = lineup[slot]!;
-          lineup[slot] = p.id;
-          s = { ...s, lineup: repairLineup(s, lineup) };
-        } else s = { ...s, lineup: autoPickLineup(squadOf(s, s.userClubId)) };
+          s = rng() < 0.7
+            ? { ...s, ...placeInTeam(s, "xiii", Math.floor(rng() * 13), p.id) }
+            : { ...s, ...placeInTeam(s, "bench", Math.floor(rng() * 4), p.id) };
+        } else s = { ...s, ...autoPickTeam(s) };
       } catch (e) { fail(`${where}: action threw ${e instanceof Error ? e.stack : e}`); break; }
       invariants(s, where);
     }

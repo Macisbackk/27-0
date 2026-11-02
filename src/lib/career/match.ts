@@ -1,4 +1,4 @@
-import { LINEUP_SLOTS, effectiveRating } from "./players";
+import { LINEUP_SLOTS, benchBonus, effectiveRating } from "./players";
 import { poisson, weightedPick, type Rng } from "./rng";
 import type { CareerPlayer, FixtureResult, Pos, Tactic } from "./types";
 
@@ -9,6 +9,8 @@ export interface TeamSheet {
   tactic: Tactic;
   /** Small temporary rating bonus (pre-season match sharpness). */
   boost?: number;
+  /** Interchange (shirts 14–17). Counts a little towards strength; career sheets always set it. */
+  bench?: string[];
 }
 
 const TRY_WEIGHT: Record<Pos, number> = {
@@ -19,6 +21,8 @@ const TRY_WEIGHT: Record<Pos, number> = {
 const BASE_TRIES = 3.6;
 const RATING_SCALE = 3.4;
 const HOME_EDGE = 0.9;
+/** A bench man's share of the try-scoring chances of a starter in his position. */
+const BENCH_TRY_SHARE = 0.35;
 
 export function sheetStrength(sheet: TeamSheet, players: Record<string, CareerPlayer>) {
   let total = 0;
@@ -28,16 +32,22 @@ export function sheetStrength(sheet: TeamSheet, players: Record<string, CareerPl
     total += p ? effectiveRating(p, slot) : 55;
     count++;
   });
-  const rating = total / count + (sheet.boost ?? 0);
+  const xiii = total / count;
+  const rating = xiii + benchBonus(xiii, sheet.bench, players) + (sheet.boost ?? 0);
   const attackMod = sheet.tactic === "attack" ? 1.0 : sheet.tactic === "defend" ? -0.8 : 0;
   const defenceMod = sheet.tactic === "defend" ? 1.0 : sheet.tactic === "attack" ? -0.8 : 0;
   return { rating, attack: rating + attackMod, defence: rating + defenceMod };
 }
 
 export function pickScorer(rng: Rng, sheet: TeamSheet, players: Record<string, CareerPlayer>): string {
-  const slots = LINEUP_SLOTS.map((slot, i) => ({ slot, id: sheet.lineup[i] ?? "" })).filter((s) => players[s.id]);
+  const slots = LINEUP_SLOTS.map((slot, i) => ({ slot, id: sheet.lineup[i] ?? "", share: 1 })).filter((s) => players[s.id]);
   if (slots.length === 0) return "";
-  return weightedPick(rng, slots, (s) => TRY_WEIGHT[s.slot] * Math.pow((players[s.id]!.rating) / 80, 3)).id;
+  // Bench men play part of the game, so they score now and then.
+  for (const id of sheet.bench ?? []) {
+    const p = players[id];
+    if (p) slots.push({ slot: p.pos, id, share: BENCH_TRY_SHARE });
+  }
+  return weightedPick(rng, slots, (s) => s.share * TRY_WEIGHT[s.slot] * Math.pow((players[s.id]!.rating) / 80, 3)).id;
 }
 
 /** Win probability helper for UI ("You're favourites" etc.). */

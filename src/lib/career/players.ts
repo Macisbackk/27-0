@@ -198,6 +198,92 @@ export function lineupRating(lineup: string[], players: Record<string, CareerPla
   return sum / LINEUP_SLOTS.length;
 }
 
+/* ------------------------------------------------------------ interchange */
+
+/** Four men on the interchange bench: a matchday 17. */
+export const BENCH_SIZE = 4;
+
+export const isMiddleForward = (p: Pick<CareerPlayer, "pos">) => p.pos === "PR" || p.pos === "SR" || p.pos === "LF";
+const isBack = (p: CareerPlayer) => p.pos === "FB" || p.pos === "WG" || p.pos === "CE" || p.pos === "SO" || p.pos === "SH";
+
+/**
+ * Fill the bench around the XIII: keep `keep` (if still valid), then two middle forwards, a hooker,
+ * a back or half, and the best of the rest for any spot left. Best rating first in each role.
+ */
+export function autoPickBench(squad: CareerPlayer[], lineup: readonly string[], keep: readonly string[] = []): string[] {
+  const inXiii = new Set(lineup);
+  const byId = new Map(squad.map((p) => [p.id, p]));
+  const picked: CareerPlayer[] = [];
+  for (const id of keep) {
+    const p = byId.get(id);
+    if (p && !inXiii.has(id) && !picked.includes(p) && picked.length < BENCH_SIZE) picked.push(p);
+  }
+  const pool = squad
+    .filter((p) => !inXiii.has(p.id) && !picked.includes(p))
+    .sort((a, b) => b.rating - a.rating || a.id.localeCompare(b.id));
+  const take = (want: (p: CareerPlayer) => boolean) => {
+    if (picked.length >= BENCH_SIZE) return;
+    const i = pool.findIndex(want);
+    if (i >= 0) picked.push(pool.splice(i, 1)[0]!);
+  };
+  while (picked.filter(isMiddleForward).length < 2 && picked.length < BENCH_SIZE && pool.some(isMiddleForward)) take(isMiddleForward);
+  if (!picked.some((p) => p.pos === "HK")) take((p) => p.pos === "HK");
+  if (!picked.some(isBack)) take(isBack);
+  while (picked.length < BENCH_SIZE && pool.length) take(() => true);
+  return picked.map((p) => p.id);
+}
+
+/** Average rating of the bench (empty spots count as 50). */
+export function benchRating(bench: readonly string[], players: Record<string, CareerPlayer>): number {
+  let sum = 0;
+  for (let i = 0; i < BENCH_SIZE; i++) {
+    const p = players[bench[i] ?? ""];
+    sum += p ? p.rating : 50;
+  }
+  return sum / BENCH_SIZE;
+}
+
+/** How much the bench counts towards team strength. */
+export const BENCH_WEIGHT = 0.12;
+/** A typical bench sits about this far below its XIII (2.3–2.4 at the start), so it adds nothing. */
+export const BENCH_PAR = 2.5;
+
+/**
+ * The bench's share of team strength: positive when the bench is closer to the XIII than usual,
+ * negative when it's weak or short. No bench given (not a career team sheet) = no effect.
+ */
+export function benchBonus(xiii: number, bench: readonly string[] | undefined, players: Record<string, CareerPlayer>): number {
+  if (!bench) return 0;
+  return BENCH_WEIGHT * (benchRating(bench, players) - xiii + BENCH_PAR);
+}
+
+/** Team strength: the XIII plus the bench term (the same formula for every club). */
+export function teamRating(lineup: string[], bench: readonly string[] | undefined, players: Record<string, CareerPlayer>): number {
+  const xiii = lineupRating(lineup, players);
+  return xiii + benchBonus(xiii, bench, players);
+}
+
+/**
+ * Fill empty XIII spots (""): from the bench first when he can play there (his own or a nearby
+ * position), otherwise the best man left in the squad.
+ */
+export function fillLineupGaps(lineup: readonly string[], bench: readonly string[], squad: CareerPlayer[]): string[] {
+  const out = [...lineup];
+  const byId = new Map(squad.map((p) => [p.id, p]));
+  LINEUP_SLOTS.forEach((slot, i) => {
+    if (out[i]) return;
+    const used = new Set(out);
+    const best = (list: CareerPlayer[]) =>
+      list.sort((a, b) => effectiveRating(b, slot) - effectiveRating(a, slot) || a.id.localeCompare(b.id))[0];
+    const fromBench = best(
+      bench.map((id) => byId.get(id)).filter((p): p is CareerPlayer => !!p && !used.has(p.id) && positionPenalty(p.pos, slot) <= 3)
+    );
+    const pick = fromBench ?? best(squad.filter((p) => !used.has(p.id)));
+    if (pick) out[i] = pick.id;
+  });
+  return out;
+}
+
 /** "Stars" for a prospect's potential, 1–5. */
 export function potentialStars(potential: number): number {
   if (potential >= 90) return 5;

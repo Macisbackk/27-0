@@ -176,6 +176,8 @@ export interface CareerState {
   tactic: Tactic;
   /** 13 player ids in shirt order 1–13 (see LINEUP_SLOTS). */
   lineup: string[];
+  /** Interchange bench: 4 squad players not in the XIII (shirts 14–17). Older saves get one on load. */
+  bench: string[];
   clubs: Record<string, CareerClub>;
   players: Record<string, CareerPlayer>;
   /** Unsigned players (released / free agents) still in the world. */
@@ -322,6 +324,8 @@ export interface LastLineup {
   us: number;
   them: number;
   lineup: string[];
+  /** Interchange (saves from before the bench have none). */
+  bench?: string[];
   at: number;
 }
 

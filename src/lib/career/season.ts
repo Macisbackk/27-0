@@ -1,6 +1,6 @@
 import { simulateMatch, type TeamSheet } from "./match";
 import { deadlineDecisionPending, onMatchdayReached } from "./midseason";
-import { autoPickLineup, lineupRating, formatMoney, wageBill } from "./players";
+import { autoPickBench, autoPickLineup, fillLineupGaps, teamRating, formatMoney, wageBill } from "./players";
 import { rngFor, shuffle } from "./rng";
 import { CUP_ROUND_LABELS, buildCalendar } from "./schedule";
 import { DIVISION_LABEL } from "./clubs";
@@ -41,22 +41,37 @@ export function squadOf(state: CareerState, clubId: string) {
  * AI clubs' best XIII. Squads and ratings don't change mid-season, so cache per season+squad.
  * (Big win for "Sim season" on phones: ~36 picks per matchday otherwise.)
  */
-const aiLineupCache = new Map<string, string[]>();
-export function aiLineup(state: CareerState, clubId: string): string[] {
+const aiTeamCache = new Map<string, { lineup: string[]; bench: string[] }>();
+function aiTeam(state: CareerState, clubId: string): { lineup: string[]; bench: string[] } {
   const squad = state.clubs[clubId]?.squad ?? [];
   const key = `${state.seed}|${state.year}|${clubId}|${squad.join(",")}`;
-  const hit = aiLineupCache.get(key);
+  const hit = aiTeamCache.get(key);
   if (hit) return hit;
-  const lineup = autoPickLineup(squadOf(state, clubId));
-  if (aiLineupCache.size > 400) aiLineupCache.clear();
-  aiLineupCache.set(key, lineup);
-  return lineup;
+  const players = squadOf(state, clubId);
+  const lineup = autoPickLineup(players);
+  const team = { lineup, bench: autoPickBench(players, lineup) };
+  if (aiTeamCache.size > 400) aiTeamCache.clear();
+  aiTeamCache.set(key, team);
+  return team;
+}
+export function aiLineup(state: CareerState, clubId: string): string[] {
+  return aiTeam(state, clubId).lineup;
+}
+/** AI clubs' interchange: the best four left, two of them middle forwards. */
+export function aiBench(state: CareerState, clubId: string): string[] {
+  return aiTeam(state, clubId).bench;
 }
 
-/** Club strength = rating of its best XIII. */
+/** The user's bench, always valid (4 squad players outside the XIII where the squad allows). */
+export function userBench(state: CareerState): string[] {
+  return repairTeam(state, state.lineup, state.bench ?? []).bench;
+}
+
+/** Club strength = its XIII plus a small bench term (see teamRating). */
 export function clubRating(state: CareerState, clubId: string): number {
-  const lineup = clubId === state.userClubId ? state.lineup : aiLineup(state, clubId);
-  return lineupRating(lineup, state.players);
+  if (clubId === state.userClubId) return teamRating(state.lineup, userBench(state), state.players);
+  const team = aiTeam(state, clubId);
+  return teamRating(team.lineup, team.bench, state.players);
 }
 
 export function sortTable(rows: TableRow[]): TableRow[] {
@@ -200,7 +215,7 @@ export function startSeason(state: CareerState): CareerState {
     p.apps = 0;
     p.tries = 0;
   }
-  next.lineup = repairLineup(next, next.lineup);
+  fixTeam(next);
   next.seasonTrack = {
     unbeatenRun: 0,
     bestUnbeatenRun: 0,
@@ -230,12 +245,75 @@ export function startSeason(state: CareerState): CareerState {
   return next;
 }
 
-/** Keep the user's XIII valid (players still at the club, no gaps). */
-export function repairLineup(state: CareerState, lineup: string[]): string[] {
+/**
+ * Keep the user's matchday 17 valid. A starter who's gone (sold, released, retired) leaves a gap
+ * in his shirt: the bench fills it first, then the bench is topped back up to four from the squad.
+ * A line-up of the wrong shape (very old saves) is picked afresh.
+ */
+export function repairTeam(state: CareerState, lineup: readonly string[], bench: readonly string[]): { lineup: string[]; bench: string[] } {
   const squad = squadOf(state, state.userClubId);
   const ids = new Set(squad.map((p) => p.id));
-  const valid = lineup.length === 13 && lineup.every((id) => ids.has(id)) && new Set(lineup).size === 13;
-  return valid ? lineup : autoPickLineup(squad);
+  let xiii: string[];
+  if (lineup.length !== 13) xiii = autoPickLineup(squad);
+  else {
+    const seen = new Set<string>();
+    xiii = lineup.map((id) => {
+      if (!ids.has(id) || seen.has(id)) return "";
+      seen.add(id);
+      return id;
+    });
+    if (xiii.some((id) => !id)) xiii = fillLineupGaps(xiii, bench, squad);
+  }
+  return { lineup: xiii, bench: autoPickBench(squad, xiii, bench) };
+}
+
+/** Keep the user's XIII valid (players still at the club, no gaps). See repairTeam. */
+export function repairLineup(state: CareerState, lineup: string[]): string[] {
+  return repairTeam(state, lineup, state.bench ?? []).lineup;
+}
+
+/** Repair the user's XIII and bench in place (callers clone first). */
+export function fixTeam(s: CareerState): void {
+  const team = repairTeam(s, s.lineup ?? [], s.bench ?? []);
+  s.lineup = team.lineup;
+  s.bench = team.bench;
+}
+
+/** A copy with the XIII and bench repaired (for saves, sales and deals that changed the squad). */
+export function withTeamFixed(state: CareerState): CareerState {
+  return { ...state, ...repairTeam(state, state.lineup ?? [], state.bench ?? []) };
+}
+
+/**
+ * Put a player in a shirt: XIII slot 0–12 or bench spot 0–3. If he's already in the 17, the two
+ * swap places (a starter tapped onto the bench goes to the bench, and the bench man starts).
+ */
+export function placeInTeam(state: CareerState, where: "xiii" | "bench", index: number, playerId: string): { lineup: string[]; bench: string[] } {
+  const cur = repairTeam(state, state.lineup ?? [], state.bench ?? []);
+  const lineup = [...cur.lineup];
+  const bench = [...cur.bench];
+  const target = where === "xiii" ? lineup : bench;
+  if (index < 0 || index >= (where === "xiii" ? 13 : bench.length + (bench.length < 4 ? 1 : 0))) return cur;
+  const outgoing = target[index] ?? "";
+  const inXiii = lineup.indexOf(playerId);
+  const onBench = bench.indexOf(playerId);
+  if (inXiii >= 0) lineup[inXiii] = outgoing;
+  else if (onBench >= 0) bench[onBench] = outgoing;
+  target[index] = playerId;
+  return repairTeam(state, lineup, bench.filter(Boolean));
+}
+
+/** Bring a loaded save up to date: saves from before the interchange get a bench picked. */
+export function migrateCareer<T extends CareerState | null>(state: T): T {
+  if (!state || Array.isArray(state.bench)) return state;
+  return withTeamFixed({ ...state, bench: [] }) as T;
+}
+
+/** Best XIII and the best bench to go with it. */
+export function autoPickTeam(state: CareerState): { lineup: string[]; bench: string[] } {
+  const squad = squadOf(state, state.userClubId);
+  const lineup = autoPickLineup(squad);
+  return { lineup, bench: autoPickBench(squad, lineup) };
 }
 
 /* ------------------------------------------------------------------ draws */
@@ -326,9 +404,10 @@ export function sheetFor(state: CareerState, clubId: string): TeamSheet {
     const pre = state.preseason;
     // Pre-season friendlies: a little match sharpness for the opening three matchdays.
     const boost = pre && pre.year === state.year && state.matchdayIndex < 3 ? pre.results.length * 0.5 : 0;
-    return { clubId, lineup: state.lineup, tactic: state.tactic, boost };
+    return { clubId, lineup: state.lineup, bench: userBench(state), tactic: state.tactic, boost };
   }
-  return { clubId, lineup: aiLineup(state, clubId), tactic: "balanced" };
+  const team = aiTeam(state, clubId);
+  return { clubId, lineup: team.lineup, bench: team.bench, tactic: "balanced" };
 }
 
 function applyLeagueResult(state: CareerState, f: Fixture) {
@@ -347,8 +426,13 @@ function applyLeagueResult(state: CareerState, f: Fixture) {
   away.form = away.form.slice(-5);
 }
 
+/** All 17 on the team sheet get an appearance (the bench always gets on in league). */
+function matchday17(sheet: TeamSheet): string[] {
+  return [...sheet.lineup, ...(sheet.bench ?? [])];
+}
+
 function creditPlayers(state: CareerState, sheet: TeamSheet, tries: string[]) {
-  for (const id of sheet.lineup) {
+  for (const id of matchday17(sheet)) {
     const p = state.players[id];
     if (!p) continue;
     p.apps++;
@@ -382,7 +466,7 @@ function trackUserResult(state: CareerState, f: Fixture, sheet: TeamSheet) {
     // Reaching the next round = round index (R1 win → reached R16 = 2 … final win → 6).
     t.cupRoundReached = Math.max(t.cupRoundReached, won ? f.round + 1 : f.round);
   }
-  for (const id of sheet.lineup) {
+  for (const id of matchday17(sheet)) {
     if (state.players[id]?.academy && !t.academyDebutIds.includes(id)) t.academyDebutIds.push(id);
   }
 
@@ -462,7 +546,7 @@ function playMatchdayInPlace(next: CareerState, played?: PlayedResult): void {
     return;
   }
   drawPending(next, md);
-  next.lineup = repairLineup(next, next.lineup);
+  fixTeam(next);
 
   for (const f of md.fixtures) {
     const rng = rngFor(next.seed, next.year, f.id);
@@ -504,8 +588,8 @@ function recordLineups(state: CareerState, f: Fixture, home: TeamSheet, away: Te
   if (!f.result) return;
   const at = state.matchdayIndex;
   const book = (state.lastLineups ??= {});
-  book[f.home] = { fixtureId: f.id, label: f.label, opponentId: f.away, home: true, us: f.result.homeScore, them: f.result.awayScore, lineup: [...home.lineup], at };
-  book[f.away] = { fixtureId: f.id, label: f.label, opponentId: f.home, home: false, us: f.result.awayScore, them: f.result.homeScore, lineup: [...away.lineup], at };
+  book[f.home] = { fixtureId: f.id, label: f.label, opponentId: f.away, home: true, us: f.result.homeScore, them: f.result.awayScore, lineup: [...home.lineup], bench: [...(home.bench ?? [])], at };
+  book[f.away] = { fixtureId: f.id, label: f.label, opponentId: f.home, home: false, us: f.result.awayScore, them: f.result.homeScore, lineup: [...away.lineup], bench: [...(away.bench ?? [])], at };
 }
 
 /** True when the matchday involves the user or is a showpiece worth stopping for. */

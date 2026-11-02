@@ -1,8 +1,8 @@
 /** Live match engine: always finishes, deterministic per choices, scores in line with the instant sim. */
 import { buildWorld, createCareer } from "../src/lib/career/world";
-import { aiLineup, sheetFor } from "../src/lib/career/season";
+import { sheetFor } from "../src/lib/career/season";
 import { simulateMatch } from "../src/lib/career/match";
-import { ALL_CALL_IDS, createLiveMatch, liveResult, playToEnd, resolveCall, stepMinute, type LiveCallId } from "../src/lib/career/live-match";
+import { ALL_CALL_IDS, benchLift, createLiveMatch, liveResult, playToEnd, resolveCall, stepMinute, type LiveCallId } from "../src/lib/career/live-match";
 import { rngFor } from "../src/lib/career/rng";
 
 let passed = 0;
@@ -23,7 +23,7 @@ const home = sheetFor(s, s.userClubId);
 const seenCalls = new Set<LiveCallId>();
 function run(i: number, pick: (n: number, r: () => number) => number, knockout = false) {
   const opp = opponents[i % opponents.length]!;
-  const away = { clubId: opp, lineup: aiLineup(s, opp), tactic: "balanced" as const };
+  const away = sheetFor(s, opp);
   const rng = rngFor("live", i);
   const m = createLiveMatch({ home, away, homeName: "Us", awayName: "Them", userSide: "home", knockout, players: s.players, rng });
   let calls = 0;
@@ -66,7 +66,7 @@ ok("same seed and calls → same result");
 // Skip uses the default option and still finishes.
 {
   const rng = rngFor("skip");
-  const away = { clubId: opponents[0]!, lineup: aiLineup(s, opponents[0]!), tactic: "balanced" as const };
+  const away = sheetFor(s, opponents[0]!);
   const m = createLiveMatch({ home, away, homeName: "Us", awayName: "Them", userSide: "away", knockout: true, players: s.players, rng });
   playToEnd(m, rng, s.players);
   if (!m.finished || m.callsDone.length < 4) fail("skip to full time didn't finish with its calls");
@@ -79,7 +79,7 @@ let liveW = 0;
 const N = 1200;
 for (let i = 0; i < N; i++) {
   const opp = opponents[i % opponents.length]!;
-  const away = { clubId: opp, lineup: aiLineup(s, opp), tactic: "balanced" as const };
+  const away = sheetFor(s, opp);
   const r = simulateMatch(rngFor("bal", i), home, away, s.players, { knockout: false });
   if (r.homeScore > r.awayScore) simW++;
   const rng = rngFor("bal-live", i);
@@ -91,5 +91,37 @@ const gap = (liveW - simW) / N;
 console.log(`    sim ${((simW / N) * 100).toFixed(1)}% · live ${((liveW / N) * 100).toFixed(1)}%`);
 if (gap < -0.03 || gap > 0.09) fail(`live win rate is ${(gap * 100).toFixed(1)} points off the instant sim`);
 ok("live win rate stays close to the instant sim");
+
+// Interchange: the moments name real bench players, and the lift depends on the bench.
+{
+  const bench = home.bench ?? [];
+  if (bench.length !== 4) fail(`user sheet has ${bench.length} on the bench`);
+  const benchNames = bench.map((id) => s.players[id]!.name);
+  let named = 0;
+  let subbed = 0;
+  for (let i = 0; i < 3000 && (named < 3 || subbed < 3); i++) {
+    const { m } = run(10_000 + i, () => 0);
+    for (const e of m.events) {
+      if (e.text.startsWith("Bench forwards on: ")) {
+        if (!benchNames.some((n) => e.text.includes(n))) fail(`interchange names nobody from the bench: ${e.text}`);
+        named++;
+      }
+      if (e.kind === "call" && / on for /.test(e.text)) {
+        const sub = bench.find((id) => e.text.startsWith(s.players[id]!.name));
+        if (!sub) fail(`injury change isn't a bench player: ${e.text}`);
+        if (!m.home.lineup.includes(sub!) || (m.home.bench ?? []).includes(sub!)) fail("injury sub didn't move from the bench into the XIII");
+        if (m.injured && m.home.lineup.includes(m.injured)) fail("injured player still in the XIII");
+        if (home.lineup.includes(sub!)) fail("live injury change leaked into the saved team sheet");
+        subbed++;
+      }
+    }
+  }
+  if (named < 3 || subbed < 3) fail(`interchange/injury moments too rare to check (${named}, ${subbed})`);
+  const weak = { ...home, bench: bench.map(() => "") };
+  const strong = { ...home, bench: [...home.lineup.slice(0, 4)] };
+  const lifts = [benchLift(weak, s.players), benchLift(home, s.players), benchLift(strong, s.players)];
+  if (!(lifts[0]! === 0 && lifts[1]! > 0 && lifts[2]! > lifts[1]!)) fail(`bench lift not monotonic: ${lifts.join(", ")}`);
+  ok(`bench named in interchange (${named}) and injury changes (${subbed}); lift ${lifts.map((x) => x.toFixed(2)).join(" < ")}`);
+}
 
 console.log(`\n${passed} passed`);

@@ -7,7 +7,7 @@
  */
 import { autoPickLineup, contractYearsLeft, formatMoney, playerValue } from "./players";
 import { rngFor } from "./rng";
-import { repairLineup, squadOf } from "./season";
+import { fixTeam, squadOf } from "./season";
 import type { CareerPlayer, CareerState } from "./types";
 
 /** Seasons left on a deal, including the current one. Older saves had none: derive a stable 1–3. */
@@ -109,7 +109,7 @@ export function releaseExpiring(state: CareerState, playerId: string): CareerSta
   const me = s.clubs[s.userClubId]!;
   const p = s.players[playerId];
   me.squad = me.squad.filter((id) => id !== playerId);
-  s.lineup = repairLineup(s, s.lineup.filter((id) => id !== playerId));
+  fixTeam(s);
   if (p?.legend) {
     // Legends are a reward, not a market asset: when his deal ends he's gone (sign him again from the vault).
     delete s.players[playerId];

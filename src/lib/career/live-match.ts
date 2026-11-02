@@ -9,6 +9,7 @@
  * Deterministic: the same rng and the same calls always give the same match.
  */
 import { expectedTries, pickMotm, pickScorer, sheetStrength, type TeamSheet } from "./match";
+import { BENCH_PAR, LINEUP_SLOTS, benchRating, effectiveRating, lineupRating } from "./players";
 import { randInt, shuffle, type Rng } from "./rng";
 import type { CareerPlayer, FixtureResult } from "./types";
 
@@ -100,6 +101,8 @@ export interface LiveMatch {
   lastOppTry: { minute: number; scorer: string; points: number } | null;
   /** Random incidents already used (each at most once a match). */
   incidents: { bin: boolean; injury: boolean };
+  /** The user's player who went off injured (for the like-for-like change). */
+  injured?: string;
   /** -1 (them) … 1 (you), for the momentum bar. */
   momentum: number;
   goldenPoint: boolean;
@@ -115,6 +118,8 @@ export interface LiveMatch {
     awayRating: number;
     userAttackRating: number;
     oppDefenceRating: number;
+    /** How much the user's bench lifts the side when it comes on (1 = a typical bench, 0 = nobody). */
+    benchLift: number;
   };
 }
 
@@ -207,9 +212,11 @@ export function createLiveMatch(params: {
   const opp = params.userSide === "home" ? a : h;
   // The penalty call is an extra shot at goal for the user, so their open-play penalty rate drops to match.
   const userPenCut = 0.6;
+  const userSheetIn = params.userSide === "home" ? home : away;
   return {
-    home,
-    away,
+    // Own copies: an injury change swaps a bench man into the XIII for the rest of the match.
+    home: { ...home, lineup: [...home.lineup], bench: home.bench ? [...home.bench] : undefined },
+    away: { ...away, lineup: [...away.lineup], bench: away.bench ? [...away.bench] : undefined },
     homeName: params.homeName,
     awayName: params.awayName,
     userSide: params.userSide,
@@ -253,8 +260,47 @@ export function createLiveMatch(params: {
       awayRating: a.rating,
       userAttackRating: user.attack,
       oppDefenceRating: opp.defence,
+      benchLift: benchLift(userSheetIn, players),
     },
   };
+}
+
+/** 1 for a typical bench, more for a strong one, less for a weak or short one, 0 for none. */
+export function benchLift(sheet: TeamSheet, players: Record<string, CareerPlayer>): number {
+  if (!sheet.bench) return 1;
+  if (!sheet.bench.some((id) => players[id])) return 0;
+  const diff = benchRating(sheet.bench, players) - lineupRating(sheet.lineup, players) + BENCH_PAR;
+  return Math.max(0.3, Math.min(1.5, 1 + diff / 8));
+}
+
+/** "Smith", "Smith and Jones". */
+function names(players: Record<string, CareerPlayer>, ids: string[]): string {
+  const list = ids.map((id) => name(players, id));
+  return list.length <= 1 ? (list[0] ?? "") : `${list.slice(0, -1).join(", ")} and ${list[list.length - 1]}`;
+}
+
+/** The user's bench forwards, best first (anyone on the bench if there are fewer than two). */
+function benchForwards(m: LiveMatch, players: Record<string, CareerPlayer>, count: number): string[] {
+  const bench = (userSheet(m).bench ?? []).filter((id) => players[id]);
+  const fwd = bench.filter((id) => ["PR", "SR", "LF", "HK"].includes(players[id]!.pos));
+  const rest = bench.filter((id) => !fwd.includes(id));
+  return [...fwd, ...rest].slice(0, count);
+}
+
+/** Bring a bench man on for the injured player: the best fit for his shirt. Returns the sub's id. */
+function injuryChange(m: LiveMatch, players: Record<string, CareerPlayer>, prefer?: (p: CareerPlayer) => boolean): { sub: string; gap: number } | null {
+  const sheet = userSheet(m);
+  const hurt = m.injured;
+  const slotIndex = hurt ? sheet.lineup.indexOf(hurt) : -1;
+  const bench = (sheet.bench ?? []).filter((id) => players[id]);
+  if (slotIndex < 0 || bench.length === 0) return null;
+  const slot = LINEUP_SLOTS[slotIndex]!;
+  const pool = prefer && bench.some((id) => prefer(players[id]!)) ? bench.filter((id) => prefer(players[id]!)) : bench;
+  const sub = [...pool].sort((a, b) => effectiveRating(players[b]!, slot) - effectiveRating(players[a]!, slot))[0]!;
+  const gap = Math.max(0, effectiveRating(players[hurt!]!, slot) - effectiveRating(players[sub]!, slot));
+  sheet.lineup = sheet.lineup.map((id) => (id === hurt ? sub : id));
+  sheet.bench = (sheet.bench ?? []).filter((id) => id !== sub);
+  return { sub, gap };
 }
 
 /* ----------------------------------------------------------------- the calls */
@@ -354,7 +400,12 @@ function buildCall(m: LiveMatch, id: LiveCallId, players: Record<string, CareerP
       return {
         id,
         title: "Fresh legs",
-        prompt: "Your middles are blowing. When do the bench forwards go on?",
+        prompt: (() => {
+          const fresh = benchForwards(m, players, 2);
+          return fresh.length
+            ? `Your middles are blowing. ${names(players, fresh)} ${fresh.length > 1 ? "are" : "is"} ready. When?`
+            : "Your middles are blowing. When do the bench forwards go on?";
+        })(),
         options: [
           { id: "now", label: "Now", hint: "A lift for the next 15 minutes." },
           { id: "later", label: "Save them for the last 15", hint: "Finish strong when it matters." },
@@ -569,19 +620,31 @@ export function resolveCall(m: LiveMatch, optionId: string, rng: Rng, players: R
       say("Best form of defence. Keep the ball and attack.");
       break;
     /* injury */
-    case "like-for-like":
-      m.userAttack *= 0.97;
-      say("Like-for-like change off the bench.");
+    case "like-for-like": {
+      // The drop depends on how close the bench man is to the player he replaces.
+      const change = injuryChange(m, players);
+      if (change) {
+        m.userAttack *= 1 - Math.min(0.08, 0.005 + change.gap * 0.006);
+        say(`${name(players, change.sub)} on for ${name(players, m.injured ?? "")}.`);
+      } else {
+        m.userAttack *= 0.94;
+        say("Nobody left on the bench. Someone fills in.");
+      }
       break;
-    case "reshuffle":
+    }
+    case "reshuffle": {
+      const change = injuryChange(m, players);
       m.userDefence *= 1.07;
-      say("Backs reshuffled. The attack stays sharp.");
+      say(change ? `Backs reshuffled, ${name(players, change.sub)} on. The attack stays sharp.` : "Backs reshuffled. The attack stays sharp.");
       break;
-    case "forward":
+    }
+    case "forward": {
+      const change = injuryChange(m, players, (p) => ["PR", "SR", "LF", "HK"].includes(p.pos));
       m.userAttack *= 0.93;
       m.userDefence *= 0.94;
-      say("Extra forward on. Tighter, blunter.");
+      say(change ? `Extra forward on: ${name(players, change.sub)}. Tighter, blunter.` : "Extra forward on. Tighter, blunter.");
       break;
+    }
     /* half-time */
     case "calm":
       m.userDefence *= 0.92;
@@ -608,19 +671,24 @@ export function resolveCall(m: LiveMatch, optionId: string, rng: Rng, players: R
       break;
     /* interchange */
     case "now":
-      m.boostFrom = m.minute;
-      m.boostUntil = m.minute + 15;
-      m.boostAttack = 1.15;
-      m.boostDefence = 0.9;
-      say("Bench forwards on. Fresh legs through the middle.");
+    case "later": {
+      // Fresher legs, scaled by how good the bench is.
+      const lift = m.base.benchLift;
+      const fresh = benchForwards(m, players, 2);
+      if (lift <= 0 || (userSheet(m).bench && fresh.length === 0)) {
+        say("No fresh legs on the bench.");
+        break;
+      }
+      const now = option.id === "now";
+      m.boostFrom = now ? m.minute : 65;
+      m.boostUntil = now ? m.minute + 15 : 80;
+      m.boostAttack = 1 + (now ? 0.15 : 0.18) * lift;
+      m.boostDefence = 1 - (now ? 0.1 : 0.12) * lift;
+      const who = fresh.length ? names(players, fresh) : "";
+      if (now) say(who ? `Bench forwards on: ${who}.` : "Bench forwards on. Fresh legs through the middle.");
+      else say(who ? `${who} held back for the final 15.` : "Bench held back for the final 15.");
       break;
-    case "later":
-      m.boostFrom = 65;
-      m.boostUntil = 80;
-      m.boostAttack = 1.18;
-      m.boostDefence = 0.88;
-      say("Bench held back for the final 15.");
-      break;
+    }
     /* late */
     case "shut":
       m.userAttack *= 0.6;
@@ -708,6 +776,7 @@ function maybeIncident(m: LiveMatch, rng: Rng, players: Record<string, CareerPla
   if (!m.incidents.injury && rng() < 0.3 / 66) {
     m.incidents.injury = true;
     const hurt = randomPlayer(rng, userSheet(m), players);
+    m.injured = hurt || undefined;
     const who = hurt ? name(players, hurt) : "One of your players";
     m.events.push({ minute: m.minute, side: m.userSide, kind: "info", text: `${who} goes down injured.` });
     m.pending = buildCall(m, "injury", players, `${who} goes down injured.`);

@@ -299,7 +299,9 @@ export function acceptOffer(state: CareerState, offerId: string): { state: Caree
   const mine = s.clubs[s.userClubId]!;
   mine.squad = mine.squad.filter((id) => id !== p.id);
   s.clubs[offer.clubId]!.squad.push(p.id);
-  s.lineup = s.lineup.filter((id) => id !== p.id); // caller repairs the XIII
+  // His shirt is left empty; the caller repairs the team (the bench fills the gap).
+  s.lineup = s.lineup.map((id) => (id === p.id ? "" : id));
+  s.bench = (s.bench ?? []).filter((id) => id !== p.id);
   // The fee lands, and the rest of his season's wages come off the bill.
   s.budget += offer.fee + wagesDueNow(s, p);
   s.lastWages = wageBill(squad(s, s.userClubId));
@@ -481,7 +483,8 @@ export function acceptBid(state: CareerState): CareerState {
   mine.squad = mine.squad.filter((id) => id !== bid.playerId);
   s.clubs[bid.clubId]!.squad.push(bid.playerId);
   // The caller repairs the XIII (repairLineup lives in season.ts, which imports this file).
-  s.lineup = s.lineup.filter((id) => id !== bid.playerId);
+  s.lineup = s.lineup.map((id) => (id === bid.playerId ? "" : id));
+  s.bench = (s.bench ?? []).filter((id) => id !== bid.playerId);
   s.budget += bid.fee + wagesDueNow(s, p);
   s.lastWages = wageBill(squad(s, s.userClubId));
   const deal: TransferDeal = {

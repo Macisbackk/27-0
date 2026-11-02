@@ -53,6 +53,18 @@ import {
   signingCost,
   wagesDueNow,
   windowStatus,
+  squadOf,
+  autoPickTeam,
+  isMiddleForward,
+  migrateCareer,
+  withTeamFixed,
+  placeInTeam,
+  aiBench,
+  aiLineup,
+  teamRating,
+  lineupRating,
+  BENCH_SIZE,
+  LINEUP_SLOTS,
   type CareerState,
 } from "../src/lib/career";
 
@@ -95,6 +107,10 @@ function invariants(s: CareerState, label: string) {
   const me = s.clubs[s.userClubId]!;
   check(me.squad.length >= SQUAD_MIN && me.squad.length <= SQUAD_MAX, `${label}: user squad size ${me.squad.length} within limits`);
   check(s.lineup.length === 13 && new Set(s.lineup).size === 13 && s.lineup.every((id) => me.squad.includes(id)), `${label}: user lineup valid`);
+  check(
+    s.bench.length === BENCH_SIZE && new Set([...s.lineup, ...s.bench]).size === 17 && s.bench.every((id) => me.squad.includes(id)),
+    `${label}: user bench is 4 unique squad players outside the XIII`
+  );
 }
 
 // Deadline Day waits for the manager; the tests always shut the window and carry on.
@@ -145,6 +161,103 @@ const simAll = (start: CareerState): CareerState => {
   let later = s1;
   for (let i = 0; i < 3; i++) later = playMatchday(later);
   check(sheetFor(later, later.userClubId).boost === 0, "sharpness wears off after three matchdays");
+}
+
+// --- Interchange bench.
+{
+  const s0 = createCareer({ clubId: "leeds-rhinos", managerName: "T", seed: "bench" });
+  invariants(s0, "bench start");
+  const squad = squadOf(s0, s0.userClubId);
+  const auto = autoPickTeam(s0);
+  check(JSON.stringify(auto.lineup) === JSON.stringify(s0.lineup) && JSON.stringify(auto.bench) === JSON.stringify(s0.bench), "new career starts with the auto-picked 17");
+  const benchPlayers = s0.bench.map((id) => s0.players[id]!);
+  const middles = benchPlayers.filter(isMiddleForward).length;
+  const availMiddles = squad.filter((p) => isMiddleForward(p) && !s0.lineup.includes(p.id)).length;
+  check(middles >= Math.min(2, availMiddles), `auto bench has two middle forwards (${benchPlayers.map((p) => p.pos).join(" ")})`);
+  if (squad.some((p) => p.pos === "HK" && !s0.lineup.includes(p.id))) check(benchPlayers.some((p) => p.pos === "HK"), "auto bench has a hooker when one is spare");
+
+  // Old save without a bench: one is picked on load, the XIII is untouched.
+  const old = structuredClone(s0) as Partial<CareerState>;
+  delete old.bench;
+  const migrated = migrateCareer(old as CareerState);
+  invariants(migrated, "migrated old save");
+  check(JSON.stringify(migrated.lineup) === JSON.stringify(s0.lineup), "migration keeps the XIII");
+  check(migrateCareer(s0) === s0, "a save with a bench isn't touched");
+  const played = playMatchday(old as CareerState);
+  check(played.bench.length === BENCH_SIZE, "an old save without a bench still plays (bench picked at kick-off)");
+
+  // A starter leaves: the bench fills his shirt, then the bench is topped back up.
+  const gone = s0.lineup[7]!; // a prop
+  const s1 = structuredClone(s0);
+  s1.clubs[s1.userClubId]!.squad = s1.clubs[s1.userClubId]!.squad.filter((id) => id !== gone);
+  const fixed = withTeamFixed(s1);
+  invariants(fixed, "after a starter leaves");
+  check(s0.bench.includes(fixed.lineup[7]!), "his shirt goes to a bench man");
+  check(fixed.lineup.every((id, i) => i === 7 || id === s0.lineup[i]), "the rest of the XIII stays put");
+  check(fixed.bench.filter((id) => !s0.bench.includes(id)).length === 1, "one new man joins the bench");
+
+  // Swaps: bench ↔ XIII and squad → bench.
+  const benchMan = s0.bench[0]!;
+  const swapped = placeInTeam(s0, "xiii", 3, benchMan);
+  check(swapped.lineup[3] === benchMan && swapped.bench[0] === s0.lineup[3], "bench man into the XIII swaps with the starter");
+  const spare = squad.find((p) => !s0.lineup.includes(p.id) && !s0.bench.includes(p.id))!;
+  const onBench = placeInTeam(s0, "bench", 2, spare.id);
+  check(onBench.bench[2] === spare.id && JSON.stringify(onBench.lineup) === JSON.stringify(s0.lineup), "squad man onto the bench");
+  const starterDown = placeInTeam(s0, "bench", 1, s0.lineup[0]!);
+  check(starterDown.bench[1] === s0.lineup[0] && starterDown.lineup[0] === s0.bench[1], "starter onto the bench swaps with the bench man");
+
+  // AI clubs have a valid bench too.
+  for (const id of Object.keys(s0.clubs)) {
+    if (id === s0.userClubId) continue;
+    const b = aiBench(s0, id);
+    const xiii = aiLineup(s0, id);
+    const sq = s0.clubs[id]!.squad;
+    check(b.length === Math.min(BENCH_SIZE, sq.length - 13) && new Set([...xiii, ...b]).size === xiii.length + b.length && b.every((x) => sq.includes(x)), `${id}: AI bench valid`);
+  }
+
+  // Strength: the bench counts a bit, more is better, an empty bench hurts.
+  const r = (bench: string[]) => teamRating(s0.lineup, bench, s0.players);
+  const xiii = lineupRating(s0.lineup, s0.players);
+  const worst = squad.filter((p) => !s0.lineup.includes(p.id)).sort((a, b) => a.rating - b.rating).slice(0, 4).map((p) => p.id);
+  const strongBench = r(s0.bench);
+  check(Math.abs(strongBench - xiii) < 1, `a normal bench moves strength by under a point (${(strongBench - xiii).toFixed(2)})`);
+  check(r(worst) < strongBench, "a weaker bench = a weaker team");
+  check(r(s0.bench.slice(0, 3)) < strongBench && r([]) < r(s0.bench.slice(0, 3)), "a short bench is a penalty, an empty one more so");
+  check(xiii - r([]) < 5, `an empty bench costs under 5 (${(xiii - r([])).toFixed(1)})`);
+  let mono = true;
+  for (let b = 60; b < 90; b += 2) {
+    const fake = { ...s0.players, x1: { ...s0.players[benchMan]!, id: "x1", rating: b } };
+    const fake2 = { ...fake, x1: { ...fake.x1!, rating: b + 2 } };
+    if (teamRating(s0.lineup, ["x1", ...s0.bench.slice(1)], fake2) <= teamRating(s0.lineup, ["x1", ...s0.bench.slice(1)], fake)) mono = false;
+  }
+  check(mono, "strength rises with every bench rating point");
+
+  // A signing too weak for the XIII but better than the weakest bench man goes on the bench.
+  const window = finishTransfers(finishDepartures(beginOffseason(simAll(s0))));
+  const weakestBench = Math.min(...window.bench.map((id) => window.players[id]!.rating));
+  const benchSigning = buildMarket(window, []).find((l) => {
+    const p = window.players[l.playerId];
+    if (!p || l.legend || signingCost(window, l).total > window.budget) return false;
+    const starters = window.lineup.map((id, i) => ({ id, i })).filter(({ i }) => LINEUP_SLOTS[i] === p.pos);
+    const worstStarter = Math.min(...starters.map(({ id }) => window.players[id]!.rating));
+    return p.rating > weakestBench && p.rating < worstStarter;
+  });
+  if (benchSigning) {
+    const r2 = buyPlayer(window, benchSigning);
+    check(!r2.error, `bench-level signing goes through (${r2.error ?? "ok"})`);
+    if (!r2.error) {
+      check(r2.state.bench.includes(benchSigning.playerId), "a signing who beats the weakest bench man goes on the bench");
+      check(r2.state.news.some((n) => n.includes("goes on the bench")), "news says he's on the bench");
+      invariants(r2.state, "after a bench signing");
+    }
+  } else check(false, "found a bench-level signing on the market");
+
+  // Appearances: all 17 get one.
+  const after = playMatchday(playMatchday(s0));
+  const fx = after.calendar[0]!.fixtures.find((f) => f.home === after.userClubId || f.away === after.userClubId);
+  if (fx) check(s0.bench.every((id) => (after.players[id]?.apps ?? 0) >= 1), "bench men get an appearance");
+  const ll = after.lastLineups?.[after.userClubId];
+  check(!!ll && ll.bench?.length === BENCH_SIZE, "last team sheet keeps the bench");
 }
 
 // --- Calibration over many seasons.
