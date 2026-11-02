@@ -180,6 +180,7 @@ export function createCareer(opts: { clubId: string; managerName: string; seed?:
     phase: "season",
     history: [],
     news: [`${opts.managerName.trim() || "Coach"} takes charge of ${choice.name}.`],
+    newsTags: {},
   };
   state.freeAgents = unattachedPool(state);
   const started = startSeason(state);

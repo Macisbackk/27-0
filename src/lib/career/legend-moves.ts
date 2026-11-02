@@ -7,6 +7,7 @@
 import { pushEvent } from "./events";
 import { legendAsPlayer, legendCatalog, type LegendCard } from "./legends";
 import { recordDeal } from "./midseason";
+import { tagNews } from "./news";
 import { SQUAD_MAX } from "./players";
 import { rngFor, weightedPick } from "./rng";
 import { rivalsOf } from "./rivals";
@@ -90,6 +91,7 @@ export function aiLegendSigning(s: CareerState): CareerPlayer | undefined {
   pickd.club.squad.push(p.id);
   recordDeal(s, { year: s.year, at: 0, playerId: p.id, playerName: p.name, pos: p.pos, rating: p.rating, from: null, to: pickd.club.id, fee: 0, summer: true });
   s.news = [`${pickd.club.name} sign legend ${p.name} (${p.rating})!`, ...s.news].slice(0, 30);
+  tagNews(s, s.news[0]!, [pickd.club.id]);
   pushEvent(s, {
     id: `legend-signing:${s.year}:${p.id}`,
     kind: "legend-signing",

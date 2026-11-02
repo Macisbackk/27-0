@@ -19,6 +19,7 @@ import { buyersFor, pickBuyer } from "./buyers";
 import { isWindowOpen, recordDeal, windowStatus } from "./midseason";
 import { academySummer } from "./academy";
 import { pushEvent } from "./events";
+import { tagNews } from "./news";
 import { aiLegendSigning, legendAvailable, legendSummer, signLegend } from "./legend-moves";
 import { autoPickTeam, fixTeam, repairTeam, squadOf, startSeason, userClub } from "./season";
 import type { CareerPlayer, CareerState, Pos } from "./types";
@@ -123,6 +124,7 @@ export function beginOffseason(state: CareerState): CareerState {
   const rng = rngFor(s.seed, s.year, "offseason");
   const retired: NonNullable<CareerState["departures"]>["retired"] = [];
   const legendNews: string[] = [];
+  const legendNewsClubs: string[] = [];
 
   for (const club of Object.values(s.clubs)) {
     club.squad = club.squad.filter((id) => {
@@ -147,6 +149,7 @@ export function beginOffseason(state: CareerState): CareerState {
           });
         } else {
           legendNews.push(`${p.name} retires at ${club.name}.`);
+          legendNewsClubs.push(club.id);
         }
         delete s.players[id];
         return false;
@@ -199,6 +202,7 @@ export function beginOffseason(state: CareerState): CareerState {
     ...(expiring.length ? [`Out of contract: ${expiring.map((id) => s.players[id]?.name).join(", ")}.`] : []),
     ...s.news,
   ].slice(0, 30);
+  legendNews.forEach((line, i) => tagNews(s, line, [legendNewsClubs[i]]));
   s.updatedAt = Date.now();
   return s;
 }

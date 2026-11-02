@@ -6,6 +6,7 @@
 import { ACADEMY_MAX } from "./academy";
 import { pickBuyer } from "./buyers";
 import { recordDeal } from "./midseason";
+import { tagNews } from "./news";
 import { SQUAD_MAX, SQUAD_MIN, formatMoney, generatePlayer, transferFee, wageBill, wagesDueNow } from "./players";
 import { pick, randInt, rngFor } from "./rng";
 import { rivalsOf } from "./rivals";
@@ -196,6 +197,7 @@ export function rollRandomEvent(s: CareerState, mdIndex: number): CareerEvent | 
         options: [{ id: "ok", label: "Noted" }],
       };
       addNews(s, `Takeover at ${club.name}: they sign ${signing.name}.`);
+      tagNews(s, s.news[0]!, [rival]);
       break;
     }
   }

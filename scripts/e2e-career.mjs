@@ -212,6 +212,15 @@ try {
   await page.getByRole("tab", { name: "Club" }).click();
   await page.getByText("Season challenges").waitFor({ timeout });
   await shot("club");
+  // Player stats, league stats and the club's Hall of Fame (real all-time records).
+  for (const id of ["squad-stats", "league-leaders", "hall-of-fame"]) {
+    await page.getByTestId(id).first().waitFor({ timeout });
+  }
+  const hofRows = await page.getByTestId("hall-of-fame").first().locator("li").count();
+  if (hofRows !== 4) throw new Error(`Expected 4 Hall of Fame records, saw ${hofRows}`);
+  await page.getByTestId("hall-of-fame").first().scrollIntoViewIfNeeded();
+  await shot("club-hall-of-fame");
+  step("Club tab: player stats, league stats and Hall of Fame");
   await clickButton("Legend Vault");
   await page.getByText("Legend Vault").first().waitFor({ timeout });
   await shot("vault");
@@ -256,6 +265,11 @@ try {
       await page.keyboard.press("Escape");
       await page.getByRole("tab", { name: "Club" }).click();
       await page.waitForTimeout(300);
+      await page.getByTestId("squad-stats").first().scrollIntoViewIfNeeded();
+      await shot("club-player-stats");
+      await page.getByTestId("league-leaders").first().scrollIntoViewIfNeeded();
+      await shot("club-league-stats");
+      await page.getByRole("region", { name: "Transfer round-up" }).scrollIntoViewIfNeeded().catch(() => {});
       await shot("transfer-round-up");
       await page.getByRole("tab", { name: "Match" }).click();
       await page.waitForTimeout(300);
