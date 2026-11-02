@@ -178,7 +178,8 @@ await shot(phone, "45-how-to-play", "/", async (page) => {
     await page.waitForTimeout(800);
     await page.getByRole("button", { name: "Quick sim" }).click({ timeout: 8000 });
     await page.getByRole("region", { name: "Last result" }).waitFor({ timeout: 8000 });
-    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.getByRole("region", { name: "Last result" }).evaluate((el) => el.scrollIntoView({ block: "start" }));
+    await page.evaluate(() => window.scrollBy(0, -70));
     await page.waitForTimeout(500);
   });
   await shot(narrow, "48c-320-manager-bench-picker", "/manager", async (page) => {
