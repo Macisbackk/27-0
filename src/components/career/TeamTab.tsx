@@ -45,10 +45,12 @@ export function TeamTab() {
   const others = squad.filter((p) => !inXiii.has(p.id) && !onBench.has(p.id)).sort((a, b) => b.rating - a.rating);
   const rating = clubRating(s, s.userClubId);
 
-  // XIII shirts sort by fit for the slot; bench spots by rating (a bench man covers anywhere).
+  // XIII shirts sort by fit for the slot. Bench spots list the rest of the squad first, then the
+  // other bench men, then starters (by rating: a bench man covers anywhere).
   const pickSlot = pick?.kind === "xiii" ? LINEUP_SLOTS[pick.index]! : null;
   const fit = (p: CareerPlayer) => (pickSlot ? effectiveRating(p, pickSlot) : p.rating);
-  const candidates = pick ? [...squad].sort((a, b) => fit(b) - fit(a)) : [];
+  const group = (p: CareerPlayer) => (pick?.kind !== "bench" ? 0 : inXiii.has(p.id) ? 2 : onBench.has(p.id) ? 1 : 0);
+  const candidates = pick ? [...squad].sort((a, b) => group(a) - group(b) || fit(b) - fit(a)) : [];
   const currentId = pick ? (pick.kind === "xiii" ? s.lineup[pick.index] : bench[pick.index]) : undefined;
   const sheetTitle = !pick
     ? ""
