@@ -1,0 +1,167 @@
+{
+  "_about": "Real all-time club records for Manager Mode's Hall of Fame: most tries, goals, points and appearances for the club (all competitions, as published). Researched November 2026. A record is only included when a source states the figure; anything we could not find reliably is left out (the game then shows the best from this career instead). Appearances include games off the bench where the source gives them.",
+  "clubs": {
+    "wigan-warriors": {
+      "tries": { "name": "Billy Boston", "value": 478 },
+      "goals": { "name": "Jim Sullivan", "value": 2317 },
+      "points": { "name": "Jim Sullivan", "value": 4883 },
+      "apps": { "name": "Jim Sullivan", "value": 774 },
+      "sources": ["https://en.wikipedia.org/wiki/Wigan_Warriors"]
+    },
+    "st-helens": {
+      "tries": { "name": "Tom van Vollenhoven", "value": 392, "years": "1957–68" },
+      "goals": { "name": "Kel Coslett", "value": 1639, "years": "1961–76" },
+      "points": { "name": "Kel Coslett", "value": 3413, "years": "1961–76" },
+      "apps": { "name": "Kel Coslett", "value": 531, "years": "1961–76" },
+      "sources": ["https://en.wikipedia.org/wiki/List_of_St_Helens_R.F.C._statistics_and_records"]
+    },
+    "leeds-rhinos": {
+      "tries": { "name": "Eric Harris", "value": 392 },
+      "goals": { "name": "Kevin Sinfield", "value": 1792, "years": "1997–2015" },
+      "points": { "name": "Kevin Sinfield", "value": 3967, "years": "1997–2015" },
+      "apps": { "name": "John Holmes", "value": 625, "years": "1968–89" },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Leeds_Rhinos",
+        "https://en.wikipedia.org/wiki/Eric_Harris_(rugby_league)",
+        "https://en.wikipedia.org/wiki/Kevin_Sinfield"
+      ],
+      "notes": "Sinfield's goals are his Leeds career total (Wikipedia career table); he passed Lewis Jones's club goals record in 2011."
+    },
+    "warrington-wolves": {
+      "tries": { "name": "Brian Bevan", "value": 740, "years": "1945–62" },
+      "goals": { "name": "Steve Hesford", "value": 1112 },
+      "points": { "name": "Lee Briers", "value": 2586 },
+      "apps": { "name": "Brian Bevan", "value": 620, "years": "1945–62" },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Warrington_Wolves",
+        "https://en.wikipedia.org/wiki/Steve_Hesford",
+        "https://en.wikipedia.org/wiki/Lee_Briers"
+      ]
+    },
+    "hull-kr": {
+      "tries": { "name": "Roger Millward", "value": 207, "years": "1966–80" },
+      "goals": { "name": "Mike Fletcher", "value": 1268, "years": "1987–98" },
+      "points": { "name": "Mike Fletcher", "value": 2760, "years": "1987–98" },
+      "apps": { "name": "Mike Smith", "value": 489, "years": "1975–91" },
+      "sources": ["https://hullkr.co.uk/club-honours-and-records", "https://en.wikipedia.org/wiki/Hull_Kingston_Rovers"],
+      "notes": "Mike Smith: 481 starts plus 8 off the bench."
+    },
+    "hull-fc": {
+      "tries": { "name": "Clive Sullivan", "value": 250, "years": "1961–74, 1981–85" },
+      "goals": { "name": "Joe Oliver", "value": 687, "years": "1928–37, 1943–45" },
+      "points": { "name": "Joe Oliver", "value": 1842, "years": "1928–37, 1943–45" },
+      "apps": { "name": "Edward Rogers", "value": 501, "years": "1906–25" },
+      "sources": ["https://en.wikipedia.org/wiki/Hull_F.C."]
+    },
+    "wakefield-trinity": {
+      "tries": { "name": "Neil Fox", "value": 272, "years": "1956–69, 1970–74" },
+      "goals": { "name": "Neil Fox", "value": 1836, "years": "1956–69, 1970–74" },
+      "points": { "name": "Neil Fox", "value": 4488, "years": "1956–69, 1970–74" },
+      "apps": { "name": "Harry Wilkinson", "value": 618, "years": "1930–49" },
+      "sources": ["https://trinityheritage.co.uk/club-honours-and-records/club-honours/", "https://en.wikipedia.org/wiki/Wakefield_Trinity"]
+    },
+    "castleford-tigers": {
+      "tries": { "name": "Alan Hardisty", "value": 206, "years": "1958–71" },
+      "goals": { "name": "Albert Lunn", "value": 875, "years": "1951–63" },
+      "points": { "name": "Albert Lunn", "value": 1870, "years": "1951–63" },
+      "apps": { "name": "John Joyner", "value": 613, "years": "1972–92" },
+      "sources": ["https://en.wikipedia.org/wiki/Castleford_Tigers"]
+    },
+    "leigh-leopards": {
+      "tries": { "name": "Mick Martyn", "value": 189, "years": "1954–67" },
+      "goals": { "name": "Jimmy Ledgard", "value": 1043, "years": "1948–58" },
+      "points": { "name": "John Woods", "value": 2492, "years": "1976–85, 1990–92" },
+      "apps": { "name": "Albert Worrall", "value": 503, "years": "1920–38" },
+      "sources": ["https://en.wikipedia.org/wiki/Leigh_Leopards"]
+    },
+    "bradford-bulls": {
+      "tries": { "name": "Jack McLean", "value": 261 },
+      "goals": { "name": "Paul Deacon", "value": 1133, "years": "1998–2009" },
+      "points": { "name": "Paul Deacon", "value": 2610, "years": "1998–2009" },
+      "apps": { "name": "Keith Mumby", "value": 588 },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Jack_McLean_(rugby,_born_1923)",
+        "https://en.wikipedia.org/wiki/Keith_Mumby",
+        "https://en.wikipedia.org/wiki/List_of_Bradford_Bulls_records_and_statistics"
+      ],
+      "notes": "Deacon passed Mumby's club points record in 2006 (Keith Mumby article)."
+    },
+    "huddersfield-giants": {
+      "points": { "name": "Frank Dyson", "value": 2072 },
+      "sources": ["https://en.wikipedia.org/wiki/Frank_Dyson"],
+      "notes": "No source we found states the club's career tries, goals or appearances records."
+    },
+    "catalans-dragons": {
+      "apps": { "name": "Rémi Casty", "value": 337 },
+      "sources": ["https://www.loverugbyleague.com/post/remi-casty-leaves-catalans-23-06-2026"],
+      "notes": "Wikipedia's Catalans records list is out of date, so only the appearances record (confirmed June 2026) is used."
+    },
+    "widnes-vikings": {
+      "tries": { "name": "Mal Aspey", "value": 234, "years": "1964–80" },
+      "goals": { "name": "Ray Dutton", "value": 1083, "years": "1966–78" },
+      "points": { "name": "Ray Dutton", "value": 2195, "years": "1966–78" },
+      "apps": { "name": "Keith Elwell", "value": 591, "years": "1970–86" },
+      "sources": ["https://en.wikipedia.org/wiki/Widnes_Vikings"],
+      "notes": "Keith Elwell: 587 starts plus 4 off the bench."
+    },
+    "halifax-panthers": {
+      "tries": { "name": "Johnny Freeman", "value": 290, "years": "1954–67" },
+      "goals": { "name": "Ronnie James", "value": 1028, "years": "1960–72" },
+      "points": { "name": "Ronnie James", "value": 2191, "years": "1960–72" },
+      "apps": { "name": "Stan Kielty", "value": 482, "years": "1946–58" },
+      "sources": ["https://en.wikipedia.org/wiki/Halifax_Panthers"]
+    },
+    "oldham-rlfc": {
+      "tries": { "name": "Alan Davies", "value": 174, "years": "1950–61" },
+      "points": { "name": "Bernard Ganley", "value": 2761 },
+      "apps": { "name": "Joe Ferguson", "value": 627, "years": "1899–1923" },
+      "sources": ["https://en.wikipedia.org/wiki/Oldham_R.L.F.C."]
+    },
+    "swinton-lions": {
+      "tries": { "name": "Jim Valentine", "value": 301, "years": "1884–1901" },
+      "goals": { "name": "Ken Gowers", "value": 970, "years": "1954–73" },
+      "points": { "name": "Ken Gowers", "value": 2105, "years": "1954–73" },
+      "apps": { "name": "Ken Gowers", "value": 602, "years": "1954–73" },
+      "sources": ["https://en.wikipedia.org/wiki/Swinton_Lions"]
+    },
+    "barrow-raiders": {
+      "tries": { "name": "Jimmy Lewthwaite", "value": 352 },
+      "goals": { "name": "Darren Holt", "value": 1036 },
+      "points": { "name": "Darren Holt", "value": 2403 },
+      "sources": ["https://en.wikipedia.org/wiki/Barrow_Raiders"]
+    },
+    "whitehaven-rlfc": {
+      "tries": { "name": "Craig Calvert", "value": 238, "years": "2004–17" },
+      "goals": { "name": "John McKeown", "value": 1050, "years": "1948–61" },
+      "points": { "name": "John McKeown", "value": 2133, "years": "1948–61" },
+      "apps": { "name": "John McKeown", "value": 417, "years": "1948–61" },
+      "sources": ["https://en.wikipedia.org/wiki/Whitehaven_R.L.F.C."]
+    },
+    "dewsbury-rams": {
+      "tries": { "name": "Joe Lyman", "value": 144, "years": "1913–31" },
+      "goals": { "name": "Nigel Stephenson", "value": 863, "years": "1967–78, 1984–86" },
+      "apps": { "name": "Joe Lyman", "value": 454, "years": "1913–31" },
+      "sources": ["https://en.wikipedia.org/wiki/Dewsbury_Rams"]
+    },
+    "london-broncos": {
+      "tries": { "name": "Luke Dorn", "value": 109, "years": "2005–06, 2009–13" },
+      "goals": { "name": "Steve Diamond", "value": 305, "years": "1981–84" },
+      "points": { "name": "Paul Sykes", "value": 774, "years": "2001–07" },
+      "apps": { "name": "Will Lovell", "value": 206, "years": "2012–" },
+      "sources": ["https://en.wikipedia.org/wiki/London_Broncos"]
+    },
+    "sheffield-eagles": {
+      "tries": { "name": "Menzie Yere", "value": 195, "years": "2009–19" },
+      "points": { "name": "Mark Aston", "value": 2142 },
+      "apps": { "name": "Mark Aston", "value": 389 },
+      "sources": ["https://en.wikipedia.org/wiki/Sheffield_Eagles"]
+    },
+    "doncaster-rlfc": {
+      "tries": { "name": "Mark Roache", "value": 112, "years": "1984–97" },
+      "goals": { "name": "David Noble", "value": 773, "years": "1974–91" },
+      "points": { "name": "David Noble", "value": 1751, "years": "1974–91" },
+      "apps": { "name": "Audley Pennant", "value": 327, "years": "1980–97" },
+      "sources": ["https://en.wikipedia.org/wiki/Doncaster_R.L.F.C."]
+    }
+  }
+}

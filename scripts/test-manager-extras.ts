@@ -489,7 +489,7 @@ console.log("Pop-ups and random events");
   check(fired / N > 0.04 && fired / N < 0.1, `random events after ${((100 * fired) / N).toFixed(1)}% of league games`);
   check(seen.size === 5, `all five kinds turn up (${[...seen.entries()].map(([k, n]) => `${k} ${n}`).join(", ")})`);
   const season = simAll(createCareer({ clubId: "st-helens", managerName: "T", seed: "events-season" }));
-  const randoms = (season.events ?? []).filter((e) => e.year === season.year && !e.kind.startsWith("legend"));
+  const randoms = (season.events ?? []).filter((e) => e.year === season.year && !e.kind.startsWith("legend") && e.kind !== "club-record");
   check(randoms.length <= EVENTS_PER_SEASON, `at most ${EVENTS_PER_SEASON} random events a season (${randoms.length})`);
 }
 

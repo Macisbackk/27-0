@@ -21,3 +21,5 @@ export { MAGIC_ROUND, isMagicWeekend } from "./schedule";
 export { CAPTAIN_BOOST } from "./match";
 export * from "./events";
 export * from "./legend-moves";
+export * from "./news";
+export * from "./stats";

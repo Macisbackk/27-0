@@ -72,6 +72,31 @@ function scorerLine(state: CareerState, tries: string[]): string {
  * the score, won/lost/drawn, who and where, try scorers (or golden point), form run, Player of the
  * Match, places moved and any challenge it completed.
  */
+/** Your 17's match ratings, best first (tap to open). */
+function MatchRatings({ state, fixture }: { state: CareerState; fixture: Fixture }) {
+  const r = fixture.result!;
+  const book = state.lastLineups?.[state.userClubId];
+  const ids = book?.fixtureId === fixture.id ? [...book.lineup, ...(book.bench ?? [])] : Object.keys(r.ratings ?? {}).filter((id) => state.clubs[state.userClubId]!.squad.includes(id));
+  const rows = ids
+    .filter((id) => r.ratings?.[id] != null)
+    .map((id) => ({ id, name: state.players[id]?.name ?? "?", v: r.ratings![id]! }))
+    .sort((a, b) => b.v - a.v);
+  if (!rows.length) return null;
+  return (
+    <details className="mt-2 text-[12px]" data-testid="match-ratings">
+      <summary className="cursor-pointer font-semibold text-gray-300">Match ratings</summary>
+      <ul className="mx-auto mt-1.5 grid max-w-sm grid-cols-2 gap-x-3 gap-y-0.5 text-left">
+        {rows.map((x) => (
+          <li key={x.id} className="flex items-center justify-between gap-2">
+            <span className="min-w-0 truncate text-gray-200">{x.name}</span>
+            <span className={`shrink-0 tabular-nums font-bold ${x.v >= 8 ? "text-accent-gold" : x.v < 5.5 ? "text-red-200" : "text-white"}`}>{x.v.toFixed(1)}</span>
+          </li>
+        ))}
+      </ul>
+    </details>
+  );
+}
+
 export function ResultStrip({ state, fixture, flash }: { state: CareerState; fixture: Fixture; flash?: ResultFlash | null }) {
   const r = fixture.result!;
   const isHome = fixture.home === state.userClubId;
@@ -132,10 +157,14 @@ export function ResultStrip({ state, fixture, flash }: { state: CareerState; fix
             <span key={c.text} className={`rounded-full px-2 py-0.5 font-bold ${c.tone}`}>{c.text}</span>
           ))}
           {motm ? (
-            <span className="rounded-full bg-accent-gold/15 px-2 py-0.5 font-bold text-accent-gold">Player of the Match: {motm.name}</span>
+            <span className="rounded-full bg-accent-gold/15 px-2 py-0.5 font-bold text-accent-gold">
+              Player of the Match: {motm.name}
+              {r.ratings?.[motm.id] != null ? ` · ${r.ratings[motm.id]!.toFixed(1)}` : ""}
+            </span>
           ) : null}
         </p>
       ) : null}
+      {r.ratings ? <MatchRatings state={state} fixture={fixture} /> : null}
       {flash?.challenges.length ? (
         <ul className="mt-2 space-y-1">
           {flash.challenges.map((t) => (

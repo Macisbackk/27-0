@@ -13,6 +13,7 @@
  */
 import { LINEUP_SLOTS, SQUAD_MAX, SQUAD_MIN, effectiveRating, formatMoney, playerValue, transferFee, wageBill, wagesDueNow } from "./players";
 import { buyersFor } from "./buyers";
+import { tagNews, withDealDivisions } from "./news";
 import { pick, rngFor, shuffle, type Rng } from "./rng";
 import type { CareerPlayer, CareerState, DeadlineClock, DeadlineOffer, Pos, TransferDeal } from "./types";
 
@@ -209,6 +210,7 @@ function runSlot(state: CareerState, clock: DeadlineClock, slot: number, quiet: 
       recordDeal(state, deal);
       const line = dealLine(state, deal);
       addNews(state, line);
+      tagNews(state, line, [deal.from, deal.to]);
       feed(clock, "deal", line.replace(/^Deadline Day: /, ""));
       break;
     }
@@ -354,7 +356,7 @@ export function seasonDeals(state: CareerState): TransferDeal[] {
 
 /** Add a deal to the world's transfer log (newest first, capped). */
 export function recordDeal(state: CareerState, deal: TransferDeal) {
-  state.transfers = [deal, ...(state.transfers ?? [])].slice(0, 120);
+  state.transfers = [withDealDivisions(state, deal), ...(state.transfers ?? [])].slice(0, 120);
 }
 
 function dealLine(state: CareerState, d: TransferDeal): string {

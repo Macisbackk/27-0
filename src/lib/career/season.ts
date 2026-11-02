@@ -11,6 +11,8 @@ import { MAN_OF_STEEL_LEGACY, awardLabel, computeSeasonAwards, userWonManOfSteel
 import { defaultCaptain, syncCaptain, userCaptain } from "./captain";
 import { DERBY_LEGACY, DERBY_MORALE, derbyBonus, isDerby } from "./rivals";
 import { isMagicWeekend } from "./schedule";
+import { inferNewsTags, pruneNewsTags, tagNews, withDealDivisions } from "./news";
+import { settleFixture } from "./stats";
 import type {
   CareerState,
   ChallengeKind,
@@ -250,6 +252,10 @@ export function startSeason(state: CareerState): CareerState {
   for (const p of Object.values(next.players)) {
     p.apps = 0;
     p.tries = 0;
+    // Season goals and ratings: left out until he plays (keeps the save small).
+    delete p.goals;
+    delete p.rated;
+    delete p.ratingSum;
   }
   fixTeam(next);
   next.seasonTrack = {
@@ -277,6 +283,7 @@ export function startSeason(state: CareerState): CareerState {
   next.lastIncome = income;
   // Pre-season: a new batch of kids joins the academy.
   academyIntake(next);
+  pruneNewsTags(next);
   addNews(
     next,
     `${next.year} season begins in the ${DIVISION_LABEL[userClub(next).division]}. Board income ${formatMoney(income)}, wages ${formatMoney(wages)}.`
@@ -349,7 +356,8 @@ export function placeInTeam(state: CareerState, where: "xiii" | "bench", index: 
 /**
  * Bring a loaded save up to date: saves from before the interchange get a bench picked; saves
  * from before the academy get an empty list, and a captain (the best senior starter).
- * Awards, derby records and Magic Weekend need nothing: older seasons simply have none.
+ * Awards, derby records and Magic Weekend need nothing: older seasons simply have none. News and
+ * deals get division tags inferred from the clubs they name; player stats and club records start now.
  */
 export function migrateCareer<T extends CareerState | null>(state: T): T {
   if (!state) return state;
@@ -360,6 +368,12 @@ export function migrateCareer<T extends CareerState | null>(state: T): T {
   }
   if (!s.captainId || !s.clubs[s.userClubId]?.squad.includes(s.captainId)) {
     s = { ...s, captainId: defaultCaptain(s.lineup ?? [], s.players) };
+  }
+  // League-relevant news (v1.56): tag older saves' news and deals with the divisions of the clubs named.
+  if (!s.newsTags) s = { ...s, newsTags: inferNewsTags(s) };
+  if ((s.transfers ?? []).some((d) => !d.divisions)) {
+    const st = s;
+    s = { ...s, transfers: (s.transfers ?? []).map((d) => withDealDivisions(st, d)) };
   }
   return s as T;
 }
@@ -486,21 +500,6 @@ function applyLeagueResult(state: CareerState, f: Fixture) {
 /** All 17 on the team sheet get an appearance (the bench always gets on in league). */
 function matchday17(sheet: TeamSheet): string[] {
   return [...sheet.lineup, ...(sheet.bench ?? [])];
-}
-
-function creditPlayers(state: CareerState, sheet: TeamSheet, tries: string[]) {
-  for (const id of matchday17(sheet)) {
-    const p = state.players[id];
-    if (!p) continue;
-    p.apps++;
-    p.careerApps++;
-  }
-  for (const id of tries) {
-    const p = state.players[id];
-    if (!p) continue;
-    p.tries++;
-    p.careerTries++;
-  }
 }
 
 function trackUserResult(state: CareerState, f: Fixture, sheet: TeamSheet) {
@@ -658,8 +657,8 @@ function playMatchdayInPlace(next: CareerState, played?: PlayedResult): void {
         : simulateMatch(rng, home, away, next.players, { knockout: isKnockout(f.kind), neutral: isMagicWeekend(f) });
     recordLineups(next, f, home, away);
     applyLeagueResult(next, f);
-    creditPlayers(next, home, f.result.homeTries);
-    creditPlayers(next, away, f.result.awayTries);
+    // Match ratings, stats (season, career, at the club), Player of the Match and club records.
+    settleFixture(next, f, home, away);
     if (f.home === next.userClubId) trackUserResult(next, f, home);
     else if (f.away === next.userClubId) trackUserResult(next, f, away);
     applyBans(next, f);
@@ -671,7 +670,11 @@ function playMatchdayInPlace(next: CareerState, played?: PlayedResult): void {
   for (const f of md.fixtures) {
     if (f.kind === "grand-final" || (f.kind === "cup" && f.round === 5)) {
       const w = winnerOf(f);
-      if (w && w !== next.userClubId) addNews(next, `${next.clubs[w]!.name} win the ${f.kind === "grand-final" ? "Grand Final" : "Challenge Cup"}.`);
+      if (w && w !== next.userClubId) {
+        addNews(next, `${next.clubs[w]!.name} win the ${f.kind === "grand-final" ? "Grand Final" : "Challenge Cup"}.`);
+        // The Grand Final is Super League news; the Challenge Cup is everyone's.
+        if (f.kind === "grand-final") tagNews(next, next.news[0]!, [w]);
+      }
     }
   }
 
@@ -683,6 +686,7 @@ function playMatchdayInPlace(next: CareerState, played?: PlayedResult): void {
   // Draw the next knockout round now so the hub can show the upcoming tie.
   const upcoming = next.calendar[next.matchdayIndex];
   if (upcoming?.pendingDraw) drawPending(next, upcoming);
+  pruneNewsTags(next);
   next.updatedAt = Date.now();
   if (next.matchdayIndex >= next.calendar.length) finishSeason(next);
   // Mid-season window: AI deals, Deadline Day and rival bids for the round now coming up.
@@ -866,7 +870,11 @@ function finishSeason(state: CareerState): CareerState {
   s.phase = "review";
   addNews(s, `${s.year} season over: ${ordinal(position)} in the ${DIVISION_LABEL[division]}.`);
   const steel = awards.find((a) => a.id === "man-of-steel" && a.division === "super-league");
-  if (steel) addNews(s, `${awardLabel(steel)}: ${steel.name} (${steel.clubName}).`);
+  if (steel) {
+    addNews(s, `${awardLabel(steel)}: ${steel.name} (${steel.clubName}).`);
+    // Super League's Man of Steel: Super League news (the user's own winner is untagged).
+    if (steel.clubId !== s.userClubId) s.newsTags = { ...(s.newsTags ?? {}), [s.news[0]!]: ["super-league"] };
+  }
   if (mos) addNews(s, `${mos.name} is Man of Steel! +${MAN_OF_STEEL_LEGACY} Legacy.`);
   return s;
 }

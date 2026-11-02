@@ -34,6 +34,13 @@ export interface CareerPlayer {
   /** Career totals while at any club in this save. */
   careerApps: number;
   careerTries: number;
+  /** Season goals (kicks: conversions, penalties), rated games and the sum of match ratings. Older saves: none yet. */
+  goals?: number;
+  rated?: number;
+  ratingSum?: number;
+  careerGoals?: number;
+  /** Totals at each club he has played for in this save (club records, Hall of Fame). */
+  clubTotals?: Record<string, ClubTotals>;
   /** Season (year) the user signed this player, and the fee paid — stops buy→sell arbitrage. */
   signedYear?: number;
   fee?: number;
@@ -48,6 +55,27 @@ export interface CareerPlayer {
   retireAfter?: number;
 }
 
+/** A player's totals at one club in this save (every game here is rated, so avg = ratingSum / apps). Zeros are left out. */
+export interface ClubTotals {
+  apps: number;
+  tries?: number;
+  goals?: number;
+  ratingSum: number;
+}
+
+export type RecordKind = "tries" | "goals" | "points" | "apps";
+
+/** A club record holder: a real player (from data/club-records.json) or one from this career. */
+export interface ClubRecord {
+  name: string;
+  value: number;
+  years?: string;
+  /** Set when a player in this career holds it. */
+  playerId?: string;
+  /** Season he took the record. */
+  year?: number;
+}
+
 export type CareerEventKind =
   | "legend-signing"
   | "legend-retired"
@@ -55,7 +83,8 @@ export type CareerEventKind =
   | "record-bid"
   | "sponsor"
   | "wonderkid"
-  | "takeover";
+  | "takeover"
+  | "club-record";
 
 /** A pop-up on the Manager hub: shown once, one at a time, then marked seen. */
 export interface CareerEvent {
@@ -104,6 +133,8 @@ export interface FixtureResult {
   /** Players sent off (red card): banned for their club's next game. */
   homeSentOff?: string[];
   awaySentOff?: string[];
+  /** Match ratings out of 10 for both 17s (kept on the user's latest game only, to keep saves small). */
+  ratings?: Record<string, number>;
 }
 
 export type AwardId = "man-of-steel" | "young-player" | "top-try-scorer" | "club-player";
@@ -266,6 +297,10 @@ export interface CareerState {
   history: SeasonOutcome[];
   /** Short news lines for the hub, newest first. */
   news: string[];
+  /** Divisions a league-wide news line is about (lines about the user's club have none). See news.ts. */
+  newsTags?: Record<string, Division[]>;
+  /** Club records broken or set in this career (on top of data/club-records.json). */
+  clubRecords?: Record<string, Partial<Record<RecordKind, ClubRecord>>>;
   /** Season ids of the first Super League Grand Final win (for the fastest-climb record). */
   firstGrandFinalSeason?: number;
   /** Every deal in the world this save (newest first, capped), incl. AI-to-AI and Deadline Day. */
@@ -343,6 +378,8 @@ export interface TransferDeal {
   summer?: boolean;
   /** Involves the user's club. */
   user?: boolean;
+  /** Divisions of the clubs involved when the deal was done (older saves: inferred on load). */
+  divisions?: Division[];
 }
 
 export interface IncomingBid {

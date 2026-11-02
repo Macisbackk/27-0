@@ -20,6 +20,7 @@ import {
 import { useCareer } from "@/lib/career/context";
 import { playUiClick } from "@/lib/sound";
 import { ClubBadge, RatingPill } from "./bits";
+import { HallOfFame } from "./StatsCards";
 
 /** Open any club's team sheet from anywhere in Manager Mode. */
 const ClubSheetContext = createContext<(clubId: string) => void>(() => {});
@@ -163,6 +164,11 @@ function ClubSheet({ clubId, onClose }: { clubId: string | null; onClose: () => 
             })}
           </ul>
         )}
+      </section>
+
+      <section aria-label="Hall of Fame" className="mt-3">
+        <p className="text-[13px] font-semibold text-white">Hall of Fame</p>
+        <HallOfFame clubId={club.id} compact />
       </section>
     </MobileBottomSheet>
   );

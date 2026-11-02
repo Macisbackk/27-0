@@ -3,11 +3,12 @@
 import { useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { MobileModal } from "@/components/ui/MobileOverlay";
-import { TROPHY_LABEL, formatMoney, ordinal, prestigeRatingCap, rivalsOf } from "@/lib/career";
+import { TROPHY_LABEL, formatMoney, ordinal, prestigeRatingCap, relevantNews, rivalsOf } from "@/lib/career";
 import type { SeasonChallenge } from "@/lib/career/types";
 import { useCareer } from "@/lib/career/context";
 import { playUiClick, playWarning } from "@/lib/sound";
 import { Card, Eyebrow, ProgressBar, Stars } from "./bits";
+import { HallOfFameCard, LeagueLeadersCard, SquadStatsCard } from "./StatsCards";
 import { TransferRoundUp, WindowStatusLine } from "./TransferNews";
 
 /** "Best margin: 12 / 30" rather than a bare "12/30" for goals that track a best, not a count. */
@@ -162,12 +163,18 @@ export function ClubTab({ onOpenVault, onOpenRecords }: { onOpenVault: () => voi
         </div>
       </Card>
 
+      <SquadStatsCard />
+
+      <LeagueLeadersCard />
+
+      <HallOfFameCard />
+
       <TransferRoundUp />
 
       <Card>
         <Eyebrow>News</Eyebrow>
-        <ul className="mt-2 space-y-1.5 text-sm text-gray-300">
-          {s.news.slice(0, 12).map((line, i) => (
+        <ul className="mt-2 space-y-1.5 text-sm text-gray-300" data-testid="career-news">
+          {relevantNews(s).slice(0, 12).map((line, i) => (
             <li key={i} className={i === 0 ? "text-white" : ""}>{line}</li>
           ))}
         </ul>

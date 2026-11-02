@@ -11,7 +11,9 @@ import {
   deadlineDecisionPending,
   isDeadlineDay,
   isWindowOpen,
+  clubsNamed,
   liveOffers,
+  relevantDeals,
   roundsUntilDeadline,
   seasonDeals,
   windowStatus,
@@ -157,8 +159,17 @@ export function DeadlineOffers() {
 /** What's happened today, newest first. */
 function DeadlineFeed({ max = 8 }: { max?: number }) {
   const { state } = useCareer();
-  const clock = deadlineClock(state!);
-  const items = clock.feed.slice(0, max);
+  const s = state!;
+  const clock = deadlineClock(s);
+  const mine = s.clubs[s.userClubId]!.division;
+  // Other clubs' deals: only your division's (deals with your club always show).
+  const items = clock.feed
+    .filter((e) => {
+      if (e.kind !== "deal") return true;
+      const named = clubsNamed(s, e.text);
+      return named.length === 0 || named.some((id) => id === s.userClubId || s.clubs[id]!.division === mine);
+    })
+    .slice(0, max);
   return (
     <ul aria-label="Deadline Day feed" className="mt-3 divide-y divide-white/10 text-left">
       {items.map((e, i) => (
@@ -334,7 +345,8 @@ export function IncomingBidCard() {
 export function TransferRoundUp() {
   const { state } = useCareer();
   const s = state!;
-  const deals = seasonDeals(s);
+  // Your division's deals, plus any involving your club.
+  const deals = relevantDeals(s, seasonDeals(s));
   return (
     <section aria-label="Transfer round-up" className="rounded-card bg-pitch-900 p-4 text-left">
       <p className="text-[15px] font-bold text-white">Transfer round-up</p>
