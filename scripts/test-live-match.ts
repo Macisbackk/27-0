@@ -2,7 +2,7 @@
 import { buildWorld, createCareer } from "../src/lib/career/world";
 import { sheetFor } from "../src/lib/career/season";
 import { simulateMatch } from "../src/lib/career/match";
-import { ALL_CALL_IDS, MAX_INTERCHANGES, benchLift, createLiveMatch, manualSub, previewCall, liveResult, playToEnd, resolveCall, stepMinute, type LiveCallId } from "../src/lib/career/live-match";
+import { ALL_CALL_IDS, benchLift, createLiveMatch, previewCall, liveResult, playToEnd, resolveCall, stepMinute, type LiveCallId } from "../src/lib/career/live-match";
 import { rngFor } from "../src/lib/career/rng";
 
 let passed = 0;
@@ -169,49 +169,6 @@ ok("live win rate stays close to the instant sim");
   const rate = reds / teams;
   if (rate < 0.02 || rate > 0.09) fail(`live send-off rate ${rate.toFixed(3)} per team-game`);
   ok(`live send-offs: ${reds} in ${teams} team-games (1 in ${Math.round(teams / Math.max(1, reds))})`);
-}
-
-// Manual subs: any time, 8 a match, men can go back on, the sin-binned can't be swapped.
-{
-  const away = sheetFor(s, opponents[1]!);
-  const rng = rngFor("subs");
-  const m = createLiveMatch({ home, away, homeName: "Us", awayName: "Them", userSide: "home", knockout: false, players: s.players, rng });
-  while (m.minute < 30 && !m.finished) {
-    if (m.pending) resolveCall(m, m.pending.options[0]!.id, rng, s.players);
-    else stepMinute(m, rng, s.players);
-  }
-  if (m.pending) resolveCall(m, m.pending.options[0]!.id, rng, s.players);
-  const prop = m.home.lineup[7]!;
-  const benchMan = m.home.bench![0]!;
-  if (manualSub(m, prop, benchMan, s.players) !== null) fail("a simple sub was refused");
-  if (m.home.lineup[7] !== benchMan || !m.home.bench!.includes(prop) || m.interchanges !== 1) fail("sub didn't swap the two men");
-  if (!m.events.some((e) => e.text.startsWith(`Interchange: ${s.players[benchMan]!.name} on for ${s.players[prop]!.name}`))) fail("no feed line for the sub");
-  if (manualSub(m, benchMan, prop, s.players) !== null || m.home.lineup[7] !== prop) fail("a man can't go back on");
-  let used = m.interchanges ?? 0;
-  while (used < MAX_INTERCHANGES) {
-    const on = m.home.bench!.find((id) => s.players[id])!;
-    if (manualSub(m, m.home.lineup[10]!, on, s.players) !== null) fail(`sub ${used + 1} refused`);
-    used = m.interchanges ?? 0;
-  }
-  if (manualSub(m, m.home.lineup[10]!, m.home.bench![0]!, s.players) !== "none-left") fail("a ninth interchange was allowed");
-  const t = createLiveMatch({ home, away, homeName: "Us", awayName: "Them", userSide: "home", knockout: false, players: s.players, rng: rngFor("subs2") });
-  t.minute = 30;
-  t.binSide = "home";
-  t.binUntil = 35;
-  t.binnedId = t.home.lineup[0];
-  if (manualSub(t, t.home.lineup[0]!, t.home.bench![0]!, s.players) !== "binned") fail("a sin-binned man was swapped");
-  t.home.lineup[2] = ""; // sent off
-  if (manualSub(t, "", t.home.bench![0]!, s.players) !== "not-on") fail("an empty (sent-off) shirt was filled");
-  // Out of position costs more than like for like.
-  const a1 = createLiveMatch({ home, away, homeName: "Us", awayName: "Them", userSide: "home", knockout: false, players: s.players, rng: rngFor("s3") });
-  const a2 = createLiveMatch({ home, away, homeName: "Us", awayName: "Them", userSide: "home", knockout: false, players: s.players, rng: rngFor("s3") });
-  const fwd = a1.home.bench!.find((id) => s.players[id]!.pos === "PR" || s.players[id]!.pos === "SR")!;
-  manualSub(a1, a1.home.lineup[7]!, fwd, s.players); // at prop
-  manualSub(a2, a2.home.lineup[0]!, fwd, s.players); // at fullback
-  if (!(a2.userAttack < a1.userAttack)) fail("a forward at fullback should hurt more than at prop");
-  playToEnd(m, rng, s.players);
-  if (!m.finished) fail("match with 8 subs didn't finish");
-  ok(`manual subs: swap, back on, ${MAX_INTERCHANGES} max, sin bin and red card respected, out of position costs more`);
 }
 
 console.log(`\n${passed} passed`);

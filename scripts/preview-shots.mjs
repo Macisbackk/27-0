@@ -182,22 +182,6 @@ await shot(phone, "45-how-to-play", "/", async (page) => {
     await page.evaluate(() => window.scrollBy(0, -70));
     await page.waitForTimeout(500);
   });
-  // Live match subs panel: pick who comes off, see the bench with in-shirt ratings.
-  await shot(narrow, "48e-320-manager-live-subs", "/manager", async (page) => {
-    await page.getByRole("tab", { name: "Match" }).click({ timeout: 5000 }).catch(() => {});
-    await page.waitForTimeout(600);
-    await page.getByRole("button", { name: "Play match" }).click({ timeout: 8000 });
-    const subs = page.getByRole("button", { name: "Subs", exact: true });
-    for (let i = 0; i < 40 && !(await subs.isEnabled().catch(() => false)); i++) {
-      await page.getByTestId("live-call").getByRole("button").first().click({ timeout: 500 }).catch(() => {});
-      await page.waitForTimeout(200);
-    }
-    await subs.click({ timeout: 5000 });
-    const panel = page.getByRole("region", { name: "Subs" });
-    await panel.locator("ol button:enabled").nth(7).click({ timeout: 5000 });
-    await panel.scrollIntoViewIfNeeded();
-    await page.waitForTimeout(400);
-  });
   await shot(narrow, "48c-320-manager-bench-picker", "/manager", async (page) => {
     await page.getByRole("tab", { name: "Team" }).click({ timeout: 5000 });
     await page.getByRole("button", { name: /^Shirt 14,/ }).click({ timeout: 5000 });

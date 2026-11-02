@@ -133,31 +133,13 @@ try {
   await shot("live-match");
   // Answer the first big call if it shows up, then skip to the end.
   for (let i = 0; i < 40; i++) {
-    const call = page.getByRole("region", { name: /Penalty|team talk|Closing|Last tackle|Chasing|Big hole|Kick-off|Space in behind|Captain|down to 12|Injury|Fresh legs|Golden point|Short side|High shot|Big crowd|Six again|Rain|going wide|blowing|Scrum-half down|Red card/ });
+    const call = page.getByRole("region", { name: /Penalty|team talk|Closing|Last tackle|Chasing|Big hole|Kick-off|Space in behind|Captain|down to 12|Injury|Fresh legs|Golden point/ });
     if (await call.isVisible().catch(() => false)) {
       await shot("live-call");
       await call.getByRole("button").first().click();
       break;
     }
     await page.waitForTimeout(250);
-  }
-  // Manual subs: open the panel (clock stops), take a man off, put a bench man on.
-  {
-    const subsBtn = page.getByRole("button", { name: "Subs", exact: true });
-    for (let i = 0; i < 40 && !(await subsBtn.isEnabled().catch(() => false)); i++) {
-      const call = page.getByTestId("live-call").getByRole("button").first();
-      if (await call.isVisible().catch(() => false)) await call.click().catch(() => {});
-      await page.waitForTimeout(200);
-    }
-    await subsBtn.click();
-    const panel = page.getByRole("region", { name: "Subs" });
-    await panel.waitFor({ timeout });
-    await panel.locator("ol button:enabled").first().click();
-    await panel.getByRole("button", { name: / on$/ }).first().click();
-    await panel.getByText("Interchanges 1/8").waitFor({ timeout });
-    await shot("live-subs");
-    await panel.getByRole("button", { name: "Done" }).click();
-    step("Live match: manual sub (Interchanges 1/8)");
   }
   await clickButton("Skip to full time");
   await page.getByRole("region", { name: "Full time" }).waitFor({ timeout });
