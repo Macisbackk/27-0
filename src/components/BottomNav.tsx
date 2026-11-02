@@ -93,13 +93,9 @@ export function BottomNav() {
       {/* Reserves the nav's height (plus the home-indicator inset) so it never covers the page end. */}
       <div aria-hidden className="fl-bottom-nav-spacer sm:hidden" />
       {showManager ? (
-        <nav className="fl-bottom-nav" aria-label="Manager sections">
-          <Link href="/" onClick={() => playUiClick()} aria-label="Home: leave Manager Mode">
-            <NavIcon>
-              <PostsGlyph />
-            </NavIcon>
-            Home
-          </Link>
+        // No Home button here (owner, v1.61): it was too easy to leave a career by mistake. The
+        // "‹ Home" link at the top of the hub and the menu still lead out.
+        <nav className="fl-bottom-nav fl-bottom-nav--four" aria-label="Manager sections">
           <div role="tablist" aria-label="Manager sections" className="contents">
             {MANAGER_ITEMS.map((item) => {
               const active = managerNav.tab === item.id;
