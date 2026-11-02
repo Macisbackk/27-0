@@ -9,7 +9,7 @@
  * Deterministic: the same rng and the same calls always give the same match.
  */
 import { expectedTries, pickMotm, pickScorer, sheetStrength, type TeamSheet } from "./match";
-import { BENCH_PAR, LINEUP_SLOTS, benchRating, effectiveRating, lineupRating } from "./players";
+import { BENCH_PAR, LINEUP_SLOTS, benchRating, effectiveRating, lineupRating, slotPenalty } from "./players";
 import { randInt, shuffle, type Rng } from "./rng";
 import type { CareerPlayer, FixtureResult } from "./types";
 
@@ -115,6 +115,12 @@ export interface LiveMatch {
   /** Red card: the side down to 12 for the rest of the match, and who went. */
   redSide?: Side | null;
   sentOff?: { home: string[]; away: string[] };
+  /** Your interchanges used (8 a match; a man can go back on). */
+  interchanges?: number;
+  /** A fresh sub's lift lasts until this minute. */
+  freshUntil?: number;
+  /** Your player in the sin bin (he can't be swapped while he's off). */
+  binnedId?: string;
   /** The user's player who went off injured (for the like-for-like change). */
   injured?: string;
   /** -1 (them) … 1 (you), for the momentum bar. */
@@ -139,6 +145,10 @@ export interface LiveMatch {
 
 const MINUTES = 80;
 const BIN_MINUTES = 10;
+/** Interchanges allowed per match (rugby league: 8, and a man can come back on). */
+export const MAX_INTERCHANGES = 8;
+/** Rating points → try-rate multiplier, as in the strength model (exp(points / 3.4 / 2.2)). */
+const POINT_FACTOR = 1 / (3.4 * 2.2);
 
 function kickAccuracy(rating: number) {
   return Math.min(0.85, 0.55 + (rating - 75) * 0.015);
@@ -278,6 +288,8 @@ export function createLiveMatch(params: {
     incidents: { bin: false, injury: false, red: false },
     redSide: null,
     sentOff: { home: [], away: [] },
+    interchanges: 0,
+    freshUntil: -1,
     momentum: 0,
     goldenPoint: false,
     finished: false,
@@ -332,6 +344,7 @@ function injuryChange(m: LiveMatch, players: Record<string, CareerPlayer>, prefe
   const gap = Math.max(0, effectiveRating(players[hurt!]!, slot) - effectiveRating(players[sub]!, slot));
   sheet.lineup = sheet.lineup.map((id) => (id === hurt ? sub : id));
   sheet.bench = (sheet.bench ?? []).filter((id) => id !== sub);
+  m.interchanges = Math.min(MAX_INTERCHANGES, (m.interchanges ?? 0) + 1);
   return { sub, gap };
 }
 
@@ -847,6 +860,7 @@ export function resolveCall(m: LiveMatch, optionId: string, rng: Rng, players: R
       m.boostAttack = 1 + (now ? 0.15 : 0.18) * lift;
       m.boostDefence = 1 - (now ? 0.1 : 0.12) * lift;
       const who = fresh.length ? names(players, fresh) : "";
+      if (fresh.length) m.interchanges = Math.min(MAX_INTERCHANGES, (m.interchanges ?? 0) + fresh.length);
       if (now) say(who ? `Bench forwards on: ${who}.` : "Bench forwards on. Fresh legs through the middle.");
       else say(who ? `${who} held back for the final 15.` : "Bench held back for the final 15.");
       break;
@@ -1048,6 +1062,7 @@ function maybeIncident(m: LiveMatch, rng: Rng, players: Record<string, CareerPla
     const offender = randomPlayer(rng, sheet, players);
     m.binSide = side;
     m.binUntil = m.minute + BIN_MINUTES;
+    if (userIs(m, side)) m.binnedId = offender || undefined;
     const who = offender ? name(players, offender) : `A ${clubName(m, side)} player`;
     const text = `Sin bin! ${who} is sent off for ten minutes for a high tackle.`;
     m.events.push({ minute: m.minute, side, kind: "card", text });
@@ -1082,6 +1097,44 @@ function maybeIncident(m: LiveMatch, rng: Rng, players: Record<string, CareerPla
   return false;
 }
 
+export type SubError = "busy" | "none-left" | "not-on" | "not-on-bench" | "binned";
+
+/** Who can come off right now: on the field, not in the sin bin. */
+export function canComeOff(m: LiveMatch, id: string): boolean {
+  if (!id || !userSheet(m).lineup.includes(id)) return false;
+  return !(m.binnedId === id && m.binSide === m.userSide && m.minute < m.binUntil);
+}
+
+/**
+ * The manager's own interchange, any time the clock is running: `onId` off the bench for `offId`
+ * in his shirt. He plays that shirt's position (out of position costs rating, as everywhere), and a
+ * fresh man gives a short lift. 8 a match; the man coming off goes to the bench and can come back.
+ */
+export function manualSub(m: LiveMatch, offId: string, onId: string, players: Record<string, CareerPlayer>): SubError | null {
+  if (m.finished || m.pending) return "busy";
+  if ((m.interchanges ?? 0) >= MAX_INTERCHANGES) return "none-left";
+  const sheet = userSheet(m);
+  const slotIndex = sheet.lineup.indexOf(offId);
+  const bench = sheet.bench ?? [];
+  const benchIndex = bench.indexOf(onId);
+  if (slotIndex < 0 || !players[offId]) return "not-on";
+  if (benchIndex < 0 || !players[onId]) return "not-on-bench";
+  if (!canComeOff(m, offId)) return "binned";
+  const slot = LINEUP_SLOTS[slotIndex]!;
+  const delta = (effectiveRating(players[onId]!, slot) - effectiveRating(players[offId]!, slot)) / LINEUP_SLOTS.length;
+  const f = Math.exp(delta * POINT_FACTOR);
+  m.userAttack *= f;
+  m.userDefence /= f;
+  // Tired legs make a fresh man count, once the game's got going.
+  if (m.minute >= 20) m.freshUntil = m.minute + 8;
+  sheet.lineup = sheet.lineup.map((x, i) => (i === slotIndex ? onId : x));
+  sheet.bench = bench.map((x, i) => (i === benchIndex ? offId : x));
+  m.interchanges = (m.interchanges ?? 0) + 1;
+  const outOfPos = slotPenalty(players[onId]!, slot) > 0 ? ` (at ${slot})` : "";
+  m.events.push({ minute: m.minute, side: m.userSide, kind: "info", text: `Interchange: ${name(players, onId)} on for ${name(players, offId)}${outOfPos}.` });
+  return null;
+}
+
 /** Play one minute. Stops (without advancing) when a call is waiting. */
 export function stepMinute(m: LiveMatch, rng: Rng, players: Record<string, CareerPlayer>): void {
   if (m.finished || m.pending) return;
@@ -1103,6 +1156,8 @@ export function stepMinute(m: LiveMatch, rng: Rng, players: Record<string, Caree
     if (binned) tryRate *= m.binSide === side ? 0.7 : 1.6;
     // A red card: down to 12 for good (milder than a sin bin, it lasts longer).
     if (m.redSide) tryRate *= m.redSide === side ? 0.82 : 1.25;
+    // Fresh legs off the bench (a manual sub): a short lift.
+    if (m.minute <= (m.freshUntil ?? -1)) tryRate *= user ? 1.04 : 0.97;
     if (rng() < tryRate) scoreTry(m, side, rng, players);
 
     let penRate = (side === "home" ? m.base.homePens : m.base.awayPens) / MINUTES;

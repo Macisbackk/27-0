@@ -2,9 +2,12 @@
 
 import { useEffect, useReducer, useRef, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
-import { repairTeam, sheetFor, type CareerState, type Fixture } from "@/lib/career";
+import { LINEUP_SLOTS, effectiveRating, repairTeam, sheetFor, slotPenalty, type CareerState, type Fixture } from "@/lib/career";
 import {
+  MAX_INTERCHANGES,
+  canComeOff,
   createLiveMatch,
+  manualSub,
   liveResult,
   playToEnd,
   resolveCall,
@@ -22,7 +25,7 @@ import {
   playTryScored,
   playUiClick,
 } from "@/lib/sound";
-import { ClubBadge } from "./bits";
+import { ClubBadge, RatingPill } from "./bits";
 
 type Speed = "normal" | "fast";
 
@@ -48,6 +51,9 @@ export function LiveMatch({
   const resultRef = useRef<PlayedResult | null>(null);
   const [, bump] = useReducer((n: number) => n + 1, 0);
   const [speed, setSpeed] = useState<Speed>("normal");
+  // Subs panel: the clock stops while it's open. `off` = the man picked to come off.
+  const [subsOpen, setSubsOpen] = useState(false);
+  const [off, setOff] = useState<string | null>(null);
 
   if (!rngRef.current || !matchRef.current) {
     const rng = rngFor(state.seed, state.year, fixture.id, "live");
@@ -75,7 +81,7 @@ export function LiveMatch({
 
   // The clock: one minute per tick until a call is waiting or the match ends.
   useEffect(() => {
-    if (m.finished || m.pending) return;
+    if (m.finished || m.pending || subsOpen) return;
     const last = m.events[m.events.length - 1];
     const justScored = last?.kind === "try" && last.minute === m.minute && m.minute > 0;
     const delay = justScored ? TRY_PAUSE[speed] : m.minute === 0 ? 700 : TICK[speed];
@@ -179,8 +185,47 @@ export function LiveMatch({
         </div>
       </section>
 
+      {!m.finished && !subsOpen ? (
+        <div className="flex items-center justify-between gap-2 rounded-card bg-pitch-900 px-4 py-2">
+          <span className="text-xs text-[color:var(--fl-muted)]">
+            Interchanges {m.interchanges ?? 0}/{MAX_INTERCHANGES}
+          </span>
+          <GameButton
+            size="sm"
+            variant="secondary"
+            fullWidth={false}
+            disabled={!!m.pending}
+            onClick={() => {
+              playUiClick();
+              setOff(null);
+              setSubsOpen(true);
+            }}
+          >
+            Subs
+          </GameButton>
+        </div>
+      ) : null}
+
+      {subsOpen && !m.finished ? (
+        <SubsPanel
+          match={m}
+          players={state.players}
+          off={off}
+          onPickOff={setOff}
+          onSub={(onId) => {
+            if (off && !manualSub(m, off, onId, state.players)) playUiClick();
+            setOff(null);
+            bump();
+          }}
+          onDone={() => {
+            setSubsOpen(false);
+            setOff(null);
+          }}
+        />
+      ) : null}
+
       {m.pending ? (
-        <section aria-label={m.pending.title} className="rounded-card bg-pitch-900 p-4 ring-2 ring-theme-primary/60">
+        <section aria-label={m.pending.title} data-testid="live-call" className="rounded-card bg-pitch-900 p-4 ring-2 ring-theme-primary/60">
           <p className="text-[13px] font-semibold text-theme-primary">{m.pending.title}</p>
           <p className="mt-1 text-[15px] font-semibold text-white">{m.pending.prompt}</p>
           <div className="mt-3 flex flex-col gap-2">
@@ -245,6 +290,107 @@ export function LiveMatch({
         </div>
       </div>
     </div>
+  );
+}
+
+/** Your 13 and bench: tap who comes off, then who goes on. Ratings are in-shirt (out of position costs). */
+function SubsPanel({
+  match: m,
+  players,
+  off,
+  onPickOff,
+  onSub,
+  onDone,
+}: {
+  match: LiveMatchState;
+  players: CareerState["players"];
+  off: string | null;
+  onPickOff: (id: string | null) => void;
+  onSub: (onId: string) => void;
+  onDone: () => void;
+}) {
+  const sheet = m.userSide === "home" ? m.home : m.away;
+  const bench = (sheet.bench ?? []).filter((id) => players[id]);
+  const left = MAX_INTERCHANGES - (m.interchanges ?? 0);
+  const offSlot = off ? sheet.lineup.indexOf(off) : -1;
+  const slot = offSlot >= 0 ? LINEUP_SLOTS[offSlot]! : null;
+  const row = "flex w-full items-center gap-2.5 py-1.5 text-left text-[13px]";
+  return (
+    <section aria-label="Subs" className="rounded-card bg-pitch-900 p-3 ring-2 ring-theme-primary/60">
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-[13px] font-semibold text-theme-primary">
+          Interchanges {m.interchanges ?? 0}/{MAX_INTERCHANGES}
+        </p>
+        <GameButton size="sm" variant="secondary" fullWidth={false} onClick={onDone}>
+          Done
+        </GameButton>
+      </div>
+      {left <= 0 ? <p className="mt-2 text-sm text-gray-300">No interchanges left.</p> : null}
+      {slot && off ? (
+        <>
+          <p className="mt-2 text-sm text-white">
+            On for {players[off]?.name} ({slot}):
+          </p>
+          <ul className="mt-1 divide-y divide-pitch-800">
+            {bench.map((id) => {
+              const p = players[id]!;
+              const pen = slotPenalty(p, slot);
+              return (
+                <li key={id}>
+                  <button type="button" className={`${row} hover:bg-pitch-800/60`} onClick={() => onSub(id)} aria-label={`${p.name} on`}>
+                    <span className="w-7 text-[11px] font-bold text-gray-400">{p.pos}</span>
+                    <span className="min-w-0 flex-1 truncate text-white">
+                      {p.name}
+                      {pen ? <span className="ml-1.5 text-[10px] text-danger">Out of position</span> : null}
+                    </span>
+                    <RatingPill rating={effectiveRating(p, slot)} delta={pen || undefined} />
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+          <button type="button" className="mt-1 text-xs font-semibold text-gray-400 underline" onClick={() => onPickOff(null)}>
+            Back
+          </button>
+        </>
+      ) : (
+        <>
+          <p className="mt-2 text-sm text-white">{left > 0 ? "Who comes off?" : "On the field:"}</p>
+          <ol className="mt-1 divide-y divide-pitch-800">
+            {LINEUP_SLOTS.map((pos, i) => {
+              const id = sheet.lineup[i] ?? "";
+              const p = players[id];
+              const ok = left > 0 && !!p && canComeOff(m, id);
+              const pen = p ? slotPenalty(p, pos) : 0;
+              return (
+                <li key={i}>
+                  <button type="button" disabled={!ok} className={`${row} hover:bg-pitch-800/60 disabled:opacity-60`} onClick={() => onPickOff(id)}>
+                    <span className="w-5 text-right text-xs font-semibold tabular-nums text-gray-500">{i + 1}</span>
+                    <span className="w-7 text-[11px] font-bold text-theme-primary">{pos}</span>
+                    <span className="min-w-0 flex-1 truncate text-white">
+                      {p ? p.name : "Sent off"}
+                      {p && !canComeOff(m, id) ? <span className="ml-1.5 text-[10px] text-amber-300">Sin bin</span> : null}
+                      {pen ? <span className="ml-1.5 text-[10px] text-danger">Out of position</span> : null}
+                    </span>
+                    {p ? <RatingPill rating={effectiveRating(p, pos)} delta={pen || undefined} /> : null}
+                  </button>
+                </li>
+              );
+            })}
+          </ol>
+          <p className="mt-2 text-xs font-semibold text-gray-400">Bench</p>
+          <ul className="divide-y divide-pitch-800">
+            {bench.map((id) => (
+              <li key={id} className={row}>
+                <span className="w-7 text-[11px] font-bold text-gray-400">{players[id]!.pos}</span>
+                <span className="min-w-0 flex-1 truncate text-white">{players[id]!.name}</span>
+                <RatingPill rating={players[id]!.rating} />
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+    </section>
   );
 }
 
