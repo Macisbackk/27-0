@@ -1,0 +1,11 @@
+✓ Career started (double tap on Take charge)
+✓ Pre-season: signed free agent Alfie Astley, £0 fee, budget 505000 → 483000 (wages only)
+✓ Pre-season: transfer window open, market reachable from the hub
+✓ Pre-season → Round 1 with the results above it; reloads keep the stage; double taps safe
+✓ Back/forward keeps the hub
+✓ Hub tabs fit 320px; contracts on the Team tab
+✓ League week: Play match and Quick sim only
+✓ Deadline Day: clock counts down, pauses, skips an hour (no offer landed in 40s)
+
+1 problem(s)
+- run stopped after [✓ Deadline Day: clock counts down, pauses, skips an hour (no offer landed in 40s)]: TimeoutError: locator.click: Timeout 30000ms exceeded.
