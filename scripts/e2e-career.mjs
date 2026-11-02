@@ -401,6 +401,9 @@ try {
   if (!headerText) throw new Error("Second season header did not show 2027");
   step("Second season (2027) started");
 
+  // A new season can open with a hub pop-up (e.g. a legend signing) over the tabs: answer it first.
+  await page.waitForTimeout(800);
+  await dismissEvents();
   // Club → Records: last season, tappable, told again.
   await page.getByRole("tab", { name: "Club" }).click();
   await page.getByRole("tab", { name: "Records", exact: true }).click();

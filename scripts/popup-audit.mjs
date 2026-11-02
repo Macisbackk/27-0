@@ -110,8 +110,8 @@ async function run(viewport, tag) {
     await page.getByRole("button", { name: /^Sign / }).first().click();
     await page.getByRole("button", { name: /Confirm Placement/i }).first().click({ timeout: 2000 }).catch(() => {});
     await page.waitForTimeout(1500);
-    // A filled slot reads "Position: Name, rated N".
-    await page.getByRole("button", { name: /^[A-Za-z ]+: (?!empty).+/ }).first().click({ timeout: 6000 });
+    // A filled slot's label says "… rated N".
+    await page.locator('[aria-label*="rated"]').first().click({ timeout: 6000 });
   });
   await tryStep("showcase-player", async () => {
     await go("/showcase");

@@ -42,7 +42,7 @@ export function LeagueOverCard() {
             <div className="min-w-0 flex-1">
               <p className="text-xs text-gray-400">{pic.next.label} · {pic.next.home === s.userClubId ? "home" : "away"}</p>
               <p className="truncate font-display text-lg font-bold text-white">
-                <ClubLink clubId={opponent.id}>{opponent.name}</ClubLink>
+                <ClubLink clubId={opponent.id} className="min-h-[40px] max-w-full truncate align-middle">{opponent.name}</ClubLink>
               </p>
             </div>
           </div>
