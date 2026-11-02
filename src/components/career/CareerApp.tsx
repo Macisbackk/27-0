@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
 import { DIVISION_LABEL, boardGoal, currentStage, formatMoney, isWindowOpen, ordinal, seasonProgress, sortTable, windowStatus } from "@/lib/career";
 import { DailyMissionToast } from "@/components/DailyMissionToast";
@@ -17,7 +17,7 @@ import { TableTab } from "./TableTab";
 import { TeamTab } from "./TeamTab";
 import { TransferWindow } from "./TransferWindow";
 import { useDeadlineDriver } from "./TransferNews";
-import { ClubBadge, ProgressBar, Stars, CAREER_PAGE_CLASS, CareerBackLink } from "./bits";
+import { ClubBadge, ProgressBar, Stars, CAREER_PAGE_CLASS, CAREER_PAGE_CLASS_NO_BAR, CareerBackLink, scrollUnderHeader } from "./bits";
 import { CareerTutorial } from "./CareerTutorial";
 import { EventPopup } from "./EventPopup";
 import { PitchMark } from "@/components/ui/PitchHero";
@@ -104,7 +104,12 @@ function SeasonStrip() {
 
 function CareerRouter() {
   const { ready, state } = useCareer();
-  const [tab, setTab] = useState<Tab>("match");
+  const [tab, setTabState] = useState<Tab>("match");
+  // Switching section (bottom bar, the segmented control or the walkthrough) starts at the top.
+  const setTab = useCallback((next: Tab) => {
+    setTabState(next);
+    scrollUnderHeader(null);
+  }, []);
   const [vault, setVault] = useState(false);
   const [records, setRecords] = useState(false);
   const [marketOpen, setMarketOpen] = useState(false);
@@ -118,7 +123,27 @@ function CareerRouter() {
   }, [windowOpen]);
   // A new career always opens on the Match tab.
   const seed = state?.seed;
-  useEffect(() => setTab("match"), [seed]);
+  useEffect(() => setTabState("match"), [seed]);
+
+  // Where the page lands after an action (v1.57). A new week or stage (Quick sim, Continue, a live
+  // match finished, a stage passed, the window shut) puts the season strip under the header with
+  // the new result right below it; a new screen (review, departures, the market and back) opens
+  // at the top. Never left mid-page or under the sticky bar.
+  const stage = state ? currentStage(state) : null;
+  const spot = state ? `${state.seed}:${state.year}:${state.phase}:${marketOpen && isWindowOpen(state) ? "market" : "hub"}` : "none";
+  const week = state ? `${state.matchdayIndex}:${stage}` : "none";
+  const landed = useRef({ spot, week });
+  useEffect(() => {
+    const prev = landed.current;
+    landed.current = { spot, week };
+    if (prev.spot !== spot) {
+      scrollUnderHeader(null);
+      return;
+    }
+    if (prev.week !== week && tab === "match") {
+      requestAnimationFrame(() => scrollUnderHeader(document.querySelector('section[aria-label="Season progress"]')));
+    }
+  }, [spot, week, tab]);
 
   // On phones the bottom bar shows the hub's sections while the hub is on screen.
   const hubShowing =
@@ -134,7 +159,7 @@ function CareerRouter() {
       return;
     }
     setManagerNav({ tab, setTab });
-  }, [hubShowing, tab]);
+  }, [hubShowing, tab, setTab]);
   useEffect(() => () => setManagerNav(null), []);
 
   const sheets = (
@@ -169,7 +194,7 @@ function CareerRouter() {
 
   return (
     <ClubSheetProvider>
-    <div className={CAREER_PAGE_CLASS}>
+    <div className={tab === "match" && stage !== "preseason" && stage !== "deadline" ? CAREER_PAGE_CLASS : CAREER_PAGE_CLASS_NO_BAR}>
       <CareerBackLink />
       <HubHeader />
       {/* Phones use the bottom bar for these (BottomNav reads lib/ui/manager-nav). */}

@@ -23,7 +23,7 @@ import {
 import { useCareer } from "@/lib/career/context";
 import { playTransferComplete, playTransferOffer, playUiClick, playWarning } from "@/lib/sound";
 import { ClubLink } from "./ClubSheet";
-import { ClubBadge, RatingPill } from "./bits";
+import { ClubBadge, Eyebrow, RatingPill } from "./bits";
 
 /** Deadline Day clock speed: 10 minutes of the day every 2 seconds (12 hours ≈ 2½ minutes). */
 const TICK_MS = 2000;
@@ -261,7 +261,7 @@ export function WindowStatusLine({ className = "" }: { className?: string }) {
   const { state } = useCareer();
   const w = windowStatus(state!);
   return (
-    <p data-testid="window-status" data-window={w.open ? "open" : "shut"} className={`flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[13px] leading-snug ${className}`}>
+    <p data-testid="window-status" data-window={w.open ? "open" : "shut"} className={`flex flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5 text-center text-[13px] leading-snug sm:justify-start sm:text-left ${className}`}>
       <span
         className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[11px] font-bold ${
           w.open ? (w.kind === "deadline" ? "bg-amber-300/15 text-amber-200" : "bg-success/15 text-success") : "bg-white/10 text-[color:var(--fl-muted)]"
@@ -323,7 +323,7 @@ export function IncomingBidCard() {
   if (!club || !p) return null;
   return (
     <section aria-label="Transfer bid" className="rounded-card bg-pitch-900 p-4 ring-2 ring-theme-primary/50">
-      <p className="text-[13px] font-semibold text-theme-primary">Bid received</p>
+      <Eyebrow>Bid received</Eyebrow>
       <p className="mt-1 text-[15px] text-white">
         <ClubLink clubId={club.id} className="font-bold">{club.name}</ClubLink> want <span className="font-bold">{p.name}</span> ({p.pos}, {p.rating}) and offer{" "}
         <span className="font-bold text-theme-primary">{formatMoney(bid.fee)}</span>.
@@ -349,7 +349,7 @@ export function TransferRoundUp() {
   const deals = relevantDeals(s, seasonDeals(s));
   return (
     <section aria-label="Transfer round-up" className="rounded-card bg-pitch-900 p-4 text-left">
-      <p className="text-[15px] font-bold text-white">Transfer round-up</p>
+      <Eyebrow>Transfer round-up</Eyebrow>
       {deals.length === 0 ? (
         <p className="mt-1 text-sm text-[color:var(--fl-muted)]">
           {(() => {

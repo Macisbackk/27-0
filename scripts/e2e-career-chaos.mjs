@@ -109,6 +109,7 @@ try {
 
   // 4) Championship career driven by Quick sim (there is no "Sim to…" button); no-game weeks play through.
   await page.getByRole("tab", { name: "Club" }).click();
+  await page.getByRole("tab", { name: "Overview", exact: true }).click();
   await page.getByRole("button", { name: "Start a new career" }).click();
   await page.getByRole("button", { name: "End career" }).click();
   await startCareer(page, "championship", 21);

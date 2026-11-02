@@ -101,6 +101,25 @@ export function FormDots({ form }: { form: string[] }) {
 export const CAREER_PAGE_CLASS =
   "mx-auto flex w-full max-w-[44rem] flex-col gap-4 pb-[calc(var(--manager-mobile-playbar-reserve,5.5rem)+6rem+env(safe-area-inset-bottom))] sm:pb-10";
 
+/** Hub tabs with no sticky action bar (Team, Table, Club): only the bottom nav to clear. */
+export const CAREER_PAGE_CLASS_NO_BAR = "mx-auto flex w-full max-w-[44rem] flex-col gap-4 pb-6 sm:pb-10";
+
+/**
+ * Puts `el` just under the sticky site header (instantly: a smooth glide reads as the page jumping
+ * about). With no element, goes to the top of the page. Used so every Manager action lands in the
+ * same place (v1.57).
+ */
+export function scrollUnderHeader(el?: Element | null) {
+  if (typeof window === "undefined") return;
+  if (!el) {
+    window.scrollTo(0, 0);
+    return;
+  }
+  const header = document.querySelector<HTMLElement>(".app-header");
+  const offset = (header?.offsetHeight ?? 0) + 8;
+  window.scrollTo(0, Math.max(0, el.getBoundingClientRect().top + window.scrollY - offset));
+}
+
 /** In-page way out of Manager Mode (progress saves automatically). */
 export function CareerBackLink({ label = "Home", href = "/" }: { label?: string; href?: string }) {
   return (

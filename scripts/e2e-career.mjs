@@ -195,6 +195,8 @@ try {
 
   // Captain row and the Academy list (3–4 prospects every pre-season).
   await page.getByTestId("captain").waitFor({ timeout });
+  // v1.57: the Team tab is split (Starting 17 · Squad · Academy).
+  await page.getByRole("tab", { name: "Academy", exact: true }).click();
   const academy = page.getByRole("region", { name: "Academy" });
   await academy.scrollIntoViewIfNeeded({ timeout });
   const prospects = await academy.getByRole("button", { name: "Promote" }).count();
@@ -212,10 +214,14 @@ try {
   await page.getByRole("tab", { name: "Club" }).click();
   await page.getByText("Season challenges").waitFor({ timeout });
   await shot("club");
+  // v1.57: the Club tab is split (Overview · Stats · Records · News).
   // Player stats, league stats and the club's Hall of Fame (real all-time records).
-  for (const id of ["squad-stats", "league-leaders", "hall-of-fame"]) {
+  await page.getByRole("tab", { name: "Stats", exact: true }).click();
+  for (const id of ["squad-stats", "league-leaders"]) {
     await page.getByTestId(id).first().waitFor({ timeout });
   }
+  await page.getByRole("tab", { name: "Records", exact: true }).click();
+  await page.getByTestId("hall-of-fame").first().waitFor({ timeout });
   const hofRows = await page.getByTestId("hall-of-fame").first().locator("li").count();
   if (hofRows !== 4) throw new Error(`Expected 4 Hall of Fame records, saw ${hofRows}`);
   await page.getByTestId("hall-of-fame").first().scrollIntoViewIfNeeded();
@@ -265,11 +271,13 @@ try {
       await page.keyboard.press("Escape");
       await page.getByRole("tab", { name: "Club" }).click();
       await page.waitForTimeout(300);
+      await page.getByRole("tab", { name: "Stats", exact: true }).click();
       await page.getByTestId("squad-stats").first().scrollIntoViewIfNeeded();
       await shot("club-player-stats");
       await page.getByTestId("league-leaders").first().scrollIntoViewIfNeeded();
       await shot("club-league-stats");
-      await page.getByRole("region", { name: "Transfer round-up" }).scrollIntoViewIfNeeded().catch(() => {});
+      await page.getByRole("tab", { name: "News", exact: true }).click();
+      await page.getByRole("region", { name: "Transfer round-up" }).waitFor({ timeout });
       await shot("transfer-round-up");
       await page.getByRole("tab", { name: "Match" }).click();
       await page.waitForTimeout(300);

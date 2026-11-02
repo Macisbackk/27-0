@@ -21,6 +21,14 @@ interface MobileOverlayBaseProps {
    * sheets with a busy header (the player card) keep the dark header unless they opt in.
    */
   pitchHeader?: boolean;
+  /**
+   * "card" (Manager Mode): a compact dark card that sizes to its content (max ~85% of the screen,
+   * body scrolls inside), with a small eyebrow over the title and the close button in the corner.
+   * The default keeps the tall sheet used elsewhere on the site.
+   */
+  variant?: "default" | "card";
+  /** Small line over the title (card variant). */
+  eyebrow?: ReactNode;
 }
 
 function MobileOverlayShell({
@@ -34,6 +42,8 @@ function MobileOverlayShell({
   className = "",
   panelClass,
   backdropAlign,
+  variant = "default",
+  eyebrow,
 }: MobileOverlayBaseProps & {
   panelClass: string;
   backdropAlign: "end" | "center";
@@ -47,14 +57,25 @@ function MobileOverlayShell({
 
   // Sheet-open cue (the close cue plays from handleClose, so only the open edge is tracked here).
   const wasOpen = useRef(false);
+  const openedAt = useRef(0);
   useEffect(() => {
-    if (open && !wasOpen.current) playPopupOpen();
+    if (open && !wasOpen.current) {
+      playPopupOpen();
+      openedAt.current = Date.now();
+    }
     wasOpen.current = open;
   }, [open]);
+  // Card pop-ups are small, so the second tap of a double tap on the button that opened one lands
+  // on the backdrop: ignore backdrop taps for a moment after it opens.
+  const onBackdrop = useCallback(() => {
+    if (variant === "card" && Date.now() - openedAt.current < 450) return;
+    handleClose();
+  }, [variant, handleClose]);
 
   if (!open) return null;
 
-  const onPitch = pitchHeader ?? (Boolean(title) && !headerExtra);
+  const card = variant === "card";
+  const onPitch = !card && (pitchHeader ?? (Boolean(title) && !headerExtra));
   const alignClass =
     backdropAlign === "end"
       ? "items-end sm:items-center"
@@ -65,7 +86,7 @@ function MobileOverlayShell({
       <div
         className={`fl-backdrop fixed inset-0 ${uiLayerClass("modalBackdrop")} flex justify-center bg-black/75 ${SPACING.modalBackdrop} ${alignClass}`}
         role="presentation"
-        onClick={handleClose}
+        onClick={onBackdrop}
       >
         <div
           ref={panelRef}
@@ -73,10 +94,24 @@ function MobileOverlayShell({
           role="dialog"
           aria-modal="true"
           aria-labelledby={title ? titleId : undefined}
-          className={`${panelClass} outline-none ${className}`.trim()}
+          className={`${panelClass}${card ? " mobile-sheet--card" : ""} outline-none ${className}`.trim()}
           data-scroll-lock-allow="true"
           onClick={(e) => e.stopPropagation()}
         >
+          {card ? (
+            <div className={`${MOBILE.overlayHeader} mobile-sheet-card__header`}>
+              {eyebrow ? <p className="mobile-sheet-card__eyebrow">{eyebrow}</p> : null}
+              {title ? (
+                <h2 id={titleId} className="mobile-sheet-card__title">
+                  {title}
+                </h2>
+              ) : null}
+              {headerExtra}
+              <button type="button" className="mobile-sheet-card__close" onClick={handleClose} aria-label="Close">
+                ×
+              </button>
+            </div>
+          ) : (
           <div className={`${MOBILE.overlayHeader}${onPitch ? " pitch-surface pitch-sheet-header" : ""}`}>
             <div className={`flex justify-between gap-2 ${onPitch ? "items-center" : "items-start"}`}>
               {title ? (
@@ -100,6 +135,7 @@ function MobileOverlayShell({
             </div>
             {headerExtra}
           </div>
+          )}
           <div className={MOBILE.overlayBody}>{children}</div>
           {footer ? (
             <div className={MOBILE.overlayFooter}>{footer}</div>
@@ -120,6 +156,8 @@ export function MobileBottomSheet({
   headerExtra,
   pitchHeader,
   className = "",
+  variant,
+  eyebrow,
 }: MobileOverlayBaseProps) {
   return (
     <MobileOverlayShell
@@ -130,6 +168,8 @@ export function MobileBottomSheet({
       headerExtra={headerExtra}
       pitchHeader={pitchHeader}
       className={className}
+      variant={variant}
+      eyebrow={eyebrow}
       panelClass={MOBILE.bottomSheet}
       backdropAlign="end"
     >
@@ -148,6 +188,8 @@ export function MobileModal({
   headerExtra,
   pitchHeader,
   className = "",
+  variant,
+  eyebrow,
 }: MobileOverlayBaseProps) {
   return (
     <MobileOverlayShell
@@ -158,6 +200,8 @@ export function MobileModal({
       headerExtra={headerExtra}
       pitchHeader={pitchHeader}
       className={className}
+      variant={variant}
+      eyebrow={eyebrow}
       panelClass={MOBILE.modalPanel}
       backdropAlign="center"
     >

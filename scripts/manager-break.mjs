@@ -200,6 +200,7 @@ try {
   }
   // Contract labels on the Team tab.
   await page.getByRole("tab", { name: "Team" }).click();
+  await page.getByRole("tab", { name: /^Squad/ }).click().catch(() => {});
   const teamText = await page.locator("main").innerText();
   if (!/yrs|Final year/.test(teamText)) fail("Team tab shows no contract lengths");
   await shot("team-contracts");
@@ -250,6 +251,7 @@ try {
         await page.waitForTimeout(300);
         // After Deadline Day: shut until the new season.
         await page.getByRole("tab", { name: "Club" }).click();
+        await page.getByRole("tab", { name: "Overview", exact: true }).click().catch(() => {});
         const status = await page.getByTestId("window-status").first().innerText().catch(() => "");
         if (!/Window shut/.test(status) || !/after the season/.test(status)) fail(`after Deadline Day the Club tab says "${status}"`);
         await page.getByTestId("window-status").first().evaluate((el) => el.scrollIntoView({ block: "center" })).catch(() => {});
@@ -354,6 +356,11 @@ try {
   await btn(/^(Open the transfer window|Continue to the window)$/).dblclick();
   // v1.18: releasing the out-of-contract list is confirmed in a sheet that lists who leaves.
   const confirmRelease = btn(/^Let \d+ go · open the window$/);
+  // The second tap of the double tap can land on the confirm card's "Go back and renew" (safe: it
+  // just closes it). Open it again if so.
+  if (!(await confirmRelease.waitFor({ state: "visible", timeout: 2_000 }).then(() => true, () => false))) {
+    await btn(/^(Open the transfer window|Continue to the window)$/).click().catch(() => {});
+  }
   if (await confirmRelease.waitFor({ state: "visible", timeout: 2_000 }).then(() => true, () => false)) await confirmRelease.dblclick().catch(() => {});
   await page.getByRole("heading", { name: "Build your squad" }).waitFor({ timeout });
   const sw = await save();

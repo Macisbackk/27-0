@@ -73,7 +73,7 @@ export function TableTab() {
               <th className="w-7 py-1 text-center font-semibold">W</th>
               <th className="w-7 py-1 text-center font-semibold">L</th>
               <th className="w-10 py-1 text-right font-semibold">PD</th>
-              <th className="w-9 py-1 text-right font-semibold">Pts</th>
+              <th className="w-10 py-1 pr-2 text-right font-semibold">Pts</th>
             </tr>
           </thead>
           <tbody>
@@ -102,7 +102,7 @@ export function TableTab() {
                   <td className="py-1.5 text-center tabular-nums text-gray-300">{r.w}</td>
                   <td className="py-1.5 text-center tabular-nums text-gray-300">{r.l}</td>
                   <td className="py-1.5 text-right tabular-nums text-gray-300">{r.pf - r.pa > 0 ? "+" : ""}{r.pf - r.pa}</td>
-                  <td className="py-1.5 text-right font-display font-bold tabular-nums text-white">{r.pts}</td>
+                  <td className="py-1.5 pr-2 text-right font-display font-bold tabular-nums text-white">{r.pts}</td>
                 </tr>
               );
             })}

@@ -409,6 +409,89 @@
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
 }
 
+/* Card variant (Manager Mode pop-ups, v1.57): sizes to its content instead of filling the phone,
+   one dark card look for every sheet — small eyebrow, title, close in the corner, buttons in the
+   footer. The body scrolls inside once it reaches the max height. */
+.mobile-bottom-sheet.mobile-sheet--card,
+.mobile-modal-panel.mobile-sheet--card {
+  height: auto;
+  max-height: min(85dvh, 760px);
+  background: var(--fl-surface);
+  border: 1px solid var(--fl-line-strong);
+  border-radius: var(--fl-radius-card);
+}
+
+.mobile-modal-panel.mobile-sheet--card {
+  max-width: 24rem;
+}
+
+.mobile-bottom-sheet.mobile-sheet--card {
+  max-height: min(80dvh, 720px);
+}
+
+@media (min-width: 640px) {
+  .mobile-bottom-sheet.mobile-sheet--card {
+    max-width: 30rem;
+  }
+}
+
+.mobile-sheet--card .mobile-sheet-card__header {
+  position: relative;
+  padding: 16px 52px 12px;
+  text-align: center;
+}
+
+.mobile-sheet-card__eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--theme-primary);
+  text-align: center;
+}
+
+.mobile-sheet-card__title {
+  margin-top: 2px;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #fff;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.mobile-sheet-card__close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: inline-flex;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--fl-raised);
+  color: var(--fl-muted);
+  font-size: 20px;
+  line-height: 1;
+}
+
+.mobile-sheet-card__close:hover,
+.mobile-sheet-card__close:focus-visible {
+  color: #fff;
+  background: var(--fl-raised-hover);
+  outline: none;
+}
+
+.mobile-sheet--card .mobile-overlay-body {
+  padding: 14px 16px;
+}
+
+.mobile-sheet--card .mobile-overlay-footer {
+  padding: 12px 16px max(14px, env(safe-area-inset-bottom, 0px));
+}
+
 .mobile-overlay-header {
   flex-shrink: 0;
   padding: var(--mobile-card-padding);
