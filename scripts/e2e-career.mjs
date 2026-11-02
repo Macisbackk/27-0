@@ -276,6 +276,13 @@ try {
       }
       await page.getByRole("button", { name: /^Buy and sell$/ }).click().catch(() => {});
       await page.waitForTimeout(800);
+      // v1.62: the Manager bottom bar stays up in the market (phones), not the site's main bar.
+      if (!(await page.getByRole("navigation", { name: "Manager sections" }).isVisible().catch(() => false))) {
+        throw new Error("Deadline Day market: the Manager bottom bar (nav \"Manager sections\") isn't showing");
+      }
+      if (await page.getByRole("navigation", { name: "Main" }).isVisible().catch(() => false)) {
+        throw new Error("Deadline Day market: the site's main bottom bar is showing instead of the Manager one");
+      }
       await shot("deadline-market");
       await page.getByRole("button", { name: /Back to Deadline Day/ }).click().catch(() => {});
       await page.waitForTimeout(500);

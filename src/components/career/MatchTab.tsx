@@ -179,6 +179,26 @@ export function ResultStrip({ state, fixture, flash }: { state: CareerState; fix
   );
 }
 
+/** Deadline Day: the last result as one slim line at the top, so the day itself has the screen. */
+function LastResultLine({ state, fixture }: { state: CareerState; fixture: Fixture }) {
+  const r = fixture.result!;
+  const isHome = fixture.home === state.userClubId;
+  const us = isHome ? r.homeScore : r.awayScore;
+  const them = isHome ? r.awayScore : r.homeScore;
+  const opp = state.clubs[isHome ? fixture.away : fixture.home]!;
+  const result = us > them ? "W" : us < them ? "L" : "D";
+  const pill = result === "W" ? "bg-success/15 text-success" : result === "L" ? "bg-danger/15 text-red-200" : "bg-white/10 text-gray-200";
+  return (
+    <section aria-label="Last result" data-compact="true" className="flex items-center gap-2 rounded-card bg-pitch-900 px-3 py-2 text-left text-[13px]">
+      <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold uppercase ${pill}`}>{result === "W" ? "Won" : result === "L" ? "Lost" : "Drew"}</span>
+      <span className="min-w-0 flex-1 truncate text-gray-300">
+        <span className="font-semibold text-white">{us}–{them}</span> {isHome ? "v" : "at"} {opp.name}
+      </span>
+      <span className="shrink-0 text-[11px] text-[color:var(--fl-muted)]">{fixture.label}</span>
+    </section>
+  );
+}
+
 /** The one button that moves past a stage. Arms after mount so a double tap can't fall through. */
 function StageBar({ label, onClick }: { label: string; onClick: () => void }) {
   const armed = useArmed();
@@ -322,11 +342,13 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
     );
   }
   if (stage === "deadline") {
+    // While Deadline Day is live it has the screen (owner, v1.62): the last result as one line at
+    // the top, any bid, then the day's card. No next match, game plan, nudges or news.
     return (
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-3">
+        {last ? <LastResultLine state={s} fixture={last} /> : null}
         <IncomingBidCard />
         <TransferWindowCard onOpenMarket={onOpenMarket} />
-        {last ? <ResultStrip state={s} fixture={last} /> : null}
       </div>
     );
   }
@@ -365,8 +387,9 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Order (v1.54): last result → next match → game plan → stronger-team nudge → transfers. */}
-      {last ? <ResultStrip state={s} fixture={last} flash={flash} /> : null}
+      {/* Order (v1.54): last result → next match → game plan → stronger-team nudge → transfers.
+          Before Round 1 the "last result" is pre-season's (v1.62: at the top, not the bottom). */}
+      {last ? <ResultStrip state={s} fixture={last} flash={flash} /> : s.matchdayIndex === 0 ? <PreseasonResults /> : null}
       <Card className={big ? "border-accent-gold/60" : ""}>
         <div className="flex items-center justify-between gap-2">
           <Eyebrow>{md ? md.label : "Season complete"}</Eyebrow>
@@ -472,7 +495,6 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
       <PlayoffsCard state={s} />
       <IncomingBidCard />
       <TransferWindowCard onOpenMarket={onOpenMarket} />
-      {s.matchdayIndex === 0 ? <PreseasonResults /> : null}
     </div>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
-import { DIVISION_LABEL, boardGoal, currentStage, formatMoney, isWindowOpen, ordinal, seasonProgress, sortTable, stageSeen, windowStatus } from "@/lib/career";
+import { DIVISION_LABEL, boardGoal, currentStage, deadlineDecisionPending, formatMoney, isWindowOpen, ordinal, seasonProgress, sortTable, stageSeen, windowStatus } from "@/lib/career";
 import { DailyMissionToast } from "@/components/DailyMissionToast";
 import { CareerProvider, useCareer } from "@/lib/career/context";
 import { CareerErrorBoundary } from "./CareerErrorBoundary";
@@ -105,25 +105,35 @@ function SeasonStrip() {
 function CareerRouter() {
   const { ready, state } = useCareer();
   const [tab, setTabState] = useState<Tab>("match");
-  // Switching section (bottom bar, the segmented control or the walkthrough) starts at the top.
-  const setTab = useCallback((next: Tab) => {
-    setTabState(next);
-    scrollUnderHeader(null);
-  }, []);
   const [vault, setVault] = useState(false);
   const [records, setRecords] = useState(false);
   const [marketOpen, setMarketOpen] = useState(false);
-  // Deadline Day's clock keeps running on the hub and in the market.
+  // Deadline Day's clock keeps running on the hub, in the market and on the other tabs.
   useDeadlineDriver();
+  const deadlineLive = !!state && deadlineDecisionPending(state);
+  const marketShowing = marketOpen && !!state && isWindowOpen(state);
+  // Switching section (bottom bar, the segmented control or the walkthrough) starts at the top.
+  // From the pre-season market another section closes the market (it's one tap away on the Match
+  // tab). On Deadline Day the market stays where it is: Match takes you back to it, and the clock
+  // carries on (or stays paused) exactly as it was.
+  const marketRef = useRef({ showing: marketShowing, deadline: deadlineLive });
+  marketRef.current = { showing: marketShowing, deadline: deadlineLive };
+  const setTab = useCallback((next: Tab) => {
+    if (next !== "match" && marketRef.current.showing && !marketRef.current.deadline) setMarketOpen(false);
+    setTabState(next);
+    scrollUnderHeader(null);
+  }, []);
   // The window shut (clock hit 0:00) while the market was open: back to the hub, and don't
   // pop the market open again when the next window opens.
   const windowOpen = !!state && isWindowOpen(state);
   useEffect(() => {
     if (!windowOpen) setMarketOpen(false);
   }, [windowOpen]);
-  // A new career always opens on the Match tab.
+  // A new career, and every new full-screen step (season over, departures, the summer window,
+  // a new season), opens on the Match tab, where that step lives.
   const seed = state?.seed;
-  useEffect(() => setTabState("match"), [seed]);
+  const phase = state?.phase;
+  useEffect(() => setTabState("match"), [seed, phase]);
 
   // Where the page lands after an action (v1.57). A new week or stage (Quick sim, Continue, a live
   // match finished, a stage passed, the window shut) puts the season strip under the header with
@@ -131,7 +141,7 @@ function CareerRouter() {
   // at the top. Never left mid-page or under the sticky bar.
   const stage = state ? currentStage(state) : null;
   const spot = state
-    ? `${state.seed}:${state.year}:${state.phase}${state.phase === "review" && stageSeen(state, "season-over") ? ":review" : ""}:${marketOpen && isWindowOpen(state) ? "market" : "hub"}`
+    ? `${state.seed}:${state.year}:${state.phase}${state.phase === "review" && stageSeen(state, "season-over") ? ":review" : ""}:${marketShowing ? "market" : "hub"}`
     : "none";
   const week = state ? `${state.matchdayIndex}:${stage}` : "none";
   const landed = useRef({ spot, week });
@@ -143,25 +153,21 @@ function CareerRouter() {
       return;
     }
     if (prev.week !== week && tab === "match") {
-      requestAnimationFrame(() => scrollUnderHeader(document.querySelector('section[aria-label="Season progress"]')));
+      requestAnimationFrame(() => scrollUnderHeader(document.querySelector('section[aria-label="Season progress"]') ?? document.querySelector('section[aria-label="Deadline Day"]')));
     }
   }, [spot, week, tab]);
 
-  // On phones the bottom bar shows the hub's sections while the hub is on screen.
-  const hubShowing =
-    ready &&
-    !!state &&
-    state.phase !== "review" &&
-    state.phase !== "departures" &&
-    state.phase !== "transfers" &&
-    !(marketOpen && isWindowOpen(state));
+  // On phones the bottom bar shows the Manager sections on every Manager screen once a career is
+  // running (v1.62: the market, the summer window, departures and the review too, not the site's
+  // main bar). Match is wherever the season is: the hub, or the full-screen step it's on.
+  const navShowing = ready && !!state;
   useEffect(() => {
-    if (!hubShowing) {
+    if (!navShowing) {
       setManagerNav(null);
       return;
     }
     setManagerNav({ tab, setTab });
-  }, [hubShowing, tab, setTab]);
+  }, [navShowing, tab, setTab]);
   useEffect(() => () => setManagerNav(null), []);
 
   const sheets = (
@@ -182,18 +188,24 @@ function CareerRouter() {
       </>
     );
   }
-  // Full time on the season first (the last game, the Grand Final), then the review.
-  if (state.phase === "review") return <ClubSheetProvider>{stageSeen(state, "season-over") ? <SeasonReview /> : <SeasonOver />}</ClubSheetProvider>;
-  if (state.phase === "departures") return <ClubSheetProvider><Departures /></ClubSheetProvider>;
-  if (state.phase === "transfers") return <TransferWindow />;
-  if (marketOpen && isWindowOpen(state)) {
-    const kind = windowStatus(state).kind;
-    return (
-      <ClubSheetProvider>
-        <TransferWindow mode={kind === "deadline" ? "deadline" : "preseason"} onClose={() => setMarketOpen(false)} />
-      </ClubSheetProvider>
-    );
+  // The full-screen steps live on the Match tab; Team, Table and Club can still be looked at.
+  const inFlow = state.phase !== "season" || marketShowing;
+  if (tab === "match") {
+    // Full time on the season first (the last game, the Grand Final), then the review.
+    if (state.phase === "review") return <ClubSheetProvider>{stageSeen(state, "season-over") ? <SeasonReview /> : <SeasonOver />}</ClubSheetProvider>;
+    if (state.phase === "departures") return <ClubSheetProvider><Departures /></ClubSheetProvider>;
+    if (state.phase === "transfers") return <ClubSheetProvider><TransferWindow /></ClubSheetProvider>;
+    if (marketShowing) {
+      const kind = windowStatus(state).kind;
+      return (
+        <ClubSheetProvider>
+          <TransferWindow mode={kind === "deadline" ? "deadline" : "preseason"} onClose={() => setMarketOpen(false)} />
+        </ClubSheetProvider>
+      );
+    }
   }
+  // Deadline Day on the Match tab: the day itself and nothing else (owner, v1.62).
+  const deadlineFocus = tab === "match" && stage === "deadline";
 
   return (
     <ClubSheetProvider>
@@ -216,16 +228,20 @@ function CareerRouter() {
       />
       </div>
       <div key={tab} className="fl-rise flex flex-col gap-4">
-      {tab === "match" ? <SeasonStrip /> : null}
+      {tab === "match" && !deadlineFocus ? <SeasonStrip /> : null}
       {tab === "match" ? <MatchTab onOpenMarket={() => setMarketOpen(true)} /> : null}
       {tab === "team" ? <TeamTab /> : null}
       {tab === "table" ? <TableTab /> : null}
       {tab === "club" ? <ClubTab onOpenVault={() => setVault(true)} onOpenRecords={() => setRecords(true)} /> : null}
       </div>
       {sheets}
-      <DailyMissionToast />
-      <CareerTutorial onTab={setTab} />
-      {state.tutorialDone ? <EventPopup /> : null}
+      {inFlow ? null : (
+        <>
+          <DailyMissionToast />
+          <CareerTutorial onTab={setTab} />
+          {state.tutorialDone && !deadlineFocus ? <EventPopup /> : null}
+        </>
+      )}
     </div>
     </ClubSheetProvider>
   );
