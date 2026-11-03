@@ -1,0 +1,28 @@
+# club: nrl-cronulla-sharks
+# source: https://www.org.rugbyleagueproject.com/seasons/nrl-2026/cronulla/summary.html
+# fetched: 2026-11-03 via WebFetch. Columns: Surname, First|age at fetch date|birthplace|representative teams (RLP "Rep" column). Lists squad members incl. those without 2026 games.
+Berrell, Jayden|30|Ipswich|
+Brailey, Blayke|27|Sydney|
+Burns, Billy|27|Parkes|
+Colquhoun, Jesse|24|Wollongong|
+Fonua-Blake, Addin|30|Glen Innes|New Zealand;Tonga
+Gabrael, Michael|21|Sydney|
+Hamlin-Uele, Braden|31|Auckland|New Zealand;Samoa
+Hazelton, Thomas|27|Goulburn|
+Hiroti, Mawene|27|New Plymouth|
+Hynes, Nicho|29|Gosford|Australia;New South Wales;Indigenous All Stars
+Iro, KL|26|Leeds|Cook Islands
+Jones, Riley|24|Gosford|
+Katoa, Sione|28|Hamilton|Tonga
+Kaufusi, Oregon|26|Auckland|Samoa
+Kennedy, William|28|Bathurst|Indigenous All Stars
+McInnes, Cameron|32|Sydney|New South Wales;NSW City
+Mulitalo, Ronaldo|26|Auckland|New Zealand;Samoa
+Nikora, Briton|28|Tauranga|New Zealand
+Puru, Hohepa|23|Sydney|Indigenous All Stars
+Ramien, Jesse|28|Dubbo|Indigenous All Stars
+Rudolf, Toby|30|Sydney|
+Stonestreet, Samuel|23|Sydney|
+Talakai, Siosifa|28|Sydney|Tonga;New South Wales
+Trindall, Braydon|26|Wee Waa|Indigenous All Stars
+Wilton, Teig|26|Narooma|

@@ -1,0 +1,206 @@
+{
+ "about": "IRL Golden Boot (world player of the year) 1999-2025. Not awarded 1998, 2020, 2021. playerId is set for NRL players.",
+ "generatedAt": "2026-11-03",
+ "winners": [
+  {
+   "season": 1999,
+   "name": "Andrew Johns",
+   "nation": "Australia",
+   "club": "Newcastle Knights",
+   "playerId": "nrl-andrew-johns",
+   "sourceUrl": "https://en.wikipedia.org/wiki/IRL_Golden_Boot_Award"
+  },
+  {
+   "season": 2000,
+   "name": "Brad Fittler",
+   "nation": "Australia",
+   "club": "Sydney Roosters",
+   "playerId": "nrl-brad-fittler",
+   "sourceUrl": "https://en.wikipedia.org/wiki/IRL_Golden_Boot_Award"
+  },
+  {
+   "season": 2001,
+   "name": "Andrew Johns",
+   "nation": "Australia",
+   "club": "Newcastle Knights",
+   "playerId": "nrl-andrew-johns",
+   "sourceUrl": "https://en.wikipedia.org/wiki/IRL_Golden_Boot_Award"
+  },
+  {
+   "season": 2002,
+   "name": "Stacey Jones",
+   "nation": "New Zealand",
+   "club": "New Zealand Warriors",
+   "playerId": "nrl-stacey-jones",
+   "sourceUrl": "https://en.wikipedia.org/wiki/IRL_Golden_Boot_Award"
+  },
+  {
+   "season": 2003,
+   "name": "Darren Lockyer",
+   "nation": "Australia",
+   "club": "Brisbane Broncos",
+   "playerId": "nrl-darren-lockyer",
+   "sourceUrl": "https://en.wikipedia.org/wiki/IRL_Golden_Boot_Award"
+  },
+  {
+   "season": 2004,
+   "name": "Andy Farrell",
+   "nation": "England",
+   "club": "Wigan Warriors",
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/IRL_Golden_Boot_Award"
+  },
+  {
+   "season": 2005,
+   "name": "Anthony Minichiello",
+   "nation": "Australia",
+   "club": "Sydney Roosters",
+   "playerId": "nrl-anthony-minichiello",
+   "sourceUrl": "https://en.wikipedia.org/wiki/IRL_Golden_Boot_Award"
+  },
+  {
+   "season": 2006,
+   "name": "Darren Lockyer",
+   "nation": "Australia",
+   "club": "Brisbane Broncos",
+   "playerId": "nrl-darren-lockyer",
+   "sourceUrl": "https://en.wikipedia.org/wiki/IRL_Golden_Boot_Award"
+  },
+  {
+   "season": 2007,
+   "name": "Cameron Smith",
+   "nation": "Australia",
+   "club": "Melbourne Storm",
+   "playerId": "nrl-cameron-smith",
+   "sourceUrl": "https://en.wikipedia.org/wiki/IRL_Golden_Boot_Award"
+  },
+  {
+   "season": 2008,
+   "name": "Billy Slater",
+   "nation": "Australia",
+   "club": "Melbourne Storm",
+   "playerId": "nrl-billy-slater",
+   "sourceUrl": "https://en.wikipedia.org/wiki/IRL_Golden_Boot_Award"
+  },
+  {
+   "season": 2009,
+   "name": "Greg Inglis",
+   "nation": "Australia",
+   "club": "Melbourne Storm",
+   "playerId": "nrl-greg-inglis",
+   "sourceUrl": "https://en.wikipedia.org/wiki/IRL_Golden_Boot_Award"
+  },
+  {
+   "season": 2010,
+   "name": "Benji Marshall",
+   "nation": "New Zealand",
+   "club": "Wests Tigers",
+   "playerId": "nrl-benji-marshall",
+   "sourceUrl": "https://en.wikipedia.org/wiki/IRL_Golden_Boot_Award"
+  },
+  {
+   "season": 2011,
+   "name": "Johnathan Thurston",
+   "nation": "Australia",
+   "club": "North Queensland Cowboys",
+   "playerId": "nrl-johnathan-thurston",
+   "sourceUrl": "https://en.wikipedia.org/wiki/IRL_Golden_Boot_Award"
+  },
+  {
+   "season": 2012,
+   "name": "Kevin Sinfield",
+   "nation": "England",
+   "club": "Leeds Rhinos",
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/IRL_Golden_Boot_Award"
+  },
+  {
+   "season": 2013,
+   "name": "Johnathan Thurston",
+   "nation": "Australia",
+   "club": "North Queensland Cowboys",
+   "playerId": "nrl-johnathan-thurston",
+   "sourceUrl": "https://en.wikipedia.org/wiki/IRL_Golden_Boot_Award"
+  },
+  {
+   "season": 2014,
+   "name": "Shaun Johnson",
+   "nation": "New Zealand",
+   "club": "New Zealand Warriors",
+   "playerId": "nrl-shaun-johnson",
+   "sourceUrl": "https://en.wikipedia.org/wiki/IRL_Golden_Boot_Award"
+  },
+  {
+   "season": 2015,
+   "name": "Johnathan Thurston",
+   "nation": "Australia",
+   "club": "North Queensland Cowboys",
+   "playerId": "nrl-johnathan-thurston",
+   "sourceUrl": "https://en.wikipedia.org/wiki/IRL_Golden_Boot_Award"
+  },
+  {
+   "season": 2016,
+   "name": "Cooper Cronk",
+   "nation": "Australia",
+   "club": "Melbourne Storm",
+   "playerId": "nrl-cooper-cronk",
+   "sourceUrl": "https://en.wikipedia.org/wiki/IRL_Golden_Boot_Award"
+  },
+  {
+   "season": 2017,
+   "name": "Cameron Smith",
+   "nation": "Australia",
+   "club": "Melbourne Storm",
+   "playerId": "nrl-cameron-smith",
+   "sourceUrl": "https://en.wikipedia.org/wiki/IRL_Golden_Boot_Award"
+  },
+  {
+   "season": 2018,
+   "name": "Tommy Makinson",
+   "nation": "England",
+   "club": "St Helens",
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/IRL_Golden_Boot_Award"
+  },
+  {
+   "season": 2019,
+   "name": "Roger Tuivasa-Sheck",
+   "nation": "New Zealand",
+   "club": "New Zealand Warriors",
+   "playerId": "nrl-roger-tuivasa-sheck",
+   "sourceUrl": "https://en.wikipedia.org/wiki/IRL_Golden_Boot_Award"
+  },
+  {
+   "season": 2022,
+   "name": "Joseph Manu",
+   "nation": "New Zealand",
+   "club": "Sydney Roosters",
+   "playerId": "nrl-joseph-manu",
+   "sourceUrl": "https://en.wikipedia.org/wiki/IRL_Golden_Boot_Award"
+  },
+  {
+   "season": 2023,
+   "name": "James Fisher-Harris",
+   "nation": "New Zealand",
+   "club": "Penrith Panthers",
+   "playerId": "nrl-james-fisher-harris",
+   "sourceUrl": "https://en.wikipedia.org/wiki/IRL_Golden_Boot_Award"
+  },
+  {
+   "season": 2024,
+   "name": "Isaah Yeo",
+   "nation": "Australia",
+   "club": "Penrith Panthers",
+   "playerId": "nrl-isaah-yeo",
+   "sourceUrl": "https://en.wikipedia.org/wiki/IRL_Golden_Boot_Award"
+  },
+  {
+   "season": 2025,
+   "name": "Harry Grant",
+   "nation": "Australia",
+   "club": "Melbourne Storm",
+   "playerId": "nrl-harry-grant",
+   "sourceUrl": "https://en.wikipedia.org/wiki/IRL_Golden_Boot_Award"
+  }
+ ]
+}

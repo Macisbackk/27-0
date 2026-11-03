@@ -1,0 +1,33 @@
+# club: nrl-new-zealand-warriors
+# source: https://www.org.rugbyleagueproject.com/seasons/nrl-2026/warriors/summary.html
+# fetched: 2026-11-03 via WebFetch. Columns: Surname, First|age at fetch date|birthplace|representative teams
+Barnett, Mitchell|31|Taree|Australia;New South Wales
+Berry, Rocco|24|Masterton|
+Boyd, Tanah|25|Sydney|
+Capewell, Kurt|32|Charleville|Queensland
+Clark, Erin|28|Auckland|New Zealand;Samoa
+Egan, Wayde|29|Lithgow|
+Fatialofa, Kayliss|21|Auckland|
+Fisher-Harris, James|30|Rawene|New Zealand
+Ford, Jackson|28|Shellharbour|
+Gannon, Morgan|22|Halifax|
+Halasima, Selumiela|20|Tofoa|Tonga
+Hanson, Luke|||
+Harris-Tavita, Chanel|26|Auckland|Samoa
+Healey, Samuel|23|Wakefield|
+Ieremia-Toeava, Eddie|21|Auckland|
+Khan-Pereira, Alofiana|24|Lismore|Indigenous All Stars
+Laban, Jacob|21|Apia|
+Leiataua, Ali|23|Auckland|
+Linnane, Jye|20|Newcastle|
+Martin, Te Maire|30|Tokoroa|New Zealand
+Mellars, Haizyn|21|Auckland|
+Metcalf, Luke|27|Coffs Harbour|
+Nicoll-Klokstad, Charnze|30|Auckland|New Zealand;Cook Islands
+Niukore, Marata|29|Auckland|New Zealand;Cook Islands
+Pompey, Adam|27|Auckland|
+Stowers-Smith, Tanner|22|Christchurch|
+Tuaupiki, Taine|26|Sydney|
+Tuivasa-Sheck, Roger|32|Apia|New Zealand;Samoa
+Vaimauga, Demitric|22|Auckland|Tonga
+Watene-Zelezniak, Dallin|30|Hamilton|New Zealand

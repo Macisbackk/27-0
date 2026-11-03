@@ -1,0 +1,2503 @@
+{
+ "about": "Final regular-season NRL ladders 1998-2026 (position 1 = minor premiers), as published on each season's Wikipedia article. Used for the club-finish adjustment in scripts/nrl/build-nrl-ratings.ts.",
+ "generatedAt": "2026-11-03",
+ "notes": [
+  "Ladders are as published (after any points deductions, e.g. Canterbury 2002 last; Melbourne 2007/2008 minor premierships later stripped but kept here as on-field finish)."
+ ],
+ "seasons": {
+  "1998": {
+   "teams": 20,
+   "sourceUrl": "https://en.wikipedia.org/wiki/1998_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    },
+    {
+     "position": 2,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    },
+    {
+     "position": 3,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    },
+    {
+     "position": 4,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    },
+    {
+     "position": 5,
+     "club": "North Sydney Bears",
+     "clubId": "nrl-north-sydney-bears"
+    },
+    {
+     "position": 6,
+     "club": "Sydney City Roosters",
+     "clubId": "nrl-sydney-roosters"
+    },
+    {
+     "position": 7,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 8,
+     "club": "St. George Dragons",
+     "clubId": "nrl-st-george-dragons"
+    },
+    {
+     "position": 9,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    },
+    {
+     "position": 10,
+     "club": "Manly Warringah Sea Eagles",
+     "clubId": "nrl-manly-sea-eagles"
+    },
+    {
+     "position": 11,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    },
+    {
+     "position": 12,
+     "club": "Illawarra Steelers",
+     "clubId": "nrl-illawarra-steelers"
+    },
+    {
+     "position": 13,
+     "club": "Balmain Tigers",
+     "clubId": "nrl-balmain-tigers"
+    },
+    {
+     "position": 14,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    },
+    {
+     "position": 15,
+     "club": "Auckland Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 16,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    },
+    {
+     "position": 17,
+     "club": "Adelaide Rams",
+     "clubId": "nrl-adelaide-rams"
+    },
+    {
+     "position": 18,
+     "club": "South Sydney Rabbitohs",
+     "clubId": "nrl-south-sydney-rabbitohs"
+    },
+    {
+     "position": 19,
+     "club": "Gold Coast Chargers",
+     "clubId": "nrl-gold-coast-chargers"
+    },
+    {
+     "position": 20,
+     "club": "Western Suburbs Magpies",
+     "clubId": "nrl-western-suburbs-magpies"
+    }
+   ]
+  },
+  "1999": {
+   "teams": 17,
+   "sourceUrl": "https://en.wikipedia.org/wiki/1999_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    },
+    {
+     "position": 2,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    },
+    {
+     "position": 3,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    },
+    {
+     "position": 4,
+     "club": "Sydney City Roosters",
+     "clubId": "nrl-sydney-roosters"
+    },
+    {
+     "position": 5,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    },
+    {
+     "position": 6,
+     "club": "St. George Illawarra Dragons",
+     "clubId": "nrl-st-george-illawarra-dragons"
+    },
+    {
+     "position": 7,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    },
+    {
+     "position": 8,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    },
+    {
+     "position": 9,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 10,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    },
+    {
+     "position": 11,
+     "club": "Auckland Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 12,
+     "club": "South Sydney Rabbitohs",
+     "clubId": "nrl-south-sydney-rabbitohs"
+    },
+    {
+     "position": 13,
+     "club": "Manly Warringah Sea Eagles",
+     "clubId": "nrl-manly-sea-eagles"
+    },
+    {
+     "position": 14,
+     "club": "North Sydney Bears",
+     "clubId": "nrl-north-sydney-bears"
+    },
+    {
+     "position": 15,
+     "club": "Balmain Tigers",
+     "clubId": "nrl-balmain-tigers"
+    },
+    {
+     "position": 16,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    },
+    {
+     "position": 17,
+     "club": "Western Suburbs Magpies",
+     "clubId": "nrl-western-suburbs-magpies"
+    }
+   ]
+  },
+  "2000": {
+   "teams": 14,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2000_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    },
+    {
+     "position": 2,
+     "club": "Sydney Roosters",
+     "clubId": "nrl-sydney-roosters"
+    },
+    {
+     "position": 3,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    },
+    {
+     "position": 4,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 5,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    },
+    {
+     "position": 6,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    },
+    {
+     "position": 7,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    },
+    {
+     "position": 8,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    },
+    {
+     "position": 9,
+     "club": "St. George Illawarra Dragons",
+     "clubId": "nrl-st-george-illawarra-dragons"
+    },
+    {
+     "position": 10,
+     "club": "Wests Tigers",
+     "clubId": "nrl-wests-tigers"
+    },
+    {
+     "position": 11,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    },
+    {
+     "position": 12,
+     "club": "Northern Eagles",
+     "clubId": "nrl-northern-eagles"
+    },
+    {
+     "position": 13,
+     "club": "Auckland Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 14,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    }
+   ]
+  },
+  "2001": {
+   "teams": 14,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2001_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    },
+    {
+     "position": 2,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    },
+    {
+     "position": 3,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    },
+    {
+     "position": 4,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    },
+    {
+     "position": 5,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    },
+    {
+     "position": 6,
+     "club": "Sydney Roosters",
+     "clubId": "nrl-sydney-roosters"
+    },
+    {
+     "position": 7,
+     "club": "St. George Illawarra Dragons",
+     "clubId": "nrl-st-george-illawarra-dragons"
+    },
+    {
+     "position": 8,
+     "club": "New Zealand Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 9,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    },
+    {
+     "position": 10,
+     "club": "Northern Eagles",
+     "clubId": "nrl-northern-eagles"
+    },
+    {
+     "position": 11,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 12,
+     "club": "Wests Tigers",
+     "clubId": "nrl-wests-tigers"
+    },
+    {
+     "position": 13,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    },
+    {
+     "position": 14,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    }
+   ]
+  },
+  "2002": {
+   "teams": 15,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2002_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "New Zealand Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 2,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    },
+    {
+     "position": 3,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    },
+    {
+     "position": 4,
+     "club": "Sydney Roosters",
+     "clubId": "nrl-sydney-roosters"
+    },
+    {
+     "position": 5,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    },
+    {
+     "position": 6,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    },
+    {
+     "position": 7,
+     "club": "St. George Illawarra Dragons",
+     "clubId": "nrl-st-george-illawarra-dragons"
+    },
+    {
+     "position": 8,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 9,
+     "club": "Northern Eagles",
+     "clubId": "nrl-northern-eagles"
+    },
+    {
+     "position": 10,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    },
+    {
+     "position": 11,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    },
+    {
+     "position": 12,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    },
+    {
+     "position": 13,
+     "club": "Wests Tigers",
+     "clubId": "nrl-wests-tigers"
+    },
+    {
+     "position": 14,
+     "club": "South Sydney Rabbitohs",
+     "clubId": "nrl-south-sydney-rabbitohs"
+    },
+    {
+     "position": 15,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    }
+   ]
+  },
+  "2003": {
+   "teams": 15,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2003_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    },
+    {
+     "position": 2,
+     "club": "Sydney Roosters",
+     "clubId": "nrl-sydney-roosters"
+    },
+    {
+     "position": 3,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    },
+    {
+     "position": 4,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 5,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    },
+    {
+     "position": 6,
+     "club": "New Zealand Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 7,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    },
+    {
+     "position": 8,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    },
+    {
+     "position": 9,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    },
+    {
+     "position": 10,
+     "club": "St. George Illawarra Dragons",
+     "clubId": "nrl-st-george-illawarra-dragons"
+    },
+    {
+     "position": 11,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    },
+    {
+     "position": 12,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    },
+    {
+     "position": 13,
+     "club": "Wests Tigers",
+     "clubId": "nrl-wests-tigers"
+    },
+    {
+     "position": 14,
+     "club": "Manly Warringah Sea Eagles",
+     "clubId": "nrl-manly-sea-eagles"
+    },
+    {
+     "position": 15,
+     "club": "South Sydney Rabbitohs",
+     "clubId": "nrl-south-sydney-rabbitohs"
+    }
+   ]
+  },
+  "2004": {
+   "teams": 15,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2004_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "Sydney Roosters",
+     "clubId": "nrl-sydney-roosters"
+    },
+    {
+     "position": 2,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    },
+    {
+     "position": 3,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    },
+    {
+     "position": 4,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    },
+    {
+     "position": 5,
+     "club": "St. George Illawarra Dragons",
+     "clubId": "nrl-st-george-illawarra-dragons"
+    },
+    {
+     "position": 6,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    },
+    {
+     "position": 7,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    },
+    {
+     "position": 8,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 9,
+     "club": "Wests Tigers",
+     "clubId": "nrl-wests-tigers"
+    },
+    {
+     "position": 10,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    },
+    {
+     "position": 11,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    },
+    {
+     "position": 12,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    },
+    {
+     "position": 13,
+     "club": "Manly Warringah Sea Eagles",
+     "clubId": "nrl-manly-sea-eagles"
+    },
+    {
+     "position": 14,
+     "club": "New Zealand Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 15,
+     "club": "South Sydney Rabbitohs",
+     "clubId": "nrl-south-sydney-rabbitohs"
+    }
+   ]
+  },
+  "2005": {
+   "teams": 15,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2005_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    },
+    {
+     "position": 2,
+     "club": "St. George Illawarra Dragons",
+     "clubId": "nrl-st-george-illawarra-dragons"
+    },
+    {
+     "position": 3,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    },
+    {
+     "position": 4,
+     "club": "Wests Tigers",
+     "clubId": "nrl-wests-tigers"
+    },
+    {
+     "position": 5,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    },
+    {
+     "position": 6,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    },
+    {
+     "position": 7,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    },
+    {
+     "position": 8,
+     "club": "Manly Warringah Sea Eagles",
+     "clubId": "nrl-manly-sea-eagles"
+    },
+    {
+     "position": 9,
+     "club": "Sydney Roosters",
+     "clubId": "nrl-sydney-roosters"
+    },
+    {
+     "position": 10,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    },
+    {
+     "position": 11,
+     "club": "New Zealand Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 12,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    },
+    {
+     "position": 13,
+     "club": "South Sydney Rabbitohs",
+     "clubId": "nrl-south-sydney-rabbitohs"
+    },
+    {
+     "position": 14,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 15,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    }
+   ]
+  },
+  "2006": {
+   "teams": 15,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2006_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    },
+    {
+     "position": 2,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    },
+    {
+     "position": 3,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    },
+    {
+     "position": 4,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    },
+    {
+     "position": 5,
+     "club": "Manly Warringah Sea Eagles",
+     "clubId": "nrl-manly-sea-eagles"
+    },
+    {
+     "position": 6,
+     "club": "St. George Illawarra Dragons",
+     "clubId": "nrl-st-george-illawarra-dragons"
+    },
+    {
+     "position": 7,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 8,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    },
+    {
+     "position": 9,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    },
+    {
+     "position": 10,
+     "club": "New Zealand Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 11,
+     "club": "Wests Tigers",
+     "clubId": "nrl-wests-tigers"
+    },
+    {
+     "position": 12,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    },
+    {
+     "position": 13,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    },
+    {
+     "position": 14,
+     "club": "Sydney Roosters",
+     "clubId": "nrl-sydney-roosters"
+    },
+    {
+     "position": 15,
+     "club": "South Sydney Rabbitohs",
+     "clubId": "nrl-south-sydney-rabbitohs"
+    }
+   ]
+  },
+  "2007": {
+   "teams": 16,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2007_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    },
+    {
+     "position": 2,
+     "club": "Manly Warringah Sea Eagles",
+     "clubId": "nrl-manly-sea-eagles"
+    },
+    {
+     "position": 3,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    },
+    {
+     "position": 4,
+     "club": "New Zealand Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 5,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    },
+    {
+     "position": 6,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    },
+    {
+     "position": 7,
+     "club": "South Sydney Rabbitohs",
+     "clubId": "nrl-south-sydney-rabbitohs"
+    },
+    {
+     "position": 8,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    },
+    {
+     "position": 9,
+     "club": "Wests Tigers",
+     "clubId": "nrl-wests-tigers"
+    },
+    {
+     "position": 10,
+     "club": "Sydney Roosters",
+     "clubId": "nrl-sydney-roosters"
+    },
+    {
+     "position": 11,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    },
+    {
+     "position": 12,
+     "club": "Gold Coast Titans",
+     "clubId": "nrl-gold-coast-titans"
+    },
+    {
+     "position": 13,
+     "club": "St. George Illawarra Dragons",
+     "clubId": "nrl-st-george-illawarra-dragons"
+    },
+    {
+     "position": 14,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 15,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    },
+    {
+     "position": 16,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    }
+   ]
+  },
+  "2008": {
+   "teams": 16,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2008_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    },
+    {
+     "position": 2,
+     "club": "Manly Warringah Sea Eagles",
+     "clubId": "nrl-manly-sea-eagles"
+    },
+    {
+     "position": 3,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    },
+    {
+     "position": 4,
+     "club": "Sydney Roosters",
+     "clubId": "nrl-sydney-roosters"
+    },
+    {
+     "position": 5,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    },
+    {
+     "position": 6,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 7,
+     "club": "St. George Illawarra Dragons",
+     "clubId": "nrl-st-george-illawarra-dragons"
+    },
+    {
+     "position": 8,
+     "club": "New Zealand Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 9,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    },
+    {
+     "position": 10,
+     "club": "Wests Tigers",
+     "clubId": "nrl-wests-tigers"
+    },
+    {
+     "position": 11,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    },
+    {
+     "position": 12,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    },
+    {
+     "position": 13,
+     "club": "Gold Coast Titans",
+     "clubId": "nrl-gold-coast-titans"
+    },
+    {
+     "position": 14,
+     "club": "South Sydney Rabbitohs",
+     "clubId": "nrl-south-sydney-rabbitohs"
+    },
+    {
+     "position": 15,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    },
+    {
+     "position": 16,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    }
+   ]
+  },
+  "2009": {
+   "teams": 16,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2009_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "St. George Illawarra Dragons",
+     "clubId": "nrl-st-george-illawarra-dragons"
+    },
+    {
+     "position": 2,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    },
+    {
+     "position": 3,
+     "club": "Gold Coast Titans",
+     "clubId": "nrl-gold-coast-titans"
+    },
+    {
+     "position": 4,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    },
+    {
+     "position": 5,
+     "club": "Manly Warringah Sea Eagles",
+     "clubId": "nrl-manly-sea-eagles"
+    },
+    {
+     "position": 6,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    },
+    {
+     "position": 7,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    },
+    {
+     "position": 8,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    },
+    {
+     "position": 9,
+     "club": "Wests Tigers",
+     "clubId": "nrl-wests-tigers"
+    },
+    {
+     "position": 10,
+     "club": "South Sydney Rabbitohs",
+     "clubId": "nrl-south-sydney-rabbitohs"
+    },
+    {
+     "position": 11,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    },
+    {
+     "position": 12,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    },
+    {
+     "position": 13,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 14,
+     "club": "New Zealand Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 15,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    },
+    {
+     "position": 16,
+     "club": "Sydney Roosters",
+     "clubId": "nrl-sydney-roosters"
+    }
+   ]
+  },
+  "2010": {
+   "teams": 16,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2010_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "St. George Illawarra Dragons",
+     "clubId": "nrl-st-george-illawarra-dragons"
+    },
+    {
+     "position": 2,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    },
+    {
+     "position": 3,
+     "club": "Wests Tigers",
+     "clubId": "nrl-wests-tigers"
+    },
+    {
+     "position": 4,
+     "club": "Gold Coast Titans",
+     "clubId": "nrl-gold-coast-titans"
+    },
+    {
+     "position": 5,
+     "club": "New Zealand Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 6,
+     "club": "Sydney Roosters",
+     "clubId": "nrl-sydney-roosters"
+    },
+    {
+     "position": 7,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 8,
+     "club": "Manly Warringah Sea Eagles",
+     "clubId": "nrl-manly-sea-eagles"
+    },
+    {
+     "position": 9,
+     "club": "South Sydney Rabbitohs",
+     "clubId": "nrl-south-sydney-rabbitohs"
+    },
+    {
+     "position": 10,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    },
+    {
+     "position": 11,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    },
+    {
+     "position": 12,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    },
+    {
+     "position": 13,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    },
+    {
+     "position": 14,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    },
+    {
+     "position": 15,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    },
+    {
+     "position": 16,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    }
+   ]
+  },
+  "2011": {
+   "teams": 16,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2011_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    },
+    {
+     "position": 2,
+     "club": "Manly Warringah Sea Eagles",
+     "clubId": "nrl-manly-sea-eagles"
+    },
+    {
+     "position": 3,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    },
+    {
+     "position": 4,
+     "club": "Wests Tigers",
+     "clubId": "nrl-wests-tigers"
+    },
+    {
+     "position": 5,
+     "club": "St. George Illawarra Dragons",
+     "clubId": "nrl-st-george-illawarra-dragons"
+    },
+    {
+     "position": 6,
+     "club": "New Zealand Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 7,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    },
+    {
+     "position": 8,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    },
+    {
+     "position": 9,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    },
+    {
+     "position": 10,
+     "club": "South Sydney Rabbitohs",
+     "clubId": "nrl-south-sydney-rabbitohs"
+    },
+    {
+     "position": 11,
+     "club": "Sydney Roosters",
+     "clubId": "nrl-sydney-roosters"
+    },
+    {
+     "position": 12,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    },
+    {
+     "position": 13,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    },
+    {
+     "position": 14,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    },
+    {
+     "position": 15,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 16,
+     "club": "Gold Coast Titans",
+     "clubId": "nrl-gold-coast-titans"
+    }
+   ]
+  },
+  "2012": {
+   "teams": 16,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2012_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    },
+    {
+     "position": 2,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    },
+    {
+     "position": 3,
+     "club": "South Sydney Rabbitohs",
+     "clubId": "nrl-south-sydney-rabbitohs"
+    },
+    {
+     "position": 4,
+     "club": "Manly Warringah Sea Eagles",
+     "clubId": "nrl-manly-sea-eagles"
+    },
+    {
+     "position": 5,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    },
+    {
+     "position": 6,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 7,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    },
+    {
+     "position": 8,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    },
+    {
+     "position": 9,
+     "club": "St. George Illawarra Dragons",
+     "clubId": "nrl-st-george-illawarra-dragons"
+    },
+    {
+     "position": 10,
+     "club": "Wests Tigers",
+     "clubId": "nrl-wests-tigers"
+    },
+    {
+     "position": 11,
+     "club": "Gold Coast Titans",
+     "clubId": "nrl-gold-coast-titans"
+    },
+    {
+     "position": 12,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    },
+    {
+     "position": 13,
+     "club": "Sydney Roosters",
+     "clubId": "nrl-sydney-roosters"
+    },
+    {
+     "position": 14,
+     "club": "New Zealand Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 15,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    },
+    {
+     "position": 16,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    }
+   ]
+  },
+  "2013": {
+   "teams": 16,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2013_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "Sydney Roosters",
+     "clubId": "nrl-sydney-roosters"
+    },
+    {
+     "position": 2,
+     "club": "South Sydney Rabbitohs",
+     "clubId": "nrl-south-sydney-rabbitohs"
+    },
+    {
+     "position": 3,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    },
+    {
+     "position": 4,
+     "club": "Manly Warringah Sea Eagles",
+     "clubId": "nrl-manly-sea-eagles"
+    },
+    {
+     "position": 5,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    },
+    {
+     "position": 6,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    },
+    {
+     "position": 7,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    },
+    {
+     "position": 8,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    },
+    {
+     "position": 9,
+     "club": "Gold Coast Titans",
+     "clubId": "nrl-gold-coast-titans"
+    },
+    {
+     "position": 10,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    },
+    {
+     "position": 11,
+     "club": "New Zealand Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 12,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    },
+    {
+     "position": 13,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 14,
+     "club": "St. George Illawarra Dragons",
+     "clubId": "nrl-st-george-illawarra-dragons"
+    },
+    {
+     "position": 15,
+     "club": "Wests Tigers",
+     "clubId": "nrl-wests-tigers"
+    },
+    {
+     "position": 16,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    }
+   ]
+  },
+  "2014": {
+   "teams": 16,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2014_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "Sydney Roosters",
+     "clubId": "nrl-sydney-roosters"
+    },
+    {
+     "position": 2,
+     "club": "Manly Warringah Sea Eagles",
+     "clubId": "nrl-manly-sea-eagles"
+    },
+    {
+     "position": 3,
+     "club": "South Sydney Rabbitohs",
+     "clubId": "nrl-south-sydney-rabbitohs"
+    },
+    {
+     "position": 4,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    },
+    {
+     "position": 5,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    },
+    {
+     "position": 6,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    },
+    {
+     "position": 7,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    },
+    {
+     "position": 8,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    },
+    {
+     "position": 9,
+     "club": "New Zealand Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 10,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    },
+    {
+     "position": 11,
+     "club": "St. George Illawarra Dragons",
+     "clubId": "nrl-st-george-illawarra-dragons"
+    },
+    {
+     "position": 12,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    },
+    {
+     "position": 13,
+     "club": "Wests Tigers",
+     "clubId": "nrl-wests-tigers"
+    },
+    {
+     "position": 14,
+     "club": "Gold Coast Titans",
+     "clubId": "nrl-gold-coast-titans"
+    },
+    {
+     "position": 15,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 16,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    }
+   ]
+  },
+  "2015": {
+   "teams": 16,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2015_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "Sydney Roosters",
+     "clubId": "nrl-sydney-roosters"
+    },
+    {
+     "position": 2,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    },
+    {
+     "position": 3,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    },
+    {
+     "position": 4,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    },
+    {
+     "position": 5,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    },
+    {
+     "position": 6,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    },
+    {
+     "position": 7,
+     "club": "South Sydney Rabbitohs",
+     "clubId": "nrl-south-sydney-rabbitohs"
+    },
+    {
+     "position": 8,
+     "club": "St. George Illawarra Dragons",
+     "clubId": "nrl-st-george-illawarra-dragons"
+    },
+    {
+     "position": 9,
+     "club": "Manly Warringah Sea Eagles",
+     "clubId": "nrl-manly-sea-eagles"
+    },
+    {
+     "position": 10,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 11,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    },
+    {
+     "position": 12,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    },
+    {
+     "position": 13,
+     "club": "New Zealand Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 14,
+     "club": "Gold Coast Titans",
+     "clubId": "nrl-gold-coast-titans"
+    },
+    {
+     "position": 15,
+     "club": "Wests Tigers",
+     "clubId": "nrl-wests-tigers"
+    },
+    {
+     "position": 16,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    }
+   ]
+  },
+  "2016": {
+   "teams": 16,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2016_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    },
+    {
+     "position": 2,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 3,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    },
+    {
+     "position": 4,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    },
+    {
+     "position": 5,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    },
+    {
+     "position": 6,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    },
+    {
+     "position": 7,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    },
+    {
+     "position": 8,
+     "club": "Gold Coast Titans",
+     "clubId": "nrl-gold-coast-titans"
+    },
+    {
+     "position": 9,
+     "club": "Wests Tigers",
+     "clubId": "nrl-wests-tigers"
+    },
+    {
+     "position": 10,
+     "club": "New Zealand Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 11,
+     "club": "St. George Illawarra Dragons",
+     "clubId": "nrl-st-george-illawarra-dragons"
+    },
+    {
+     "position": 12,
+     "club": "South Sydney Rabbitohs",
+     "clubId": "nrl-south-sydney-rabbitohs"
+    },
+    {
+     "position": 13,
+     "club": "Manly Warringah Sea Eagles",
+     "clubId": "nrl-manly-sea-eagles"
+    },
+    {
+     "position": 14,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    },
+    {
+     "position": 15,
+     "club": "Sydney Roosters",
+     "clubId": "nrl-sydney-roosters"
+    },
+    {
+     "position": 16,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    }
+   ]
+  },
+  "2017": {
+   "teams": 16,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2017_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    },
+    {
+     "position": 2,
+     "club": "Sydney Roosters",
+     "clubId": "nrl-sydney-roosters"
+    },
+    {
+     "position": 3,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    },
+    {
+     "position": 4,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    },
+    {
+     "position": 5,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    },
+    {
+     "position": 6,
+     "club": "Manly Warringah Sea Eagles",
+     "clubId": "nrl-manly-sea-eagles"
+    },
+    {
+     "position": 7,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    },
+    {
+     "position": 8,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    },
+    {
+     "position": 9,
+     "club": "St. George Illawarra Dragons",
+     "clubId": "nrl-st-george-illawarra-dragons"
+    },
+    {
+     "position": 10,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 11,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    },
+    {
+     "position": 12,
+     "club": "South Sydney Rabbitohs",
+     "clubId": "nrl-south-sydney-rabbitohs"
+    },
+    {
+     "position": 13,
+     "club": "New Zealand Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 14,
+     "club": "Wests Tigers",
+     "clubId": "nrl-wests-tigers"
+    },
+    {
+     "position": 15,
+     "club": "Gold Coast Titans",
+     "clubId": "nrl-gold-coast-titans"
+    },
+    {
+     "position": 16,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    }
+   ]
+  },
+  "2018": {
+   "teams": 16,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2018_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "Sydney Roosters",
+     "clubId": "nrl-sydney-roosters"
+    },
+    {
+     "position": 2,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    },
+    {
+     "position": 3,
+     "club": "South Sydney Rabbitohs",
+     "clubId": "nrl-south-sydney-rabbitohs"
+    },
+    {
+     "position": 4,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    },
+    {
+     "position": 5,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    },
+    {
+     "position": 6,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    },
+    {
+     "position": 7,
+     "club": "St. George Illawarra Dragons",
+     "clubId": "nrl-st-george-illawarra-dragons"
+    },
+    {
+     "position": 8,
+     "club": "New Zealand Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 9,
+     "club": "Wests Tigers",
+     "clubId": "nrl-wests-tigers"
+    },
+    {
+     "position": 10,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 11,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    },
+    {
+     "position": 12,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    },
+    {
+     "position": 13,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    },
+    {
+     "position": 14,
+     "club": "Gold Coast Titans",
+     "clubId": "nrl-gold-coast-titans"
+    },
+    {
+     "position": 15,
+     "club": "Manly Warringah Sea Eagles",
+     "clubId": "nrl-manly-sea-eagles"
+    },
+    {
+     "position": 16,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    }
+   ]
+  },
+  "2019": {
+   "teams": 16,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2019_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    },
+    {
+     "position": 2,
+     "club": "Sydney Roosters",
+     "clubId": "nrl-sydney-roosters"
+    },
+    {
+     "position": 3,
+     "club": "South Sydney Rabbitohs",
+     "clubId": "nrl-south-sydney-rabbitohs"
+    },
+    {
+     "position": 4,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 5,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    },
+    {
+     "position": 6,
+     "club": "Manly Warringah Sea Eagles",
+     "clubId": "nrl-manly-sea-eagles"
+    },
+    {
+     "position": 7,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    },
+    {
+     "position": 8,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    },
+    {
+     "position": 9,
+     "club": "Wests Tigers",
+     "clubId": "nrl-wests-tigers"
+    },
+    {
+     "position": 10,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    },
+    {
+     "position": 11,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    },
+    {
+     "position": 12,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    },
+    {
+     "position": 13,
+     "club": "New Zealand Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 14,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    },
+    {
+     "position": 15,
+     "club": "St. George Illawarra Dragons",
+     "clubId": "nrl-st-george-illawarra-dragons"
+    },
+    {
+     "position": 16,
+     "club": "Gold Coast Titans",
+     "clubId": "nrl-gold-coast-titans"
+    }
+   ]
+  },
+  "2020": {
+   "teams": 16,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2020_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    },
+    {
+     "position": 2,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    },
+    {
+     "position": 3,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    },
+    {
+     "position": 4,
+     "club": "Sydney Roosters",
+     "clubId": "nrl-sydney-roosters"
+    },
+    {
+     "position": 5,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 6,
+     "club": "South Sydney Rabbitohs",
+     "clubId": "nrl-south-sydney-rabbitohs"
+    },
+    {
+     "position": 7,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    },
+    {
+     "position": 8,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    },
+    {
+     "position": 9,
+     "club": "Gold Coast Titans",
+     "clubId": "nrl-gold-coast-titans"
+    },
+    {
+     "position": 10,
+     "club": "New Zealand Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 11,
+     "club": "Wests Tigers",
+     "clubId": "nrl-wests-tigers"
+    },
+    {
+     "position": 12,
+     "club": "St. George Illawarra Dragons",
+     "clubId": "nrl-st-george-illawarra-dragons"
+    },
+    {
+     "position": 13,
+     "club": "Manly Warringah Sea Eagles",
+     "clubId": "nrl-manly-sea-eagles"
+    },
+    {
+     "position": 14,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    },
+    {
+     "position": 15,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    },
+    {
+     "position": 16,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    }
+   ]
+  },
+  "2021": {
+   "teams": 16,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    },
+    {
+     "position": 2,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    },
+    {
+     "position": 3,
+     "club": "South Sydney Rabbitohs",
+     "clubId": "nrl-south-sydney-rabbitohs"
+    },
+    {
+     "position": 4,
+     "club": "Manly Warringah Sea Eagles",
+     "clubId": "nrl-manly-sea-eagles"
+    },
+    {
+     "position": 5,
+     "club": "Sydney Roosters",
+     "clubId": "nrl-sydney-roosters"
+    },
+    {
+     "position": 6,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    },
+    {
+     "position": 7,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    },
+    {
+     "position": 8,
+     "club": "Gold Coast Titans",
+     "clubId": "nrl-gold-coast-titans"
+    },
+    {
+     "position": 9,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    },
+    {
+     "position": 10,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 11,
+     "club": "St. George Illawarra Dragons",
+     "clubId": "nrl-st-george-illawarra-dragons"
+    },
+    {
+     "position": 12,
+     "club": "New Zealand Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 13,
+     "club": "Wests Tigers",
+     "clubId": "nrl-wests-tigers"
+    },
+    {
+     "position": 14,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    },
+    {
+     "position": 15,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    },
+    {
+     "position": 16,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    }
+   ]
+  },
+  "2022": {
+   "teams": 16,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2022_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    },
+    {
+     "position": 2,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    },
+    {
+     "position": 3,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    },
+    {
+     "position": 4,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    },
+    {
+     "position": 5,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    },
+    {
+     "position": 6,
+     "club": "Sydney Roosters",
+     "clubId": "nrl-sydney-roosters"
+    },
+    {
+     "position": 7,
+     "club": "South Sydney Rabbitohs",
+     "clubId": "nrl-south-sydney-rabbitohs"
+    },
+    {
+     "position": 8,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 9,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    },
+    {
+     "position": 10,
+     "club": "St. George Illawarra Dragons",
+     "clubId": "nrl-st-george-illawarra-dragons"
+    },
+    {
+     "position": 11,
+     "club": "Manly Warringah Sea Eagles",
+     "clubId": "nrl-manly-sea-eagles"
+    },
+    {
+     "position": 12,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    },
+    {
+     "position": 13,
+     "club": "Gold Coast Titans",
+     "clubId": "nrl-gold-coast-titans"
+    },
+    {
+     "position": 14,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    },
+    {
+     "position": 15,
+     "club": "New Zealand Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 16,
+     "club": "Wests Tigers",
+     "clubId": "nrl-wests-tigers"
+    }
+   ]
+  },
+  "2023": {
+   "teams": 17,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2023_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    },
+    {
+     "position": 2,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    },
+    {
+     "position": 3,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    },
+    {
+     "position": 4,
+     "club": "New Zealand Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 5,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    },
+    {
+     "position": 6,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    },
+    {
+     "position": 7,
+     "club": "Sydney Roosters",
+     "clubId": "nrl-sydney-roosters"
+    },
+    {
+     "position": 8,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 9,
+     "club": "South Sydney Rabbitohs",
+     "clubId": "nrl-south-sydney-rabbitohs"
+    },
+    {
+     "position": 10,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    },
+    {
+     "position": 11,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    },
+    {
+     "position": 12,
+     "club": "Manly Warringah Sea Eagles",
+     "clubId": "nrl-manly-sea-eagles"
+    },
+    {
+     "position": 13,
+     "club": "Dolphins",
+     "clubId": "nrl-dolphins"
+    },
+    {
+     "position": 14,
+     "club": "Gold Coast Titans",
+     "clubId": "nrl-gold-coast-titans"
+    },
+    {
+     "position": 15,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    },
+    {
+     "position": 16,
+     "club": "St. George Illawarra Dragons",
+     "clubId": "nrl-st-george-illawarra-dragons"
+    },
+    {
+     "position": 17,
+     "club": "Wests Tigers",
+     "clubId": "nrl-wests-tigers"
+    }
+   ]
+  },
+  "2024": {
+   "teams": 17,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2024_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    },
+    {
+     "position": 2,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    },
+    {
+     "position": 3,
+     "club": "Sydney Roosters",
+     "clubId": "nrl-sydney-roosters"
+    },
+    {
+     "position": 4,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    },
+    {
+     "position": 5,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    },
+    {
+     "position": 6,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    },
+    {
+     "position": 7,
+     "club": "Manly Warringah Sea Eagles",
+     "clubId": "nrl-manly-sea-eagles"
+    },
+    {
+     "position": 8,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    },
+    {
+     "position": 9,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 10,
+     "club": "Dolphins",
+     "clubId": "nrl-dolphins"
+    },
+    {
+     "position": 11,
+     "club": "St. George Illawarra Dragons",
+     "clubId": "nrl-st-george-illawarra-dragons"
+    },
+    {
+     "position": 12,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    },
+    {
+     "position": 13,
+     "club": "New Zealand Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 14,
+     "club": "Gold Coast Titans",
+     "clubId": "nrl-gold-coast-titans"
+    },
+    {
+     "position": 15,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    },
+    {
+     "position": 16,
+     "club": "South Sydney Rabbitohs",
+     "clubId": "nrl-south-sydney-rabbitohs"
+    },
+    {
+     "position": 17,
+     "club": "Wests Tigers",
+     "clubId": "nrl-wests-tigers"
+    }
+   ]
+  },
+  "2025": {
+   "teams": 17,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2025_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 2,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    },
+    {
+     "position": 3,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    },
+    {
+     "position": 4,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    },
+    {
+     "position": 5,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    },
+    {
+     "position": 6,
+     "club": "New Zealand Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 7,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    },
+    {
+     "position": 8,
+     "club": "Sydney Roosters",
+     "clubId": "nrl-sydney-roosters"
+    },
+    {
+     "position": 9,
+     "club": "Dolphins",
+     "clubId": "nrl-dolphins"
+    },
+    {
+     "position": 10,
+     "club": "Manly Warringah Sea Eagles",
+     "clubId": "nrl-manly-sea-eagles"
+    },
+    {
+     "position": 11,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    },
+    {
+     "position": 12,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    },
+    {
+     "position": 13,
+     "club": "Wests Tigers",
+     "clubId": "nrl-wests-tigers"
+    },
+    {
+     "position": 14,
+     "club": "South Sydney Rabbitohs",
+     "clubId": "nrl-south-sydney-rabbitohs"
+    },
+    {
+     "position": 15,
+     "club": "St. George Illawarra Dragons",
+     "clubId": "nrl-st-george-illawarra-dragons"
+    },
+    {
+     "position": 16,
+     "club": "Gold Coast Titans",
+     "clubId": "nrl-gold-coast-titans"
+    },
+    {
+     "position": 17,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    }
+   ]
+  },
+  "2026": {
+   "teams": 17,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2026_NRL_season",
+   "table": [
+    {
+     "position": 1,
+     "club": "Penrith Panthers",
+     "clubId": "nrl-penrith-panthers"
+    },
+    {
+     "position": 2,
+     "club": "New Zealand Warriors",
+     "clubId": "nrl-new-zealand-warriors"
+    },
+    {
+     "position": 3,
+     "club": "Dolphins",
+     "clubId": "nrl-dolphins"
+    },
+    {
+     "position": 4,
+     "club": "Sydney Roosters",
+     "clubId": "nrl-sydney-roosters"
+    },
+    {
+     "position": 5,
+     "club": "Cronulla-Sutherland Sharks",
+     "clubId": "nrl-cronulla-sharks"
+    },
+    {
+     "position": 6,
+     "club": "South Sydney Rabbitohs",
+     "clubId": "nrl-south-sydney-rabbitohs"
+    },
+    {
+     "position": 7,
+     "club": "Newcastle Knights",
+     "clubId": "nrl-newcastle-knights"
+    },
+    {
+     "position": 8,
+     "club": "North Queensland Cowboys",
+     "clubId": "nrl-north-queensland-cowboys"
+    },
+    {
+     "position": 9,
+     "club": "Manly Warringah Sea Eagles",
+     "clubId": "nrl-manly-sea-eagles"
+    },
+    {
+     "position": 10,
+     "club": "Melbourne Storm",
+     "clubId": "nrl-melbourne-storm"
+    },
+    {
+     "position": 11,
+     "club": "Canberra Raiders",
+     "clubId": "nrl-canberra-raiders"
+    },
+    {
+     "position": 12,
+     "club": "Canterbury-Bankstown Bulldogs",
+     "clubId": "nrl-canterbury-bulldogs"
+    },
+    {
+     "position": 13,
+     "club": "Parramatta Eels",
+     "clubId": "nrl-parramatta-eels"
+    },
+    {
+     "position": 14,
+     "club": "Brisbane Broncos",
+     "clubId": "nrl-brisbane-broncos"
+    },
+    {
+     "position": 15,
+     "club": "Wests Tigers",
+     "clubId": "nrl-wests-tigers"
+    },
+    {
+     "position": 16,
+     "club": "Gold Coast Titans",
+     "clubId": "nrl-gold-coast-titans"
+    },
+    {
+     "position": 17,
+     "club": "St. George Illawarra Dragons",
+     "clubId": "nrl-st-george-illawarra-dragons"
+    }
+   ]
+  }
+ }
+}

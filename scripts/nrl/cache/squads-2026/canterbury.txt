@@ -1,0 +1,42 @@
+# club: nrl-canterbury-bulldogs
+# source: https://rugbyleaguezone.com/canterbury-bulldogs-2026-nrl-fixtures-squad-list-and-player-signings-423179/
+# fetched: 2026-11-03 via WebFetch (rugbyleaguezone club squad page, roster dated 24-25 Nov 2025; (dev)=development list)
+Bailey Hayward
+Blake Taaffe|departing
+Blake Wilson|departing
+Bronson Xerri
+Connor Tracey
+Daniel Suluka-Fifita
+Drew Hutchison
+Enari Tuala
+Harry Hayes
+Jack Todd
+Jacob Kiraz
+Jacob Preston
+Jaeman Salmon
+Jake Turpin
+Josh Curran
+Kurt Mann
+Kurtis Morrin|departing
+Marcelo Montoya
+Matt Burton
+Max King
+Mitchell Woods
+Sam Hughes
+Sean O'Sullivan
+Sitili Tupouniua
+Stephen Crichton|captain
+Toby Sexton|departing
+Viliame Kikau
+Zyon Maiu'u
+Finau Latu
+Kade Dykes
+Lachlan Galvin
+Leo Thompson
+Fletcher Baker
+Gordon Chan Kum Tong
+Jack Underhill|dev
+Jethro Rinakama|dev
+Lipoi Hopoi|dev
+Logan Spinks|dev
+Sosaia Alatini|dev

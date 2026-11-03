@@ -1,0 +1,31 @@
+# club: nrl-st-george-illawarra-dragons
+# source: https://rugbyleaguezone.com/st-george-illawarra-dragons-2026-nrl-fixtures-squad-list-and-player-signings-423208/
+# fetched: 2026-11-03 via WebFetch (rugbyleaguezone club squad page, roster dated 24-25 Nov 2025; (dev)=development list)
+Blake Lawrie
+Christian Tuipulotu
+Clint Gutherson|captain
+Cyrus Stanley-Traill|dev
+Damien Cook
+Daniel Atkinson
+David Fale
+Dylan Egan
+Emre Guler
+Hame Sele
+Hamish Stewart
+Jacob Liddle
+Jaydn Su'A
+Kade Reed|dev
+Kyle Flanagan
+Loko Pasifiki Tonga
+Luciano Leilua
+Lyhkan King-Togia
+Mathew Feagai
+Moses Suli
+Ryan Couchman
+Toby Couchman
+Tyrell Sloan
+Valentine Holmes
+Josh Kerr
+Nick Tsougranis|dev
+Setu Tu|dev
+Sione Finau|departing

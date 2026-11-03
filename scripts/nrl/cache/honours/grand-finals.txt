@@ -1,0 +1,31 @@
+# source: https://en.wikipedia.org/wiki/NRL_Grand_Final
+# fetched: 2026-11-03 via WebFetch (results table). * = premiership later stripped (Melbourne salary cap breach)
+# year|premiers|score|runners-up|Clive Churchill Medal
+1998|Brisbane Broncos|38–12|Canterbury-Bankstown Bulldogs|Gorden Tallis
+1999|Melbourne Storm|20–18|St. George Illawarra Dragons|Brett Kimmorley
+2000|Brisbane Broncos|14–6|Sydney Roosters|Darren Lockyer
+2001|Newcastle Knights|30–24|Parramatta Eels|Andrew Johns
+2002|Sydney Roosters|30–8|New Zealand Warriors|Craig Fitzgibbon
+2003|Penrith Panthers|18–6|Sydney Roosters|Luke Priddis
+2004|Canterbury-Bankstown Bulldogs|16–13|Sydney Roosters|Willie Mason
+2005|Wests Tigers|30–16|North Queensland Cowboys|Scott Prince
+2006|Brisbane Broncos|15–8|Melbourne Storm|Shaun Berrigan
+2007|Melbourne Storm*|34–8|Manly Warringah Sea Eagles|Greg Inglis
+2008|Manly Warringah Sea Eagles|40–0|Melbourne Storm|Brent Kite
+2009|Melbourne Storm*|23–16|Parramatta Eels|Billy Slater
+2010|St. George Illawarra Dragons|32–8|Sydney Roosters|Darius Boyd
+2011|Manly Warringah Sea Eagles|24–10|New Zealand Warriors|Glenn Stewart
+2012|Melbourne Storm|14–4|Canterbury-Bankstown Bulldogs|Cooper Cronk
+2013|Sydney Roosters|26–18|Manly Warringah Sea Eagles|Daly Cherry-Evans
+2014|South Sydney Rabbitohs|30–6|Canterbury-Bankstown Bulldogs|Sam Burgess
+2015|North Queensland Cowboys|17–16|Brisbane Broncos|Johnathan Thurston
+2016|Cronulla-Sutherland Sharks|14–12|Melbourne Storm|Luke Lewis
+2017|Melbourne Storm|34–6|North Queensland Cowboys|Billy Slater
+2018|Sydney Roosters|21–6|Melbourne Storm|Luke Keary
+2019|Sydney Roosters|14–8|Canberra Raiders|Jack Wighton
+2020|Melbourne Storm|26–20|Penrith Panthers|Ryan Papenhuyzen
+2021|Penrith Panthers|14–12|South Sydney Rabbitohs|Nathan Cleary
+2022|Penrith Panthers|28–12|Parramatta Eels|Dylan Edwards
+2023|Penrith Panthers|26–24|Brisbane Broncos|Nathan Cleary
+2024|Penrith Panthers|14–6|Melbourne Storm|Liam Martin
+2025|Brisbane Broncos|26–22|Melbourne Storm|Reece Walsh
