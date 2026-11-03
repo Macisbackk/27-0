@@ -65,6 +65,44 @@ export function buildPlayerRegistry(
     .map(normalizePlayer);
   const legendPlayers = legends.map(normalizePlayer);
 
+  return finishPlayerRegistry(current, historicRaw, legendPlayers);
+}
+
+/**
+ * Same result as buildPlayerRegistry, but normalises the rows a slice at a time and yields to
+ * the browser between slices, so building the registry (~7,500 cards) never blocks the main
+ * thread for long. Used by /play on phones (see players/index.ts loadPlayersInSlices).
+ */
+export async function buildPlayerRegistryInSlices(
+  currentSquads: RawPlayer[],
+  historicPlayers: RawPlayer[],
+  legends: RawPlayer[],
+  yieldToMain: () => Promise<void>,
+  sliceSize = 150
+): Promise<PlayerRegistry> {
+  const legendIds = new Set(legends.map((p) => p.id as string));
+  const normalizeAll = async (rows: RawPlayer[]): Promise<Player[]> => {
+    const out: Player[] = [];
+    for (let i = 0; i < rows.length; i += sliceSize) {
+      const end = Math.min(rows.length, i + sliceSize);
+      for (let j = i; j < end; j++) out.push(normalizePlayer(rows[j]!));
+      await yieldToMain();
+    }
+    return out;
+  };
+
+  const current = await normalizeAll(currentSquads);
+  const historicRaw = await normalizeAll(historicPlayers.filter((p) => !legendIds.has(p.id as string)));
+  const legendPlayers = await normalizeAll(legends);
+
+  return finishPlayerRegistry(current, historicRaw, legendPlayers);
+}
+
+function finishPlayerRegistry(
+  current: Player[],
+  historicRaw: Player[],
+  legendPlayers: Player[]
+): PlayerRegistry {
   const byId = new Map<string, Player>();
   const pool: Player[] = [];
 
