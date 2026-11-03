@@ -7,6 +7,7 @@
  */
 import { mkdirSync } from "node:fs";
 import { chromium } from "playwright";
+import { skipWelcome } from "./e2e-skip-welcome.mjs";
 
 const BASE = process.env.E2E_BASE_URL || "http://localhost:3000";
 const errors = [];
@@ -35,7 +36,7 @@ const IGNORED = [
 // /sounds/*.mp3 are optional: the sound manager probes once, then uses synth tones (public/sounds/README.md).
 const IGNORED_URLS = [/\/_vercel\//, /supabase/i, /favicon/i, /\/sounds\/[\w-]+\.mp3$/];
 
-const browser = await chromium.launch();
+const browser = skipWelcome(await chromium.launch());
 const context = await browser.newContext({
   viewport: { width: 375, height: 812 },
   deviceScaleFactor: 2,

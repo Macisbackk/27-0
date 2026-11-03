@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import { useAuth } from "@/lib/auth-context";
 import { sendPasswordResetEmail } from "@/lib/auth";
@@ -137,6 +138,7 @@ function Segmented<T extends string>({
 
 export function SettingsPanel() {
   const { loading, isLoggedIn, coachName, email, signOut } = useAuth();
+  const router = useRouter();
   const [ready, setReady] = useState(false);
   const [muted, setMuted] = useState(false);
   const [era, setEra] = useState(false);
@@ -290,7 +292,7 @@ export function SettingsPanel() {
               </GameButton>
             </Row>
             <Row label="Log out" hint="Your progress stays saved.">
-              <GameButton variant="danger" size="sm" fullWidth={false} onClick={() => void signOut()}>
+              <GameButton variant="danger" size="sm" fullWidth={false} onClick={() => void signOut().then(() => router.replace("/"))}>
                 Log out
               </GameButton>
             </Row>

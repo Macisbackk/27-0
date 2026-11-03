@@ -1,0 +1,182 @@
+/*
+ * Welcome screen (v1.68): first visit to "/" only — see src/lib/entry-gate.ts.
+ *
+ * The screen is always in the home page's HTML and hidden here; <html data-entry="welcome">
+ * (set before paint) shows it and takes the site chrome and the homepage away, so the page is just
+ * the mark, the line and two choices. Dark mode: the floodlit black ground. Light mode: the pitch.
+ */
+
+.welcome-gate {
+  display: none;
+}
+
+html[data-entry="welcome"] .welcome-gate {
+  display: flex;
+}
+
+html[data-entry="welcome"] .app-header,
+html[data-entry="welcome"] .site-footer,
+html[data-entry="welcome"] .fl-bottom-nav,
+html[data-entry="welcome"] .fl-bottom-nav-spacer,
+html[data-entry="welcome"] .sidebar-panel,
+html[data-entry="welcome"] .home-content {
+  display: none !important;
+}
+
+.welcome-gate {
+  position: relative;
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  align-items: center;
+  justify-content: center;
+  padding: max(2.5rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right))
+    max(2.5rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+  color: var(--fl-text, #ffffff);
+  /* A single floodlight from above — the only decoration. */
+  background: radial-gradient(70% 55% at 50% 0%, rgb(var(--mn-signal-rgb, 182 242 61) / 0.07), transparent 72%);
+}
+
+.welcome-gate__inner {
+  display: flex;
+  width: 100%;
+  max-width: 22rem;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  animation: welcome-gate-in 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.welcome-gate__mark .logo-mark {
+  font-size: clamp(3.75rem, 19vw, 6.5rem);
+}
+
+.welcome-gate__tagline {
+  margin-top: 1.5rem;
+  font-family: var(--font-cond);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fl-muted, #a6a9ad);
+}
+
+.welcome-gate__actions {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 3.5rem;
+}
+
+.welcome-gate__btn {
+  display: flex;
+  width: 100%;
+  min-height: 54px;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--fl-radius-control, 14px);
+  padding: 0 1.25rem;
+  font-family: var(--font-cond);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    transform 120ms ease;
+}
+.welcome-gate__btn:active {
+  transform: scale(0.985);
+}
+.welcome-gate__btn:focus-visible {
+  outline: 2px solid var(--fl-text, #ffffff);
+  outline-offset: 3px;
+}
+
+/* LOG IN: the accent (follows the Store theme, lime by default). */
+.welcome-gate__btn--primary {
+  border: 1px solid transparent;
+  background: var(--ui-accent, var(--mn-signal, #b6f23d));
+  color: #0e0f10;
+}
+.welcome-gate__btn--primary:hover {
+  filter: brightness(1.06);
+}
+
+/* CONTINUE AS GUEST: a quiet outline. */
+.welcome-gate__btn--quiet {
+  border: 1px solid var(--fl-line-strong, rgba(255, 255, 255, 0.15));
+  background: transparent;
+  color: var(--fl-text, #ffffff);
+}
+.welcome-gate__btn--quiet:hover {
+  border-color: rgba(255, 255, 255, 0.32);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Light mode: the page is the pitch, so ink text, the black button and an ink outline. */
+:where(html:not([data-mode="dark"])) .welcome-gate {
+  color: var(--pitch-ink, #0e1400);
+  background: none;
+}
+:where(html:not([data-mode="dark"])) .welcome-gate__tagline {
+  color: var(--pitch-ink-muted, #405712);
+}
+:where(html:not([data-mode="dark"])) .welcome-gate__btn--primary {
+  background: var(--pitch-dark, #0e0f10);
+  color: #ffffff;
+}
+:where(html:not([data-mode="dark"])) .welcome-gate__btn--primary:hover {
+  filter: none;
+  background: var(--pitch-dark-hover, #1f2123);
+}
+:where(html:not([data-mode="dark"])) .welcome-gate__btn--quiet {
+  border-color: color-mix(in srgb, var(--pitch-ink, #0e1400) 35%, transparent);
+  color: var(--pitch-ink, #0e1400);
+}
+:where(html:not([data-mode="dark"])) .welcome-gate__btn--quiet:hover {
+  border-color: var(--pitch-ink, #0e1400);
+  background: rgb(0 0 0 / 0.04);
+}
+:where(html:not([data-mode="dark"])) .welcome-gate__btn:focus-visible {
+  outline-color: var(--pitch-ink, #0e1400);
+}
+
+@media (min-width: 640px) {
+  .welcome-gate__tagline {
+    font-size: 16px;
+  }
+  .welcome-gate__actions {
+    margin-top: 4rem;
+  }
+}
+
+@keyframes welcome-gate-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcome-gate__inner {
+    animation: none;
+  }
+  .welcome-gate__btn {
+    transition: none;
+  }
+}

@@ -9,6 +9,7 @@
  */
 import { appendFileSync, mkdirSync, writeFileSync } from "node:fs";
 import { chromium, devices } from "playwright";
+import { skipWelcome } from "./e2e-skip-welcome.mjs";
 
 const BASE = (process.argv[2] || process.env.PERF_BASE_URL || "https://www.27-0.co.uk").replace(/\/$/, "");
 const PAGES = ["/", "/play", "/manager", "/mini-games", "/store", "/squad-book", "/leaderboard"];
@@ -52,7 +53,7 @@ const OBSERVE = () => {
 };
 
 const results = [];
-const browser = await chromium.launch();
+const browser = skipWelcome(await chromium.launch());
 for (const profile of PROFILES) {
   for (const path of PAGES) {
     for (const visit of ["cold", "warm"]) {

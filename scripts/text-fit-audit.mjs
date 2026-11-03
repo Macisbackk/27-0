@@ -5,6 +5,7 @@
  */
 import { mkdirSync, writeFileSync } from "node:fs";
 import { chromium } from "playwright";
+import { skipWelcome } from "./e2e-skip-welcome.mjs";
 
 const BASE = process.env.E2E_BASE_URL || "http://localhost:3000";
 const ROUTES = [
@@ -67,7 +68,7 @@ function scan() {
   return out;
 }
 
-const browser = await chromium.launch();
+const browser = skipWelcome(await chromium.launch());
 const lines = [];
 let total = 0;
 

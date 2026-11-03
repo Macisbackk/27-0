@@ -8,6 +8,7 @@
  */
 import { mkdirSync, writeFileSync } from "node:fs";
 import { chromium } from "playwright";
+import { skipWelcome } from "./e2e-skip-welcome.mjs";
 
 const BASE = process.env.E2E_BASE_URL || "http://localhost:3000";
 const ROUTES = [
@@ -29,7 +30,7 @@ const note = (m) => {
 let currentWhere = "start";
 const timeout = 15_000;
 
-const browser = await chromium.launch();
+const browser = skipWelcome(await chromium.launch());
 
 let hydrationDumps = 0;
 /** On a hydration mismatch, save server HTML, the client DOM and storage so the cause can be diffed. */

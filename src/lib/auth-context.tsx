@@ -40,6 +40,7 @@ import { mergeHiddenCoachesFromCloud } from "./storage/hidden-coaches";
 import { refreshBoostInventoryFromCloud } from "./boosts/boostInventory";
 import { refreshAchievementsFromCloud } from "./achievements/achievementStorage";
 import { claimDeviceForAccount } from "./storage/account-owner";
+import { markEntered, resetEntryAfterSignOut } from "./entry-gate";
 import { refundRetiredBoosts } from "./boosts/retired-boost-refund";
 import { refundRetiredClubThemes } from "./storage/ui-theme-store";
 import { mergeDailyFromCloud } from "./storage/daily-challenge-cloud";
@@ -202,6 +203,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return;
       }
 
+      // Signed in on this device: the first-visit welcome screen is never shown again (entry-gate.ts).
+      markEntered("account");
+
       let nextProfile = await fetchProfile(nextUser.id);
       if (generation !== syncGenerationRef.current) return;
 
@@ -363,6 +367,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signOut = useCallback(async () => {
     await authSignOut();
+    // Signing out returns to the welcome screen on "/" (local progress stays on the device).
+    resetEntryAfterSignOut();
     hydratedSessionKey = null;
     userIdRef.current = null;
     profileIdRef.current = null;

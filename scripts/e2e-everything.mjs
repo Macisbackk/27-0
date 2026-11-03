@@ -18,6 +18,7 @@
  * Env: E2E_BASE_URL, EV_OUT (output dir), EV_STRICT=1 (exit 1 on any problem), EV_ONLY=routes|flows.
  */
 import fs from "node:fs";
+import { skipWelcome } from "./e2e-skip-welcome.mjs";
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
@@ -127,7 +128,7 @@ function writeReport(final = false) {
 }
 
 /* ------------------------------------------------------------------ browser */
-const browser = await chromium.launch();
+const browser = skipWelcome(await chromium.launch());
 
 function unlockAllModes() {
   try {

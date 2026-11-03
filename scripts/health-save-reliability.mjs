@@ -15,6 +15,7 @@ import { appendFileSync, mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { chromium, devices } from "playwright";
+import { markReturningGuest } from "./e2e-skip-welcome.mjs";
 
 const BASE = (process.argv[2] || process.env.E2E_BASE_URL || "http://localhost:3000").replace(/\/$/, "");
 const CAREER_KEY = "27-0-career-v2-save";
@@ -30,6 +31,7 @@ const check = (name, ok, detail = "") => {
 
 async function open() {
   const ctx = await chromium.launchPersistentContext(profileDir, { ...phone });
+  await ctx.addInitScript(markReturningGuest);
   const page = ctx.pages()[0] ?? (await ctx.newPage());
   return { ctx, page };
 }
