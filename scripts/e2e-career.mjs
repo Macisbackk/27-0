@@ -184,6 +184,7 @@ try {
   await shot("result");
   await page.evaluate(() => window.scrollTo(0, 0));
 
+  await dismissEvents();
   await page.getByRole("tab", { name: "Team" }).click();
   await page.getByText("Starting XIII").waitFor({ timeout });
   const shirt1 = page.getByRole("button", { name: /Shirt 1,/ });
@@ -222,6 +223,7 @@ try {
   await shot("team-academy");
   step(`Captain on the Team tab; Academy with ${prospects} prospects`);
 
+  await dismissEvents();
   await page.getByRole("tab", { name: "Table" }).click();
   await page.locator("table").first().waitFor({ timeout });
   const rows = await page.locator("table tbody tr").count();
@@ -245,6 +247,7 @@ try {
   await page.locator("table tbody tr").first().waitFor({ timeout });
   step("Table tab: Results (your results + round results), Fixtures and Cup");
 
+  await dismissEvents();
   await page.getByRole("tab", { name: "Club" }).click();
   await page.getByText("Season challenges").waitFor({ timeout });
   await shot("club");
@@ -267,6 +270,7 @@ try {
   await page.keyboard.press("Escape");
   step("Club tab + Legend Vault");
 
+  await dismissEvents();
   await page.getByRole("tab", { name: "Match" }).click();
   let shotDeadline = false;
   let shotLeagueOver = false;
@@ -304,12 +308,14 @@ try {
       await shot("deadline-market");
       await page.getByRole("button", { name: /Back to Deadline Day/ }).click().catch(() => {});
       await page.waitForTimeout(500);
+      await dismissEvents();
       await page.getByRole("tab", { name: "Table" }).click();
       await page.waitForTimeout(300);
       await page.locator("table tbody tr").nth(2).getByRole("button").first().click().catch(() => {});
       await page.waitForTimeout(800);
       await shot("club-team-sheet");
       await page.keyboard.press("Escape");
+      await dismissEvents();
       await page.getByRole("tab", { name: "Club" }).click();
       await page.waitForTimeout(300);
       await page.getByRole("tab", { name: "Stats", exact: true }).click();
@@ -320,6 +326,7 @@ try {
       await page.getByRole("tab", { name: "News", exact: true }).click();
       await page.getByRole("region", { name: "Transfer round-up" }).waitFor({ timeout });
       await shot("transfer-round-up");
+      await dismissEvents();
       await page.getByRole("tab", { name: "Match" }).click();
       await page.waitForTimeout(300);
       await page.getByRole("button", { name: "Shut the window" }).first().click();
@@ -430,6 +437,7 @@ try {
   await page.waitForTimeout(800);
   await dismissEvents();
   // Club → Records: last season, tappable, told again.
+  await dismissEvents();
   await page.getByRole("tab", { name: "Club" }).click();
   await page.getByRole("tab", { name: "Records", exact: true }).click();
   const pastList = page.getByTestId("past-seasons");
@@ -441,6 +449,7 @@ try {
   await pastSheet.getByTestId("playoff-bracket").waitFor({ timeout });
   await shot("past-season");
   await page.keyboard.press("Escape");
+  await dismissEvents();
   await page.getByRole("tab", { name: "Match" }).click();
   step("Club → Records: a past season opens its story (honours, bracket, results)");
 
@@ -487,6 +496,7 @@ try {
   await shot("nrl-wcc-result");
   await dismissEvents();
   step("World Club Challenge: banner, played live, result");
+  await dismissEvents();
   await page.getByRole("tab", { name: "Table" }).click();
   await page.getByRole("tab", { name: "League", exact: true }).click();
   await page.locator("table tbody tr").first().waitFor({ timeout });
@@ -499,6 +509,7 @@ try {
   await page.getByTestId("nrl-byes").waitFor({ timeout });
   await page.getByRole("tab", { name: "League", exact: true }).click();
   step("NRL ladder (17), Finals view with the WCC, your byes");
+  await dismissEvents();
   await page.getByRole("tab", { name: "Match" }).click();
   await clickButton("Quick sim");
   await page.getByText(/Last result · Round/).first().waitFor({ timeout });
