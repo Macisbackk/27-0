@@ -439,6 +439,52 @@ try {
   await page.goto(`${BASE}/`, { waitUntil: "networkidle" });
   await page.getByRole("link", { name: /Manager Mode/ }).first().waitFor({ timeout });
   step("Home page Manager Mode card");
+
+  // v1.64: an NRL career. Brisbane (2025 premiers) open the season in the World Club Challenge v Hull KR.
+  await page.evaluate(() => localStorage.removeItem("27-0-career-v2-save"));
+  await page.goto(`${BASE}/manager`, { waitUntil: "networkidle" });
+  await page.getByRole("heading", { name: "Pick your club" }).waitFor({ timeout });
+  await page.getByRole("tab", { name: "NRL", exact: true }).click();
+  const nrlClubs = page.getByRole("list", { name: "Clubs" }).getByRole("button");
+  await nrlClubs.first().waitFor({ timeout });
+  if ((await nrlClubs.count()) !== 17) throw new Error(`Expected 17 NRL clubs, saw ${await nrlClubs.count()}`);
+  await shot("picker-nrl");
+  await nrlClubs.filter({ hasText: "Brisbane Broncos" }).first().click();
+  await clickButton(/Take charge of Brisbane Broncos/);
+  await page.getByRole("dialog", { name: "Manager Mode walkthrough" }).getByRole("button", { name: "Skip" }).click({ timeout: 8000 }).catch(() => {});
+  step("NRL career started (17 NRL clubs listed): Brisbane Broncos");
+  await page.getByRole("region", { name: "Pre-season friendlies" }).waitFor({ timeout });
+  await page.getByTestId("wcc-banner").waitFor({ timeout });
+  await clickButton(/^Skip pre-season/);
+  const wccBanner = page.getByTestId("wcc-banner");
+  await wccBanner.waitFor({ timeout });
+  if (!(await wccBanner.getByText(/Hull KR/).first().isVisible().catch(() => false))) throw new Error("WCC banner doesn't name Hull KR");
+  await shot("nrl-wcc-banner");
+  await clickButton("Play match");
+  await page.getByRole("region", { name: "Scoreboard" }).waitFor({ timeout });
+  await clickButton("Skip to full time");
+  await page.getByRole("region", { name: "Full time" }).waitFor({ timeout });
+  await clickButton("Continue");
+  await page.getByText(/Last result · World Club Challenge/).first().waitFor({ timeout });
+  await shot("nrl-wcc-result");
+  await dismissEvents();
+  step("World Club Challenge: banner, played live, result");
+  await page.getByRole("tab", { name: "Table" }).click();
+  await page.getByRole("tab", { name: "League", exact: true }).click();
+  await page.locator("table tbody tr").first().waitFor({ timeout });
+  const nrlRows = await page.locator("table tbody tr").count();
+  if (nrlRows !== 17) throw new Error(`Expected a 17-club NRL ladder, saw ${nrlRows}`);
+  await shot("nrl-table");
+  await page.getByRole("tab", { name: "Finals", exact: true }).click();
+  await page.getByTestId("table-wcc").waitFor({ timeout });
+  await page.getByRole("tab", { name: "Fixtures", exact: true }).click();
+  await page.getByTestId("nrl-byes").waitFor({ timeout });
+  await page.getByRole("tab", { name: "League", exact: true }).click();
+  step("NRL ladder (17), Finals view with the WCC, your byes");
+  await page.getByRole("tab", { name: "Match" }).click();
+  await clickButton("Quick sim");
+  await page.getByText(/Last result · Round/).first().waitFor({ timeout });
+  step("NRL Round played");
 } catch (err) {
   errors.push(`step failed after [${steps.at(-1) ?? "start"}]: ${err instanceof Error ? err.message : String(err)}`);
 }

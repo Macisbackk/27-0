@@ -735,4 +735,100 @@ for (const [w, h] of [[320, 640], [390, 844]]) {
   await ctx.close();
 }
 
+// v1.64: the NRL in Manager Mode and the World Club Challenge, at 320 wide (and 390).
+for (const [w, h] of [[320, 640], [390, 844]]) {
+  const ctx = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+  const page = await ctx.newPage();
+  const snap = async (name, fullPage = false) => {
+    await page.waitForTimeout(450);
+    await page.screenshot({ path: `${OUT}/95-${w}-${name}.png`, fullPage }).catch(() => {});
+    console.log("shot", `95-${w}-${name}`);
+  };
+  const tab = (name) => page.getByRole("tab", { name, exact: true }).first().click({ timeout: 5000 });
+  const clearPopups = async () => {
+    for (let i = 0; i < 4 && (await page.getByTestId("career-event").isVisible().catch(() => false)); i++) {
+      await page.keyboard.press("Escape");
+      await page.waitForTimeout(300);
+    }
+  };
+  try {
+    await page.goto(BASE + "/manager", { waitUntil: "networkidle", timeout: 30000 });
+    await tab("NRL");
+    await snap("01-picker-nrl");
+    await snap("02-picker-nrl-full", true);
+    await page.getByRole("list", { name: "Clubs" }).getByRole("button", { name: /Brisbane Broncos/ }).first().click({ timeout: 5000 });
+    await page.getByRole("button", { name: /Take charge of/ }).click({ timeout: 5000 });
+    await page.getByRole("dialog", { name: "Manager Mode walkthrough" }).getByRole("button", { name: "Skip" }).click({ timeout: 8000 }).catch(() => {});
+    await snap("03-nrl-preseason", true);
+    await page.getByRole("button", { name: /^Skip pre-season/ }).click({ timeout: 5000 }).catch(() => {});
+    await page.waitForTimeout(800);
+    await snap("04-wcc-banner");
+    await snap("05-wcc-match-full", true);
+    await page.getByRole("button", { name: "Quick sim" }).click({ timeout: 8000 }).catch(() => {});
+    await page.waitForTimeout(900);
+    await snap("06-wcc-popup");
+    await clearPopups();
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await snap("07-wcc-result");
+    await tab("Table");
+    await snap("08-nrl-table", true);
+    await tab("Finals");
+    await snap("09-nrl-finals-view", true);
+    await tab("Fixtures");
+    await snap("10-nrl-fixtures", true);
+    await tab("League");
+    await page.getByRole("tab", { name: /Super League/ }).last().click({ timeout: 5000 }).catch(() => {});
+    await snap("11-sl-table-from-nrl", true);
+    await tab("Club");
+    if (await page.getByRole("tab", { name: "Records", exact: true }).isVisible().catch(() => false)) await tab("Records");
+    await page.getByTestId("nrl-honours").scrollIntoViewIfNeeded({ timeout: 5000 }).catch(() => {});
+    await snap("12-nrl-hall-of-fame");
+    // Sim to the end of the league for the finals.
+    await tab("Match");
+    for (let i = 0; i < 60; i++) {
+      await clearPopups();
+      if (await page.getByRole("region", { name: "League over" }).isVisible().catch(() => false)) break;
+      if (await page.getByRole("button", { name: "Shut the window" }).first().isVisible().catch(() => false)) {
+        await page.getByRole("button", { name: "Shut the window" }).first().click().catch(() => {});
+        await page.waitForTimeout(400);
+        continue;
+      }
+      const next = page.getByRole("button", { name: /^(Quick sim|Continue)$/ }).first();
+      if (await next.isVisible().catch(() => false)) await next.click().catch(() => {});
+      await page.waitForTimeout(150);
+    }
+    await snap("13-nrl-league-over", true);
+    await page.getByRole("button", { name: /^(On to the finals|Watch the finals)$/ }).click({ timeout: 5000 }).catch(() => {});
+    await page.waitForTimeout(600);
+    await clearPopups();
+    await snap("14-nrl-finals-week1", true);
+  } catch (e) {
+    console.log("skip nrl", w, String(e).slice(0, 200));
+  }
+  await ctx.close();
+}
+// Someone else's World Club Challenge: a Super League club lands on Round 1 with the result card.
+{
+  const ctx = await browser.newContext({ viewport: { width: 320, height: 640 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+  const page = await ctx.newPage();
+  try {
+    await page.goto(BASE + "/manager", { waitUntil: "networkidle", timeout: 30000 });
+    await page.getByRole("list", { name: "Clubs" }).getByRole("button", { name: /Wigan Warriors/ }).first().click({ timeout: 5000 });
+    await page.getByRole("button", { name: /Take charge of/ }).click({ timeout: 5000 });
+    await page.getByRole("dialog", { name: "Manager Mode walkthrough" }).getByRole("button", { name: "Skip" }).click({ timeout: 8000 }).catch(() => {});
+    await page.waitForTimeout(600);
+    await page.screenshot({ path: `${OUT}/96-320-sl-preseason-wcc.png`, fullPage: true });
+    await page.getByRole("button", { name: /^Skip pre-season/ }).click({ timeout: 5000 }).catch(() => {});
+    await page.waitForTimeout(900);
+    await page.screenshot({ path: `${OUT}/96-320-sl-wcc-popup.png` });
+    await page.keyboard.press("Escape");
+    await page.waitForTimeout(400);
+    await page.screenshot({ path: `${OUT}/96-320-sl-round1-wcc-card.png`, fullPage: true });
+    console.log("shot 96-320-sl");
+  } catch (e) {
+    console.log("skip sl wcc", String(e).slice(0, 200));
+  }
+  await ctx.close();
+}
+
 await browser.close();
