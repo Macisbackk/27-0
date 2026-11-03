@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
+import { useArmed } from "@/hooks/useArmed";
 import {
   DEADLINE_MINUTES,
   WINDOW_CLOSES_BEFORE_ROUND,
@@ -12,11 +13,13 @@ import {
   isDeadlineDay,
   isWindowOpen,
   clubsNamed,
+  currentStage,
   liveOffers,
   relevantDeals,
   roundsUntilDeadline,
   seasonDeals,
   windowStatus,
+  type CareerState,
   type DeadlineEvent,
   type TransferDeal,
 } from "@/lib/career";
@@ -157,21 +160,14 @@ export function DeadlineOffers() {
 }
 
 /** What's happened today, newest first. */
-function DeadlineFeed({ max = 8 }: { max?: number }) {
+function DeadlineFeed({ max = 8, scope = "all", label = "Deadline Day feed" }: { max?: number; scope?: "all" | "yours" | "league"; label?: string }) {
   const { state } = useCareer();
   const s = state!;
   const clock = deadlineClock(s);
-  const mine = s.clubs[s.userClubId]!.division;
-  // Other clubs' deals: only your division's (deals with your club always show).
-  const items = clock.feed
-    .filter((e) => {
-      if (e.kind !== "deal") return true;
-      const named = clubsNamed(s, e.text);
-      return named.length === 0 || named.some((id) => id === s.userClubId || s.clubs[id]!.division === mine);
-    })
-    .slice(0, max);
+  const items = deadlineFeedItems(s, clock.feed, scope).slice(0, max);
+  if (!items.length) return null;
   return (
-    <ul aria-label="Deadline Day feed" className="mt-3 divide-y divide-white/10 text-left">
+    <ul aria-label={label} className="mt-3 divide-y divide-white/10 text-left">
       {items.map((e, i) => (
         <li key={`${e.at}-${i}-${e.text}`} className={`flex gap-2.5 py-1.5 text-[13px] ${i === 0 ? "fl-rise" : ""}`}>
           <span className="w-10 shrink-0 tabular-nums text-[11px] leading-5 text-[color:var(--fl-muted)]">{clockLabel(e.at)}</span>
@@ -179,6 +175,39 @@ function DeadlineFeed({ max = 8 }: { max?: number }) {
         </li>
       ))}
     </ul>
+  );
+}
+
+/**
+ * The day's feed. Other clubs' deals: only your division's (deals with your club always show).
+ * `yours` = everything but other clubs' deals (offers, your deals, new names, notices);
+ * `league` = only other clubs' deals in your division.
+ */
+function deadlineFeedItems(s: CareerState, feed: DeadlineEvent[], scope: "all" | "yours" | "league"): DeadlineEvent[] {
+  const mine = s.clubs[s.userClubId]!.division;
+  return feed.filter((e) => {
+    if (e.kind !== "deal") return scope !== "league";
+    const named = clubsNamed(s, e.text);
+    const ours = named.length === 0 || named.includes(s.userClubId);
+    if (ours) return scope !== "league";
+    const inDivision = named.some((id) => s.clubs[id]!.division === mine);
+    return scope !== "yours" && inDivision;
+  });
+}
+
+/** While the day is live, other clubs' deals sit behind a tap so your own business has the card. */
+function AroundTheLeague() {
+  const { state } = useCareer();
+  const s = state!;
+  const n = deadlineFeedItems(s, deadlineClock(s).feed, "league").length;
+  if (!n) return null;
+  return (
+    <details className="mt-2 rounded-control bg-pitch-950/60 px-3 py-1.5 text-left" data-testid="deadline-league-feed">
+      <summary className="flex min-h-[40px] cursor-pointer items-center text-[13px] font-semibold text-gray-300">
+        Around the league · {n} {n === 1 ? "deal" : "deals"}
+      </summary>
+      <DeadlineFeed scope="league" max={12} label="Deals around the league" />
+    </details>
   );
 }
 
@@ -233,7 +262,9 @@ export function DeadlineDayCard({ onOpenMarket }: { onOpenMarket: () => void }) 
           <div className="mt-3">
             <DeadlineOffers />
           </div>
-          <DeadlineFeed />
+          {/* v1.62: your business first; the rest of the league's deals behind a tap. */}
+          <DeadlineFeed scope="yours" />
+          <AroundTheLeague />
           <p className="mt-3 text-sm text-amber-200">
             The season waits for 0:00. Buy, sell, or shut the window early.
           </p>
@@ -281,6 +312,10 @@ export function WindowStatusLine({ className = "" }: { className?: string }) {
 export function TransferWindowCard({ onOpenMarket }: { onOpenMarket: () => void }) {
   const { state } = useCareer();
   const s = state!;
+  // A double tap on Play 2 (friendlies) must not fall through to Open market, which can land under
+  // the finger on the Round 1 screen. The card is remounted when the stage changes (it sits in a
+  // different place), so it arms after a moment on mount too.
+  const armed = useArmed(450, currentStage(s));
   // Deadline Day keeps its card after the window shuts, as a round-up of the day.
   if (isDeadlineDay(s)) return <DeadlineDayCard onOpenMarket={onOpenMarket} />;
   const w = windowStatus(s);
@@ -293,7 +328,7 @@ export function TransferWindowCard({ onOpenMarket }: { onOpenMarket: () => void 
           <span className="font-semibold text-white">Last chance before the season.</span> Buy and sell until Round 1. After that the window
           shuts until Deadline Day. Free agents cost no fee, only wages.
         </p>
-        <GameButton size="md" variant="secondary" className="mt-3" onClick={() => { playUiClick(); onOpenMarket(); }}>
+        <GameButton size="md" variant="secondary" className="mt-3" disabled={!armed} onClick={() => { playUiClick(); onOpenMarket(); }}>
           Open market
         </GameButton>
       </section>

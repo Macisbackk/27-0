@@ -1,0 +1,274 @@
+{
+ "about": "NRL (Australian Rugby League) Hall of Fame player inductees whose careers reached the NRL era (1998+), and the Rugby League Immortals.",
+ "generatedAt": "2026-11-03",
+ "hallOfFame": [
+  {
+   "name": "Andrew Ettingshausen",
+   "inducted": 2008,
+   "career": "1983–2000",
+   "playerId": "nrl-andrew-ettingshausen",
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Steve Walters",
+   "inducted": 2008,
+   "career": "1984–1999",
+   "playerId": "nrl-steve-walters-cn",
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Allan Langer",
+   "inducted": 2008,
+   "career": "1984–2002",
+   "playerId": "nrl-allan-langer",
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Laurie Daley",
+   "inducted": 2008,
+   "career": "1986–2000",
+   "playerId": "nrl-laurie-daley",
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Glenn Lazarus",
+   "inducted": 2008,
+   "career": "1987–1999",
+   "playerId": "nrl-glenn-lazarus",
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Bradley Clyde",
+   "inducted": 2008,
+   "career": "1988–2001",
+   "playerId": "nrl-bradley-clyde",
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Brad Fittler",
+   "inducted": 2008,
+   "career": "1989–2004",
+   "playerId": "nrl-brad-fittler",
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Andrew Johns",
+   "inducted": 2008,
+   "career": "1993–2007",
+   "playerId": "nrl-andrew-johns",
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Shane Webcke",
+   "inducted": 2008,
+   "career": "1995–2006",
+   "playerId": "nrl-shane-webcke",
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Darren Lockyer",
+   "inducted": 2008,
+   "career": "1995–2011",
+   "playerId": "nrl-darren-lockyer",
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Cliff Lyons",
+   "inducted": 2018,
+   "career": "1982–2001",
+   "playerId": "nrl-cliff-lyons",
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Ricky Stuart",
+   "inducted": 2018,
+   "career": "1988–2000",
+   "playerId": "nrl-ricky-stuart",
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Gorden Tallis",
+   "inducted": 2018,
+   "career": "1992–2004",
+   "playerId": "nrl-gorden-tallis",
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Steve Menzies",
+   "inducted": 2018,
+   "career": "1993–2013",
+   "playerId": "nrl-steve-menzies",
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Petero Civoniceva",
+   "inducted": 2018,
+   "career": "1998–2012",
+   "playerId": "nrl-petero-civoniceva",
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Ruben Wiki",
+   "inducted": 2019,
+   "career": "1993–2008",
+   "playerId": "nrl-ruben-wiki",
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Stacey Jones",
+   "inducted": 2019,
+   "career": "1995–2009",
+   "playerId": "nrl-stacey-jones",
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Danny Buderus",
+   "inducted": 2019,
+   "career": "1997–2013",
+   "playerId": "nrl-danny-buderus",
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Steve Renouf",
+   "inducted": 2024,
+   "career": "1988–2001",
+   "playerId": "nrl-steve-renouf",
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Cameron Smith",
+   "inducted": 2024,
+   "career": "2002–2020",
+   "playerId": "nrl-cameron-smith",
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Johnathan Thurston",
+   "inducted": 2024,
+   "career": "2003–2018",
+   "playerId": "nrl-johnathan-thurston",
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Billy Slater",
+   "inducted": 2024,
+   "career": "2003–2018",
+   "playerId": "nrl-billy-slater",
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Benji Marshall",
+   "inducted": 2024,
+   "career": "2003–2021",
+   "playerId": "nrl-benji-marshall",
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Cooper Cronk",
+   "inducted": 2024,
+   "career": "2004–2019",
+   "playerId": "nrl-cooper-cronk",
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Greg Inglis",
+   "inducted": 2024,
+   "career": "2005–2021",
+   "playerId": "nrl-greg-inglis",
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Sam Burgess",
+   "inducted": 2024,
+   "career": "2006–2019",
+   "playerId": "nrl-sam-burgess",
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  }
+ ],
+ "immortals": [
+  {
+   "name": "Clive Churchill",
+   "named": 1981,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Johnny Raper",
+   "named": 1981,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Reg Gasnier",
+   "named": 1981,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Bob Fulton",
+   "named": 1981,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Graeme Langlands",
+   "named": 1991,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Wally Lewis",
+   "named": 1999,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Arthur Beetson",
+   "named": 1999,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Andrew Johns",
+   "named": 2012,
+   "playerId": "nrl-andrew-johns",
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Dally Messenger",
+   "named": 2018,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Frank Burge",
+   "named": 2018,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Dave Brown",
+   "named": 2018,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Norm Provan",
+   "named": 2018,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Mal Meninga",
+   "named": 2018,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  },
+  {
+   "name": "Ron Coote",
+   "named": 2024,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame"
+  }
+ ]
+}

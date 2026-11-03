@@ -1,0 +1,38 @@
+# club: nrl-wests-tigers
+# source: https://rugbyleaguezone.com/wests-tigers-2026-nrl-fixtures-squad-list-and-player-signings-423216/
+# fetched: 2026-11-03 via WebFetch (rugbyleaguezone club squad page, roster dated 24-25 Nov 2025; (dev)=development list)
+Adam Doueihi
+Alex Twal
+Alex Seyfarth
+Apisai Koroisau|captain
+Ethan Roberts
+Fonua Pole
+Heath Mason
+Jack Attard
+Jack Bird
+Jahream Bula
+Jarome Luai
+Jeral Skelton
+Jock Madden
+Kai Pearce-Paul
+Kit Laulilii
+Latu Fainu
+Luke Laulilii
+Mavrik Geyer
+Royce Hunt
+Samuela Fainu
+Sione Fainu
+Solomone Saukuru
+Starford To'a
+Sunia Turuva
+Taylan May
+Terrell May
+Tony Sukkar
+Bunty Afoa|dev
+Charlie Murray|dev
+Heamasi Makasini|dev
+Jared Haywood|dev
+Javon Andrews|dev
+Lachlan Broederlow|dev
+Tristan Hope|dev
+Will Craig|dev

@@ -1,0 +1,31 @@
+# Dally M positional winners / Team of the Year. Format: year|source|FB;WG;CE;FE;HB;PR;HK;SR;LK;IC (multiple names comma-separated)
+# Years 1998-2002, 2005, 2008, 2010, 2012-2014 come from https://en.wikipedia.org/wiki/List_of_Dally_M_Awards_winners (the page prints no year labels; order was aligned against the per-year pages for 2004, 2006, 2007, 2009, 2011, 2015 which all matched with 2003 skipped).
+# 2003: not awarded (industrial action) per https://en.wikipedia.org/wiki/Dally_M_Medal
+# Until 2019 one winner per position; 2020+ a 13-man team. fetched 2026-11-03 via WebFetch
+1998|https://en.wikipedia.org/wiki/List_of_Dally_M_Awards_winners|Darren Lockyer;Marcus Bai;Darren Smith;Brad Fittler;Andrew Johns;Dean Pay;Jason Hetherington;Steve Menzies;Tawera Nikau;
+1999|https://en.wikipedia.org/wiki/List_of_Dally_M_Awards_winners|David Peachey;Nathan Blacklock;Ryan Girdler;Brad Fittler;Andrew Johns;Matt Parsons;Geoff Toovey;Gorden Tallis;Jason Smith;
+2000|https://en.wikipedia.org/wiki/List_of_Dally_M_Awards_winners|David Peachey;Nathan Blacklock;Ryan Girdler;Trent Barrett;Brett Kimmorley;Shane Webcke;Craig Gower;Nathan Hindmarsh;Jason Croker;
+2001|https://en.wikipedia.org/wiki/List_of_Dally_M_Awards_winners|Darren Lockyer;Nathan Blacklock;Nigel Vagana;Adam Dykes;Preston Campbell;Shane Webcke;Brad Drew;Nathan Hindmarsh;Daniel Wagon;
+2002|https://en.wikipedia.org/wiki/List_of_Dally_M_Awards_winners|Darren Lockyer;Lote Tuqiri;Nigel Vagana;Brad Fittler;Andrew Johns;Shane Webcke;Danny Buderus;Ali Lauitiiti;Steve Menzies;
+2004|https://en.wikipedia.org/wiki/2004_Dally_M_Awards|Anthony Minichiello;Amos Roberts;Willie Tonga;Darren Lockyer;Brett Finch;Paul Rauhihi;Danny Buderus;Nathan Hindmarsh;Shaun Timmins;
+2005|https://en.wikipedia.org/wiki/List_of_Dally_M_Awards_winners|Brett Hodgson;Eric Grothe;Mark Gasnier;Braith Anasta;Johnathan Thurston;Luke Bailey;Danny Buderus;Nathan Hindmarsh;Ben Kennedy;
+2006|https://en.wikipedia.org/wiki/2006_Dally_M_Awards|Clinton Schifcofske;Brian Carney;Mark Gasnier;Darren Lockyer;Cooper Cronk;Roy Asotasi;Cameron Smith;Nathan Hindmarsh;Ben Kennedy;
+2007|https://en.wikipedia.org/wiki/2007_Dally_M_Awards|Matt Bowen;Jarryd Hayne;Justin Hodges;Darren Lockyer;Johnathan Thurston;Steve Price;Robbie Farah;Anthony Watmough;Dallas Johnson;
+2008|https://en.wikipedia.org/wiki/List_of_Dally_M_Awards_winners|Billy Slater;Colin Best;Israel Folau;Greg Inglis;Matt Orford;Petero Civoniceva;Cameron Smith;Glenn Stewart;Alan Tongue;
+2009|https://en.wikipedia.org/wiki/2009_Dally_M_Awards|Jarryd Hayne;Taniela Tuiaki;Josh Morris;Jamie Soward;Johnathan Thurston;Ben Hannant;Michael Ennis;Anthony Watmough;David Stagg;
+2010|https://en.wikipedia.org/wiki/List_of_Dally_M_Awards_winners|Darius Boyd;Akuila Uate;Jamie Lyon;Todd Carney;Scott Prince;David Shillington;Robbie Farah;Sam Thaiday;Luke Lewis;
+2011|https://en.wikipedia.org/wiki/2011_Dally_M_Awards|Billy Slater;Akuila Uate;Jamie Lyon;Benji Marshall;Cooper Cronk;Matt Scott;Cameron Smith;Sam Thaiday;Paul Gallen;
+2012|https://en.wikipedia.org/wiki/List_of_Dally_M_Awards_winners|Ben Barba;Akuila Uate;Josh Morris;Johnathan Thurston;Cooper Cronk;Sam Kasiano;Cameron Smith;Nate Myles;Paul Gallen;
+2013|https://en.wikipedia.org/wiki/List_of_Dally_M_Awards_winners|Greg Inglis;Roger Tuivasa-Sheck;Jamie Lyon;Johnathan Thurston,Todd Carney;Cooper Cronk;Andrew Fifita;Cameron Smith;Boyd Cordner;Corey Parker;
+2014|https://en.wikipedia.org/wiki/List_of_Dally_M_Awards_winners|Jarryd Hayne;Semi Radradra;Jamie Lyon;Johnathan Thurston;Daly Cherry-Evans;James Graham;James Segeyaro;Beau Scott;Sam Burgess;
+2015|https://en.wikipedia.org/wiki/2015_Dally_M_Awards|Roger Tuivasa-Sheck;Semi Radradra;James Roberts;Blake Austin;Johnathan Thurston;Aaron Woods;Michael Ennis;Josh Jackson;Jason Taumalolo;
+2016|https://en.wikipedia.org/wiki/2016_Dally_M_Awards|James Tedesco;Josh Mansour;Joseph Leilua;James Maloney;Cooper Cronk;Jesse Bromwich;Cameron Smith;Matt Gillett;Jason Taumalolo;
+2017|https://en.wikipedia.org/wiki/2017_Dally_M_Awards|Billy Slater;Jordan Rapana;Dylan Walker;Gareth Widdop;Michael Morgan;Aaron Woods;Cameron Smith;Matt Gillett;Paul Gallen;Reagan Campbell-Gillard
+2018|https://en.wikipedia.org/wiki/2018_Dally_M_Awards|Roger Tuivasa-Sheck;Blake Ferguson;Joseph Leilua;Cameron Munster;Luke Brooks;Andrew Fifita;Damien Cook;Josh Jackson;Jason Taumalolo;Jazz Tevaga
+2019|https://en.wikipedia.org/wiki/2019_Dally_M_Awards|James Tedesco;Ken Maumalo;Latrell Mitchell;Cameron Munster;Mitchell Moses;Payne Haas;Cameron Smith;John Bateman;Cameron Murray;Brandon Smith
+2020|https://en.wikipedia.org/wiki/2020_Dally_M_Awards|Clint Gutherson;David Nofoaluma,Josh Addo-Carr;Kotoni Staggs,Stephen Crichton;Jack Wighton;Nathan Cleary;Josh Papalii,James Fisher-Harris;Cameron Smith;Viliame Kikau,Tohu Harris;Isaah Yeo;
+2021|https://en.wikipedia.org/wiki/2021_Dally_M_Awards|Tom Trbojevic;Reuben Garrick,Brian To'o;Justin Olam,Matt Burton;Cody Walker;Nathan Cleary;James Fisher-Harris,Payne Haas;Brandon Smith;Viliame Kikau,Isaiah Papali'i;Isaah Yeo;
+2022|https://en.wikipedia.org/wiki/2022_Dally_M_Awards|James Tedesco;Joseph Suaalii,Alex Johnston;Joseph Manu,Valentine Holmes;Cameron Munster;Nicho Hynes;Payne Haas,Joseph Tapine;Apisai Koroisau;Jeremiah Nanai,Viliame Kikau;Isaah Yeo;
+2023|https://en.wikipedia.org/wiki/2023_Dally_M_Awards|Kalyn Ponga;Dallin Watene-Zelezniak,Jamayne Isaako;Stephen Crichton,Herbie Farnworth;Ezra Mam;Shaun Johnson;Payne Haas,Addin Fonua-Blake;Harry Grant;Liam Martin,David Fifita;Patrick Carrigan;
+2024|https://en.wikipedia.org/wiki/2024_Dally_M_Awards|James Tedesco;Brian To'o,Zac Lomax;Herbie Farnworth,Stephen Crichton;Tom Dearden;Jahrome Hughes;Addin Fonua-Blake,Joseph Tapine;Harry Grant;Angus Crichton,Eliesa Katoa;Isaah Yeo;
+2025|https://en.wikipedia.org/wiki/2025_NRL_season|James Tedesco;Mark Nawaqanitawase,Xavier Coates;Kotoni Staggs,Stephen Crichton;Ethan Strange;Nathan Cleary;Addin Fonua-Blake,Payne Haas;Blayke Brailey;Eliesa Katoa,Hudson Young;Erin Clark;

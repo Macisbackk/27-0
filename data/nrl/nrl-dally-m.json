@@ -1,0 +1,1804 @@
+{
+ "about": "Dally M Medal (NRL player of the year) 1998-2026 and the Dally M positional winners / Team of the Year 1998-2025.",
+ "generatedAt": "2026-11-03",
+ "notes": [
+  "Dally M positional winners / Team of the Year. Format: year|source|FB;WG;CE;FE;HB;PR;HK;SR;LK;IC (multiple names comma-separated) Years 1998-2002, 2005, 2008, 2010, 2012-2014 come from https://en.wikipedia.org/wiki/List_of_Dally_M_Awards_winners (the page prints no year labels; order was aligned against the per-year pages for 2004, 2006, 2007, 2009, 2011, 2015 which all matched with 2003 skipped). 2003: not awarded (industrial action) per https://en.wikipedia.org/wiki/Dally_M_Medal Until 2019 one winner per position; 2020+ a 13-man team. fetched 2026-11-03 via WebFetch"
+ ],
+ "medal": [
+  {
+   "season": 1998,
+   "name": "Andrew Johns",
+   "club": "Newcastle Knights",
+   "clubId": "nrl-newcastle-knights",
+   "playerId": "nrl-andrew-johns",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 1999,
+   "name": "Andrew Johns",
+   "club": "Newcastle Knights",
+   "clubId": "nrl-newcastle-knights",
+   "playerId": "nrl-andrew-johns",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2000,
+   "name": "Trent Barrett",
+   "club": "St George Illawarra Dragons",
+   "clubId": "nrl-st-george-illawarra-dragons",
+   "playerId": "nrl-trent-barrett",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2001,
+   "name": "Preston Campbell",
+   "club": "Cronulla-Sutherland Sharks",
+   "clubId": "nrl-cronulla-sharks",
+   "playerId": "nrl-preston-campbell",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2002,
+   "name": "Andrew Johns",
+   "club": "Newcastle Knights",
+   "clubId": "nrl-newcastle-knights",
+   "playerId": "nrl-andrew-johns",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2003,
+   "name": null,
+   "club": null,
+   "clubId": null,
+   "playerId": null,
+   "notAwarded": "industrial action (players' association boycott threat during a pay dispute)",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2004,
+   "name": "Danny Buderus",
+   "club": "Newcastle Knights",
+   "clubId": "nrl-newcastle-knights",
+   "playerId": "nrl-danny-buderus",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2005,
+   "name": "Johnathan Thurston",
+   "club": "North Queensland Cowboys",
+   "clubId": "nrl-north-queensland-cowboys",
+   "playerId": "nrl-johnathan-thurston",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2006,
+   "name": "Cameron Smith",
+   "club": "Melbourne Storm",
+   "clubId": "nrl-melbourne-storm",
+   "playerId": "nrl-cameron-smith",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2007,
+   "name": "Johnathan Thurston",
+   "club": "North Queensland Cowboys",
+   "clubId": "nrl-north-queensland-cowboys",
+   "playerId": "nrl-johnathan-thurston",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2008,
+   "name": "Matt Orford",
+   "club": "Manly Warringah Sea Eagles",
+   "clubId": "nrl-manly-sea-eagles",
+   "playerId": "nrl-matt-orford",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2009,
+   "name": "Jarryd Hayne",
+   "club": "Parramatta Eels",
+   "clubId": "nrl-parramatta-eels",
+   "playerId": "nrl-jarryd-hayne",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2010,
+   "name": "Todd Carney",
+   "club": "Sydney Roosters",
+   "clubId": "nrl-sydney-roosters",
+   "playerId": "nrl-todd-carney",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2011,
+   "name": "Billy Slater",
+   "club": "Melbourne Storm",
+   "clubId": "nrl-melbourne-storm",
+   "playerId": "nrl-billy-slater",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2012,
+   "name": "Ben Barba",
+   "club": "Canterbury-Bankstown Bulldogs",
+   "clubId": "nrl-canterbury-bulldogs",
+   "playerId": "nrl-ben-barba",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2013,
+   "name": "Cooper Cronk",
+   "club": "Melbourne Storm",
+   "clubId": "nrl-melbourne-storm",
+   "playerId": "nrl-cooper-cronk",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2014,
+   "name": "Jarryd Hayne",
+   "club": "Parramatta Eels",
+   "clubId": "nrl-parramatta-eels",
+   "playerId": "nrl-jarryd-hayne",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2014,
+   "name": "Johnathan Thurston",
+   "club": "North Queensland Cowboys",
+   "clubId": "nrl-north-queensland-cowboys",
+   "playerId": "nrl-johnathan-thurston",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2015,
+   "name": "Johnathan Thurston",
+   "club": "North Queensland Cowboys",
+   "clubId": "nrl-north-queensland-cowboys",
+   "playerId": "nrl-johnathan-thurston",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2016,
+   "name": "Cooper Cronk",
+   "club": "Melbourne Storm",
+   "clubId": "nrl-melbourne-storm",
+   "playerId": "nrl-cooper-cronk",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2016,
+   "name": "Jason Taumalolo",
+   "club": "North Queensland Cowboys",
+   "clubId": "nrl-north-queensland-cowboys",
+   "playerId": "nrl-jason-taumalolo",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2017,
+   "name": "Cameron Smith",
+   "club": "Melbourne Storm",
+   "clubId": "nrl-melbourne-storm",
+   "playerId": "nrl-cameron-smith",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2018,
+   "name": "Roger Tuivasa-Sheck",
+   "club": "New Zealand Warriors",
+   "clubId": "nrl-new-zealand-warriors",
+   "playerId": "nrl-roger-tuivasa-sheck",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2019,
+   "name": "James Tedesco",
+   "club": "Sydney Roosters",
+   "clubId": "nrl-sydney-roosters",
+   "playerId": "nrl-james-tedesco",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2020,
+   "name": "Jack Wighton",
+   "club": "Canberra Raiders",
+   "clubId": "nrl-canberra-raiders",
+   "playerId": "nrl-jack-wighton",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2021,
+   "name": "Tom Trbojevic",
+   "club": "Manly Warringah Sea Eagles",
+   "clubId": "nrl-manly-sea-eagles",
+   "playerId": "nrl-tom-trbojevic",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2022,
+   "name": "Nicho Hynes",
+   "club": "Cronulla-Sutherland Sharks",
+   "clubId": "nrl-cronulla-sharks",
+   "playerId": "nrl-nicho-hynes",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2023,
+   "name": "Kalyn Ponga",
+   "club": "Newcastle Knights",
+   "clubId": "nrl-newcastle-knights",
+   "playerId": "nrl-kalyn-ponga",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2024,
+   "name": "Jahrome Hughes",
+   "club": "Melbourne Storm",
+   "clubId": "nrl-melbourne-storm",
+   "playerId": "nrl-jahrome-hughes",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2025,
+   "name": "James Tedesco",
+   "club": "Sydney Roosters",
+   "clubId": "nrl-sydney-roosters",
+   "playerId": "nrl-james-tedesco",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  },
+  {
+   "season": 2026,
+   "name": "Nathan Cleary",
+   "club": "Penrith Panthers",
+   "clubId": "nrl-penrith-panthers",
+   "playerId": "nrl-nathan-cleary",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal"
+  }
+ ],
+ "teamOfTheYear": [
+  {
+   "season": 1998,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Dally_M_Awards_winners",
+   "format": "positional winners",
+   "team": [
+    {
+     "position": "FB",
+     "name": "Darren Lockyer",
+     "playerId": "nrl-darren-lockyer"
+    },
+    {
+     "position": "WG",
+     "name": "Marcus Bai",
+     "playerId": "nrl-marcus-bai"
+    },
+    {
+     "position": "CE",
+     "name": "Darren Smith",
+     "playerId": "nrl-darren-smith"
+    },
+    {
+     "position": "SO",
+     "name": "Brad Fittler",
+     "playerId": "nrl-brad-fittler"
+    },
+    {
+     "position": "SH",
+     "name": "Andrew Johns",
+     "playerId": "nrl-andrew-johns"
+    },
+    {
+     "position": "PR",
+     "name": "Dean Pay",
+     "playerId": "nrl-dean-pay"
+    },
+    {
+     "position": "HK",
+     "name": "Jason Hetherington",
+     "playerId": "nrl-jason-hetherington"
+    },
+    {
+     "position": "SR",
+     "name": "Steve Menzies",
+     "playerId": "nrl-steve-menzies"
+    },
+    {
+     "position": "LF",
+     "name": "Tawera Nikau",
+     "playerId": "nrl-tawera-nikau"
+    }
+   ]
+  },
+  {
+   "season": 1999,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Dally_M_Awards_winners",
+   "format": "positional winners",
+   "team": [
+    {
+     "position": "FB",
+     "name": "David Peachey",
+     "playerId": "nrl-david-peachey"
+    },
+    {
+     "position": "WG",
+     "name": "Nathan Blacklock",
+     "playerId": "nrl-nathan-blacklock"
+    },
+    {
+     "position": "CE",
+     "name": "Ryan Girdler",
+     "playerId": "nrl-ryan-girdler"
+    },
+    {
+     "position": "SO",
+     "name": "Brad Fittler",
+     "playerId": "nrl-brad-fittler"
+    },
+    {
+     "position": "SH",
+     "name": "Andrew Johns",
+     "playerId": "nrl-andrew-johns"
+    },
+    {
+     "position": "PR",
+     "name": "Matt Parsons",
+     "playerId": "nrl-matt-parsons"
+    },
+    {
+     "position": "HK",
+     "name": "Geoff Toovey",
+     "playerId": "nrl-geoff-toovey"
+    },
+    {
+     "position": "SR",
+     "name": "Gorden Tallis",
+     "playerId": "nrl-gorden-tallis"
+    },
+    {
+     "position": "LF",
+     "name": "Jason Smith",
+     "playerId": "nrl-jason-smith"
+    }
+   ]
+  },
+  {
+   "season": 2000,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Dally_M_Awards_winners",
+   "format": "positional winners",
+   "team": [
+    {
+     "position": "FB",
+     "name": "David Peachey",
+     "playerId": "nrl-david-peachey"
+    },
+    {
+     "position": "WG",
+     "name": "Nathan Blacklock",
+     "playerId": "nrl-nathan-blacklock"
+    },
+    {
+     "position": "CE",
+     "name": "Ryan Girdler",
+     "playerId": "nrl-ryan-girdler"
+    },
+    {
+     "position": "SO",
+     "name": "Trent Barrett",
+     "playerId": "nrl-trent-barrett"
+    },
+    {
+     "position": "SH",
+     "name": "Brett Kimmorley",
+     "playerId": "nrl-brett-kimmorley"
+    },
+    {
+     "position": "PR",
+     "name": "Shane Webcke",
+     "playerId": "nrl-shane-webcke"
+    },
+    {
+     "position": "HK",
+     "name": "Craig Gower",
+     "playerId": "nrl-craig-gower"
+    },
+    {
+     "position": "SR",
+     "name": "Nathan Hindmarsh",
+     "playerId": "nrl-nathan-hindmarsh"
+    },
+    {
+     "position": "LF",
+     "name": "Jason Croker",
+     "playerId": "nrl-jason-croker-cn"
+    }
+   ]
+  },
+  {
+   "season": 2001,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Dally_M_Awards_winners",
+   "format": "positional winners",
+   "team": [
+    {
+     "position": "FB",
+     "name": "Darren Lockyer",
+     "playerId": "nrl-darren-lockyer"
+    },
+    {
+     "position": "WG",
+     "name": "Nathan Blacklock",
+     "playerId": "nrl-nathan-blacklock"
+    },
+    {
+     "position": "CE",
+     "name": "Nigel Vagana",
+     "playerId": "nrl-nigel-vagana"
+    },
+    {
+     "position": "SO",
+     "name": "Adam Dykes",
+     "playerId": "nrl-adam-dykes"
+    },
+    {
+     "position": "SH",
+     "name": "Preston Campbell",
+     "playerId": "nrl-preston-campbell"
+    },
+    {
+     "position": "PR",
+     "name": "Shane Webcke",
+     "playerId": "nrl-shane-webcke"
+    },
+    {
+     "position": "HK",
+     "name": "Brad Drew",
+     "playerId": "nrl-brad-drew"
+    },
+    {
+     "position": "SR",
+     "name": "Nathan Hindmarsh",
+     "playerId": "nrl-nathan-hindmarsh"
+    },
+    {
+     "position": "LF",
+     "name": "Daniel Wagon",
+     "playerId": "nrl-daniel-wagon"
+    }
+   ]
+  },
+  {
+   "season": 2002,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Dally_M_Awards_winners",
+   "format": "positional winners",
+   "team": [
+    {
+     "position": "FB",
+     "name": "Darren Lockyer",
+     "playerId": "nrl-darren-lockyer"
+    },
+    {
+     "position": "WG",
+     "name": "Lote Tuqiri",
+     "playerId": "nrl-lote-tuqiri"
+    },
+    {
+     "position": "CE",
+     "name": "Nigel Vagana",
+     "playerId": "nrl-nigel-vagana"
+    },
+    {
+     "position": "SO",
+     "name": "Brad Fittler",
+     "playerId": "nrl-brad-fittler"
+    },
+    {
+     "position": "SH",
+     "name": "Andrew Johns",
+     "playerId": "nrl-andrew-johns"
+    },
+    {
+     "position": "PR",
+     "name": "Shane Webcke",
+     "playerId": "nrl-shane-webcke"
+    },
+    {
+     "position": "HK",
+     "name": "Danny Buderus",
+     "playerId": "nrl-danny-buderus"
+    },
+    {
+     "position": "SR",
+     "name": "Ali Lauitiiti",
+     "playerId": "nrl-ali-lauitiiti"
+    },
+    {
+     "position": "LF",
+     "name": "Steve Menzies",
+     "playerId": "nrl-steve-menzies"
+    }
+   ]
+  },
+  {
+   "season": 2004,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2004_Dally_M_Awards",
+   "format": "positional winners",
+   "team": [
+    {
+     "position": "FB",
+     "name": "Anthony Minichiello",
+     "playerId": "nrl-anthony-minichiello"
+    },
+    {
+     "position": "WG",
+     "name": "Amos Roberts",
+     "playerId": "nrl-amos-roberts"
+    },
+    {
+     "position": "CE",
+     "name": "Willie Tonga",
+     "playerId": "nrl-willie-tonga"
+    },
+    {
+     "position": "SO",
+     "name": "Darren Lockyer",
+     "playerId": "nrl-darren-lockyer"
+    },
+    {
+     "position": "SH",
+     "name": "Brett Finch",
+     "playerId": "nrl-brett-finch"
+    },
+    {
+     "position": "PR",
+     "name": "Paul Rauhihi",
+     "playerId": "nrl-paul-rauhihi"
+    },
+    {
+     "position": "HK",
+     "name": "Danny Buderus",
+     "playerId": "nrl-danny-buderus"
+    },
+    {
+     "position": "SR",
+     "name": "Nathan Hindmarsh",
+     "playerId": "nrl-nathan-hindmarsh"
+    },
+    {
+     "position": "LF",
+     "name": "Shaun Timmins",
+     "playerId": "nrl-shaun-timmins"
+    }
+   ]
+  },
+  {
+   "season": 2005,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Dally_M_Awards_winners",
+   "format": "positional winners",
+   "team": [
+    {
+     "position": "FB",
+     "name": "Brett Hodgson",
+     "playerId": "nrl-brett-hodgson"
+    },
+    {
+     "position": "WG",
+     "name": "Eric Grothe",
+     "playerId": "nrl-eric-grothe-p1"
+    },
+    {
+     "position": "CE",
+     "name": "Mark Gasnier",
+     "playerId": "nrl-mark-gasnier"
+    },
+    {
+     "position": "SO",
+     "name": "Braith Anasta",
+     "playerId": "nrl-braith-anasta"
+    },
+    {
+     "position": "SH",
+     "name": "Johnathan Thurston",
+     "playerId": "nrl-johnathan-thurston"
+    },
+    {
+     "position": "PR",
+     "name": "Luke Bailey",
+     "playerId": "nrl-luke-bailey"
+    },
+    {
+     "position": "HK",
+     "name": "Danny Buderus",
+     "playerId": "nrl-danny-buderus"
+    },
+    {
+     "position": "SR",
+     "name": "Nathan Hindmarsh",
+     "playerId": "nrl-nathan-hindmarsh"
+    },
+    {
+     "position": "LF",
+     "name": "Ben Kennedy",
+     "playerId": "nrl-ben-kennedy"
+    }
+   ]
+  },
+  {
+   "season": 2006,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2006_Dally_M_Awards",
+   "format": "positional winners",
+   "team": [
+    {
+     "position": "FB",
+     "name": "Clinton Schifcofske",
+     "playerId": "nrl-clinton-schifcofske"
+    },
+    {
+     "position": "WG",
+     "name": "Brian Carney",
+     "playerId": "nrl-brian-carney"
+    },
+    {
+     "position": "CE",
+     "name": "Mark Gasnier",
+     "playerId": "nrl-mark-gasnier"
+    },
+    {
+     "position": "SO",
+     "name": "Darren Lockyer",
+     "playerId": "nrl-darren-lockyer"
+    },
+    {
+     "position": "SH",
+     "name": "Cooper Cronk",
+     "playerId": "nrl-cooper-cronk"
+    },
+    {
+     "position": "PR",
+     "name": "Roy Asotasi",
+     "playerId": "nrl-roy-asotasi"
+    },
+    {
+     "position": "HK",
+     "name": "Cameron Smith",
+     "playerId": "nrl-cameron-smith"
+    },
+    {
+     "position": "SR",
+     "name": "Nathan Hindmarsh",
+     "playerId": "nrl-nathan-hindmarsh"
+    },
+    {
+     "position": "LF",
+     "name": "Ben Kennedy",
+     "playerId": "nrl-ben-kennedy"
+    }
+   ]
+  },
+  {
+   "season": 2007,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2007_Dally_M_Awards",
+   "format": "positional winners",
+   "team": [
+    {
+     "position": "FB",
+     "name": "Matt Bowen",
+     "playerId": "nrl-matthew-bowen"
+    },
+    {
+     "position": "WG",
+     "name": "Jarryd Hayne",
+     "playerId": "nrl-jarryd-hayne"
+    },
+    {
+     "position": "CE",
+     "name": "Justin Hodges",
+     "playerId": "nrl-justin-hodges"
+    },
+    {
+     "position": "SO",
+     "name": "Darren Lockyer",
+     "playerId": "nrl-darren-lockyer"
+    },
+    {
+     "position": "SH",
+     "name": "Johnathan Thurston",
+     "playerId": "nrl-johnathan-thurston"
+    },
+    {
+     "position": "PR",
+     "name": "Steve Price",
+     "playerId": "nrl-steven-price-cb"
+    },
+    {
+     "position": "HK",
+     "name": "Robbie Farah",
+     "playerId": "nrl-robbie-farah"
+    },
+    {
+     "position": "SR",
+     "name": "Anthony Watmough",
+     "playerId": "nrl-anthony-watmough"
+    },
+    {
+     "position": "LF",
+     "name": "Dallas Johnson",
+     "playerId": "nrl-dallas-johnson"
+    }
+   ]
+  },
+  {
+   "season": 2008,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Dally_M_Awards_winners",
+   "format": "positional winners",
+   "team": [
+    {
+     "position": "FB",
+     "name": "Billy Slater",
+     "playerId": "nrl-billy-slater"
+    },
+    {
+     "position": "WG",
+     "name": "Colin Best",
+     "playerId": "nrl-colin-best"
+    },
+    {
+     "position": "CE",
+     "name": "Israel Folau",
+     "playerId": "nrl-israel-folau"
+    },
+    {
+     "position": "SO",
+     "name": "Greg Inglis",
+     "playerId": "nrl-greg-inglis"
+    },
+    {
+     "position": "SH",
+     "name": "Matt Orford",
+     "playerId": "nrl-matt-orford"
+    },
+    {
+     "position": "PR",
+     "name": "Petero Civoniceva",
+     "playerId": "nrl-petero-civoniceva"
+    },
+    {
+     "position": "HK",
+     "name": "Cameron Smith",
+     "playerId": "nrl-cameron-smith"
+    },
+    {
+     "position": "SR",
+     "name": "Glenn Stewart",
+     "playerId": "nrl-glenn-stewart"
+    },
+    {
+     "position": "LF",
+     "name": "Alan Tongue",
+     "playerId": "nrl-alan-tongue"
+    }
+   ]
+  },
+  {
+   "season": 2009,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2009_Dally_M_Awards",
+   "format": "positional winners",
+   "team": [
+    {
+     "position": "FB",
+     "name": "Jarryd Hayne",
+     "playerId": "nrl-jarryd-hayne"
+    },
+    {
+     "position": "WG",
+     "name": "Taniela Tuiaki",
+     "playerId": "nrl-taniela-tuiaki"
+    },
+    {
+     "position": "CE",
+     "name": "Josh Morris",
+     "playerId": "nrl-josh-morris"
+    },
+    {
+     "position": "SO",
+     "name": "Jamie Soward",
+     "playerId": "nrl-jamie-soward"
+    },
+    {
+     "position": "SH",
+     "name": "Johnathan Thurston",
+     "playerId": "nrl-johnathan-thurston"
+    },
+    {
+     "position": "PR",
+     "name": "Ben Hannant",
+     "playerId": "nrl-ben-hannant"
+    },
+    {
+     "position": "HK",
+     "name": "Michael Ennis",
+     "playerId": "nrl-michael-ennis"
+    },
+    {
+     "position": "SR",
+     "name": "Anthony Watmough",
+     "playerId": "nrl-anthony-watmough"
+    },
+    {
+     "position": "LF",
+     "name": "David Stagg",
+     "playerId": "nrl-david-stagg"
+    }
+   ]
+  },
+  {
+   "season": 2010,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Dally_M_Awards_winners",
+   "format": "positional winners",
+   "team": [
+    {
+     "position": "FB",
+     "name": "Darius Boyd",
+     "playerId": "nrl-darius-boyd"
+    },
+    {
+     "position": "WG",
+     "name": "Akuila Uate",
+     "playerId": "nrl-akuila-uate"
+    },
+    {
+     "position": "CE",
+     "name": "Jamie Lyon",
+     "playerId": "nrl-jamie-lyon"
+    },
+    {
+     "position": "SO",
+     "name": "Todd Carney",
+     "playerId": "nrl-todd-carney"
+    },
+    {
+     "position": "SH",
+     "name": "Scott Prince",
+     "playerId": "nrl-scott-prince"
+    },
+    {
+     "position": "PR",
+     "name": "David Shillington",
+     "playerId": "nrl-david-shillington"
+    },
+    {
+     "position": "HK",
+     "name": "Robbie Farah",
+     "playerId": "nrl-robbie-farah"
+    },
+    {
+     "position": "SR",
+     "name": "Sam Thaiday",
+     "playerId": "nrl-sam-thaiday"
+    },
+    {
+     "position": "LF",
+     "name": "Luke Lewis",
+     "playerId": "nrl-luke-lewis"
+    }
+   ]
+  },
+  {
+   "season": 2011,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2011_Dally_M_Awards",
+   "format": "positional winners",
+   "team": [
+    {
+     "position": "FB",
+     "name": "Billy Slater",
+     "playerId": "nrl-billy-slater"
+    },
+    {
+     "position": "WG",
+     "name": "Akuila Uate",
+     "playerId": "nrl-akuila-uate"
+    },
+    {
+     "position": "CE",
+     "name": "Jamie Lyon",
+     "playerId": "nrl-jamie-lyon"
+    },
+    {
+     "position": "SO",
+     "name": "Benji Marshall",
+     "playerId": "nrl-benji-marshall"
+    },
+    {
+     "position": "SH",
+     "name": "Cooper Cronk",
+     "playerId": "nrl-cooper-cronk"
+    },
+    {
+     "position": "PR",
+     "name": "Matt Scott",
+     "playerId": "nrl-matthew-scott"
+    },
+    {
+     "position": "HK",
+     "name": "Cameron Smith",
+     "playerId": "nrl-cameron-smith"
+    },
+    {
+     "position": "SR",
+     "name": "Sam Thaiday",
+     "playerId": "nrl-sam-thaiday"
+    },
+    {
+     "position": "LF",
+     "name": "Paul Gallen",
+     "playerId": "nrl-paul-gallen"
+    }
+   ]
+  },
+  {
+   "season": 2012,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Dally_M_Awards_winners",
+   "format": "positional winners",
+   "team": [
+    {
+     "position": "FB",
+     "name": "Ben Barba",
+     "playerId": "nrl-ben-barba"
+    },
+    {
+     "position": "WG",
+     "name": "Akuila Uate",
+     "playerId": "nrl-akuila-uate"
+    },
+    {
+     "position": "CE",
+     "name": "Josh Morris",
+     "playerId": "nrl-josh-morris"
+    },
+    {
+     "position": "SO",
+     "name": "Johnathan Thurston",
+     "playerId": "nrl-johnathan-thurston"
+    },
+    {
+     "position": "SH",
+     "name": "Cooper Cronk",
+     "playerId": "nrl-cooper-cronk"
+    },
+    {
+     "position": "PR",
+     "name": "Sam Kasiano",
+     "playerId": "nrl-sam-kasiano"
+    },
+    {
+     "position": "HK",
+     "name": "Cameron Smith",
+     "playerId": "nrl-cameron-smith"
+    },
+    {
+     "position": "SR",
+     "name": "Nate Myles",
+     "playerId": "nrl-nate-myles"
+    },
+    {
+     "position": "LF",
+     "name": "Paul Gallen",
+     "playerId": "nrl-paul-gallen"
+    }
+   ]
+  },
+  {
+   "season": 2013,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Dally_M_Awards_winners",
+   "format": "positional winners",
+   "team": [
+    {
+     "position": "FB",
+     "name": "Greg Inglis",
+     "playerId": "nrl-greg-inglis"
+    },
+    {
+     "position": "WG",
+     "name": "Roger Tuivasa-Sheck",
+     "playerId": "nrl-roger-tuivasa-sheck"
+    },
+    {
+     "position": "CE",
+     "name": "Jamie Lyon",
+     "playerId": "nrl-jamie-lyon"
+    },
+    {
+     "position": "SO",
+     "name": "Johnathan Thurston",
+     "playerId": "nrl-johnathan-thurston"
+    },
+    {
+     "position": "SO",
+     "name": "Todd Carney",
+     "playerId": "nrl-todd-carney"
+    },
+    {
+     "position": "SH",
+     "name": "Cooper Cronk",
+     "playerId": "nrl-cooper-cronk"
+    },
+    {
+     "position": "PR",
+     "name": "Andrew Fifita",
+     "playerId": "nrl-andrew-fifita"
+    },
+    {
+     "position": "HK",
+     "name": "Cameron Smith",
+     "playerId": "nrl-cameron-smith"
+    },
+    {
+     "position": "SR",
+     "name": "Boyd Cordner",
+     "playerId": "nrl-boyd-cordner"
+    },
+    {
+     "position": "LF",
+     "name": "Corey Parker",
+     "playerId": "nrl-corey-parker"
+    }
+   ]
+  },
+  {
+   "season": 2014,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Dally_M_Awards_winners",
+   "format": "positional winners",
+   "team": [
+    {
+     "position": "FB",
+     "name": "Jarryd Hayne",
+     "playerId": "nrl-jarryd-hayne"
+    },
+    {
+     "position": "WG",
+     "name": "Semi Radradra",
+     "playerId": "nrl-semi-radradra"
+    },
+    {
+     "position": "CE",
+     "name": "Jamie Lyon",
+     "playerId": "nrl-jamie-lyon"
+    },
+    {
+     "position": "SO",
+     "name": "Johnathan Thurston",
+     "playerId": "nrl-johnathan-thurston"
+    },
+    {
+     "position": "SH",
+     "name": "Daly Cherry-Evans",
+     "playerId": "nrl-daly-cherry-evans"
+    },
+    {
+     "position": "PR",
+     "name": "James Graham",
+     "playerId": "nrl-james-graham"
+    },
+    {
+     "position": "HK",
+     "name": "James Segeyaro",
+     "playerId": "nrl-james-segeyaro"
+    },
+    {
+     "position": "SR",
+     "name": "Beau Scott",
+     "playerId": "nrl-beau-scott"
+    },
+    {
+     "position": "LF",
+     "name": "Sam Burgess",
+     "playerId": "nrl-sam-burgess"
+    }
+   ]
+  },
+  {
+   "season": 2015,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2015_Dally_M_Awards",
+   "format": "positional winners",
+   "team": [
+    {
+     "position": "FB",
+     "name": "Roger Tuivasa-Sheck",
+     "playerId": "nrl-roger-tuivasa-sheck"
+    },
+    {
+     "position": "WG",
+     "name": "Semi Radradra",
+     "playerId": "nrl-semi-radradra"
+    },
+    {
+     "position": "CE",
+     "name": "James Roberts",
+     "playerId": "nrl-james-roberts"
+    },
+    {
+     "position": "SO",
+     "name": "Blake Austin",
+     "playerId": "nrl-blake-austin"
+    },
+    {
+     "position": "SH",
+     "name": "Johnathan Thurston",
+     "playerId": "nrl-johnathan-thurston"
+    },
+    {
+     "position": "PR",
+     "name": "Aaron Woods",
+     "playerId": "nrl-aaron-woods"
+    },
+    {
+     "position": "HK",
+     "name": "Michael Ennis",
+     "playerId": "nrl-michael-ennis"
+    },
+    {
+     "position": "SR",
+     "name": "Josh Jackson",
+     "playerId": "nrl-josh-jackson"
+    },
+    {
+     "position": "LF",
+     "name": "Jason Taumalolo",
+     "playerId": "nrl-jason-taumalolo"
+    }
+   ]
+  },
+  {
+   "season": 2016,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2016_Dally_M_Awards",
+   "format": "positional winners",
+   "team": [
+    {
+     "position": "FB",
+     "name": "James Tedesco",
+     "playerId": "nrl-james-tedesco"
+    },
+    {
+     "position": "WG",
+     "name": "Josh Mansour",
+     "playerId": "nrl-josh-mansour"
+    },
+    {
+     "position": "CE",
+     "name": "Joseph Leilua",
+     "playerId": "nrl-joey-leilua"
+    },
+    {
+     "position": "SO",
+     "name": "James Maloney",
+     "playerId": "nrl-james-maloney"
+    },
+    {
+     "position": "SH",
+     "name": "Cooper Cronk",
+     "playerId": "nrl-cooper-cronk"
+    },
+    {
+     "position": "PR",
+     "name": "Jesse Bromwich",
+     "playerId": "nrl-jesse-bromwich"
+    },
+    {
+     "position": "HK",
+     "name": "Cameron Smith",
+     "playerId": "nrl-cameron-smith"
+    },
+    {
+     "position": "SR",
+     "name": "Matt Gillett",
+     "playerId": "nrl-matt-gillett"
+    },
+    {
+     "position": "LF",
+     "name": "Jason Taumalolo",
+     "playerId": "nrl-jason-taumalolo"
+    }
+   ]
+  },
+  {
+   "season": 2017,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2017_Dally_M_Awards",
+   "format": "positional winners",
+   "team": [
+    {
+     "position": "FB",
+     "name": "Billy Slater",
+     "playerId": "nrl-billy-slater"
+    },
+    {
+     "position": "WG",
+     "name": "Jordan Rapana",
+     "playerId": "nrl-jordan-rapana"
+    },
+    {
+     "position": "CE",
+     "name": "Dylan Walker",
+     "playerId": "nrl-dylan-walker"
+    },
+    {
+     "position": "SO",
+     "name": "Gareth Widdop",
+     "playerId": "nrl-gareth-widdop"
+    },
+    {
+     "position": "SH",
+     "name": "Michael Morgan",
+     "playerId": "nrl-michael-morgan"
+    },
+    {
+     "position": "PR",
+     "name": "Aaron Woods",
+     "playerId": "nrl-aaron-woods"
+    },
+    {
+     "position": "HK",
+     "name": "Cameron Smith",
+     "playerId": "nrl-cameron-smith"
+    },
+    {
+     "position": "SR",
+     "name": "Matt Gillett",
+     "playerId": "nrl-matt-gillett"
+    },
+    {
+     "position": "LF",
+     "name": "Paul Gallen",
+     "playerId": "nrl-paul-gallen"
+    },
+    {
+     "position": "IC",
+     "name": "Reagan Campbell-Gillard",
+     "playerId": "nrl-reagan-campbell-gillard"
+    }
+   ]
+  },
+  {
+   "season": 2018,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2018_Dally_M_Awards",
+   "format": "positional winners",
+   "team": [
+    {
+     "position": "FB",
+     "name": "Roger Tuivasa-Sheck",
+     "playerId": "nrl-roger-tuivasa-sheck"
+    },
+    {
+     "position": "WG",
+     "name": "Blake Ferguson",
+     "playerId": "nrl-blake-ferguson"
+    },
+    {
+     "position": "CE",
+     "name": "Joseph Leilua",
+     "playerId": "nrl-joey-leilua"
+    },
+    {
+     "position": "SO",
+     "name": "Cameron Munster",
+     "playerId": "nrl-cameron-munster"
+    },
+    {
+     "position": "SH",
+     "name": "Luke Brooks",
+     "playerId": "nrl-luke-brooks"
+    },
+    {
+     "position": "PR",
+     "name": "Andrew Fifita",
+     "playerId": "nrl-andrew-fifita"
+    },
+    {
+     "position": "HK",
+     "name": "Damien Cook",
+     "playerId": "nrl-damien-cook"
+    },
+    {
+     "position": "SR",
+     "name": "Josh Jackson",
+     "playerId": "nrl-josh-jackson"
+    },
+    {
+     "position": "LF",
+     "name": "Jason Taumalolo",
+     "playerId": "nrl-jason-taumalolo"
+    },
+    {
+     "position": "IC",
+     "name": "Jazz Tevaga",
+     "playerId": "nrl-jazz-tevaga"
+    }
+   ]
+  },
+  {
+   "season": 2019,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2019_Dally_M_Awards",
+   "format": "positional winners",
+   "team": [
+    {
+     "position": "FB",
+     "name": "James Tedesco",
+     "playerId": "nrl-james-tedesco"
+    },
+    {
+     "position": "WG",
+     "name": "Ken Maumalo",
+     "playerId": "nrl-ken-maumalo"
+    },
+    {
+     "position": "CE",
+     "name": "Latrell Mitchell",
+     "playerId": "nrl-latrell-mitchell"
+    },
+    {
+     "position": "SO",
+     "name": "Cameron Munster",
+     "playerId": "nrl-cameron-munster"
+    },
+    {
+     "position": "SH",
+     "name": "Mitchell Moses",
+     "playerId": "nrl-mitchell-moses"
+    },
+    {
+     "position": "PR",
+     "name": "Payne Haas",
+     "playerId": "nrl-payne-haas"
+    },
+    {
+     "position": "HK",
+     "name": "Cameron Smith",
+     "playerId": "nrl-cameron-smith"
+    },
+    {
+     "position": "SR",
+     "name": "John Bateman",
+     "playerId": "nrl-john-bateman"
+    },
+    {
+     "position": "LF",
+     "name": "Cameron Murray",
+     "playerId": "nrl-cameron-murray"
+    },
+    {
+     "position": "IC",
+     "name": "Brandon Smith",
+     "playerId": "nrl-brandon-smith"
+    }
+   ]
+  },
+  {
+   "season": 2020,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2020_Dally_M_Awards",
+   "format": "team-of-the-year (13)",
+   "team": [
+    {
+     "position": "FB",
+     "name": "Clint Gutherson",
+     "playerId": "nrl-clint-gutherson"
+    },
+    {
+     "position": "WG",
+     "name": "David Nofoaluma",
+     "playerId": "nrl-david-nofoaluma"
+    },
+    {
+     "position": "WG",
+     "name": "Josh Addo-Carr",
+     "playerId": "nrl-josh-addo-carr"
+    },
+    {
+     "position": "CE",
+     "name": "Kotoni Staggs",
+     "playerId": "nrl-kotoni-staggs"
+    },
+    {
+     "position": "CE",
+     "name": "Stephen Crichton",
+     "playerId": "nrl-stephen-crichton"
+    },
+    {
+     "position": "SO",
+     "name": "Jack Wighton",
+     "playerId": "nrl-jack-wighton"
+    },
+    {
+     "position": "SH",
+     "name": "Nathan Cleary",
+     "playerId": "nrl-nathan-cleary"
+    },
+    {
+     "position": "PR",
+     "name": "Josh Papalii",
+     "playerId": "nrl-josh-papalii"
+    },
+    {
+     "position": "PR",
+     "name": "James Fisher-Harris",
+     "playerId": "nrl-james-fisher-harris"
+    },
+    {
+     "position": "HK",
+     "name": "Cameron Smith",
+     "playerId": "nrl-cameron-smith"
+    },
+    {
+     "position": "SR",
+     "name": "Viliame Kikau",
+     "playerId": "nrl-viliame-kikau"
+    },
+    {
+     "position": "SR",
+     "name": "Tohu Harris",
+     "playerId": "nrl-tohu-harris"
+    },
+    {
+     "position": "LF",
+     "name": "Isaah Yeo",
+     "playerId": "nrl-isaah-yeo"
+    }
+   ]
+  },
+  {
+   "season": 2021,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Dally_M_Awards",
+   "format": "team-of-the-year (13)",
+   "team": [
+    {
+     "position": "FB",
+     "name": "Tom Trbojevic",
+     "playerId": "nrl-tom-trbojevic"
+    },
+    {
+     "position": "WG",
+     "name": "Reuben Garrick",
+     "playerId": "nrl-reuben-garrick"
+    },
+    {
+     "position": "WG",
+     "name": "Brian To'o",
+     "playerId": "nrl-brian-too"
+    },
+    {
+     "position": "CE",
+     "name": "Justin Olam",
+     "playerId": "nrl-justin-olam"
+    },
+    {
+     "position": "CE",
+     "name": "Matt Burton",
+     "playerId": "nrl-matt-burton"
+    },
+    {
+     "position": "SO",
+     "name": "Cody Walker",
+     "playerId": "nrl-cody-walker"
+    },
+    {
+     "position": "SH",
+     "name": "Nathan Cleary",
+     "playerId": "nrl-nathan-cleary"
+    },
+    {
+     "position": "PR",
+     "name": "James Fisher-Harris",
+     "playerId": "nrl-james-fisher-harris"
+    },
+    {
+     "position": "PR",
+     "name": "Payne Haas",
+     "playerId": "nrl-payne-haas"
+    },
+    {
+     "position": "HK",
+     "name": "Brandon Smith",
+     "playerId": "nrl-brandon-smith"
+    },
+    {
+     "position": "SR",
+     "name": "Viliame Kikau",
+     "playerId": "nrl-viliame-kikau"
+    },
+    {
+     "position": "SR",
+     "name": "Isaiah Papali'i",
+     "playerId": "nrl-isaiah-papalii"
+    },
+    {
+     "position": "LF",
+     "name": "Isaah Yeo",
+     "playerId": "nrl-isaah-yeo"
+    }
+   ]
+  },
+  {
+   "season": 2022,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2022_Dally_M_Awards",
+   "format": "team-of-the-year (13)",
+   "team": [
+    {
+     "position": "FB",
+     "name": "James Tedesco",
+     "playerId": "nrl-james-tedesco"
+    },
+    {
+     "position": "WG",
+     "name": "Joseph Suaalii",
+     "playerId": "nrl-joseph-suaalii"
+    },
+    {
+     "position": "WG",
+     "name": "Alex Johnston",
+     "playerId": "nrl-alex-johnston"
+    },
+    {
+     "position": "CE",
+     "name": "Joseph Manu",
+     "playerId": "nrl-joseph-manu"
+    },
+    {
+     "position": "CE",
+     "name": "Valentine Holmes",
+     "playerId": "nrl-valentine-holmes"
+    },
+    {
+     "position": "SO",
+     "name": "Cameron Munster",
+     "playerId": "nrl-cameron-munster"
+    },
+    {
+     "position": "SH",
+     "name": "Nicho Hynes",
+     "playerId": "nrl-nicho-hynes"
+    },
+    {
+     "position": "PR",
+     "name": "Payne Haas",
+     "playerId": "nrl-payne-haas"
+    },
+    {
+     "position": "PR",
+     "name": "Joseph Tapine",
+     "playerId": "nrl-joseph-tapine"
+    },
+    {
+     "position": "HK",
+     "name": "Apisai Koroisau",
+     "playerId": "nrl-apisai-koroisau"
+    },
+    {
+     "position": "SR",
+     "name": "Jeremiah Nanai",
+     "playerId": "nrl-jeremiah-nanai"
+    },
+    {
+     "position": "SR",
+     "name": "Viliame Kikau",
+     "playerId": "nrl-viliame-kikau"
+    },
+    {
+     "position": "LF",
+     "name": "Isaah Yeo",
+     "playerId": "nrl-isaah-yeo"
+    }
+   ]
+  },
+  {
+   "season": 2023,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2023_Dally_M_Awards",
+   "format": "team-of-the-year (13)",
+   "team": [
+    {
+     "position": "FB",
+     "name": "Kalyn Ponga",
+     "playerId": "nrl-kalyn-ponga"
+    },
+    {
+     "position": "WG",
+     "name": "Dallin Watene-Zelezniak",
+     "playerId": "nrl-dallin-watene-zelezniak"
+    },
+    {
+     "position": "WG",
+     "name": "Jamayne Isaako",
+     "playerId": "nrl-jamayne-isaako"
+    },
+    {
+     "position": "CE",
+     "name": "Stephen Crichton",
+     "playerId": "nrl-stephen-crichton"
+    },
+    {
+     "position": "CE",
+     "name": "Herbie Farnworth",
+     "playerId": "nrl-herbie-farnworth"
+    },
+    {
+     "position": "SO",
+     "name": "Ezra Mam",
+     "playerId": "nrl-ezra-mam"
+    },
+    {
+     "position": "SH",
+     "name": "Shaun Johnson",
+     "playerId": "nrl-shaun-johnson"
+    },
+    {
+     "position": "PR",
+     "name": "Payne Haas",
+     "playerId": "nrl-payne-haas"
+    },
+    {
+     "position": "PR",
+     "name": "Addin Fonua-Blake",
+     "playerId": "nrl-addin-fonua-blake"
+    },
+    {
+     "position": "HK",
+     "name": "Harry Grant",
+     "playerId": "nrl-harry-grant"
+    },
+    {
+     "position": "SR",
+     "name": "Liam Martin",
+     "playerId": "nrl-liam-martin"
+    },
+    {
+     "position": "SR",
+     "name": "David Fifita",
+     "playerId": "nrl-david-fifita-br"
+    },
+    {
+     "position": "LF",
+     "name": "Patrick Carrigan",
+     "playerId": "nrl-patrick-carrigan"
+    }
+   ]
+  },
+  {
+   "season": 2024,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2024_Dally_M_Awards",
+   "format": "team-of-the-year (13)",
+   "team": [
+    {
+     "position": "FB",
+     "name": "James Tedesco",
+     "playerId": "nrl-james-tedesco"
+    },
+    {
+     "position": "WG",
+     "name": "Brian To'o",
+     "playerId": "nrl-brian-too"
+    },
+    {
+     "position": "WG",
+     "name": "Zac Lomax",
+     "playerId": "nrl-zac-lomax"
+    },
+    {
+     "position": "CE",
+     "name": "Herbie Farnworth",
+     "playerId": "nrl-herbie-farnworth"
+    },
+    {
+     "position": "CE",
+     "name": "Stephen Crichton",
+     "playerId": "nrl-stephen-crichton"
+    },
+    {
+     "position": "SO",
+     "name": "Tom Dearden",
+     "playerId": "nrl-tom-dearden"
+    },
+    {
+     "position": "SH",
+     "name": "Jahrome Hughes",
+     "playerId": "nrl-jahrome-hughes"
+    },
+    {
+     "position": "PR",
+     "name": "Addin Fonua-Blake",
+     "playerId": "nrl-addin-fonua-blake"
+    },
+    {
+     "position": "PR",
+     "name": "Joseph Tapine",
+     "playerId": "nrl-joseph-tapine"
+    },
+    {
+     "position": "HK",
+     "name": "Harry Grant",
+     "playerId": "nrl-harry-grant"
+    },
+    {
+     "position": "SR",
+     "name": "Angus Crichton",
+     "playerId": "nrl-angus-crichton"
+    },
+    {
+     "position": "SR",
+     "name": "Eliesa Katoa",
+     "playerId": "nrl-eliesa-katoa"
+    },
+    {
+     "position": "LF",
+     "name": "Isaah Yeo",
+     "playerId": "nrl-isaah-yeo"
+    }
+   ]
+  },
+  {
+   "season": 2025,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2025_NRL_season",
+   "format": "team-of-the-year (13)",
+   "team": [
+    {
+     "position": "FB",
+     "name": "James Tedesco",
+     "playerId": "nrl-james-tedesco"
+    },
+    {
+     "position": "WG",
+     "name": "Mark Nawaqanitawase",
+     "playerId": "nrl-mark-nawaqanitawase"
+    },
+    {
+     "position": "WG",
+     "name": "Xavier Coates",
+     "playerId": "nrl-xavier-coates"
+    },
+    {
+     "position": "CE",
+     "name": "Kotoni Staggs",
+     "playerId": "nrl-kotoni-staggs"
+    },
+    {
+     "position": "CE",
+     "name": "Stephen Crichton",
+     "playerId": "nrl-stephen-crichton"
+    },
+    {
+     "position": "SO",
+     "name": "Ethan Strange",
+     "playerId": "nrl-ethan-strange"
+    },
+    {
+     "position": "SH",
+     "name": "Nathan Cleary",
+     "playerId": "nrl-nathan-cleary"
+    },
+    {
+     "position": "PR",
+     "name": "Addin Fonua-Blake",
+     "playerId": "nrl-addin-fonua-blake"
+    },
+    {
+     "position": "PR",
+     "name": "Payne Haas",
+     "playerId": "nrl-payne-haas"
+    },
+    {
+     "position": "HK",
+     "name": "Blayke Brailey",
+     "playerId": "nrl-blayke-brailey"
+    },
+    {
+     "position": "SR",
+     "name": "Eliesa Katoa",
+     "playerId": "nrl-eliesa-katoa"
+    },
+    {
+     "position": "SR",
+     "name": "Hudson Young",
+     "playerId": "nrl-hudson-young"
+    },
+    {
+     "position": "LF",
+     "name": "Erin Clark",
+     "playerId": "nrl-erin-clark"
+    }
+   ]
+  }
+ ]
+}

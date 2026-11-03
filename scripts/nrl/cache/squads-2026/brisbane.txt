@@ -1,0 +1,32 @@
+# club: nrl-brisbane-broncos
+# source: https://rugbyleaguezone.com/brisbane-broncos-2026-nrl-fixtures-squad-list-and-player-signings-423171/
+# fetched: 2026-11-03 via WebFetch (rugbyleaguezone club squad page, roster dated 24-25 Nov 2025; |dev = development list)
+Adam Reynolds|captain
+Aublix Tawha
+Ben Hunt
+Ben Talty
+Ben Te Kura
+Billy Walters
+Blake Mozer
+Brendan Piakura
+Coby Black
+Corey Jensen
+Cory Paix
+Deine Mariner
+Delouise Hoeter
+Ezra Mam
+Grant Anderson
+Jack Gosiewski
+Jaiyden Hunt
+Jesse Arthars
+Jonah Pezet
+Jordan Riki
+Josh Rogers
+Josiah Karapani
+Kotoni Staggs
+Patrick Carrigan
+Payne Haas
+Reece Walsh
+Tom Duffy
+Xavier Willison
+Hayze Perham|dev

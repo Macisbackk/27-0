@@ -1,0 +1,34 @@
+# club: nrl-canterbury-bulldogs
+# source: https://www.org.rugbyleagueproject.com/seasons/nrl-2026/canterbury/summary.html
+# fetched: 2026-11-03 via WebFetch (page snapshot from about round 3 of 2026). Columns: Surname, First|age|birthplace|representative teams
+Burton, Matt|26|Dubbo|
+Crichton, Stephen|25|Apia|
+Curran, Josh|26|Sydney|
+Dykes, Kade|24|Dubbo|
+Galvin, Lachlan|20|Campbelltown|
+Hayes, Harry|23|Sydney|
+Hayward, Bailey|24|Sydney|
+Hopoi, Lipoi|24|Sydney|
+Hughes, Samuel|25|Sydney|
+Kikau, Viliame|30|Nausori|
+King, Max|28|Huddersfield|
+Kiraz, Jacob|24|Sydney|
+Latu, Finau|19||
+Maiu'u, Zyon|22|Auckland|
+Mann, Kurt|33|Winton|
+Montoya, Marcelo|30|Nadi|
+O'Sullivan, Sean|27|Sydney|
+Preston, Jacob|24|Sydney|
+Salmon, Jaeman|27|Sydney|
+Spinks, Logan|20||
+Sua, Jonathan|21||
+Suluka-Fifita, Daniel|26|Sydney|
+Thompson, Leo|25|Gisborne|
+Todd, Jack|23|Tamworth|
+Tracey, Connor|29|Sydney|
+Tuala, Enari|27|Cairns|
+Tupouniua, Sitili|28|Auckland|
+Turpin, Jake|29|Brisbane|
+Woods, Mitchell|19|Sydney|
+Xerri, Bronson|25|Sydney|
+Young, Patrick|||

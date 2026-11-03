@@ -163,7 +163,8 @@ export function SeasonReview() {
             <summary className="flex min-h-[40px] cursor-pointer items-center justify-center py-1 text-center text-sm font-semibold sm:justify-start text-white sm:text-left">
               {data.results.length} games · {recordLine(data.results, s.userClubId)}
             </summary>
-            <ResultsList results={data.results} clubs={s.clubs} userClubId={s.userClubId} />
+            {/* Newest first (owner, v1.62): the last game at the top. */}
+            <ResultsList results={[...data.results].reverse()} clubs={s.clubs} userClubId={s.userClubId} />
           </details>
         </StoryCard>
       ) : null}

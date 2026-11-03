@@ -1,0 +1,34 @@
+# club: nrl-sydney-roosters
+# source: https://rugbyleaguezone.com/sydney-roosters-2026-nrl-fixtures-squad-list-and-player-signings-423212/
+# fetched: 2026-11-03 via WebFetch (rugbyleaguezone club squad page, roster dated 24-25 Nov 2025; |dev = development list)
+Angus Crichton
+Benaiah Ioelu
+Billy Smith
+Blake Steep
+Cody Ramsey
+Connor Watson
+Daly Cherry-Evans
+Daniel Tupou
+De La Salle Va'a
+Egan Butcher
+Junior Pauga
+Jake Elliott
+James Tedesco
+Junior Tupou
+Lindsay Collins
+Mark Nawaqanitawase
+Nat Butcher
+Naufahu Whyte
+Reece Robson
+Robert Toia
+Salesi Foketi
+Sam Walker
+Siua Wong
+Spencer Leniu
+Taylor Losalu
+Toby Rodwell
+Victor Radley
+Xavier Va'a
+Hugo Savala|dev
+Rex Bassingthwaite|dev
+Reece Foley|dev

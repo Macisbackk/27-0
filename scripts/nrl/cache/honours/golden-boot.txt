@@ -1,0 +1,27 @@
+# source: https://en.wikipedia.org/wiki/IRL_Golden_Boot_Award fetched 2026-11-03 via WebFetch. Not awarded 1998, 2020, 2021.
+# year|player|nation|club
+1999|Andrew Johns|Australia|Newcastle Knights
+2000|Brad Fittler|Australia|Sydney Roosters
+2001|Andrew Johns|Australia|Newcastle Knights
+2002|Stacey Jones|New Zealand|New Zealand Warriors
+2003|Darren Lockyer|Australia|Brisbane Broncos
+2004|Andy Farrell|England|Wigan Warriors
+2005|Anthony Minichiello|Australia|Sydney Roosters
+2006|Darren Lockyer|Australia|Brisbane Broncos
+2007|Cameron Smith|Australia|Melbourne Storm
+2008|Billy Slater|Australia|Melbourne Storm
+2009|Greg Inglis|Australia|Melbourne Storm
+2010|Benji Marshall|New Zealand|Wests Tigers
+2011|Johnathan Thurston|Australia|North Queensland Cowboys
+2012|Kevin Sinfield|England|Leeds Rhinos
+2013|Johnathan Thurston|Australia|North Queensland Cowboys
+2014|Shaun Johnson|New Zealand|New Zealand Warriors
+2015|Johnathan Thurston|Australia|North Queensland Cowboys
+2016|Cooper Cronk|Australia|Melbourne Storm
+2017|Cameron Smith|Australia|Melbourne Storm
+2018|Tommy Makinson|England|St Helens
+2019|Roger Tuivasa-Sheck|New Zealand|New Zealand Warriors
+2022|Joseph Manu|New Zealand|Sydney Roosters
+2023|James Fisher-Harris|New Zealand|Penrith Panthers
+2024|Isaah Yeo|Australia|Penrith Panthers
+2025|Harry Grant|Australia|Melbourne Storm

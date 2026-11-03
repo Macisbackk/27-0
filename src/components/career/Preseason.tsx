@@ -159,7 +159,8 @@ export function PreseasonResults() {
     <section aria-label="Pre-season results" className="fl-rise rounded-card bg-pitch-900 p-4">
       <Eyebrow>Pre-season done</Eyebrow>
       <ul className="mt-2 space-y-1.5 text-left">
-        {pre.results.map((r) => {
+        {/* Newest first (owner, v1.62). */}
+        {[...pre.results].reverse().map((r) => {
           const club = s.clubs[r.opponentId]!;
           const tone = r.us > r.them ? "text-success" : r.us < r.them ? "text-danger" : "text-gray-300";
           return (
