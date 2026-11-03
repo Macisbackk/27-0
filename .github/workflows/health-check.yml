@@ -27,7 +27,7 @@ jobs:
       - run: npm ci
       - uses: oven-sh/setup-bun@v2
       - name: Game balance report
-        run: bun scripts/health-balance-report.ts 150 6 | tee balance.md
+        run: bun scripts/health-odds-sweep.ts 400 && bun scripts/health-balance-report.ts 150 6 | tee balance.md
       - uses: actions/upload-artifact@v4
         if: always()
         with:
