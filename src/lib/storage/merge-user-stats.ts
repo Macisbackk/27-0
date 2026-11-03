@@ -125,6 +125,11 @@ export function mergeUserStatsData(
       a.playerSeasonLosses,
       b.playerSeasonLosses
     ),
+    playerPerfectSeasons: mergeRecordMaps(
+      a.playerPerfectSeasons ?? {},
+      b.playerPerfectSeasons ?? {}
+    ),
+    playerTries: mergeRecordMaps(a.playerTries ?? {}, b.playerTries ?? {}),
     joeMellorRuns: a.joeMellorRuns + b.joeMellorRuns,
     bestJoeMellorWins: pickBestRecord(
       { wins: a.bestJoeMellorWins, losses: a.bestJoeMellorLosses },
