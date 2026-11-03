@@ -51,6 +51,7 @@ import { getLocalDateKey } from "@/lib/mini-games/date";
 import { PAST_DAILIES_MODE_ID } from "@/lib/cosmetics";
 import { countUnlockedModes, syncModeUnlocks } from "@/lib/mode-unlocks";
 import { useCosmetics } from "@/lib/storage/cosmetics-store";
+import { syncAchievementKits } from "@/lib/achievement-kits";
 import { DAILY_ARCHIVE_PAGE } from "@/lib/daily-archive";
 import { MODES_PAGE } from "@/lib/play-side-modes";
 import { PitchHero } from "@/components/ui/PitchHero";
@@ -262,6 +263,7 @@ export function HomeModeSelector() {
     }
     // More modes unlock by challenges (v1.50): grant any already met (27-0, Grand Final…).
     syncModeUnlocks();
+    syncAchievementKits();
     try {
       setEra(getNormalEraVariant());
     } catch {

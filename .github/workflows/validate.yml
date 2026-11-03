@@ -92,6 +92,9 @@ jobs:
       - name: Mode unlocks
         if: success() || failure()
         run: scripts/ci-run.sh "Mode unlocks" npm run test:mode-unlocks
+      - name: Store
+        if: success() || failure()
+        run: scripts/ci-run.sh "Store" npm run test:store
       - name: Daily missions
         if: success() || failure()
         run: scripts/ci-run.sh "Daily missions" npm run test:missions

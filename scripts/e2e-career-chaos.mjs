@@ -40,6 +40,15 @@ async function noSidewaysScroll(page, where) {
   if (sw > cw + 1) errors.push(`${where}: page scrolls sideways (${sw}px content in ${cw}px screen)`);
 }
 
+/** Hub pop-ups (legend signings, random events, the World Club Challenge) sit over the page; Escape takes the default. */
+async function dismissEvents(page) {
+  for (let i = 0; i < 4; i++) {
+    if (!(await page.getByTestId("career-event").isVisible().catch(() => false))) return;
+    await page.keyboard.press("Escape");
+    await page.waitForTimeout(300);
+  }
+}
+
 async function startCareer(page, division, index = 0) {
   await page.goto(`${BASE}/manager`, { waitUntil: "networkidle" });
   await page.getByRole("heading", { name: "Pick your club" }).waitFor({ timeout });
@@ -54,9 +63,11 @@ async function startCareer(page, division, index = 0) {
   await page.getByRole("button", { name: /Play match|Continue/ }).first().waitFor({ timeout });
 }
 
+let failPage = null;
 try {
   const context = await browser.newContext({ viewport: { width: 320, height: 640 }, isMobile: true, hasTouch: true });
   const page = await newPage(context);
+  failPage = page;
 
   // 1) Garbage and half-valid saves must fall back to the club picker, not crash.
   for (const [label, value] of [
@@ -143,9 +154,11 @@ try {
   if (lpAfter !== lpBefore) errors.push(`reloading the review re-banked Legacy (${lpBefore} → ${lpAfter})`);
   step("Reloading the review screen doesn't re-award Legacy");
 
+  await dismissEvents(page);
   await page.getByRole("button", { name: "Next: retirements and contracts" }).click();
   await page.getByRole("heading", { name: "Comings and goings" }).waitFor({ timeout });
   await noSidewaysScroll(page, "departures @320");
+  await dismissEvents(page);
   // Double-tap the exit: must land on the window once, not skip past it.
   await page.getByRole("button", { name: /^(Open the transfer window|Continue to the window)$/ }).dblclick();
   // v1.18: the release list is confirmed in a sheet; double-tap the confirm too.
@@ -173,6 +186,22 @@ try {
   await context.close();
 } catch (err) {
   errors.push(`step failed after [${steps.at(-1) ?? "start"}]: ${err instanceof Error ? err.message : String(err)}`);
+  // CI: what was on screen when it failed (published with the other e2e screenshots).
+  const page = failPage;
+  if (process.env.CI && page) {
+    try {
+      const { mkdirSync, writeFileSync } = await import("node:fs");
+      mkdirSync("e2e-shots", { recursive: true });
+      await page.screenshot({ path: "e2e-shots/chaos-fail.png", scale: "css" });
+      const text = await page.evaluate(() => {
+        const dialogs = [...document.querySelectorAll('[role="dialog"]')].map((d) => `DIALOG: ${d.textContent?.slice(0, 400)}`);
+        return [location.href, ...dialogs, document.body.innerText.slice(0, 3000)].join("\n---\n");
+      });
+      writeFileSync("e2e-shots/chaos-fail.txt", text);
+    } catch {
+      /* best effort */
+    }
+  }
 }
 
 await browser.close();

@@ -16,7 +16,7 @@ import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
 import { TYPO } from "@/lib/ui/typography";
 import { ClubShirt } from "./ClubShirt";
 import { useCosmetics } from "@/lib/storage/cosmetics-store";
-import { PITCH_STYLES, kitFromDesign, pitchStyleForItem } from "@/lib/cosmetics";
+import { KIT_PRESETS, PITCH_STYLES, kitFromDesign, pitchStyleForItem } from "@/lib/cosmetics";
 import type { ClubKit } from "@/lib/club-kits";
 import { PitchSlotCard, pitchSlotLabel, PITCH_SLOT_COMPACT_CLASS, PITCH_SLOT_REVIEW_CLASS, PITCH_SLOT_SIZE_CLASS } from "./PitchSlotCard";
 
@@ -93,8 +93,13 @@ function RugbyPitchInner({
   // Store cosmetics: your own kit on every shirt, and the pitch style you've equipped.
   const cosmetics = useCosmetics();
   const kitOverride = useMemo<ClubKit | null>(
-    () => (cosmetics.kit.enabled ? kitFromDesign(cosmetics.kit) : null),
-    [cosmetics.kit]
+    () =>
+      cosmetics.equipped.kit && KIT_PRESETS[cosmetics.equipped.kit]
+        ? KIT_PRESETS[cosmetics.equipped.kit]!
+        : cosmetics.kit.enabled
+          ? kitFromDesign(cosmetics.kit)
+          : null,
+    [cosmetics.kit, cosmetics.equipped.kit]
   );
   const pitchStyle = pitchStyleForItem(cosmetics.equipped.pitch);
   const headerTitle = formationOnly
