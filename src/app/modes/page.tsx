@@ -6,9 +6,9 @@ import { StandardPageShell } from "@/components/ui/StandardPageShell";
 import { ClubLogoBox } from "@/components/ClubBadge";
 import { PAGE } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { ensurePlayersLoaded } from "@/lib/players";
-import { getOneClubOptions, type OneClubOption } from "@/lib/game/one-club";
-import { GAUNTLET_LENGTH, getGauntletOpponents, type GauntletOpponent } from "@/lib/game/gauntlet";
+import type { OneClubOption } from "@/lib/game/one-club";
+import type { GauntletOpponent } from "@/lib/game/gauntlet";
+import { GAUNTLET_LENGTH } from "@/lib/game/gauntlet-constants";
 import {
   formatOneClubRecord,
   loadModeRecords,
@@ -81,17 +81,23 @@ export default function ModesPage() {
 
   useEffect(() => {
     let live = true;
-    void ensurePlayersLoaded()
-      .catch(() => undefined)
-      .then(() => {
+    // The player database loads after first paint (it is only needed for these two lists).
+    void Promise.all([import("@/lib/players"), import("@/lib/game/one-club"), import("@/lib/game/gauntlet")])
+      .then(async ([players, oneClub, gauntletMod]) => {
+        await players.ensurePlayersLoaded().catch(() => undefined);
         if (!live) return;
         try {
-          setClubs(getOneClubOptions());
-          setGauntlet(getGauntletOpponents());
+          setClubs(oneClub.getOneClubOptions());
+          setGauntlet(gauntletMod.getGauntletOpponents());
         } catch {
           setClubs([]);
           setGauntlet([]);
         }
+      })
+      .catch(() => {
+        if (!live) return;
+        setClubs([]);
+        setGauntlet([]);
       });
     const read = () => setRecords(loadModeRecords());
     read();

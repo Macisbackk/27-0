@@ -29,13 +29,27 @@ const PROFILES = [
 
 // Collected inside the page from the start of navigation.
 const OBSERVE = () => {
-  window.__perf = { lcp: 0, cls: 0, longTasks: 0, tbt: 0, events: [] };
+  window.__perf = { lcp: 0, cls: 0, longTasks: 0, tbt: 0, events: [], shifts: [] };
+  const describe = (n) => {
+    if (!n || !n.tagName) return "?";
+    const cls = typeof n.className === "string" ? n.className.trim().split(/\s+/).slice(0, 3).join(".") : "";
+    const text = (n.textContent || "").trim().slice(0, 30);
+    return `${n.tagName.toLowerCase()}${n.id ? "#" + n.id : ""}${cls ? "." + cls : ""}${text ? ` "${text}"` : ""}`;
+  };
   try {
     new PerformanceObserver((l) => {
       for (const e of l.getEntries()) window.__perf.lcp = Math.max(window.__perf.lcp, e.startTime);
     }).observe({ type: "largest-contentful-paint", buffered: true });
     new PerformanceObserver((l) => {
-      for (const e of l.getEntries()) if (!e.hadRecentInput) window.__perf.cls += e.value;
+      for (const e of l.getEntries()) {
+        if (e.hadRecentInput) continue;
+        window.__perf.cls += e.value;
+        window.__perf.shifts.push({
+          t: Math.round(e.startTime),
+          v: Number(e.value.toFixed(3)),
+          src: (e.sources || []).slice(0, 2).map((s) => describe(s.node)).join(" | "),
+        });
+      }
     }).observe({ type: "layout-shift", buffered: true });
     new PerformanceObserver((l) => {
       for (const e of l.getEntries()) {
@@ -52,6 +66,30 @@ const OBSERVE = () => {
 };
 
 const results = [];
+// PERF_PROFILE="/,/play": CPU-profile those pages (first phone, cold) and print where main-thread time goes.
+const PROFILE_PATHS = (process.env.PERF_PROFILE || "").split(",").map((x) => x.trim()).filter(Boolean);
+const profiles = [];
+function summarizeProfile(path, profile) {
+  const byId = new Map(profile.nodes.map((n) => [n.id, n]));
+  const hits = new Map();
+  const dt = profile.timeDeltas || [];
+  profile.samples.forEach((id, i) => hits.set(id, (hits.get(id) || 0) + (dt[i + 1] ?? dt[i] ?? 0)));
+  const byUrl = new Map();
+  const byFn = new Map();
+  let total = 0;
+  for (const [id, us] of hits) {
+    const n = byId.get(id);
+    const cf = n.callFrame;
+    const url = cf.url ? cf.url.replace(/^https?:\/\/[^/]+/, "").replace(/\?.*$/, "") : `(${cf.functionName || "native"})`;
+    if (url === "(idle)") continue;
+    total += us;
+    byUrl.set(url, (byUrl.get(url) || 0) + us);
+    const fk = `${cf.functionName || "(anon)"} ${url}:${cf.lineNumber + 1}:${cf.columnNumber + 1}`;
+    byFn.set(fk, (byFn.get(fk) || 0) + us);
+  }
+  const top = (m, n) => [...m.entries()].sort((a, b) => b[1] - a[1]).slice(0, n).map(([k, v]) => `  ${(v / 1000).toFixed(0).padStart(6)} ms  ${k}`);
+  profiles.push([`CPU profile ${path} (busy ${(total / 1000).toFixed(0)} ms, self time by script):`, ...top(byUrl, 12), "  by function:", ...top(byFn, 15)].join("\n"));
+}
 const browser = await chromium.launch();
 for (const profile of PROFILES) {
   for (const path of PAGES) {
@@ -77,7 +115,13 @@ for (const profile of PROFILES) {
         }
       });
       const row = { profile: profile.name, path, visit };
+      const doProfile = visit === "cold" && profile === PROFILES[0] && PROFILE_PATHS.includes(path);
       try {
+        if (doProfile) {
+          await cdp.send("Profiler.enable");
+          await cdp.send("Profiler.setSamplingInterval", { interval: 500 });
+          await cdp.send("Profiler.start");
+        }
         if (visit === "warm") {
           await page.goto(`${BASE}${path}`, { waitUntil: "load", timeout: 90_000 });
           jsBytes = 0;
@@ -106,9 +150,14 @@ for (const profile of PROFILES) {
             tbt: Math.round(p.tbt || 0),
             longTasks: p.longTasks || 0,
             tapMs: p.events && p.events.length ? Math.round(Math.max(...p.events)) : null,
+            shifts: (p.shifts || []).filter((x) => x.v >= 0.01).slice(0, 4),
           };
         });
         Object.assign(row, m, { jsKB: Math.round(jsBytes / 1024), totalKB: Math.round(totalBytes / 1024) });
+        if (doProfile) {
+          const { profile: cpu } = await cdp.send("Profiler.stop");
+          summarizeProfile(path, cpu);
+        }
       } catch (err) {
         row.error = String(err?.message || err).split("\n")[0];
       }
@@ -136,9 +185,22 @@ for (const r of results) {
     `| ${r.profile} | ${r.path} | ${r.visit} | ${r.ttfb} | ${r.fcp} | ${grade(r.lcp, 2500, 4000)} | ${grade(r.cls, 0.1, 0.25)} | ${grade(r.tbt, 200, 600)} | ${grade(r.tapMs, 200, 500)} | ${r.jsKB} | ${r.totalKB} |`
   );
 }
+lines.push("");
+lines.push("Layout shifts (≥0.01; time ms, score, shifted element):");
+for (const r of results) {
+  if (!r.shifts || !r.shifts.length) continue;
+  lines.push(`- ${r.profile} ${r.path} ${r.visit}: ${r.shifts.map((x) => `@${x.t} ${x.v} ${x.src}`).join(" ; ")}`);
+}
+if (profiles.length) {
+  lines.push("");
+  lines.push("```");
+  lines.push(...profiles);
+  lines.push("```");
+}
 const md = lines.join("\n") + "\n";
 process.stdout.write(md);
 if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, md);
-mkdirSync("health", { recursive: true });
-writeFileSync("health/mobile-perf.json", JSON.stringify(results, null, 2));
-writeFileSync("health/mobile-perf.md", md);
+const OUT = process.env.PERF_OUT_DIR || "health";
+mkdirSync(OUT, { recursive: true });
+writeFileSync(`${OUT}/mobile-perf.json`, JSON.stringify(results, null, 2));
+writeFileSync(`${OUT}/mobile-perf.md`, md);

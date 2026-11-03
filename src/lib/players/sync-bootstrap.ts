@@ -13,3 +13,16 @@ export function buildSyncPlayerRegistry() {
     legends as Record<string, unknown>[]
   );
 }
+
+/** The raw rows behind buildSyncPlayerRegistry (for the sliced client build). */
+export function getSyncRawPlayerRows(): {
+  current: Record<string, unknown>[];
+  historic: Record<string, unknown>[];
+  legends: Record<string, unknown>[];
+} {
+  return {
+    current: currentSquads as Record<string, unknown>[],
+    historic: historicPlayers as Record<string, unknown>[],
+    legends: legends as Record<string, unknown>[],
+  };
+}

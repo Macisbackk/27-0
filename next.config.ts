@@ -6,6 +6,19 @@ const isCapacitorBuild = process.env.CAPACITOR_BUILD === "1";
 
 const nextConfig: NextConfig = {
   outputFileTracingRoot: path.join(__dirname),
+  // CHUNK_REPORT=1 (health check only) records which modules end up in each client chunk.
+  ...(process.env.CHUNK_REPORT === "1"
+    ? {
+        webpack(config: { plugins: unknown[] }, { isServer, dev }: { isServer: boolean; dev: boolean }) {
+          if (!isServer && !dev) {
+            // eslint-disable-next-line @typescript-eslint/no-require-imports
+            const ChunkReportPlugin = require("./scripts/chunk-report-plugin.cjs");
+            config.plugins.push(new ChunkReportPlugin());
+          }
+          return config;
+        },
+      }
+    : {}),
   // Lets the app build hide web-only bits (tip links, "install" prompts, web analytics) at build time.
   env: { NEXT_PUBLIC_APP_BUILD: isCapacitorBuild ? "1" : "" },
   images: {

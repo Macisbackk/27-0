@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/heavy-routes";
 import { AlbumGlyph, CupGlyph, LadderGlyph, ShopGlyph } from "@/components/icons/rugby-icons";
-import { useSquadBook } from "@/lib/squad-book";
+import { useSquadBookState } from "@/lib/squad-book-state";
 
 const LINKS = [
   { href: "/leaderboard", label: "Leaderboard", icon: <LadderGlyph /> },
@@ -13,13 +14,14 @@ const LINKS = [
 
 /** The home page's small link row; the Squad Book carries its card count (collection hook). */
 export function HomeMoreLinks() {
-  const cards = Object.keys(useSquadBook().cards).length;
+  const cards = Object.keys(useSquadBookState().cards).length;
   return (
     <nav className="grid grid-cols-4 gap-1 border-t border-white/[0.07] pt-3" aria-label="More">
       {LINKS.map(({ href, label, icon }) => (
         <Link
           key={href}
           href={href}
+          prefetch={linkPrefetch(href)}
           aria-label={href === "/squad-book" && cards > 0 ? `${label}, ${cards} cards` : undefined}
           className="relative flex min-h-[56px] flex-col items-center justify-center gap-1 rounded-control text-[12px] font-semibold text-[color:var(--fl-muted)] hover:bg-pitch-900 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/70"
         >
