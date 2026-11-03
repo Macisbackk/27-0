@@ -106,7 +106,6 @@ function BookCard({
   favourite?: boolean;
 }) {
   const colour = RARITY_COLOUR[card.rarity];
-  const clubLine = `${card.club}${card.year ? ` · ${card.year}` : ""}`;
   const body = (
     <>
       {collected ? (
@@ -130,14 +129,17 @@ function BookCard({
           ) : null}
           {card.name}
         </span>
-        <span className="mt-0.5 line-clamp-2 break-words text-xs leading-snug text-[color:var(--fl-muted)]">{clubLine}</span>
-        <span className="mt-0.5 block break-words text-[11px] leading-snug text-[color:var(--fl-muted)] opacity-80">{sub}</span>
-      </span>
-      <span className="flex shrink-0 flex-col items-end gap-1">
-        <span className={`font-display text-lg font-bold leading-none tabular-nums ${collected ? "text-white" : "text-[color:var(--fl-muted)] opacity-60"}`}>
-          {collected ? card.rating : "?"}
+        <span className="mt-0.5 block break-words text-xs leading-snug text-[color:var(--fl-muted)]">
+          {card.club}
+          {card.year ? <span className="whitespace-nowrap"> · {card.year}</span> : null}
         </span>
-        <RarityChip rarity={card.rarity} className={collected ? "" : "opacity-60"} />
+        <span className="mt-1 flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-0.5">
+          <RarityChip rarity={card.rarity} className={collected ? "" : "opacity-60"} />
+          <span className="break-words text-[11px] leading-snug text-[color:var(--fl-muted)] opacity-80">{sub}</span>
+        </span>
+      </span>
+      <span className={`shrink-0 font-display text-xl font-bold leading-none tabular-nums ${collected ? "text-white" : "text-[color:var(--fl-muted)] opacity-60"}`}>
+        {collected ? card.rating : "?"}
       </span>
     </>
   );
