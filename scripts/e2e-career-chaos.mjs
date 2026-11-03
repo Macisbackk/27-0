@@ -44,7 +44,7 @@ async function startCareer(page, division, index = 0) {
   await page.goto(`${BASE}/manager`, { waitUntil: "networkidle" });
   await page.getByRole("heading", { name: "Pick your club" }).waitFor({ timeout });
   // v1.18: Super League is the default tab; pick the requested one explicitly.
-  await page.getByRole("tab", { name: division === "super-league" ? /Super League/ : /Championship/ }).click();
+  await page.getByRole("tab", { name: division === "super-league" ? /Super League/ : /^Champ/ }).click();
   const clubs = page.getByRole("list", { name: "Clubs" }).getByRole("button");
   await clubs.nth(index).click();
   await page.getByRole("button", { name: /Take charge of/ }).click();
