@@ -951,6 +951,7 @@ if (ONLY === "all" || ONLY === "flows") {
           await btn(page, "Buy and sell").click({ timeout: 2000 }).catch(() => {});
           await page.waitForTimeout(400);
           await audit(page, "Manager Deadline Day market @320", SMALL);
+          if (!(await visible(page.getByRole("navigation", { name: "Manager sections" })))) problem("manager", "Deadline Day market @320: the Manager bottom bar isn't showing");
           await btn(page, "Back to Deadline Day").click({ timeout: 2000 }).catch(() => {});
           await page.waitForTimeout(300);
         }

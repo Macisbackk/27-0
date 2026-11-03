@@ -89,16 +89,23 @@ export function TransferWindow({ mode = "summer", onClose }: { mode?: "summer" |
       ) : (
         <CareerBackLink label="Home (progress saved)" />
       )}
-      <PitchHero
-        icon={<ShirtGlyph />}
-        eyebrow={
-          midseason ? `Deadline Day · before Round ${WINDOW_CLOSES_BEFORE_ROUND}` : mode === "preseason" ? <>Transfer window · pre-season {s.year}</> : <>Transfer window · before {s.year}</>
-        }
-        title={midseason ? "Last chance" : "Build your squad"}
-      />
+      {/* Deadline Day (v1.62): no hero, the clock is the header, so the market is the screen. */}
+      {midseason ? null : (
+        <PitchHero
+          icon={<ShirtGlyph />}
+          eyebrow={mode === "preseason" ? <>Transfer window · pre-season {s.year}</> : <>Transfer window · before {s.year}</>}
+          title="Build your squad"
+        />
+      )}
 
-      {midseason && deadlineDecisionPending(s) ? (
+      {midseason ? (
         <section aria-label="Deadline Day clock" className="flex flex-col gap-3 rounded-card bg-pitch-900 p-3 ring-2 ring-amber-300/60">
+          <h1 className="flex items-baseline justify-between gap-2">
+            <span className="fl-number text-[22px] leading-none text-amber-300">DEADLINE DAY</span>
+            <span className="text-[12px] font-semibold text-[color:var(--fl-muted)]">Before Round {WINDOW_CLOSES_BEFORE_ROUND}</span>
+          </h1>
+          {deadlineDecisionPending(s) ? (
+          <>
           <div className="flex items-center gap-3">
             <div className="min-w-0 flex-1">
               <DeadlineClockFace compact />
@@ -117,6 +124,8 @@ export function TransferWindow({ mode = "summer", onClose }: { mode?: "summer" |
             </button>
           </div>
           <DeadlineOffers />
+          </>
+          ) : null}
         </section>
       ) : null}
 
@@ -134,14 +143,17 @@ export function TransferWindow({ mode = "summer", onClose }: { mode?: "summer" |
           <p className="mt-1"><Stars value={s.prestige} /></p>
         </div>
         <p className="col-span-3 text-xs text-gray-400">
-          Players rated up to <span className="font-semibold text-white">{prestigeRatingCap(s.prestige)}</span> will join you, free agents included. Legends always will.
+          Players rated up to <span className="font-semibold text-white">{prestigeRatingCap(s.prestige)}</span> will join you{midseason ? "" : ", free agents included. Legends always will"}.
         </p>
-        <p className="col-span-3 text-xs text-gray-400" data-testid="wage-note">
-          Free agents cost no fee, only wages.{" "}
-          {mode === "summer"
-            ? "Wages go on the bill when the season starts."
-            : "The rest of this season's wages are paid when he signs, and saved when a player leaves."}
-        </p>
+        {/* Deadline Day keeps it to the essentials; the wage rules show on each row ("… this season"). */}
+        {midseason ? null : (
+          <p className="col-span-3 text-xs text-gray-400" data-testid="wage-note">
+            Free agents cost no fee, only wages.{" "}
+            {mode === "summer"
+              ? "Wages go on the bill when the season starts."
+              : "The rest of this season's wages are paid when he signs, and saved when a player leaves."}
+          </p>
+        )}
       </Card>
 
       <GameSegmentedControl<"buy" | "sell">
