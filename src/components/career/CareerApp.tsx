@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
-import { DIVISION_LABEL, boardGoal, currentStage, deadlineDecisionPending, formatMoney, isWindowOpen, ordinal, seasonProgress, sortTable, stageSeen, windowStatus } from "@/lib/career";
+import { DIVISION_LABEL, boardGoal, boardOf, currentObjectives, fansOf, moodWord, currentStage, deadlineDecisionPending, formatMoney, isWindowOpen, ordinal, seasonProgress, sortTable, stageSeen, windowStatus } from "@/lib/career";
 import { DailyMissionToast } from "@/components/DailyMissionToast";
 import { CareerProvider, useCareer } from "@/lib/career/context";
 import { CareerErrorBoundary } from "./CareerErrorBoundary";
@@ -97,8 +97,45 @@ function SeasonStrip() {
           {!started ? "New season" : leagueDone ? (goal.onTrack ? "Target met" : "Missed") : goal.onTrack ? "On track" : `${gap} ${gap === 1 ? "place" : "places"} off`}
         </span>
       </div>
+      <MoodRow />
       {/* The transfer window has its own card lower down the Match tab (v1.54: no duplicate pill). */}
     </section>
+  );
+}
+
+/** Supporter mood and board confidence (0–100) with the board's other objectives, in one compact row. */
+function MoodRow() {
+  const { state } = useCareer();
+  const s = state!;
+  const fans = fansOf(s);
+  const board = boardOf(s);
+  const objectives = currentObjectives(s);
+  const done = objectives.filter((o) => o.done).length;
+  const meter = (label: string, v: number, testId: string) => (
+    <div className="min-w-0 flex-1" data-testid={testId} title={`${label}: ${Math.round(v)} / 100`}>
+      <p className="flex items-baseline justify-between gap-1 text-[11px]">
+        <span className="font-semibold text-white">{label}</span>
+        <span className={`tabular-nums ${v < 30 ? "text-danger" : v >= 65 ? "text-success" : "text-gray-300"}`}>
+          {moodWord(v)} · {Math.round(v)}
+        </span>
+      </p>
+      <div className="mt-0.5 h-1.5 overflow-hidden rounded-full bg-white/10" role="meter" aria-label={label} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(v)}>
+        <div className={`h-full rounded-full ${v < 30 ? "bg-danger" : v >= 65 ? "bg-success" : "bg-amber-300"}`} style={{ width: `${Math.max(3, Math.min(100, v))}%` }} />
+      </div>
+    </div>
+  );
+  return (
+    <div className="mt-2 border-t border-white/5 pt-2">
+      <div className="flex gap-3">
+        {meter("Fans", fans, "fans-mood")}
+        {meter("Board", board, "board-confidence")}
+      </div>
+      {objectives.length ? (
+        <p className="mt-1.5 text-center text-[11px] leading-snug text-gray-400 sm:text-left" data-testid="board-objectives-line">
+          <span className="font-semibold text-gray-300">Objectives {done}/{objectives.length}:</span> {objectives.map((o) => `${o.done ? "✓ " : ""}${o.title}`).join(" · ")}
+        </p>
+      ) : null}
+    </div>
   );
 }
 

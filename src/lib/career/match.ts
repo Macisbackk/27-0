@@ -1,12 +1,15 @@
 import { LINEUP_SLOTS, benchBonus, effectiveRating } from "./players";
 import { poisson, weightedPick, type Rng } from "./rng";
-import type { CareerPlayer, FixtureResult, Pos, Tactic } from "./types";
+import { tacticEffect } from "./tactics";
+import type { CareerPlayer, FixtureResult, Pos, Tactic, TacticSettings } from "./types";
 
 export interface TeamSheet {
   clubId: string;
   /** 13 player ids in shirt order. */
   lineup: string[];
   tactic: Tactic;
+  /** The three-part game plan (v1.66). When set it replaces `tactic`. */
+  tactics?: TacticSettings;
   /** Small temporary rating bonus (pre-season match sharpness). */
   boost?: number;
   /** Interchange (shirts 14–17). Counts a little towards strength; career sheets always set it. */
@@ -40,9 +43,15 @@ export function sheetStrength(sheet: TeamSheet, players: Record<string, CareerPl
   const xiii = total / count;
   const captain = sheet.captain && sheet.lineup.includes(sheet.captain) && players[sheet.captain] ? CAPTAIN_BOOST : 0;
   const rating = xiii + benchBonus(xiii, sheet.bench, players) + (sheet.boost ?? 0) + captain;
-  const attackMod = sheet.tactic === "attack" ? 1.0 : sheet.tactic === "defend" ? -0.8 : 0;
-  const defenceMod = sheet.tactic === "defend" ? 1.0 : sheet.tactic === "attack" ? -0.8 : 0;
-  return { rating, attack: rating + attackMod, defence: rating + defenceMod };
+  if (!sheet.tactics) {
+    // Sheets without the three-part plan (tests, old callers): the old single tactic.
+    const attackMod = sheet.tactic === "attack" ? 1.0 : sheet.tactic === "defend" ? -0.8 : 0;
+    const defenceMod = sheet.tactic === "defend" ? 1.0 : sheet.tactic === "attack" ? -0.8 : 0;
+    const tempo = sheet.tactic === "attack" ? 1.04 : sheet.tactic === "defend" ? 0.95 : 1;
+    return { rating, attack: rating + attackMod, defence: rating + defenceMod, tempo, pens: 0 };
+  }
+  const e = tacticEffect(sheet.tactics);
+  return { rating, attack: rating + e.attack, defence: rating + e.defence, tempo: e.tempo, pens: e.pens };
 }
 
 export function pickScorer(rng: Rng, sheet: TeamSheet, players: Record<string, CareerPlayer>): string {
@@ -103,8 +112,10 @@ export function simulateMatch(
   if (homeRed) home = withoutPlayer(home, homeRed.id);
   if (awayRed) away = withoutPlayer(away, awayRed.id);
 
-  const homeTryMean = expectedTries(h.attack, a.defence, !opts.neutral);
-  const awayTryMean = expectedTries(a.attack, h.defence, false);
+  // Game plans: an open game (expansive, attacking kicks) means more tries both ways.
+  const tempo = h.tempo * a.tempo;
+  const homeTryMean = expectedTries(h.attack, a.defence, !opts.neutral) * tempo;
+  const awayTryMean = expectedTries(a.attack, h.defence, false) * tempo;
 
   const homeTryCount = poisson(rng, homeTryMean);
   const awayTryCount = poisson(rng, awayTryMean);
@@ -115,10 +126,11 @@ export function simulateMatch(
     for (let i = 0; i < tries; i++) if (rng() < accuracy) made++;
     return made;
   };
-  const penalties = (strength: number) => poisson(rng, 0.45 + Math.max(0, strength - 80) * 0.03);
+  // A rushing defence gives away more penalties: the other side's shots at goal.
+  const penalties = (strength: number, conceded: number) => poisson(rng, Math.max(0.1, 0.45 + Math.max(0, strength - 80) * 0.03 + conceded));
 
-  let homeScore = homeTryCount * 4 + conversions(homeTryCount, h.rating) * 2 + penalties(h.rating) * 2;
-  let awayScore = awayTryCount * 4 + conversions(awayTryCount, a.rating) * 2 + penalties(a.rating) * 2;
+  let homeScore = homeTryCount * 4 + conversions(homeTryCount, h.rating) * 2 + penalties(h.rating, a.pens) * 2;
+  let awayScore = awayTryCount * 4 + conversions(awayTryCount, a.rating) * 2 + penalties(a.rating, h.pens) * 2;
 
   // Occasional drop goal in tight games.
   if (Math.abs(homeScore - awayScore) <= 2 && rng() < 0.25) {

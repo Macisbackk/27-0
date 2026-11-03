@@ -136,6 +136,32 @@ export function Departures() {
         {d?.released?.length ? <p className="mt-1 text-xs text-gray-400">Leaving on a free: {d.released.join(", ")}</p> : null}
       </Card>
 
+      {d?.growth?.length ? (
+        <Card>
+          <section aria-label="Player development" data-testid="player-growth">
+            <Eyebrow>Development · games make players</Eyebrow>
+            <ul className="mt-2 divide-y divide-pitch-800">
+              {d.growth.map((g) => (
+                <li key={g.name} className="flex items-center gap-3 py-2">
+                  <span className="w-8 text-[11px] font-bold uppercase text-gray-400">{g.pos}</span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-white">{g.name}</span>
+                    <span className="block text-[11px] text-gray-500">
+                      Age {g.age} · {g.apps} game{g.apps === 1 ? "" : "s"} last season
+                    </span>
+                  </span>
+                  <span className="text-xs tabular-nums text-gray-400">
+                    {g.from} → <span className="font-bold text-white">{g.to}</span>
+                  </span>
+                  <span className="w-8 text-right text-sm font-bold tabular-nums text-success">+{g.to - g.from}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-2 text-center text-xs text-gray-400 sm:text-left">Young players who play grow fastest. Ones who barely play hardly grow.</p>
+          </section>
+        </Card>
+      ) : null}
+
       <Card>
         <Eyebrow>Retired · {d?.retired.length ?? 0}</Eyebrow>
         {d?.retired.length ? (
