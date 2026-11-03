@@ -108,7 +108,7 @@
     "test:mode-unlocks": "bun scripts/test-mode-unlocks.ts",
     "test:missions": "tsx scripts/test-missions.ts",
     "test:moderation": "tsx scripts/test-name-filter.ts",
-    "test:storage": "bun scripts/test-corrupt-storage.ts",
+    "test:storage": "bun scripts/test-corrupt-storage.ts && bun scripts/test-device-stats-merge.ts",
     "test:sim": "tsx scripts/test-sim-formula.ts",
     "test:current-ratings": "tsx scripts/test-current-ratings.ts",
     "build:current-ratings": "tsx scripts/build-current-ratings.ts",
