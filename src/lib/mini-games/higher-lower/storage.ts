@@ -1,4 +1,5 @@
 import { STORAGE_KEYS } from "@/lib/storage/keys";
+import { notifyDeviceStatsChanged } from "@/lib/storage/device-stats-events";
 import {
   HIGHER_LOWER_STATS_SCHEMA,
   type HigherLowerRun,
@@ -111,4 +112,5 @@ export function saveHigherLowerStats(stats: HigherLowerStats): void {
     ...stats,
     schemaVersion: HIGHER_LOWER_STATS_SCHEMA,
   });
+  notifyDeviceStatsChanged();
 }

@@ -1,4 +1,5 @@
 import { STORAGE_KEYS } from "@/lib/storage/keys";
+import { notifyDeviceStatsChanged } from "@/lib/storage/device-stats-events";
 import { GRID_STATS_SCHEMA, type GridRun, type GridStats } from "./types";
 import { createEmptyGridStats, isGridRun } from "./run-utils";
 
@@ -59,4 +60,5 @@ export function loadGridStats(): GridStats {
 
 export function saveGridStats(stats: GridStats): void {
   writeJson(STORAGE_KEYS.gridStats, stats);
+  notifyDeviceStatsChanged();
 }
