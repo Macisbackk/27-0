@@ -81,8 +81,10 @@ async function main(): Promise<void> {
   const earnedModes = [cos.BALL_KNOWER_ID, cos.ONE_CLUB_MODE_ID, cos.GAUNTLET_MODE_ID, cos.PAST_DAILIES_MODE_ID];
   const earnedKits = [cos.KIT_PERFECT_ID, cos.KIT_29_0_ID, cos.KIT_STREAK_30_ID, cos.KIT_STREAK_100_ID, cos.KIT_MANAGER_GF_ID];
   check(
-    cos.COSMETICS.filter((c) => c.notForSale).every((c) => (earnedModes.includes(c.id) && c.kind === "mode") || (earnedKits.includes(c.id) && c.kind === "kit")),
-    "only the More modes and achievement kits are earned, not sold"
+    cos.COSMETICS.filter((c) => c.notForSale).every(
+      (c) => (earnedModes.includes(c.id) && c.kind === "mode") || (earnedKits.includes(c.id) && c.kind === "kit") || c.id.startsWith("title-collector-")
+    ),
+    "only the More modes, achievement kits and Squad Book club titles are earned, not sold"
   );
   check(earnedKits.every((id) => cos.cosmeticById(id)?.notForSale === true && cos.isKitPreset(id)), "every achievement kit is a notForSale preset");
   check(cos.COSMETICS.filter((c) => c.kind === "kit" && c.id !== cos.KIT_DESIGNER_ID).every((c) => cos.isKitPreset(c.id)), "every ready-made kit has a shirt");
