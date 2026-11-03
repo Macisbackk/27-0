@@ -312,9 +312,10 @@ export function WindowStatusLine({ className = "" }: { className?: string }) {
 export function TransferWindowCard({ onOpenMarket }: { onOpenMarket: () => void }) {
   const { state } = useCareer();
   const s = state!;
-  // A double tap on Play 2 (friendlies) or Start the season must not fall through to Open market,
-  // which can land under the finger when the stage changes.
-  const armed = useArmed(450, currentStage(s), { armedOnMount: true });
+  // A double tap on Play 2 (friendlies) must not fall through to Open market, which can land under
+  // the finger on the Round 1 screen. The card is remounted when the stage changes (it sits in a
+  // different place), so it arms after a moment on mount too.
+  const armed = useArmed(450, currentStage(s));
   // Deadline Day keeps its card after the window shuts, as a round-up of the day.
   if (isDeadlineDay(s)) return <DeadlineDayCard onOpenMarket={onOpenMarket} />;
   const w = windowStatus(s);
