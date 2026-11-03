@@ -1,0 +1,60 @@
+e2e-everything FINAL — 13 distinct problem(s), 1813s
+base http://localhost:3000
+
+## tap-target (1)
+- under 40px: <button.mobile-sheet-card__close> "Close" 36×36
+    at Manager Team tab @320 | Manager Team › Attack @320 | Manager Team › Balanced @320 | Manager Team › Defend @320 | Manager Table tab @320 | Manager Table › Attack @320 (+13 more)
+
+## tap-target-table (3)
+- 14 small tap target(s) inside data tables
+    at Manager Table tab (long name) @320  [ev-011-tap-target-table-manager-table-tab-long-name-320.jpg]
+- 17 small tap target(s) inside data tables
+    at Manager NRL Table tab @320 | Manager NRL Table › League @320  [ev-012-tap-target-table-manager-nrl-table-tab-320.jpg]
+- 5 small tap target(s) inside data tables
+    at Manager NRL Club › Stats @320  [ev-013-tap-target-table-manager-nrl-club-stats-320.jpg]
+
+## truncated (9)
+- 25 button label(s) cut short with …, e.g. <button.showcase-row__button> "Andy Farrell (1997), Wigan Warriors, Loo": "Wigan Warriors"
+    at /showcase @320 | rapid tabs /showcase @320  [ev-001-truncated-showcase-320.jpg]
+- 22 button label(s) cut short with …, e.g. <button.showcase-row__button> "Brad O'Neill, Wigan Warriors · 2026, Hoo": "Wigan Warriors · 2026"
+    at /showcase @320 [filters]  [ev-002-truncated-showcase-320-filters.jpg]
+- 25 button label(s) cut short with …, e.g. <button.showcase-row__button> "Andy Farrell (1996), Wigan Warriors, Loo": "Wigan Warriors"
+    at /showcase @320 [filters flipped]  [ev-003-truncated-showcase-320-filters-flipped.jpg]
+- 22 button label(s) cut short with …, e.g. <button.showcase-row__button> "Andy Farrell (1997), Wigan Warriors, Loo": "Wigan Warriors"
+    at /showcase @390  [ev-004-truncated-showcase-390.jpg]
+- 2 button label(s) cut short with …, e.g. <button.showcase-row__button> "Ben Currie, Warrington Wolves · 2026, Lo": "Warrington Wolves · 2026"
+    at /showcase @390 [filters]  [ev-005-truncated-showcase-390-filters.jpg]
+- 14 button label(s) cut short with …, e.g. <button.showcase-row__button> "Andy Farrell (1996), Wigan Warriors, Loo": "Wigan Warriors"
+    at /showcase @390 [filters flipped]  [ev-006-truncated-showcase-390-filters-flipped.jpg]
+- 43 button label(s) cut short with …, e.g. <button.showcase-row__button> "Andy Farrell (1997), Wigan Warriors, Loo": "Wigan Warriors"
+    at /showcase @1280  [ev-007-truncated-showcase-1280.jpg]
+- 12 button label(s) cut short with …, e.g. <button.showcase-row__button> "Ben Currie, Warrington Wolves · 2026, Lo": "Warrington Wolves · 2026"
+    at /showcase @1280 [filters]  [ev-008-truncated-showcase-1280-filters.jpg]
+- 26 button label(s) cut short with …, e.g. <button.showcase-row__button> "Andy Farrell (1996), Wigan Warriors, Loo": "Wigan Warriors"
+    at /showcase @1280 [filters flipped]  [ev-009-truncated-showcase-1280-filters-flipped.jpg]
+
+## Checks run
+✓ Audited 33 routes (+ tabs, filters, toggles) @320
+✓ Audited 33 routes (+ tabs, filters, toggles) @390
+✓ Audited 33 routes (+ tabs, filters, toggles) @1280
+✓ Classic: run to the review and play-offs (16 taps)
+✓ Era run: played to the end (19 taps)
+✓ Daily run: played to the end (7 taps)
+✓ Ball Knower run: played to the end (2 taps)
+✓ One-Club run: played to the end (19 taps)
+✓ Gauntlet run: played to the end (13 taps)
+✓ Classic: reload mid-run kept 2 signings
+✓ Classic: back/forward, rotate with the picker open
+✓ Offline reload (page served), then back online
+✓ Classic: storage cleared mid-run, kept playing, reloaded
+✓ Classic: two tabs signing on one run
+✓ Rapid tab switching on Store, Leaderboard, Login, Showcase
+✓ Store: triple taps on Buy / Use across 6 tabs
+✓ Manager name box kept 24 characters
+✓ Extreme Club Funds (huge / negative / garbage) and a very long coach name
+✓ Manager: season to the review (deadline, league, promo)
+✓ Manager: summer (departures, window) into season 2
+✓ Manager: storage cleared mid-career, reloaded
+✓ Manager NRL: season to the review (league)
+✓ Mini-games: Quiz, Wordle, Grid played with mashing + reload
+✓ Corrupted storage: 67 keys × 5 kinds of bad value × 17 routes
