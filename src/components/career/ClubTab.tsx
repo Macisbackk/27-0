@@ -3,8 +3,23 @@
 import { useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
-import { DIVISION_LABEL, TROPHY_LABEL, formatMoney, ordinal, prestigeRatingCap, relevantNews, rivalsOf } from "@/lib/career";
-import type { SeasonChallenge, SeasonOutcome } from "@/lib/career/types";
+import {
+  DIVISION_LABEL,
+  TROPHY_LABEL,
+  boardOf,
+  currentObjectives,
+  fansOf,
+  formatMoney,
+  moodIncomeFactor,
+  moodWord,
+  objectiveStatus,
+  ordinal,
+  prestigeRatingCap,
+  relevantNews,
+  rivalsOf,
+  seasonDealsFor,
+} from "@/lib/career";
+import type { CareerState, SeasonChallenge, SeasonDeal, SeasonOutcome } from "@/lib/career/types";
 import { useCareer } from "@/lib/career/context";
 import { playUiClick, playWarning } from "@/lib/sound";
 import { Card, Eyebrow, ProgressBar, Stars } from "./bits";
@@ -32,6 +47,68 @@ function challengeProgressLabel(c: SeasonChallenge): string {
     default:
       return `${value} / ${c.target}`;
   }
+}
+
+/** "Smith (CE 82, £120k from Wigan)" lines for a season's signings or sales. */
+function dealList(s: CareerState, deals: SeasonDeal[], into: boolean): string {
+  return deals
+    .map((d) => {
+      const club = d.club ? s.clubs[d.club]?.short ?? s.clubs[d.club]?.name : null;
+      const fee = d.fee > 0 ? formatMoney(d.fee) : "free";
+      return `${d.name} (${d.pos} ${d.rating}, ${fee}${club ? `${into ? " from " : " to "}${club}` : into ? "" : ", released"})`;
+    })
+    .join(", ");
+}
+
+/** A past season's signings and sales: kept on the season (v1.66), or what older saves' deals list still holds. */
+function seasonDeals(s: CareerState, h: SeasonOutcome): { ins: SeasonDeal[]; outs: SeasonDeal[] } {
+  if (h.ins || h.outs) return { ins: h.ins ?? [], outs: h.outs ?? [] };
+  return seasonDealsFor(s, h.year);
+}
+
+/** The board's objectives, supporter mood and board confidence. */
+function BoardCard() {
+  const { state } = useCareer();
+  const s = state!;
+  const objectives = currentObjectives(s);
+  const factor = moodIncomeFactor(s);
+  const pct = Math.round((factor - 1) * 100);
+  return (
+    <Card>
+      <section aria-label="Board and supporters" data-testid="board-card">
+        <Eyebrow>Board & supporters</Eyebrow>
+        <div className="mt-2 grid grid-cols-2 gap-3 text-center">
+          <div>
+            <p className="text-[11px] uppercase tracking-wide text-gray-500">Supporters</p>
+            <p className="font-display text-xl font-bold tabular-nums text-white">{Math.round(fansOf(s))}</p>
+            <p className="text-[11px] text-gray-400">{moodWord(fansOf(s))}</p>
+          </div>
+          <div>
+            <p className="text-[11px] uppercase tracking-wide text-gray-500">Board confidence</p>
+            <p className="font-display text-xl font-bold tabular-nums text-white">{Math.round(boardOf(s))}</p>
+            <p className="text-[11px] text-gray-400">{moodWord(boardOf(s))}</p>
+          </div>
+        </div>
+        {objectives.length ? (
+          <ul className="mt-3 space-y-1.5" data-testid="board-objectives">
+            {objectives.map((o) => (
+              <li key={o.id} className="flex items-start justify-between gap-3 text-sm">
+                <span className={o.done ? "text-success" : "text-white"}>
+                  {o.done ? "✓ " : ""}
+                  {o.title}
+                </span>
+                <span className="shrink-0 text-right text-[11px] tabular-nums text-gray-400">{objectiveStatus(o)}</span>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+        <p className="mt-3 text-center text-xs leading-relaxed text-gray-400 sm:text-left">
+          Wins, derbies, cup runs and big signings lift the fans; selling favourites doesn&apos;t. The board judges the league target and these objectives.
+          {pct ? ` Mood is worth ${pct > 0 ? "+" : ""}${pct}% on next season's income.` : " Happy fans and a confident board add to next season's income."}
+        </p>
+      </section>
+    </Card>
+  );
 }
 
 /** The Club tab in four short views instead of one long scroll (v1.57). */
@@ -101,6 +178,8 @@ export function ClubTab({ onOpenVault, onOpenRecords }: { onOpenVault: () => voi
           })}
         </ul>
       </Card>
+
+      <BoardCard />
 
       {s.history.length ? (
         <Card>
@@ -204,12 +283,13 @@ export function ClubTab({ onOpenVault, onOpenRecords }: { onOpenVault: () => voi
           {s.history.length ? (
             <Card>
               <section aria-label="Past seasons" data-testid="past-seasons">
-                <Eyebrow>Past seasons · tap one for the full story</Eyebrow>
+                <Eyebrow>Career history · tap a season for the full story</Eyebrow>
                 <ul className="mt-2 space-y-1.5">
                   {[...s.history].reverse().map((h) => {
                     const silver = h.trophies.filter((t) => t !== "promotion");
+                    const deals = seasonDeals(s, h);
                     return (
-                      <li key={h.year}>
+                      <li key={h.year} data-testid="history-season">
                         <button
                           type="button"
                           onClick={() => {
@@ -231,6 +311,28 @@ export function ClubTab({ onOpenVault, onOpenRecords }: { onOpenVault: () => voi
                           </span>
                           <span aria-hidden className="shrink-0 text-gray-500">›</span>
                         </button>
+                        {deals.ins.length || deals.outs.length || h.objectives?.length ? (
+                          <div className="px-3 pb-1 pt-1 text-[11px] leading-snug text-gray-400" data-testid="history-deals">
+                            {deals.ins.length ? (
+                              <p>
+                                <span className="font-semibold text-success">In:</span> {dealList(s, deals.ins, true)}
+                              </p>
+                            ) : null}
+                            {deals.outs.length ? (
+                              <p>
+                                <span className="font-semibold text-danger">Out:</span> {dealList(s, deals.outs, false)}
+                              </p>
+                            ) : null}
+                            {h.objectives?.length ? (
+                              <p>
+                                <span className="font-semibold text-gray-300">Board:</span>{" "}
+                                {h.objectives.map((o) => `${o.done ? "✓" : "✗"} ${o.title}`).join(" · ")}
+                                {h.confidence != null ? ` · confidence ${Math.round(h.confidence)}` : ""}
+                                {h.fans != null ? ` · fans ${Math.round(h.fans)}` : ""}
+                              </p>
+                            ) : null}
+                          </div>
+                        ) : null}
                       </li>
                     );
                   })}

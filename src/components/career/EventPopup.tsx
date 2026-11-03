@@ -20,6 +20,9 @@ const EYEBROW: Record<CareerEventKind, string> = {
   takeover: "Boardroom",
   "club-record": "Club record",
   "world-club-challenge": "World Club Challenge",
+  injury: "Injury news",
+  "board-warning": "Boardroom",
+  fans: "Supporters",
 };
 
 /**

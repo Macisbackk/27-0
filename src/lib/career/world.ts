@@ -172,6 +172,7 @@ export function createCareer(opts: { clubId: string; managerName: string; seed?:
     budget: 0,
     prestige: choice.prestige,
     tactic: "balanced",
+    tactics: { attack: "balanced", defence: "balanced", kicking: "balanced" },
     lineup: autoPickLineup(clubs[choice.id]!.squad.map((id) => players[id]!)),
     // Filled with the XIII's best back-up when the season starts.
     bench: [],

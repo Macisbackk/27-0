@@ -206,6 +206,10 @@ export interface UserStatsData {
   draftCounts: Record<string, number>;
   playerSeasonWins: Record<string, number>;
   playerSeasonLosses: Record<string, number>;
+  /** Card id → 27-0 regular seasons he was in your squad for (v1.68; older saves have none). */
+  playerPerfectSeasons?: Record<string, number>;
+  /** Card id → regular-season tries he scored for your sides (v1.68; older saves have none). */
+  playerTries?: Record<string, number>;
   /** Internal only — never displayed in public statistics UI */
   joeMellorRuns: number;
   /** Internal only — never displayed in public statistics UI */

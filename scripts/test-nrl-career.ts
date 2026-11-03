@@ -357,7 +357,7 @@ console.log("\nOld saves");
 console.log("\nSave size");
 {
   const max = Math.max(...sizes);
-  check(max < 800_000, `NRL career saves stay under 800 KB (largest ${(max / 1024).toFixed(0)} KB at season end)`);
+  check(max < 850_000, `NRL career saves stay under 850 KB (largest ${(max / 1024).toFixed(0)} KB at season end)`);
   let s = createCareer({ clubId: "st-helens", managerName: "T", seed: "nrl-size-sl" });
   let biggest = 0;
   for (let i = 0; i < 6; i++) {
@@ -365,7 +365,8 @@ console.log("\nSave size");
     biggest = Math.max(biggest, JSON.stringify(s).length);
     s = nextSeason(s);
   }
-  check(biggest < 800_000, `Super League career with the NRL in the background: under 800 KB over 6 seasons (${(biggest / 1024).toFixed(0)} KB)`);
+  // v1.66: injuries spread games over more of each squad (more per-club stat lines), so ~2–3% bigger.
+  check(biggest < 850_000, `Super League career with the NRL in the background: under 850 KB over 6 seasons (${(biggest / 1024).toFixed(0)} KB)`);
   console.log(`  Save size: NRL career ${(max / 1024).toFixed(0)} KB, Super League career ${(biggest / 1024).toFixed(0)} KB (largest season end)`);
 }
 

@@ -9,7 +9,7 @@ const SENIOR_AGE = 22;
 
 /** Best senior starter in a XIII (highest rating; anyone if there are no senior men). Banned men can't lead. */
 export function defaultCaptain(lineup: readonly string[], players: Record<string, CareerPlayer>): string | undefined {
-  const xiii = lineup.map((id) => players[id]).filter((p): p is CareerPlayer => !!p && !p.ban);
+  const xiii = lineup.map((id) => players[id]).filter((p): p is CareerPlayer => !!p && !p.ban && !p.injury);
   const seniors = xiii.filter((p) => p.age >= SENIOR_AGE);
   const pool = seniors.length ? seniors : xiii;
   return [...pool].sort((a, b) => b.rating - a.rating || b.age - a.age || a.id.localeCompare(b.id))[0]?.id;
@@ -19,7 +19,7 @@ export function defaultCaptain(lineup: readonly string[], players: Record<string
 export function userCaptain(state: Pick<CareerState, "captainId" | "lineup" | "players">): string | undefined {
   const c = state.captainId;
   const p = c ? state.players[c] : undefined;
-  if (c && p && !p.ban && state.lineup.includes(c)) return c;
+  if (c && p && !p.ban && !p.injury && state.lineup.includes(c)) return c;
   return defaultCaptain(state.lineup, state.players);
 }
 

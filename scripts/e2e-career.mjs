@@ -142,6 +142,23 @@ try {
   }
   step("Pre-season: played two friendlies, results shown above Round 1; board target on the hub");
   await shot("hub-match");
+  // v1.66: the three-part game plan (attack / defence / kicking pills) and the fans/board meters.
+  {
+    const plan = page.getByRole("region", { name: "Game plan" });
+    await plan.waitFor({ timeout });
+    // Pre-season pop-ups (e.g. the World Club Challenge) can sit over the hub.
+    await dismissEvents();
+    await plan.getByRole("tablist", { name: "Attack plan" }).getByRole("tab", { name: "Expansive" }).click();
+    await plan.getByRole("tablist", { name: "Kicking plan" }).getByRole("tab", { name: "Territory" }).click();
+    if ((await plan.getByRole("tab", { selected: true }).count()) !== 3) throw new Error("Game plan should have one pick per row");
+    if (!(await plan.getByRole("tablist", { name: "Attack plan" }).getByRole("tab", { name: "Expansive", selected: true }).isVisible().catch(() => false))) {
+      throw new Error("Game plan pick did not stick");
+    }
+    if (!(await page.getByTestId("fans-mood").isVisible().catch(() => false)) || !(await page.getByTestId("board-confidence").isVisible().catch(() => false))) {
+      throw new Error("Fans / board meters missing on the hub");
+    }
+    step("Game plan: three pill rows (attack, defence, kicking) and the fans/board meters on the hub");
+  }
 
   await clickButton("Play match");
   await page.getByRole("region", { name: "Scoreboard" }).waitFor({ timeout });

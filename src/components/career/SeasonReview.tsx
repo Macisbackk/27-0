@@ -13,6 +13,7 @@ import {
   DIVISION_LABEL,
   TROPHY_LABEL,
   boardTargetLabel,
+  moodWord,
   formatMoney,
   legendCatalog,
   miniWinner,
@@ -205,6 +206,22 @@ export function SeasonReview() {
             <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold ${boardMet ? "bg-success/15 text-success" : "bg-amber-300/15 text-amber-200"}`}>
               {boardMet ? "Target met" : "Missed"}
             </span>
+          </p>
+        ) : null}
+        {o.objectives?.length ? (
+          <ul className="mt-1.5 space-y-1" data-testid="review-objectives">
+            {o.objectives.map((x) => (
+              <li key={x.title} className="flex items-center justify-between gap-3 text-sm">
+                <span className="min-w-0 text-gray-300">{x.title}</span>
+                <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold ${x.done ? "bg-success/15 text-success" : "bg-amber-300/15 text-amber-200"}`}>{x.done ? "Done" : "Missed"}</span>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+        {o.confidence != null && o.fans != null ? (
+          <p className="mt-1.5 text-center text-xs text-gray-400 sm:text-left" data-testid="review-mood">
+            Board confidence <span className="font-semibold text-white">{Math.round(o.confidence)}</span> · supporters{" "}
+            <span className="font-semibold text-white">{Math.round(o.fans)}</span> ({moodWord(o.fans).toLowerCase()})
           </p>
         ) : null}
         <p className="mt-2 font-display text-xl font-bold leading-tight text-white">{hook}</p>
