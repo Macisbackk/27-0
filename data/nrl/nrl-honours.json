@@ -167,10 +167,6 @@
     "note": "Perth Bears / PNG side not in the 2026 competition per the source."
   },
   "todo": [
-    "Premiers 1998-2025",
-    "Clive Churchill Medal",
-    "Dally M Team of the Year",
-    "Immortals",
-    "Australian Rugby League Hall of Fame (see data/hall-of-fame.json for the existing game file; not duplicated here)"
+    "Moved: premiers/runners-up/Clive Churchill → nrl-grand-finals.json; Dally M Team of the Year and the 2003 gap → nrl-dally-m.json; Origin → nrl-origin.json; Golden Boot → nrl-golden-boot.json; Hall of Fame and Immortals → nrl-hall-of-fame.json; ladders → nrl-ladders.json; Test players → nrl-test-players.json"
   ]
 }
