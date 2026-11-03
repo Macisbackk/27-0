@@ -1,6 +1,10 @@
 import { isBlackLike } from "./ui/theme-accent-colors";
 
 export const DEFAULT_UI_THEME_ID = "default";
+/**
+ * The flat theme price before v1.66 (£6m each). Still the refund for the retired club themes, and
+ * the fallback for a theme missing from THEME_PRICES. Current prices: uiThemePrice().
+ */
 export const UI_THEME_PURCHASE_PRICE = 6_000_000;
 
 export interface UiThemeDefinition {
@@ -92,6 +96,9 @@ export const STYLE_UI_THEMES: UiThemeDefinition[] = [
   style("neon", "Neon", "Electric magenta. Loud as a Magic Weekend.", "#ff2d95", "#ff6fb5", "#8a1356", "#ffffff"),
   style("frost", "Frost", "Icy teal for the winter fixtures.", "#5eead4", "#99f6e4", "#0f766e", "#042f2e"),
   style("ember", "Ember", "Burnt orange, like the floodlights at dusk.", "#f97316", "#fb923c", "#9a3412", "#1c0a00"),
+  // v1.66: two cheaper first themes.
+  style("steel", "Steel", "Cool grey steel, like the old stand roof.", "#94a3b8", "#cbd5e1", "#475569", "#0b1220"),
+  style("programme", "Programme", "Matchday-programme cream with an ink edge.", "#e8dcc0", "#f3ead2", "#8a7a55", "#1d1a14"),
 ];
 
 export const UI_THEMES: UiThemeDefinition[] = [DEFAULT_UI_THEME, ...STYLE_UI_THEMES];
@@ -112,6 +119,30 @@ export function getUiThemeByClubName(_clubName: string): UiThemeDefinition | nul
   return null;
 }
 
+/** What a theme costs in the Store. */
+export function uiThemePrice(id: string): number {
+  return THEME_PRICES[id] ?? UI_THEME_PURCHASE_PRICE;
+}
+
+/**
+ * v1.66 economy pass (docs/store-economy.md): themes were a flat £6m (about 50 days of dailies).
+ * Now a ladder from £750k to £4m — a regular player's buy every one to four days. Owned themes stay
+ * owned (unlocks are stored by id).
+ */
+const THEME_PRICES: Record<string, number> = {
+  steel: 750_000,
+  programme: 1_000_000,
+  turf: 1_500_000,
+  chalk: 1_500_000,
+  amber: 2_500_000,
+  matchball: 2_500_000,
+  sky: 2_500_000,
+  cherry: 3_000_000,
+  frost: 3_000_000,
+  ember: 3_000_000,
+  neon: 4_000_000,
+};
+
 export function isDefaultUiTheme(id: string): boolean {
   return id === DEFAULT_UI_THEME_ID;
 }
@@ -126,7 +157,7 @@ export function sortUiThemesForStore(
     themes.find((theme) => theme.id === DEFAULT_UI_THEME_ID) ?? DEFAULT_UI_THEME;
   const others = themes.filter((theme) => theme.id !== DEFAULT_UI_THEME_ID);
   const purchased = others.filter((theme) => unlocked.has(theme.id));
-  const locked = others.filter((theme) => !unlocked.has(theme.id));
+  const locked = others.filter((theme) => !unlocked.has(theme.id)).sort((a, b) => uiThemePrice(a.id) - uiThemePrice(b.id));
   return [defaultTheme, ...purchased, ...locked];
 }
 

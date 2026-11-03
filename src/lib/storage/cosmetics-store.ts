@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { isSupabaseConfigured, supabase } from "../supabase";
 import { getAuthUserId } from "../auth-session";
-import { COSMETICS, DEFAULT_KIT_DESIGN, KIT_COLOURS, KIT_PATTERNS, cosmeticById, type CosmeticKind, type KitDesign } from "../cosmetics";
+import { COSMETICS, DEFAULT_KIT_DESIGN, KIT_COLOURS, KIT_PATTERNS, cosmeticById, isKitPreset, type CosmeticKind, type KitDesign } from "../cosmetics";
 import { getClubFundsBalance, spendClubFunds } from "./club-funds";
 import { STORAGE_KEYS } from "./keys";
 
@@ -12,13 +12,13 @@ export const COSMETICS_CHANGED_EVENT = "27-0-cosmetics-changed";
 export interface CosmeticsState {
   owned: string[];
   purchaseIds: string[];
-  /** Equipped item id per slot (null = default). */
-  equipped: { pitch: string | null; title: string | null; frame: string | null };
+  /** Equipped item id per slot (null = default). `kit` is a ready-made kit (v1.66); the designer has its own switch. */
+  equipped: { pitch: string | null; title: string | null; frame: string | null; kit: string | null };
   kit: KitDesign & { enabled: boolean };
 }
 
 function empty(): CosmeticsState {
-  return { owned: [], purchaseIds: [], equipped: { pitch: null, title: null, frame: null }, kit: { ...DEFAULT_KIT_DESIGN, enabled: false } };
+  return { owned: [], purchaseIds: [], equipped: { pitch: null, title: null, frame: null, kit: null }, kit: { ...DEFAULT_KIT_DESIGN, enabled: false } };
 }
 
 const validColour = (c: unknown) => typeof c === "string" && KIT_COLOURS.some((k) => k.hex === c);
@@ -31,6 +31,7 @@ function normalize(raw: unknown): CosmeticsState {
   const equipFor = (kind: CosmeticKind, id: unknown) =>
     typeof id === "string" && owned.includes(id) && cosmeticById(id)?.kind === kind ? id : null;
   const kit = r.kit && typeof r.kit === "object" ? r.kit : base.kit;
+  const presetKit = equipFor("kit", r.equipped?.kit);
   return {
     owned,
     purchaseIds: Array.isArray(r.purchaseIds) ? r.purchaseIds.filter((id) => typeof id === "string") : [],
@@ -38,12 +39,14 @@ function normalize(raw: unknown): CosmeticsState {
       pitch: equipFor("pitch", r.equipped?.pitch),
       title: equipFor("title", r.equipped?.title),
       frame: equipFor("frame", r.equipped?.frame),
+      kit: presetKit && isKitPreset(presetKit) ? presetKit : null,
     },
     kit: {
       pattern: KIT_PATTERNS.some((p) => p.id === kit.pattern) ? kit.pattern : base.kit.pattern,
       body: validColour(kit.body) ? kit.body : base.kit.body,
       trim: validColour(kit.trim) ? kit.trim : base.kit.trim,
-      enabled: Boolean(kit.enabled) && owned.includes("kit-designer"),
+      // One shirt at a time: a ready-made kit switches the designer off.
+      enabled: Boolean(kit.enabled) && owned.includes("kit-designer") && !(presetKit && isKitPreset(presetKit)),
     },
   };
 }
@@ -89,9 +92,15 @@ export function purchaseCosmetic(id: string): CosmeticPurchaseResult {
     state.purchaseIds.push(purchaseId);
   }
   state.owned.push(id);
-  // New pitch / title / frame goes straight on; the kit designer switches your kit on.
+  // New pitch / title / frame / ready-made kit goes straight on; the kit designer switches your kit on.
   if (item.kind === "pitch" || item.kind === "title" || item.kind === "frame") state.equipped[item.kind] = id;
-  if (item.kind === "kit") state.kit.enabled = true;
+  if (item.kind === "kit" && isKitPreset(id)) {
+    state.equipped.kit = id;
+    state.kit.enabled = false;
+  } else if (item.kind === "kit") {
+    state.kit.enabled = true;
+    state.equipped.kit = null;
+  }
   save(state);
   if (item.kind === "title") void publishFlair({ flair: id });
   if (item.kind === "frame") void publishFlair({ frame: id });
@@ -109,6 +118,8 @@ export function grantCosmetic(id: string): boolean {
   const state = getCosmetics();
   if (state.owned.includes(id)) return false;
   state.owned.push(id);
+  // An earned kit goes on when no shirt is worn yet (never over the coach's own choice).
+  if (isKitPreset(id) && !state.equipped.kit && !state.kit.enabled) state.equipped.kit = id;
   if ((item.kind === "pitch" || item.kind === "title" || item.kind === "frame") && !state.equipped[item.kind]) {
     state.equipped[item.kind] = id;
     save(state);
@@ -120,9 +131,16 @@ export function grantCosmetic(id: string): boolean {
   return true;
 }
 
-export function equipCosmetic(kind: "pitch" | "title" | "frame", id: string | null) {
+export function equipCosmetic(kind: "pitch" | "title" | "frame" | "kit", id: string | null) {
   const state = getCosmetics();
   if (id && (!state.owned.includes(id) || cosmeticById(id)?.kind !== kind)) return;
+  if (kind === "kit") {
+    if (id && !isKitPreset(id)) return;
+    state.equipped.kit = id;
+    if (id) state.kit.enabled = false;
+    save(state);
+    return;
+  }
   state.equipped[kind] = id;
   save(state);
   if (kind === "title") void publishFlair({ flair: id });
@@ -137,6 +155,8 @@ export function setKitDesign(patch: Partial<KitDesign & { enabled: boolean }>) {
   if (validColour(patch.body)) state.kit.body = patch.body!;
   if (validColour(patch.trim)) state.kit.trim = patch.trim!;
   if (typeof patch.enabled === "boolean") state.kit.enabled = patch.enabled;
+  // Wearing your own design takes the ready-made kit off.
+  if (state.kit.enabled) state.equipped.kit = null;
   save(state);
 }
 
@@ -203,6 +223,7 @@ export function mergeCosmeticsStates(localRaw: unknown, cloudRaw: unknown): Cosm
       pitch: cloud.equipped.pitch ?? local.equipped.pitch,
       title: cloud.equipped.title ?? local.equipped.title,
       frame: cloud.equipped.frame ?? local.equipped.frame,
+      kit: cloud.equipped.kit ?? local.equipped.kit,
     },
     kit: cloud.owned.includes("kit-designer") ? cloud.kit : local.kit,
   });
