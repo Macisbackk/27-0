@@ -33,6 +33,7 @@ import {
   isDailyArchiveDateKey,
 } from "@/lib/daily-archive";
 import { MODES_PAGE, sideModeKey, type SideMode } from "@/lib/play-side-modes";
+import { PlayLoading } from "./PlayLoading";
 
 export function PlayPageClient() {
   const router = useRouter();
@@ -238,7 +239,7 @@ export function PlayPageClient() {
   // The board reads saved runs and Store boosts from this device on its first render; the server
   // can't, so render it only once mounted (otherwise React hydration error #418 on /play).
   if (!mounted || !playersReady || unlockPending || badSideModeLink) {
-    return <p className="p-6 text-center text-pitch-400">Loading…</p>;
+    return <PlayLoading />;
   }
 
   if (hasChallengeParam) {
