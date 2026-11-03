@@ -67,8 +67,8 @@ function Bar({ have, of, colour }: { have: number; of: number; colour?: string }
 function Section({ title, intro, children }: { title: string; intro?: string; children: React.ReactNode }) {
   return (
     <section className="rounded-card bg-pitch-900 p-4 text-left">
-      <h2 className="text-center text-[17px] font-bold text-white sm:text-left">{title}</h2>
-      {intro ? <p className="mt-1 text-center text-sm text-[color:var(--fl-muted)] sm:text-left">{intro}</p> : null}
+      <h2 className="text-center text-[17px] font-bold text-white">{title}</h2>
+      {intro ? <p className="mt-1 text-center text-sm text-[color:var(--fl-muted)]">{intro}</p> : null}
       <div className="mt-3">{children}</div>
     </section>
   );
