@@ -3,9 +3,11 @@ import { PLAYER_RATING_OVERRIDES } from "../../../data/player-rating-overrides";
 import { PLAYER_RATING_AUDIT } from "../../../data/player-rating-audit";
 import SEASON_2026_RATINGS from "../../../data/season-2026-ratings.json";
 import ERA_SEASON_RATINGS from "../../../data/era-season-ratings.json";
+import CURRENT_RATINGS_2026 from "../../../data/current-ratings-2026.json";
 
 const SEASON_RATINGS = SEASON_2026_RATINGS as Record<string, { to: number }>;
 const ERA_RATINGS = ERA_SEASON_RATINGS as Record<string, { to: number }>;
+const CURRENT_RATINGS = CURRENT_RATINGS_2026 as Record<string, { to: number }>;
 import birthYearsData from "../../../data/birth-years.json";
 import { compressPeakRating, computePlayerValue } from "./ratings";
 import { parsePlayerId, resolvePrimeYear } from "./prime-year";
@@ -115,6 +117,10 @@ export function normalizePlayer(raw: Record<string, unknown>): Player {
   // for this season's cards.
   const season = SEASON_RATINGS[id];
   if (season && typeof season.to === "number") peakRating = season.to;
+  // Nov 2026: current cards rescaled to 70–99 from the 2026 evidence (scripts/build-current-ratings.ts,
+  // data/current-ratings-2026-11.md). Era and legend cards keep their 80 floor.
+  const rescaled = category === "current" ? CURRENT_RATINGS[id] : undefined;
+  if (rescaled && typeof rescaled.to === "number") peakRating = rescaled.to;
 
   const rawClub = raw.club as string;
   const name = raw.name as string;

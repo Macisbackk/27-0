@@ -20,9 +20,14 @@ export type ShowcaseSortKey =
 
 export type ShowcaseSortDir = "asc" | "desc";
 
-/** Rating band filters for the post-floor-80 Current/Historic scale. */
+/**
+ * Rating band filters: current (2026) cards run 70–99, era and legend cards 80–99, so the two
+ * lowest bands only ever hold current cards.
+ */
 export type RatingFilter =
   | "all"
+  | "70-74"
+  | "75-79"
   | "80-82"
   | "83-85"
   | "86-88"
@@ -58,6 +63,8 @@ export const TIER_FILTER_LABELS: Record<Exclude<TierFilter, "all">, string> = {
 
 export const RATING_FILTER_LABELS: Record<Exclude<RatingFilter, "all">, string> =
   {
+    "70-74": "70–74",
+    "75-79": "75–79",
     "80-82": "80–82",
     "83-85": "83–85",
     "86-88": "86–88",
@@ -157,6 +164,10 @@ export function getUniqueShowcaseYears(players: Player[]): number[] {
 
 function ratingInBand(rating: number, filter: RatingFilter): boolean {
   switch (filter) {
+    case "70-74":
+      return rating >= 70 && rating <= 74;
+    case "75-79":
+      return rating >= 75 && rating <= 79;
     case "80-82":
       return rating >= 80 && rating <= 82;
     case "83-85":

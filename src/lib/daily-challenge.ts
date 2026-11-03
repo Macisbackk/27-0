@@ -145,7 +145,9 @@ const ERA_NIGHT_OPTIONS: readonly { fromYear: number; toYear: number; label: str
  * caps give roughly a 45–50% chance to top the table and 20–35% to win the Grand Final, vs
  * ~90% / 50–80% in plain Classic. Lower caps (82 / 85) made the Daily near-unwinnable (≤ 12%).
  */
-const UNDERDOG_MAX_RATING = { current: 85, era: 87 } as const;
+// Nov 2026: current cards moved to a 70–99 scale (old 85 ≈ new 86; the cap keeps ~85% of
+// current cards eligible, as before).
+const UNDERDOG_MAX_RATING = { current: 86, era: 87 } as const;
 
 /**
  * Daily bonuses per rule (paid on top of normal Classic Club Funds, first counted attempt only).

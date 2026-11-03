@@ -60,6 +60,9 @@ jobs:
       - name: 27-0 season formula
         if: success() || failure()
         run: scripts/ci-run.sh "27-0 season formula" npm run test:sim
+      - name: Current card ratings (70–99)
+        if: success() || failure()
+        run: scripts/ci-run.sh "Current card ratings" npm run test:current-ratings
       - name: Share result text
         if: success() || failure()
         run: scripts/ci-run.sh "Share result text" npm run test:share

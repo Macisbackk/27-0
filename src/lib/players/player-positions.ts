@@ -1,7 +1,7 @@
 import type { Player, Position } from "../types";
 import { POSITION_LABELS, POSITION_SHORT } from "../positions";
 import { normalizePosition } from "./position-utils";
-import { outOfPositionRatingFloor } from "./rating-floors";
+import { CURRENT_MIN_RATING, outOfPositionRatingFloor } from "./rating-floors";
 
 const ABBREV_TO_POSITION: Record<string, Position> = {
   FB: "FULLBACK",
@@ -221,9 +221,10 @@ export function isPenaltyFreePlacement(
 
 export function applyOutOfPositionPenalty(
   rating: number,
-  penalty = OUT_OF_POSITION_PENALTY
+  penalty = OUT_OF_POSITION_PENALTY,
+  floor = outOfPositionRatingFloor(rating)
 ): number {
-  return Math.max(outOfPositionRatingFloor(rating), rating - penalty);
+  return Math.max(Math.min(floor, rating), rating - penalty);
 }
 
 export function getPlayerRatingForPosition(
@@ -235,7 +236,13 @@ export function getPlayerRatingForPosition(
   if (isPenaltyFreePlacementInternal(profile, selectedPosition)) {
     return player.peakRating;
   }
-  return applyOutOfPositionPenalty(player.peakRating, OUT_OF_POSITION_PENALTY);
+  // Current cards run 70–99, so their out-of-position floor is the current minimum (70);
+  // era and legend cards keep the 80 floor.
+  return applyOutOfPositionPenalty(
+    player.peakRating,
+    OUT_OF_POSITION_PENALTY,
+    player.category === "current" ? CURRENT_MIN_RATING : outOfPositionRatingFloor(player.peakRating)
+  );
 }
 
 export function playerEligibleForSlot(

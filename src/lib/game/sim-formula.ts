@@ -60,14 +60,41 @@ export interface SimFormulaModeScale {
  * club links can't carry a squad. Top-card draft 27-0 ≈ 28% → ≈ 13%.
  * Classic spin and Era: mean ratings of the typical and top-card drafts (unchanged in v1.40;
  * Era's typical chemistry was 0.3 before chemistry stopped counting there).
+ *
+ * Nov 2026: current cards moved from 80–99 to 70–99 (data/current-ratings-2026-11.md), which
+ * widens drafted squads (club choice: typical 83.10 → 82.05, top card 85.86 → 86.74; chemistry
+ * 1.01 → 1.09 typical, 1.86 → 1.57 top card). Classic and Classic-spin anchors were refitted so
+ * each tier keeps its 27-0 odds (400 drafts/tier, formula): Classic best 14.8% → 14.9%, good
+ * 0.80% → 1.07%, typical 0.11% → 0.09%; Classic spin best 14.2% → 14.1%, good 1.15% → 1.35%,
+ * typical 0.15% → 0.11%. (On test-sim-formula's 100-squad sample: Classic best 18.1% → 16.6%,
+ * spin 16.2% → 15.7%.) Era is untouched.
  */
 export const SIM_FORMULA_MODE_SCALE: Record<SimFormulaMode, SimFormulaModeScale> = {
-  classic: { typicalRating: 83.1, eliteRating: 86.0, typicalChemistry: 1, opponentEdge: 2, chemistryWeight: 0.8 },
+  classic: { typicalRating: 82.18, eliteRating: 86.62, typicalChemistry: 1.09, opponentEdge: 2, chemistryWeight: 0.8 },
   // v1.48: Daily / Gauntlet on 2026 cards get tougher opponents like Classic (owner: same feel);
   // +1.6 lands their best drafts on Classic's odds (no 3-club choice to lift the rating).
-  "classic-spin": { typicalRating: 83.1, eliteRating: 85.5, typicalChemistry: 0, opponentEdge: 1.6, chemistryWeight: 0.8 },
+  "classic-spin": { typicalRating: 81.82, eliteRating: 86.14, typicalChemistry: 0, opponentEdge: 1.6, chemistryWeight: 0.8 },
   era: { typicalRating: 85.6, eliteRating: 87.5, typicalChemistry: 0, opponentEdge: 0.4, noChemistry: true },
 };
+
+/**
+ * Nov 2026: current cards moved from 80–99 to 70–99 (data/current-ratings-2026-11.md). The
+ * play-off / cup path (resolveOutcome) still compares a raw squad rating with fixed club
+ * strengths, so a Classic squad's average is read back on the old scale there: a typical draft
+ * (club choice, random card) and a top-card draft land where they did before, and the order and
+ * gaps between squads in between are kept. Anchors are the mean squad ratings of those drafts
+ * before and after the rescale (scripts/sim-era-classic-perfect-season.ts, 400 drafts per tier).
+ */
+export const CURRENT_LEGACY_RATING_MAP = {
+  typical: { now: 82.05, before: 83.1 },
+  elite: { now: 86.74, before: 85.86 },
+} as const;
+
+/** A Classic (current-card) squad average on the pre-Nov-2026 80–99 scale. */
+export function toLegacyCurrentRating(avgRating: number): number {
+  const { typical, elite } = CURRENT_LEGACY_RATING_MAP;
+  return typical.before + ((avgRating - typical.now) * (elite.before - typical.before)) / (elite.now - typical.now);
+}
 
 /** Whether squad chemistry counts towards team strength in this mode (Classic yes, Era no). */
 export function modeUsesChemistry(mode: SimFormulaMode): boolean {

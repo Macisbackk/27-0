@@ -359,12 +359,11 @@ export function PlayerShowcase() {
           className={FILTER.input}
         >
           <option value="all">Any Rating</option>
-          <option value="80-82">80–82</option>
-          <option value="83-85">83–85</option>
-          <option value="86-88">86–88</option>
-          <option value="89-91">89–91</option>
-          <option value="92-94">92–94</option>
-          <option value="95+">95+</option>
+          {(Object.keys(RATING_FILTER_LABELS) as Exclude<RatingFilter, "all">[]).map((band) => (
+            <option key={band} value={band}>
+              {RATING_FILTER_LABELS[band]}
+            </option>
+          ))}
         </select>
       </FilterField>
 

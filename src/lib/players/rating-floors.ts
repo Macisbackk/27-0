@@ -1,11 +1,14 @@
 /**
  * Competition / player-type rating floors.
- * Current Super League seniors & Historic: 80.
- * Championship: 70. Reserves and reserve-origin free agents: 65.
+ * Current (2026) cards: 70–99 (Nov 2026 rescale, data/current-ratings-2026-11.md).
+ * Historic (era) and legend cards: 80–99.
+ * Championship: 65. Reserves and reserve-origin free agents: 65.
  */
 
-export const CURRENT_SENIOR_MIN_RATING = 80;
-export const CURRENT_SUPER_LEAGUE_MIN_RATING = CURRENT_SENIOR_MIN_RATING;
+/** Every current card is rated 70–99: elite 92+, starters ~82–90, rotation ~76–82, fringe 70–76. */
+export const CURRENT_MIN_RATING = 70;
+export const CURRENT_SENIOR_MIN_RATING = CURRENT_MIN_RATING;
+export const CURRENT_SUPER_LEAGUE_MIN_RATING = CURRENT_MIN_RATING;
 export const HISTORIC_MIN_RATING = 80;
 export const HISTORIC_PLAYER_MIN_RATING = HISTORIC_MIN_RATING;
 export const CHAMPIONSHIP_MIN_RATING = 65;
@@ -29,7 +32,7 @@ export const GENERATED_CHAMPIONSHIP_MAX_RATING = 78;
 export const RESERVE_MAX_RATING = 92;
 export const RANDOM_FREE_AGENT_MAX_RATING = 84;
 
-/** Clamp a Current Super League peak rating. */
+/** Clamp a Current Super League (2026 card) peak rating to 70–99. */
 export function clampCurrentSuperLeagueRating(rating: number): number {
   return Math.max(
     CURRENT_SUPER_LEAGUE_MIN_RATING,
@@ -70,12 +73,12 @@ export function clampRandomFreeAgentRating(rating: number): number {
 }
 
 /**
- * Out-of-position floor: Super League-scale ratings keep 80;
- * Championship-scale ratings (below 80) keep 70; reserve-scale keep 65.
+ * Out-of-position floor: era-scale ratings (80+) keep 80; ratings below 80 keep 65.
+ * Current (2026) cards use CURRENT_MIN_RATING instead (see getPlayerRatingForPosition).
  */
 export function outOfPositionRatingFloor(currentRating: number): number {
-  if (currentRating >= CURRENT_SUPER_LEAGUE_MIN_RATING) {
-    return CURRENT_SUPER_LEAGUE_MIN_RATING;
+  if (currentRating >= HISTORIC_MIN_RATING) {
+    return HISTORIC_MIN_RATING;
   }
   if (currentRating < CHAMPIONSHIP_PLAYER_MIN_RATING) {
     return RESERVE_MIN_RATING;

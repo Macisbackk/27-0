@@ -69,6 +69,7 @@ import {
 import { getDreamTeamTablePosition } from "./league-table";
 import { computeChemistry } from "./chemistry";
 import {
+  toLegacyCurrentRating,
   getOpponentRating,
   getSimFormulaMode,
   modeUsesChemistry,
@@ -830,12 +831,16 @@ function resolveOutcome(
   rng: () => number,
   options: SimulateFixtureOptions = {}
 ): { won: boolean; isUpset: boolean; ratingGap: number } {
+  const draftMode = options.draftMode ?? false;
+  const baseRating = options.userRatingOverride ?? getAverageSquadRating(squad);
+  // Current cards run 70–99 since Nov 2026; this path (play-offs, cups) compares raw ratings with
+  // fixed club strengths, so a Classic squad is read on the scale it was tuned on.
   const avgRating =
-    (options.userRatingOverride ?? getAverageSquadRating(squad)) +
-    (options.ratingAdjustment ?? 0);
+    ((options.currentSeasonOnly ?? false) && !draftMode
+      ? toLegacyCurrentRating(baseRating)
+      : baseRating) + (options.ratingAdjustment ?? 0);
   const totalValue = getSquadValue(squad);
   const ratingGap = avgRating - opponentStrength;
-  const draftMode = options.draftMode ?? false;
   const valueBonus = getValueConsistencyBonus(totalValue, draftMode);
   const cupMode = options.cupMode ?? false;
 
