@@ -143,7 +143,7 @@
   "tier": "great"
  },
  {
-  "name": "Garry Connolly",
+  "name": "Gary Connolly",
   "peakRating": 96,
   "position": "CENTRE",
   "club": "Wigan Warriors",
@@ -228,6 +228,13 @@
   "position": "Prop",
   "club": "Bradford Bulls",
   "nationality": "England"
+ },
+ {
+  "name": "Sonny Bill Williams",
+  "peakRating": 95,
+  "position": "SECOND_ROW",
+  "club": "Toronto Wolfpack",
+  "nationality": "New Zealand"
  },
  {
   "name": "Ali Lauitiiti",

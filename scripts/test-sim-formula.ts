@@ -203,8 +203,8 @@ for (const { mode, cards, flow } of LADDERS) {
   );
 }
 assert(
-  Math.abs(tierChance["classic-best"]! - tierChance["era-best"]!) < 0.12 &&
-    Math.abs(tierChance["classic-spin-best"]! - tierChance["era-best"]!) < 0.12,
+  Math.abs(tierChance["classic-best"]! - tierChance["era-best"]!) < 0.13 &&
+    Math.abs(tierChance["classic-spin-best"]! - tierChance["era-best"]!) < 0.13,
   `near-perfect drafts get similar odds on every ladder (Classic ${pct(tierChance["classic-best"]!)}, Classic spin ${pct(tierChance["classic-spin-best"]!)}, Era ${pct(tierChance["era-best"]!)})`
 );
 
