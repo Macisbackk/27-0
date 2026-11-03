@@ -36,7 +36,7 @@ const KICKING: Record<KickingGame, Effect> = {
   attacking: { attack: 0.3, defence: -0.3, tempo: 1.02, pens: 0 },
 };
 
-export interface TacticEffect extends Effect {}
+export type TacticEffect = Effect;
 
 /** The combined effect of a game plan (or of an old single tactic). */
 export function tacticEffect(settings: TacticSettings | undefined, legacy?: Tactic): TacticEffect {
