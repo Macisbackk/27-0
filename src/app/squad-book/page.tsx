@@ -146,35 +146,6 @@ function BookCard({
   );
 }
 
-/** Reward chips for a group's milestones — ticked when paid. */
-function MilestoneChips({ milestones, value, claimed }: { milestones: SquadBookMilestone[]; value: (m: SquadBookMilestone) => number; claimed: string[] }) {
-  if (milestones.length === 0) return null;
-  return (
-    <div className="mt-2 flex flex-wrap gap-1.5">
-      {milestones.map((m) => {
-        const done = claimed.includes(m.id) || value(m) >= m.target;
-        return (
-          <span
-            key={m.id}
-            title={m.label}
-            className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold ${
-              done ? "bg-lime-300/15 text-lime-300" : "bg-pitch-800 text-[color:var(--fl-muted)]"
-            }`}
-          >
-            {done ? (
-              <>
-                <span aria-hidden>✓ </span>
-                <span className="sr-only">Done: </span>
-              </>
-            ) : null}
-            {m.id.includes("-squad-") ? "Full squad" : m.kind === "set" ? "Complete" : m.target} · {formatClubFunds(m.reward)}
-          </span>
-        );
-      })}
-    </div>
-  );
-}
-
 export default function SquadBookPage() {
   const book = useSquadBook();
   const cosmetics = useCosmetics();
@@ -404,7 +375,6 @@ export default function SquadBookPage() {
                           ) : null}
                         </span>
                       </button>
-                      <MilestoneChips milestones={milestonesFor("club", c)} value={value} claimed={book.claimed} />
                     </li>
                   );
                 })}
@@ -423,7 +393,7 @@ export default function SquadBookPage() {
                           setDecade(String(d));
                           setTab("cards");
                         }}
-                        className="w-full text-left"
+                        className="w-full text-center"
                       >
                         <span className="block font-display text-xl font-bold text-white">{decadeLabel(d)}</span>
                         <span className="block text-sm tabular-nums text-white">
@@ -434,7 +404,6 @@ export default function SquadBookPage() {
                           <Bar have={p.have} of={p.of} />
                         </span>
                       </button>
-                      <MilestoneChips milestones={milestonesFor("decade", decadeLabel(d))} value={value} claimed={book.claimed} />
                     </li>
                   );
                 })}
@@ -459,15 +428,7 @@ export default function SquadBookPage() {
                       <div className="mt-1.5">
                         <Bar have={p.have} of={s.target} />
                       </div>
-                      <p className={`mt-1.5 text-xs font-semibold ${done ? "text-lime-300" : "text-[color:var(--fl-muted)]"}`}>
-                        {done ? (
-                          <>
-                            <span aria-hidden>✓ </span>
-                            <span className="sr-only">Done: </span>
-                          </>
-                        ) : null}
-                        Reward {formatClubFunds(s.reward)}
-                      </p>
+                      {done ? <p className="mt-1.5 text-xs font-semibold text-lime-300">✓ Complete</p> : null}
                     </li>
                   );
                 })}
