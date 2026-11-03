@@ -122,7 +122,12 @@ function walk(value: unknown, key?: string) {
 function walkDir(dir: string) {
   for (const entry of readdirSync(dir)) {
     const path = join(dir, entry);
-    if (statSync(path).isDirectory()) walkDir(path);
+    // data/nrl is a standalone database not used in the game yet: when NRL players are added to
+    // a mode, drop this skip and allow-list real surnames that trip the filter (e.g. Penisini, Bonner).
+    if (statSync(path).isDirectory()) {
+      if (path.endsWith(join("data", "nrl"))) continue;
+      walkDir(path);
+    }
     else if (entry.endsWith(".json")) {
       try {
         walk(JSON.parse(readFileSync(path, "utf8")));
