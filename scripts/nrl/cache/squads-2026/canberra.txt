@@ -1,0 +1,31 @@
+# club: nrl-canberra-raiders
+# source: https://rugbyleaguezone.com/canberra-raiders-2026-nrl-fixtures-squad-list-and-player-signings-423177/
+# fetched: 2026-11-03 via WebFetch (rugbyleaguezone club squad page, roster dated 24-25 Nov 2025; (dev)=development list)
+Ata Mariota
+Chevy Stewart
+Corey Harawira-Naera
+Corey Horsburgh
+Daine Laurie
+Ethan Sanders
+Ethan Strange
+Hudson Young
+Jayden Brailey
+Joseph Tapine
+Josh Papali'i
+Kaeo Weekes
+Matt Timoko
+Matty Nicholson
+Michael Asomua
+Morgan Smithies
+Myles Martin
+Noah Martin
+Owen Pattie
+Sebastian Kris
+Simi Sasagi
+Sione Finau
+Tom Starling
+Xavier Savage
+Zac Hosking
+Jake Clydsdale|dev
+Joe Roddy|dev
+Manaia Waitere|dev

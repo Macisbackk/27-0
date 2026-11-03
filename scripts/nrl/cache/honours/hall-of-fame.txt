@@ -1,0 +1,43 @@
+# source: https://en.wikipedia.org/wiki/National_Rugby_League_Hall_of_Fame fetched 2026-11-03 via WebFetch
+# NRL Hall of Fame player inductees whose playing career reached 1998 or later (name|year inducted|career span as listed)
+Andrew Ettingshausen|2008|1983–2000
+Steve Walters|2008|1984–1999
+Allan Langer|2008|1984–2002
+Laurie Daley|2008|1986–2000
+Glenn Lazarus|2008|1987–1999
+Bradley Clyde|2008|1988–2001
+Brad Fittler|2008|1989–2004
+Andrew Johns|2008|1993–2007
+Shane Webcke|2008|1995–2006
+Darren Lockyer|2008|1995–2011
+Cliff Lyons|2018|1982–2001
+Ricky Stuart|2018|1988–2000
+Gorden Tallis|2018|1992–2004
+Steve Menzies|2018|1993–2013
+Petero Civoniceva|2018|1998–2012
+Ruben Wiki|2019|1993–2008
+Stacey Jones|2019|1995–2009
+Danny Buderus|2019|1997–2013
+Steve Renouf|2024|1988–2001
+Cameron Smith|2024|2002–2020
+Johnathan Thurston|2024|2003–2018
+Billy Slater|2024|2003–2018
+Benji Marshall|2024|2003–2021
+Cooper Cronk|2024|2004–2019
+Greg Inglis|2024|2005–2021
+Sam Burgess|2024|2006–2019
+# Immortals (name|year named), same source
+IMMORTAL|Clive Churchill|1981
+IMMORTAL|Johnny Raper|1981
+IMMORTAL|Reg Gasnier|1981
+IMMORTAL|Bob Fulton|1981
+IMMORTAL|Graeme Langlands|1991
+IMMORTAL|Wally Lewis|1999
+IMMORTAL|Arthur Beetson|1999
+IMMORTAL|Andrew Johns|2012
+IMMORTAL|Dally Messenger|2018
+IMMORTAL|Frank Burge|2018
+IMMORTAL|Dave Brown|2018
+IMMORTAL|Norm Provan|2018
+IMMORTAL|Mal Meninga|2018
+IMMORTAL|Ron Coote|2024

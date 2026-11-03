@@ -1,0 +1,27 @@
+# club: nrl-gold-coast-titans
+# source: https://rugbyleaguezone.com/gold-coast-titans-2026-nrl-fixtures-squad-list-and-player-signings-423185/
+# fetched: 2026-11-03 via WebFetch (rugbyleaguezone club squad page, roster dated 24-25 Nov 2025; (dev)=development list)
+Brian Kelly
+Chris Randall
+Jayden Campbell
+Jaylan De Groot
+Jojo Fifita
+Josh Patston
+Keano Kini
+Klese Haas
+Kurtis Morrin
+Lachlan Ilias
+Luke Sommerton
+Moeaki Fotuaika
+Phillip Sami
+Sam Verrills
+Tino Fa'asuamaleaui|captain
+Tuki Simpkins
+Zane Harrison
+Adam Christensen
+Jensen Taumoepeau
+Jett Liu|dev
+Siale Faeamani|dev
+AJ Brimson
+Beau Fermor
+Oliver Pascoe|dev

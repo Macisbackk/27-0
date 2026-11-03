@@ -1,0 +1,31 @@
+# club: nrl-penrith-panthers
+# source: https://www.penrithpanthers.com.au/news/2025/10/31/2026-panthers-nrl-squad/
+# fetched: 2026-11-03 via WebFetch (club announcement 31 Oct 2025, Top 30 list of 28)
+Tom Ale
+Paul Alamoti
+Nathan Cleary|captain
+Jack Cogger
+Jack Cole
+Dylan Edwards
+Matt Eisenhuth
+Jaxen Edgar
+Sione Fonua
+Luke Garner
+Kalani Going
+Liam Henry
+Mitch Kenny
+Moses Leota
+Liam Martin
+Casey McLean
+Jesse McLean
+Isaiah Papali'i
+Luron Patea
+Billy Scott
+Lindsay Smith
+Scott Sorensen
+Blaize Talagi
+Izack Tago
+Trent Toelau
+Brian To'o
+Isaah Yeo|captain
+Tom Jenkins

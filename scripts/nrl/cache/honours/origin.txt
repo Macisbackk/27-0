@@ -1,0 +1,31 @@
+# source: https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics fetched 2026-11-03 via WebFetch
+# year|series winner|games NSW-QLD (draws)|Wally Lewis Medal (QLD-only award until 2003; player of the series from 2004)
+1998|QLD|1-2 (0)|Allan Langer
+1999|DRAW|1-1 (1)|Jason Hetherington
+2000|NSW|3-0 (0)|Darren Smith
+2001|QLD|1-2 (0)|Darren Lockyer
+2002|DRAW|1-1 (1)|Shane Webcke
+2003|NSW|2-1 (0)|Darren Lockyer
+2004|NSW|2-1 (0)|Craig Fitzgibbon
+2005|NSW|2-1 (0)|Anthony Minichiello
+2006|QLD|1-2 (0)|Darren Lockyer
+2007|QLD|1-2 (0)|Cameron Smith
+2008|QLD|1-2 (0)|Johnathan Thurston
+2009|QLD|1-2 (0)|Greg Inglis
+2010|QLD|0-3 (0)|Billy Slater
+2011|QLD|1-2 (0)|Cameron Smith
+2012|QLD|1-2 (0)|Nate Myles
+2013|QLD|1-2 (0)|Cameron Smith
+2014|NSW|2-1 (0)|Paul Gallen
+2015|QLD|1-2 (0)|Corey Parker
+2016|QLD|1-2 (0)|Cameron Smith
+2017|QLD|1-2 (0)|Dane Gagai
+2018|NSW|2-1 (0)|Billy Slater
+2019|NSW|2-1 (0)|James Tedesco
+2020|QLD|1-2 (0)|Cameron Munster
+2021|NSW|2-1 (0)|Tom Trbojevic
+2022|QLD|1-2 (0)|Patrick Carrigan
+2023|QLD|1-2 (0)|Reuben Cotter
+2024|NSW|2-1 (0)|Angus Crichton
+2025|QLD|1-2 (0)|Tom Dearden
+2026|NSW|2-1 (0)|Nathan Cleary
