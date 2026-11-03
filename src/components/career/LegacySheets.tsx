@@ -100,7 +100,18 @@ export function LegendVaultSheet({ open, onClose }: { open: boolean; onClose: ()
   );
 }
 
-const TROPHY_ORDER: TrophyId[] = ["grand-final", "league-leaders", "challenge-cup", "championship-title", "million-pound-game", "promotion", "perfect-season"];
+const TROPHY_ORDER: TrophyId[] = [
+  "grand-final",
+  "league-leaders",
+  "challenge-cup",
+  "championship-title",
+  "million-pound-game",
+  "nrl-premiership",
+  "minor-premiership",
+  "world-club-challenge",
+  "promotion",
+  "perfect-season",
+];
 
 export function RecordsSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { legacy, state } = useCareer();
@@ -120,7 +131,7 @@ export function RecordsSheet({ open, onClose }: { open: boolean; onClose: () => 
           <dd className="text-white">{legacy.fastestGlorySeasons ? `${legacy.fastestGlorySeasons} seasons` : "—"}</dd>
         </div>
         <div>
-          <dt className="text-[11px] uppercase tracking-wide text-gray-500">Best SL season</dt>
+          <dt className="text-[11px] uppercase tracking-wide text-gray-500">Best season</dt>
           <dd className="text-white">{legacy.bestSeason ? `${legacy.bestSeason.wins}–${legacy.bestSeason.losses} (${legacy.bestSeason.year})` : "—"}</dd>
         </div>
         <div>
@@ -137,7 +148,7 @@ export function RecordsSheet({ open, onClose }: { open: boolean; onClose: () => 
         {TROPHY_ORDER.map((t) => (
           <li key={t} className="flex items-center justify-between gap-2 rounded-control bg-pitch-800 px-3 py-2">
             <span className="min-w-0 text-left text-[13px] leading-tight text-gray-300">{TROPHY_LABEL[t]}</span>
-            <span className="shrink-0 font-display font-bold tabular-nums text-white">{legacy.trophies[t]}</span>
+            <span className="shrink-0 font-display font-bold tabular-nums text-white">{legacy.trophies[t] ?? 0}</span>
           </li>
         ))}
       </ul>
@@ -165,7 +176,8 @@ export function RecordsSheet({ open, onClose }: { open: boolean; onClose: () => 
                     <li key={h.year} className="rounded-control bg-pitch-800 px-3 py-2">
                       <details open={i === 0}>
                         <summary className="cursor-pointer text-sm font-semibold text-white">
-                          {h.year} · Man of Steel {h.awards!.find((a) => a.id === "man-of-steel" && a.division === "super-league")?.name ?? "—"}
+                          {h.year} · {h.division === "nrl" ? "Dally M" : "Man of Steel"}{" "}
+                          {h.awards!.find((a) => a.id === "man-of-steel" && a.division === (h.division === "nrl" ? "nrl" : "super-league"))?.name ?? "—"}
                         </summary>
                         <ul className="mt-1.5 space-y-1 text-[13px]">
                           {h.awards!.map((a) => (

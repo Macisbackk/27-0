@@ -20,6 +20,7 @@ import {
   sellPrice,
   signingCost,
   squadOf,
+  wageBill,
   wagesDueNow,
   type MarketListing,
   type TransferError,
@@ -144,6 +145,12 @@ export function TransferWindow({ mode = "summer", onClose }: { mode?: "summer" |
           <p className="text-[11px] uppercase tracking-wide text-gray-500">Prestige</p>
           <p className="mt-1"><Stars value={s.prestige} /></p>
         </div>
+        {me.division === "nrl" ? (
+          <p className="col-span-3 text-xs text-gray-400" data-testid="salary-cap">
+            Salary cap <span className="font-semibold text-white">{formatMoney(NRL_SALARY_CAP)}</span> · your wages{" "}
+            <span className={`font-semibold ${wageBill(squadOf(s, s.userClubId)) > NRL_SALARY_CAP ? "text-danger" : "text-white"}`}>{formatMoney(wageBill(squadOf(s, s.userClubId)))}</span>
+          </p>
+        ) : null}
         <p className="col-span-3 text-xs text-gray-400">
           Players rated up to <span className="font-semibold text-white">{prestigeRatingCap(s.prestige)}</span> will join you{midseason ? "" : ", free agents included. Legends always will"}.
         </p>
@@ -192,6 +199,8 @@ export function TransferWindow({ mode = "summer", onClose }: { mode?: "summer" |
             const card = l.legend ? legendById(l.playerId.replace(/^legend-/, "")) : undefined;
             const p = s.players[l.playerId] ?? (card ? legendAsPlayer(card) : undefined);
             const from = l.fromClubId ? s.clubs[l.fromClubId] : null;
+            // From the other game (NRL ↔ Super League): a premium on the fee.
+            const crossCode = !!from && (from.division === "nrl") !== (me.division === "nrl");
             const free = isFreeAgentListing(l);
             const cost = signingCost(s, l);
             const affordable = s.budget >= cost.total;
@@ -203,6 +212,7 @@ export function TransferWindow({ mode = "summer", onClose }: { mode?: "summer" |
                   <span className="block truncate font-semibold text-white">
                     {p?.name ?? "Unknown"}
                     {l.legend ? <span className="ml-1.5 text-[10px] font-bold uppercase text-accent-gold">Legend</span> : null}
+                    {crossCode ? <span className="ml-1.5 text-[10px] font-bold uppercase text-sky-300">{from!.division === "nrl" ? "NRL" : "Super League"}</span> : null}
                   </span>
                   <span className="block text-[11px] text-gray-400">
                     {p ? `${p.pos} · Age ${p.age}` : ""}

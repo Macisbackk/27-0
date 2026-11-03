@@ -109,12 +109,13 @@ export function ClubTab({ onOpenVault, onOpenRecords }: { onOpenVault: () => voi
             const w = s.history.reduce((t, h) => t + h.won, 0);
             const l = s.history.reduce((t, h) => t + h.lost, 0);
             const trophies = s.history.flatMap((h) => h.trophies).filter((t) => t !== "promotion");
-            const best = s.history.reduce((b, h) => (h.division === "super-league" && (!b || h.position < b.position) ? h : b), undefined as (typeof s.history)[number] | undefined);
+            const top = s.clubs[s.userClubId]?.division === "nrl" ? "nrl" : "super-league";
+            const best = s.history.reduce((b, h) => (h.division === top && (!b || h.position < b.position) ? h : b), undefined as (typeof s.history)[number] | undefined);
             return (
               <>
                 <p className="mt-1 text-sm text-gray-300">
                   <span className="font-display text-xl font-bold text-white">{w}W {l}L</span>
-                  {best ? ` · best Super League finish ${ordinal(best.position)}` : ""}
+                  {best ? ` · best ${top === "nrl" ? "NRL" : "Super League"} finish ${ordinal(best.position)}` : ""}
                 </p>
                 {trophies.length ? (
                   <ul className="mt-2 flex flex-wrap gap-1.5">

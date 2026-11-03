@@ -188,9 +188,12 @@ console.log("\nMatch ratings");
 
   /* ------------------------------------------------------------------ stats */
   console.log("\nPlayer stats");
-  const totalTries = fixtures.reduce((t, x) => t + x.result!.homeTries.length + x.result!.awayTries.length, 0);
-  const credited = Object.values(done.players).reduce((t, p) => t + p.tries, 0);
-  check(credited <= totalTries && credited >= totalTries * 0.95, `season tries add up (${credited} of ${totalTries}; departed players aside)`);
+  // v1.64: other clubs' games drop their try scorers once credited (saves stay small); yours keep them.
+  const mineFx = fixtures.filter((x) => x.home === done.userClubId || x.away === done.userClubId);
+  check(fixtures.filter((x) => !mineFx.includes(x)).every((x) => !x.result!.homeTries.length && !x.result!.awayTries.length), "other clubs' games don't keep try scorers");
+  const totalTries = mineFx.reduce((t, x) => t + (x.home === done.userClubId ? x.result!.homeTries.length : x.result!.awayTries.length), 0);
+  const credited = done.clubs[done.userClubId]!.squad.reduce((t, id) => t + (done.players[id]?.tries ?? 0), 0);
+  check(credited <= totalTries && credited >= totalTries * 0.9, `season tries add up (${credited} of ${totalTries}; departed players aside)`);
   const rows = squadStats(done);
   check(rows.length === done.clubs[done.userClubId]!.squad.length, "squad stats list every player");
   check(rows.every((r2) => r2.points === r2.tries * 4 + r2.goals * 2), "points = 4 × tries + 2 × goals");

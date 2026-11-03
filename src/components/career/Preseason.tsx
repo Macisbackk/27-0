@@ -7,6 +7,7 @@ import {
   DIVISION_LABEL,
   MAX_FRIENDLIES,
   SHARPNESS_PER_FRIENDLY,
+  beforeRoundOne,
   clubRating,
   formatMoney,
   friendlyOptions,
@@ -154,7 +155,7 @@ export function PreseasonResults() {
   const { state } = useCareer();
   const s = state!;
   const pre = s.preseason;
-  if (!pre || pre.year !== s.year || !pre.results.length || s.matchdayIndex > 0) return null;
+  if (!pre || pre.year !== s.year || !pre.results.length || !beforeRoundOne(s)) return null;
   return (
     <section aria-label="Pre-season results" className="fl-rise rounded-card bg-pitch-900 p-4">
       <Eyebrow>Pre-season done</Eyebrow>

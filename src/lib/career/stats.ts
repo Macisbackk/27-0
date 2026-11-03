@@ -381,4 +381,12 @@ export function settleFixture(state: CareerState, f: Fixture, home: TeamSheet, a
   } else delete r.ratings;
   checkRecords(state, f.home, [...home.lineup, ...(home.bench ?? [])]);
   checkRecords(state, f.away, [...away.lineup, ...(away.bench ?? [])]);
+  // Other clubs' try scorers are credited above and never shown again: drop them (v1.64, saves
+  // stay small with the NRL running alongside). Your own games keep theirs.
+  if (f.home !== state.userClubId && f.away !== state.userClubId) {
+    r.homeTries = [];
+    r.awayTries = [];
+    // Player of the Match is only shown for finals (the Clive Churchill Medal is the NRL Grand Final's).
+    if (f.kind === "league") delete r.motm;
+  }
 }

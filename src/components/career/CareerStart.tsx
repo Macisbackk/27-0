@@ -40,7 +40,7 @@ export function CareerStart({ onOpenVault, onOpenRecords }: { onOpenVault: () =>
       <PitchHero
         eyebrow="Rugby League Manager"
         title="Pick your club"
-        description="Real squads. Climb to Old Trafford. Unlock legends."
+        description="Real squads. Super League, the Championship or the NRL."
         icon={<BoardGlyph />}
       />
 
@@ -67,7 +67,8 @@ export function CareerStart({ onOpenVault, onOpenRecords }: { onOpenVault: () =>
       <GameSegmentedControl<Division>
         options={[
           { id: "super-league", label: "Super League", shortLabel: "Super League" },
-          { id: "championship", label: "Championship", shortLabel: "Championship" },
+          { id: "championship", label: "Championship", shortLabel: "Champ" },
+          { id: "nrl", label: "NRL", shortLabel: "NRL" },
         ]}
         value={division}
         onChange={(d) => {
@@ -77,9 +78,11 @@ export function CareerStart({ onOpenVault, onOpenRecords }: { onOpenVault: () =>
         ariaLabel="Division"
       />
       <p className="-mt-2 text-center text-xs text-gray-400">
-        {division === "championship"
-          ? "Win the league to go up. 2nd plays the Million Pound Game."
-          : "Top 4 make the play-offs. 13th plays the Million Pound Game. Bottom goes down."}
+        {division === "nrl"
+          ? "17 clubs, 27 rounds. Top 8 make the finals. Premiers play the World Club Challenge."
+          : division === "championship"
+            ? "Win the league to go up. 2nd plays the Million Pound Game."
+            : "Top 6 make the play-offs. 13th plays the Million Pound Game. Bottom goes down."}
       </p>
 
       <ul className="fl-stagger grid grid-cols-[minmax(0,1fr)] gap-2" aria-label="Clubs">

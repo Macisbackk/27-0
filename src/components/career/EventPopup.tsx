@@ -19,6 +19,7 @@ const EYEBROW: Record<CareerEventKind, string> = {
   wonderkid: "Academy",
   takeover: "Boardroom",
   "club-record": "Club record",
+  "world-club-challenge": "World Club Challenge",
 };
 
 /**

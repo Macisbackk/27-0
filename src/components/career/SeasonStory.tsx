@@ -19,6 +19,7 @@ import {
   type Division,
   type HonourLine,
   type MiniResult,
+  type NrlBracket,
   type PlayoffBracket,
   type SeasonAward,
   type SeasonOutcome,
@@ -167,8 +168,10 @@ export function AwardsList({ awards, userClubId }: { awards: SeasonAward[]; user
           );
         })}
       </ul>
-      {awards.some((a) => a.id === "man-of-steel" && a.division === "super-league" && a.clubId === userClubId) ? (
-        <p className="mt-2 text-center text-sm text-accent-gold">Your Man of Steel: +{MAN_OF_STEEL_LEGACY} Legacy.</p>
+      {awards.some((a) => a.id === "man-of-steel" && (a.division === "super-league" || a.division === "nrl") && a.clubId === userClubId) ? (
+        <p className="mt-2 text-center text-sm text-accent-gold">
+          Your {awards.some((a) => a.id === "man-of-steel" && a.division === "nrl" && a.clubId === userClubId) ? "Dally M Medal" : "Man of Steel"}: +{MAN_OF_STEEL_LEGACY} Legacy.
+        </p>
       ) : null}
     </>
   );
@@ -234,6 +237,48 @@ export function PlayoffBracketView({ bracket, clubs, userClubId }: { bracket: Pl
   );
 }
 
+/**
+ * The NRL finals (v1.64): week 1 (qualifying finals 1v4, 2v3; elimination finals 5v8, 6v7), the
+ * semi-finals, the preliminary finals and the Grand Final.
+ */
+export function NrlBracketView({ bracket, clubs, userClubId }: { bracket: NrlBracket; clubs: Clubs; userClubId: string }) {
+  const tbd = (text: string) => <p className="py-1.5 text-center text-[13px] text-gray-500">{text}</p>;
+  const ties = (list: MiniResult[], labels?: string[]) => (
+    <ul className="mt-1 space-y-1">
+      {list.map((m, i) => (
+        <TieRow key={i} m={m} clubs={clubs} userClubId={userClubId} label={labels?.[i]} />
+      ))}
+    </ul>
+  );
+  const champ = bracket.final ? miniWinner(bracket.final) : null;
+  return (
+    <div data-testid="nrl-bracket">
+      <RoundHeading>Finals week 1</RoundHeading>
+      {bracket.week1.length ? ties(bracket.week1, ["Qualifying final", "Qualifying final", "Elimination final", "Elimination final"]) : tbd("1st v 4th · 2nd v 3rd · 5th v 8th · 6th v 7th")}
+      <RoundHeading>Semi-finals</RoundHeading>
+      {bracket.semis.length ? ties(bracket.semis) : tbd("Qualifying-final losers host the elimination winners")}
+      <RoundHeading>Preliminary finals</RoundHeading>
+      {bracket.prelims.length ? ties(bracket.prelims) : tbd("Qualifying-final winners host the semi winners")}
+      <RoundHeading>Grand Final</RoundHeading>
+      {bracket.final ? ties([bracket.final]) : tbd("To be decided")}
+      {champ ? <p className="mt-1.5 text-center text-[13px] font-semibold text-accent-gold">{clubOf(clubs, champ).name} are NRL premiers.</p> : null}
+    </div>
+  );
+}
+
+/** The World Club Challenge in one line: the tie, then who won it. */
+export function WccResult({ m, clubs, userClubId }: { m: MiniResult; clubs: Clubs; userClubId: string }) {
+  const w = miniWinner(m);
+  return (
+    <div data-testid="wcc-result">
+      <ul className="mt-1">
+        <TieRow m={m} clubs={clubs} userClubId={userClubId} />
+      </ul>
+      {w ? <p className="mt-1.5 text-center text-[13px] font-semibold text-accent-gold">{clubOf(clubs, w).name} are world champions.</p> : null}
+    </div>
+  );
+}
+
 /** Your Challenge Cup run, then the final (who won it, even if you went out early). */
 export function CupView({ run, final, clubs, userClubId }: { run: MiniResult[]; final?: MiniResult; clubs: Clubs; userClubId: string }) {
   const winner = final ? miniWinner(final) : null;
@@ -273,7 +318,8 @@ export function Stepper({ label, index, count, onChange, ariaLabel }: { label: s
   );
 }
 
-const DIVS: Division[] = ["super-league", "championship"];
+const DIVS: Division[] = ["super-league", "championship", "nrl"];
+const DIV_SHORT: Record<Division, string> = { "super-league": "Super League", championship: "Champ", nrl: "NRL" };
 
 /** The final league tables (both divisions behind a small switch), with who went up, down and won it. */
 export function FinalTables({ state, story, initial }: { state: CareerState; story?: SeasonStory; initial: Division }) {
@@ -282,14 +328,14 @@ export function FinalTables({ state, story, initial }: { state: CareerState; sto
   const tag = (id: string, i: number): { text: string; tone: string } | null => {
     if (story?.promoted.includes(id)) return { text: "Up", tone: "text-success" };
     if (story?.relegated.includes(id)) return { text: "Down", tone: "text-danger" };
-    if (i === 0) return { text: division === "super-league" ? "Shield" : "Champs", tone: "text-accent-gold" };
+    if (i === 0) return { text: division === "super-league" ? "Shield" : division === "nrl" ? "Minor" : "Champs", tone: "text-accent-gold" };
     return null;
   };
   return (
     <div data-testid="final-tables">
       <GameSegmentedControl<Division>
         compact
-        options={DIVS.map((d) => ({ id: d, label: DIVISION_LABEL[d] }))}
+        options={DIVS.filter((d) => d !== "nrl" || (state.tables.nrl ?? []).some((r) => r.p > 0)).map((d) => ({ id: d, label: DIVISION_LABEL[d], shortLabel: DIV_SHORT[d] }))}
         value={division}
         onChange={setDivision}
         ariaLabel="Final table"
@@ -386,7 +432,19 @@ export function PastSeasonSheet({ state, outcome, onClose }: { state: CareerStat
               <PlayoffBracketView bracket={data.bracket} clubs={state.clubs} userClubId={state.userClubId} />
             </div>
           ) : null}
-          {data.full ? (
+          {data.nrlBracket ? (
+            <div>
+              <SubHeading>NRL finals</SubHeading>
+              <NrlBracketView bracket={data.nrlBracket} clubs={state.clubs} userClubId={state.userClubId} />
+            </div>
+          ) : null}
+          {data.wcc ? (
+            <div>
+              <SubHeading>World Club Challenge</SubHeading>
+              <WccResult m={data.wcc} clubs={state.clubs} userClubId={state.userClubId} />
+            </div>
+          ) : null}
+          {data.full && o.division !== "nrl" ? (
             <div>
               <SubHeading>Challenge Cup</SubHeading>
               <CupView run={data.cupRun} final={data.cupFinal} clubs={state.clubs} userClubId={state.userClubId} />

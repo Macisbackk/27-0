@@ -29,7 +29,7 @@ import { useCareer } from "@/lib/career/context";
 import { playPerfectSeason, playPromotion, playSeasonComplete, playSeasonReviewMajor, playWarning } from "@/lib/sound";
 import { Card, ClubBadge, Eyebrow, CAREER_PAGE_CLASS, CareerBackLink } from "./bits";
 import { ResultStrip } from "./MatchTab";
-import { AwardsList, CupView, FinalTables, HonoursBoard, PlayoffBracketView, ResultsList, StoryCard, TieRow, recordLine } from "./SeasonStory";
+import { AwardsList, CupView, FinalTables, HonoursBoard, NrlBracketView, PlayoffBracketView, ResultsList, StoryCard, TieRow, WccResult, recordLine } from "./SeasonStory";
 import { CupGlyph } from "@/components/icons/rugby-icons";
 import { PitchHero } from "@/components/ui/PitchHero";
 
@@ -67,7 +67,7 @@ export function SeasonReview() {
     if (played.current) return;
     played.current = true;
     if (o.trophies.includes("perfect-season")) playPerfectSeason();
-    else if (o.trophies.includes("grand-final") || o.trophies.includes("challenge-cup")) playSeasonReviewMajor();
+    else if (o.trophies.includes("grand-final") || o.trophies.includes("challenge-cup") || o.trophies.includes("nrl-premiership")) playSeasonReviewMajor();
     else if (o.promoted) playPromotion();
     else if (o.relegated) playWarning();
     else playSeasonComplete();
@@ -77,8 +77,12 @@ export function SeasonReview() {
   const boardMet = o.boardTarget ? o.position <= o.boardTarget : false;
   const boardSize = s.tables[o.division]?.length || 12;
   const nextBudget = s.budget + seasonIncome(s) - wageBill(squadOf(s, s.userClubId));
-  const hook = o.trophies.includes("grand-final")
+  const hook = o.trophies.includes("grand-final") || o.trophies.includes("nrl-premiership")
     ? "Champions. Can you defend the title?"
+    : club.division === "nrl"
+      ? o.position <= 8
+        ? "So close. Can you win the Grand Final?"
+        : "Next: make the top 8 and play finals footy."
     : o.promoted
       ? "Super League awaits. Can you stay up?"
       : o.relegated
@@ -96,6 +100,8 @@ export function SeasonReview() {
 
   const headline = o.trophies.includes("grand-final")
     ? "Super League Champions!"
+    : o.trophies.includes("nrl-premiership")
+      ? "NRL Premiers!"
     : o.trophies.includes("perfect-season")
       ? "The perfect season."
       : o.promoted
@@ -151,7 +157,19 @@ export function SeasonReview() {
         </StoryCard>
       ) : null}
 
-      {data.full ? (
+      {data.nrlBracket ? (
+        <StoryCard title="NRL finals" testId="review-nrl-finals">
+          <NrlBracketView bracket={data.nrlBracket} clubs={s.clubs} userClubId={s.userClubId} />
+        </StoryCard>
+      ) : null}
+
+      {data.wcc ? (
+        <StoryCard title="World Club Challenge" testId="review-wcc">
+          <WccResult m={data.wcc} clubs={s.clubs} userClubId={s.userClubId} />
+        </StoryCard>
+      ) : null}
+
+      {data.full && o.division !== "nrl" ? (
         <StoryCard title="Challenge Cup" testId="review-cup">
           <CupView run={data.cupRun} final={data.cupFinal} clubs={s.clubs} userClubId={s.userClubId} />
         </StoryCard>
@@ -236,7 +254,7 @@ export function SeasonReview() {
           <ul className="mt-2 space-y-1 text-sm text-white">
             {recordBreaks.fastestGlory ? <li>⚡ Championship to Grand Final in {recordBreaks.fastestGlory} seasons</li> : null}
             {recordBreaks.perfect ? <li>💯 A perfect season</li> : null}
-            {recordBreaks.bestSeason ? <li>📈 Best Super League season: {o.won} wins</li> : null}
+            {recordBreaks.bestSeason ? <li>📈 Best {o.division === "nrl" ? "NRL" : "Super League"} season: {o.won} wins</li> : null}
             {recordBreaks.biggestWin && legacy.biggestWin ? <li>💥 Biggest win: {legacy.biggestWin.score} v {legacy.biggestWin.opponent}</li> : null}
           </ul>
         </Card>
@@ -274,13 +292,14 @@ export function SeasonOver() {
   const s = state!;
   const o = s.lastOutcome!;
   const last = lastUserGame(s);
-  const gf = s.calendar.flatMap((m) => m.fixtures).find((f) => f.kind === "grand-final" && f.result);
+  const nrl = o.division === "nrl";
+  const gf = s.calendar.flatMap((m) => m.fixtures).find((f) => f.kind === (nrl ? "nrl-gf" : "grand-final") && f.result);
   const cupFinal = s.calendar.flatMap((m) => m.fixtures).find((f) => f.kind === "cup" && f.round === 5 && f.result);
   const gfMini = gf ? { k: gf.kind, r: gf.round, h: gf.home, a: gf.away, hs: gf.result!.homeScore, as: gf.result!.awayScore, gp: gf.result!.goldenPoint ? (1 as const) : undefined } : null;
   const gfWinner = gfMini ? miniWinner(gfMini) : null;
   const inGf = !!gf && (gf.home === s.userClubId || gf.away === s.userClubId);
   const showGf = gfMini && !(inGf && last?.id === gf!.id);
-  const title = o.trophies.includes("grand-final") ? "Champions!" : "Full time on the season";
+  const title = o.trophies.includes("grand-final") || o.trophies.includes("nrl-premiership") ? "Champions!" : "Full time on the season";
 
   return (
     <div className={CAREER_PAGE_CLASS}>
@@ -298,16 +317,16 @@ export function SeasonOver() {
         {showGf && gfMini ? (
           <Card className="border border-accent-gold/40">
             <section aria-label="Grand Final result">
-              <Eyebrow>Super League Grand Final</Eyebrow>
+              <Eyebrow>{nrl ? "NRL Grand Final" : "Super League Grand Final"}</Eyebrow>
               <ul className="mt-2">
                 <TieRow m={gfMini} clubs={s.clubs} userClubId={s.userClubId} />
               </ul>
-              {gfWinner ? <p className="mt-2 text-center text-sm font-semibold text-accent-gold">{s.clubs[gfWinner]?.name} are Super League champions.</p> : null}
+              {gfWinner ? <p className="mt-2 text-center text-sm font-semibold text-accent-gold">{s.clubs[gfWinner]?.name} are {nrl ? "NRL premiers" : "Super League champions"}.</p> : null}
             </section>
           </Card>
         ) : null}
         {last ? <ResultStrip state={s} fixture={last} /> : null}
-        {cupFinal && last?.id !== cupFinal.id ? (
+        {cupFinal && last?.id !== cupFinal.id && !nrl ? (
           <p className="text-center text-[13px] text-gray-400">
             Challenge Cup: {s.clubs[cupFinal.result!.homeScore > cupFinal.result!.awayScore ? cupFinal.home : cupFinal.away]?.name} won the final.
           </p>

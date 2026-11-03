@@ -6,7 +6,9 @@ import { useArmed } from "@/hooks/useArmed";
 import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
 import {
   autoPickTeam,
+  beforeRoundOne,
   clubRating,
+  toMini,
   currentStage,
   derbyBonus,
   isBigMatchday,
@@ -15,6 +17,9 @@ import {
   formatMoney,
   DERBY_LEGACY,
   MAGIC_WEEKEND_LEGACY,
+  NRL_BYE_POINTS,
+  WCC_LEGACY,
+  WCC_PRIZE,
   leagueOverPicture,
   teamRating,
   ordinal,
@@ -33,6 +38,7 @@ import { IncomingBidCard, TransferWindowCard } from "./TransferNews";
 import { PreseasonCard, PreseasonResults } from "./Preseason";
 import { LeagueOverCard, PromotionCard } from "./Stages";
 import { PlayoffsCard } from "./TableTab";
+import { WccResult } from "./SeasonStory";
 import { Card, ClubBadge, Eyebrow, FixtureTags, FormDots } from "./bits";
 
 const TACTICS: Array<{ id: Tactic; label: string; hint: string }> = [
@@ -50,6 +56,51 @@ function lastUserFixture(state: CareerState): Fixture | undefined {
 }
 
 const STREAK_WORD = { W: ["win", "wins"], L: ["defeat", "defeats"], D: ["draw", "draws"] } as const;
+
+/**
+ * The World Club Challenge (v1.64): Super League champions v NRL premiers before Round 1. Yours: a
+ * big banner on the next-match card. Someone else's: the tie on its own card, to watch.
+ */
+/** The World Club Challenge result (someone else's), one card. */
+function WccResultCard({ state, fixture }: { state: CareerState; fixture: Fixture }) {
+  return (
+    <section aria-label="World Club Challenge result" data-testid="wcc-result-card" className="rounded-card bg-pitch-900 px-3 py-3 ring-1 ring-accent-gold/40 sm:px-4">
+      <p className="text-center text-[11px] font-bold uppercase tracking-[0.14em] text-accent-gold sm:text-left">🌏 World Club Challenge</p>
+      <WccResult m={toMini(fixture)} clubs={state.clubs} userClubId={state.userClubId} />
+    </section>
+  );
+}
+
+export function WccBanner({ state, fixture }: { state: CareerState; fixture: Fixture }) {
+  const home = state.clubs[fixture.home]!;
+  const away = state.clubs[fixture.away]!;
+  const mine = fixture.home === state.userClubId || fixture.away === state.userClubId;
+  const sl = home.division === "nrl" ? away : home;
+  const nrl = home.division === "nrl" ? home : away;
+  return (
+    <section
+      aria-label="World Club Challenge"
+      data-testid="wcc-banner"
+      className="fl-rise rounded-card bg-gradient-to-b from-accent-gold/20 to-pitch-900 px-3 py-3 text-center ring-2 ring-accent-gold/60 sm:px-4"
+    >
+      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-accent-gold">🌏 World Club Challenge</p>
+      <div className="mt-2 flex items-center justify-center gap-3">
+        <ClubBadge club={home} size="md" />
+        <span className="font-display text-lg font-bold text-white">v</span>
+        <ClubBadge club={away} size="md" />
+      </div>
+      <p className="mt-1.5 text-[13px] font-semibold leading-snug text-white">
+        {sl.name} <span className="font-normal text-gray-400">(Super League champions)</span> v {nrl.name} <span className="font-normal text-gray-400">(NRL premiers)</span>
+      </p>
+      <p className="mt-1 text-[12px] text-gray-300">Hosted by {home.name}. One game, golden point if level.</p>
+      {mine ? (
+        <p className="mt-1.5 text-[12px] font-semibold text-accent-gold">
+          Win it: the trophy, {formatMoney(WCC_PRIZE)} and +{WCC_LEGACY} Legacy.
+        </p>
+      ) : null}
+    </section>
+  );
+}
 
 /** What changed since the last tap: places moved and challenges completed. */
 export interface ResultFlash {
@@ -324,10 +375,13 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
   // One stage at a time: nothing from the next stage shows until this one is done.
   const stageBar = (label: string, onClick: () => void) => <StageBar key={`${stage}-${label}`} label={label} onClick={onClick} />;
 
+  const seasonWcc = s.calendar[0]?.fixtures.find((f) => f.kind === "wcc" && !f.result);
   if (stage === "preseason") {
     return (
       <div className="flex flex-col gap-4">
         <PreseasonCard />
+        {/* Coming up before Round 1 (v1.64): the World Club Challenge. */}
+        {seasonWcc ? <WccBanner state={s} fixture={seasonWcc} /> : null}
         <TransferWindowCard onOpenMarket={onOpenMarket} />
       </div>
     );
@@ -356,13 +410,18 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
     const next = fixture;
     const pic = leagueOverPicture(s);
     const bye = pic.division === "super-league" && pic.position <= 2;
+    const nrlFinals = pic.division === "nrl";
     return (
       <div className="flex flex-col gap-4">
         {last ? <ResultStrip state={s} fixture={last} flash={flash} /> : null}
         <LeagueOverCard />
         <PlayoffsCard state={s} />
         {stageBar(
-          next
+          nrlFinals
+            ? next
+              ? "On to the finals"
+              : "Watch the finals"
+            : next
             ? next.kind === "mpg"
               ? "On to the Million Pound Game"
               : "On to the play-offs"
@@ -385,11 +444,19 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
     );
   }
 
+  const wcc = md?.fixtures.find((f) => f.kind === "wcc");
+  const myBye = !!md?.byes?.includes(s.userClubId);
+  const playedWcc = s.calendar[0]?.fixtures.find((f) => f.kind === "wcc" && f.result);
+  const mineWcc = !!playedWcc && (playedWcc.home === s.userClubId || playedWcc.away === s.userClubId);
+
   return (
     <div className="flex flex-col gap-4">
+      {wcc ? <WccBanner state={s} fixture={wcc} /> : null}
       {/* Order (v1.54): last result → next match → game plan → stronger-team nudge → transfers.
           Before Round 1 the "last result" is pre-season's (v1.62: at the top, not the bottom). */}
-      {last ? <ResultStrip state={s} fixture={last} flash={flash} /> : s.matchdayIndex === 0 ? <PreseasonResults /> : null}
+      {last ? <ResultStrip state={s} fixture={last} flash={flash} /> : beforeRoundOne(s) ? <PreseasonResults /> : null}
+      {/* Someone else's World Club Challenge, played before Round 1: its result until Round 1 is played. */}
+      {playedWcc && beforeRoundOne(s) && !mineWcc ? <WccResultCard state={s} fixture={playedWcc} /> : null}
       <Card className={big ? "border-accent-gold/60" : ""}>
         <div className="flex items-center justify-between gap-2">
           <Eyebrow>{md ? md.label : "Season complete"}</Eyebrow>
@@ -433,7 +500,11 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
           </>
         ) : md ? (
           <p className="mt-3 text-sm text-gray-300">
-            No game for you this week. {md.fixtures.length || md.pendingDraw ? "The other fixtures are played." : ""}
+            {wcc
+              ? "Not your game: the season starts with the World Club Challenge. Round 1 is next."
+              : myBye
+                ? `Bye week: +${NRL_BYE_POINTS} ladder points.`
+                : `No game for you this week. ${md.fixtures.length || md.pendingDraw ? "The other fixtures are played." : ""}`}
           </p>
         ) : null}
       </Card>
@@ -486,7 +557,7 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
             </>
           ) : (
             <GameButton size="lg" disabled={busy || !md || !fixtureArmed} onClick={() => run(play)}>
-              Continue
+              {wcc ? "Watch the World Club Challenge" : "Continue"}
             </GameButton>
           )}
         </div>

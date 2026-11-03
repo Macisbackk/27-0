@@ -198,7 +198,7 @@ export function triggerCareerSeasonAchievements(
     careerPerfectSeason:
       trophies.includes("perfect-season") ||
       (outcome.played > 0 && outcome.won === outcome.played),
-    careerGrandFinalWon: trophies.includes("grand-final"),
+    careerGrandFinalWon: trophies.includes("grand-final") || trophies.includes("nrl-premiership"),
     careerChallengeCupWon: trophies.includes("challenge-cup"),
     careerDeadlineDeal: deadlineDeal,
     careerTotalTrophies: sumCareerTrophies(legacy),

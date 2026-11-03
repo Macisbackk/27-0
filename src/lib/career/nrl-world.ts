@@ -61,7 +61,7 @@ export function addNrlWorld(clubs: Record<string, CareerClub>, players: Record<s
     for (const id of club.squad) if (players[id]) counts[players[id]!.pos]++;
     for (const pos of Object.keys(SQUAD_TEMPLATE) as Pos[]) {
       while (counts[pos] < SQUAD_TEMPLATE[pos]) {
-        const p = generatePlayer(rng, { clubId: s.id, pos, level: NRL_DEPTH_LEVEL, age: randInt(rng, 19, 30), idPrefix: `w-${s.id}` });
+        const p = generatePlayer(rng, { clubId: s.id, pos, level: NRL_DEPTH_LEVEL, age: randInt(rng, 19, 30), idPrefix: `wn${s.short.toLowerCase()}` });
         players[p.id] = p;
         club.squad.push(p.id);
         counts[pos]++;

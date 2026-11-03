@@ -4,6 +4,7 @@ import { useState } from "react";
 import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
 import {
   DIVISION_LABEL,
+  nrlHonours,
   LEADER_MIN_APPS,
   RECORD_LABEL,
   hallOfFame,
@@ -208,7 +209,23 @@ export function HallOfFameCard() {
         <Eyebrow>Hall of Fame · <ClubLink clubId={club.id}>{club.name}</ClubLink></Eyebrow>
       </div>
       <HallOfFame clubId={club.id} />
-      <p className="mt-2 text-center text-[11px] text-gray-400 sm:text-left">All-time club records. Pass one and he goes in the book.</p>
+      {club.division === "nrl" ? <NrlHonoursLine clubId={club.id} /> : null}
+      <p className="mt-2 text-center text-[11px] text-gray-400 sm:text-left">
+        {club.division === "nrl" ? "Club records since 1998 (the NRL era)." : "All-time club records."} Pass one and he goes in the book.
+      </p>
     </Card>
+  );
+}
+
+/** An NRL club's real honours since 1998 (data/nrl/): premierships and minor premierships. */
+function NrlHonoursLine({ clubId }: { clubId: string }) {
+  const h = nrlHonours(clubId);
+  const list = (ys: number[]) => (ys.length ? ys.join(", ") : "none");
+  return (
+    <p className="mt-2 text-center text-[12px] leading-snug text-gray-300 sm:text-left" data-testid="nrl-honours">
+      <span className="font-semibold text-white">Premiers:</span> {list(h.premierships)}
+      <br />
+      <span className="font-semibold text-white">Minor premiers:</span> {list(h.minorPremierships)}
+    </p>
   );
 }

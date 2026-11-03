@@ -60,7 +60,7 @@ export function currentStage(state: CareerState): MatchStage {
   if (preseasonOpen(state)) return "preseason";
   const pre = state.preseason;
   if (
-    state.matchdayIndex === 0 &&
+    beforeRoundOne(state) &&
     pre?.year === state.year &&
     pre.done &&
     pre.results.length > 0 &&
@@ -158,8 +158,13 @@ function needsManager(state: CareerState): boolean {
   if (currentStage(state) !== "fixture") return true;
   const md = state.calendar[state.matchdayIndex];
   if (!md) return true;
-  // The World Club Challenge is a showpiece: the hub stops for it even when you're not in it.
-  return !!userFixture(md, state.userClubId) || !!md.pendingDraw || isWccMatchday(md);
+  // Someone else's World Club Challenge plays straight through: its result pops up and leads the news.
+  return !!userFixture(md, state.userClubId) || !!md.pendingDraw;
+}
+
+/** Nothing of the league played yet this season (pre-season, or only the World Club Challenge). */
+export function beforeRoundOne(state: Pick<CareerState, "calendar" | "matchdayIndex">): boolean {
+  return !state.calendar.slice(0, state.matchdayIndex).some((m) => m.fixtures.some((f) => f.kind === "league"));
 }
 
 /** The pre-season week of the World Club Challenge. */
