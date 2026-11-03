@@ -1,0 +1,176 @@
+{
+  "about": "NRL honours reference (standalone). Only facts captured from the cited source are listed; absent years/awards are gaps, not negatives.",
+  "generatedAt": "2026-11-02",
+  "dallyMMedal": {
+    "sourceUrl": "https://en.wikipedia.org/wiki/Dally_M_Medal",
+    "note": "1998-2026 as listed on the source page at fetch time (no 2003 row was returned).",
+    "winners": [
+      {
+        "season": 1998,
+        "name": "Andrew Johns",
+        "club": "Newcastle Knights"
+      },
+      {
+        "season": 1999,
+        "name": "Andrew Johns",
+        "club": "Newcastle Knights"
+      },
+      {
+        "season": 2000,
+        "name": "Trent Barrett",
+        "club": "St George Illawarra Dragons"
+      },
+      {
+        "season": 2001,
+        "name": "Preston Campbell",
+        "club": "Cronulla-Sutherland Sharks"
+      },
+      {
+        "season": 2002,
+        "name": "Andrew Johns",
+        "club": "Newcastle Knights"
+      },
+      {
+        "season": 2004,
+        "name": "Danny Buderus",
+        "club": "Newcastle Knights"
+      },
+      {
+        "season": 2005,
+        "name": "Johnathan Thurston",
+        "club": "North Queensland Cowboys"
+      },
+      {
+        "season": 2006,
+        "name": "Cameron Smith",
+        "club": "Melbourne Storm"
+      },
+      {
+        "season": 2007,
+        "name": "Johnathan Thurston",
+        "club": "North Queensland Cowboys"
+      },
+      {
+        "season": 2008,
+        "name": "Matt Orford",
+        "club": "Manly Warringah Sea Eagles"
+      },
+      {
+        "season": 2009,
+        "name": "Jarryd Hayne",
+        "club": "Parramatta Eels"
+      },
+      {
+        "season": 2010,
+        "name": "Todd Carney",
+        "club": "Sydney Roosters"
+      },
+      {
+        "season": 2011,
+        "name": "Billy Slater",
+        "club": "Melbourne Storm"
+      },
+      {
+        "season": 2012,
+        "name": "Ben Barba",
+        "club": "Canterbury-Bankstown Bulldogs"
+      },
+      {
+        "season": 2013,
+        "name": "Cooper Cronk",
+        "club": "Melbourne Storm"
+      },
+      {
+        "season": 2014,
+        "name": "Jarryd Hayne",
+        "club": "Parramatta Eels"
+      },
+      {
+        "season": 2014,
+        "name": "Johnathan Thurston",
+        "club": "North Queensland Cowboys"
+      },
+      {
+        "season": 2015,
+        "name": "Johnathan Thurston",
+        "club": "North Queensland Cowboys"
+      },
+      {
+        "season": 2016,
+        "name": "Cooper Cronk",
+        "club": "Melbourne Storm"
+      },
+      {
+        "season": 2016,
+        "name": "Jason Taumalolo",
+        "club": "North Queensland Cowboys"
+      },
+      {
+        "season": 2017,
+        "name": "Cameron Smith",
+        "club": "Melbourne Storm"
+      },
+      {
+        "season": 2018,
+        "name": "Roger Tuivasa-Sheck",
+        "club": "New Zealand Warriors"
+      },
+      {
+        "season": 2019,
+        "name": "James Tedesco",
+        "club": "Sydney Roosters"
+      },
+      {
+        "season": 2020,
+        "name": "Jack Wighton",
+        "club": "Canberra Raiders"
+      },
+      {
+        "season": 2021,
+        "name": "Tom Trbojevic",
+        "club": "Manly Warringah Sea Eagles"
+      },
+      {
+        "season": 2022,
+        "name": "Nicho Hynes",
+        "club": "Cronulla-Sutherland Sharks"
+      },
+      {
+        "season": 2023,
+        "name": "Kalyn Ponga",
+        "club": "Newcastle Knights"
+      },
+      {
+        "season": 2024,
+        "name": "Jahrome Hughes",
+        "club": "Melbourne Storm"
+      },
+      {
+        "season": 2025,
+        "name": "James Tedesco",
+        "club": "Sydney Roosters"
+      },
+      {
+        "season": 2026,
+        "name": "Nathan Cleary",
+        "club": "Penrith Panthers"
+      }
+    ]
+  },
+  "season2026": {
+    "sourceUrl": "https://en.wikipedia.org/wiki/2026_NRL_season",
+    "premiers": "Sydney Roosters",
+    "grandFinalOpponent": "Newcastle Knights",
+    "minorPremiers": "Penrith Panthers",
+    "dallyMMedal": "Nathan Cleary",
+    "teams": 17,
+    "note": "Perth Bears / PNG side not in the 2026 competition per the source."
+  },
+  "todo": [
+    "Premiers 1998-2025",
+    "Clive Churchill Medal",
+    "Dally M Team of the Year",
+    "Immortals",
+    "Australian Rugby League Hall of Fame (see data/hall-of-fame.json for the existing game file; not duplicated here)"
+  ]
+}

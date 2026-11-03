@@ -1,0 +1,41 @@
+# club: nrl-brisbane-broncos
+# source: https://en.wikipedia.org/wiki/2026_Brisbane_Broncos_season
+# fetched: 2026-11-02 via WebFetch (Squad table). format: cap|nat|player|position|broncos debut|previous first-grade club
+170|AUS|Ben Hunt|Hooker|2009|St. George Illawarra Dragons
+236|SAM|Payne Haas|Prop|2018|N/A
+238|AUS|Kotoni Staggs|Centre|2018|N/A
+241|AUS|Gehamat Shibasaki|Centre|2018|N/A
+244|AUS|Patrick Carrigan|Lock|2019|N/A
+254|NZL|Jesse Arthars|Wing|2020|Gold Coast Titans
+259|AUS|Cory Paix|Hooker|2020|N/A
+262|NZL|Jordan Riki|Second-row|2020|N/A
+269|NZL|Xavier Willison|Prop|2021|N/A
+270|AUS|Brendan Piakura|Second-row|2021|N/A
+272|AUS|Billy Walters|Hooker|2022|Wests Tigers
+275|AUS|Adam Reynolds (c)|Halfback|2022|South Sydney Rabbitohs
+276|AUS|Corey Jensen|Prop|2022|North Queensland Cowboys
+278|TON|Delouise Hoeter|Centre|2022|Wests Tigers
+280|AUS|Ezra Mam|Five-eighth|2022|N/A
+283|SAM|Deine Mariner|Wing|2022|N/A
+285|AUS|Reece Walsh|Fullback|2023|New Zealand Warriors
+289|AUS|Blake Mozer|Hooker|2023|N/A
+290|AUS|Josh Rogers|Hooker|2023|N/A
+292|AUS|Jaiyden Hunt|Second-row|2024|St. George Illawarra Dragons
+293|AUS|Ben Te Kura|Prop|2024|N/A
+294|AUS|Jack Gosiewski|Second-row|2024|North Queensland Cowboys
+295|NZL|Josiah Karapani|Wing|2024|N/A
+296|AUS|Ben Talty|Prop|2025|N/A
+297|NZL|Aublix Tawha|Prop|2026|Dolphins
+298|AUS|Grant Anderson|Wing|2026|Melbourne Storm
+299|NZL|Antonio Verhoeven|Wing|2026|N/A
+300|AUS|Tom Duffy|Halfback|2026|North Queensland Cowboys
+301|AUS|Cameron Bukowski|Hooker|2026|N/A
+302|NZL|Hayze Perham|Fullback|2026|Canterbury-Bankstown Bulldogs
+303|NZL|Preston Riki|Prop|2026|Penrith Panthers
+304|AUS|Va'a Semu|Prop|2026|N/A
+305|AUS|Phillip Coates|Wing|2026|N/A
+—|AUS|Kane Bradley|Wing|Yet to debut|Melbourne Storm
+—|AUS|Tupou Francis|Lock|Yet to debut|N/A
+—|AUS|Luke Gale|Second-row|Yet to debut|N/A
+—|AUS|Jared Horne|Lock|Yet to debut|N/A
+—|AUS|Braithen Scott|Halfback|Yet to debut|N/A
