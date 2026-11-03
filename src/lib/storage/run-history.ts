@@ -5,28 +5,10 @@
  */
 import type { SquadSlot } from "../types";
 import { getAverageSquadRating, getEffectivePeakRating } from "../squad-analysis";
-import { normalizeRunHistory, upsertRunHistory, type RunHistoryEntry, type RunHistoryVariant } from "../records";
+import { upsertRunHistory, type RunHistoryEntry, type RunHistoryVariant } from "../records";
+import { loadRunHistory, saveRunHistory as save } from "./run-history-store";
 
-export const RUN_HISTORY_KEY = "27-0-run-history";
-export const RUN_HISTORY_CHANGED_EVENT = "27-0-run-history-changed";
-
-export function loadRunHistory(): RunHistoryEntry[] {
-  if (typeof window === "undefined") return [];
-  try {
-    return normalizeRunHistory(JSON.parse(localStorage.getItem(RUN_HISTORY_KEY) ?? "[]"));
-  } catch {
-    return [];
-  }
-}
-
-function save(history: RunHistoryEntry[]): void {
-  try {
-    localStorage.setItem(RUN_HISTORY_KEY, JSON.stringify(history));
-    window.dispatchEvent(new Event(RUN_HISTORY_CHANGED_EVENT));
-  } catch {
-    // storage full / blocked: records just won't include this run
-  }
-}
+export { RUN_HISTORY_CHANGED_EVENT, RUN_HISTORY_KEY, loadRunHistory } from "./run-history-store";
 
 export function squadToHistoryCards(squad: readonly SquadSlot[]) {
   return squad

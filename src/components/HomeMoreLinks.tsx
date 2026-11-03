@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { AlbumGlyph, CupGlyph, LadderGlyph, ShopGlyph } from "@/components/icons/rugby-icons";
-import { useSquadBook } from "@/lib/squad-book";
+import { useSquadBookState } from "@/lib/squad-book-state";
 
 const LINKS = [
   { href: "/leaderboard", label: "Leaderboard", icon: <LadderGlyph /> },
@@ -13,7 +13,7 @@ const LINKS = [
 
 /** The home page's small link row; the Squad Book carries its card count (collection hook). */
 export function HomeMoreLinks() {
-  const cards = Object.keys(useSquadBook().cards).length;
+  const cards = Object.keys(useSquadBookState().cards).length;
   return (
     <nav className="grid grid-cols-4 gap-1 border-t border-white/[0.07] pt-3" aria-label="More">
       {LINKS.map(({ href, label, icon }) => (

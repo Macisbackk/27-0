@@ -29,13 +29,27 @@ const PROFILES = [
 
 // Collected inside the page from the start of navigation.
 const OBSERVE = () => {
-  window.__perf = { lcp: 0, cls: 0, longTasks: 0, tbt: 0, events: [] };
+  window.__perf = { lcp: 0, cls: 0, longTasks: 0, tbt: 0, events: [], shifts: [] };
+  const describe = (n) => {
+    if (!n || !n.tagName) return "?";
+    const cls = typeof n.className === "string" ? n.className.trim().split(/\s+/).slice(0, 3).join(".") : "";
+    const text = (n.textContent || "").trim().slice(0, 30);
+    return `${n.tagName.toLowerCase()}${n.id ? "#" + n.id : ""}${cls ? "." + cls : ""}${text ? ` "${text}"` : ""}`;
+  };
   try {
     new PerformanceObserver((l) => {
       for (const e of l.getEntries()) window.__perf.lcp = Math.max(window.__perf.lcp, e.startTime);
     }).observe({ type: "largest-contentful-paint", buffered: true });
     new PerformanceObserver((l) => {
-      for (const e of l.getEntries()) if (!e.hadRecentInput) window.__perf.cls += e.value;
+      for (const e of l.getEntries()) {
+        if (e.hadRecentInput) continue;
+        window.__perf.cls += e.value;
+        window.__perf.shifts.push({
+          t: Math.round(e.startTime),
+          v: Number(e.value.toFixed(3)),
+          src: (e.sources || []).slice(0, 2).map((s) => describe(s.node)).join(" | "),
+        });
+      }
     }).observe({ type: "layout-shift", buffered: true });
     new PerformanceObserver((l) => {
       for (const e of l.getEntries()) {
@@ -106,6 +120,7 @@ for (const profile of PROFILES) {
             tbt: Math.round(p.tbt || 0),
             longTasks: p.longTasks || 0,
             tapMs: p.events && p.events.length ? Math.round(Math.max(...p.events)) : null,
+            shifts: (p.shifts || []).filter((x) => x.v >= 0.01).slice(0, 4),
           };
         });
         Object.assign(row, m, { jsKB: Math.round(jsBytes / 1024), totalKB: Math.round(totalBytes / 1024) });
@@ -135,6 +150,12 @@ for (const r of results) {
   lines.push(
     `| ${r.profile} | ${r.path} | ${r.visit} | ${r.ttfb} | ${r.fcp} | ${grade(r.lcp, 2500, 4000)} | ${grade(r.cls, 0.1, 0.25)} | ${grade(r.tbt, 200, 600)} | ${grade(r.tapMs, 200, 500)} | ${r.jsKB} | ${r.totalKB} |`
   );
+}
+lines.push("");
+lines.push("Layout shifts (≥0.01; time ms, score, shifted element):");
+for (const r of results) {
+  if (!r.shifts || !r.shifts.length) continue;
+  lines.push(`- ${r.profile} ${r.path} ${r.visit}: ${r.shifts.map((x) => `@${x.t} ${x.v} ${x.src}`).join(" ; ")}`);
 }
 const md = lines.join("\n") + "\n";
 process.stdout.write(md);

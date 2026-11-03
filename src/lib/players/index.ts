@@ -7,6 +7,8 @@ import { isSuperLeagueEligiblePlayer } from "./super-league-eligibility";
 import { isHiddenPlayer } from "./goat";
 import { isGameplayYearCard, isYearPinnedPlayer } from "./year-card";
 import { applyPlayerRegistry, buildPlayerRegistry } from "./registry";
+// Installs the registry-aware placement profile into player-positions (see placement-profile.ts).
+import "./placement-profile";
 
 const store = {
   all: [] as Player[],
