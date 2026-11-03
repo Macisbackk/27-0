@@ -164,7 +164,17 @@ try {
   // v1.18: the release list is confirmed in a sheet; double-tap the confirm too.
   const confirmRelease = page.getByRole("button", { name: /^Let \d+ go · open the window$/ });
   if (await confirmRelease.waitFor({ state: "visible", timeout: 2_000 }).then(() => true, () => false)) await confirmRelease.dblclick().catch(() => {});
-  await page.getByRole("heading", { name: "Build your squad" }).waitFor({ timeout });
+  // A stray second tap can land on whatever moved under the finger (seen: the site Menu sheet).
+  // That's fine as long as the player can carry on: close it and take the window once more.
+  const windowHeading = page.getByRole("heading", { name: "Build your squad" });
+  if (!(await windowHeading.waitFor({ timeout: 5_000 }).then(() => true, () => false))) {
+    await page.keyboard.press("Escape");
+    await page.waitForTimeout(300);
+    const again = page.getByRole("button", { name: /^(Open the transfer window|Continue to the window)$/ });
+    if (await again.isVisible().catch(() => false)) await again.click();
+    if (await confirmRelease.waitFor({ state: "visible", timeout: 2_000 }).then(() => true, () => false)) await confirmRelease.click();
+  }
+  await windowHeading.waitFor({ timeout });
   await noSidewaysScroll(page, "transfers @320");
   // Try to sell the whole squad: must stop at the minimum without errors.
   await page.getByRole("tab", { name: "Sell" }).click();
