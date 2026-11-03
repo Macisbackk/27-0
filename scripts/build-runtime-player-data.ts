@@ -14,6 +14,7 @@
 import { readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { normalizePlayer } from "../src/lib/players/normalize";
+import { buildNrlCareerData, formatNrlCareerData } from "./lib/nrl-career";
 
 type Raw = Record<string, unknown>;
 
@@ -73,6 +74,8 @@ function build(): Record<string, string> {
     return pick;
   });
   out["career-squads.runtime.json"] = `[\n${career.map((r) => JSON.stringify(r)).join(",\n")}\n]\n`;
+  // Manager Mode's NRL: the 17 clubs of 2026 and their squads from data/nrl/ (scripts/lib/nrl-career.ts).
+  out["nrl-career.runtime.json"] = formatNrlCareerData(buildNrlCareerData(ROOT));
   return out;
 }
 

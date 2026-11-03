@@ -1,5 +1,6 @@
 import championshipClubsData from "../../../data/championship-clubs.json";
 import clubsData from "../../../data/clubs.json";
+import nrlData from "../players/generated/nrl-career.runtime.json";
 import type { Division } from "./types";
 
 export interface ClubSeed {
@@ -111,7 +112,33 @@ export function buildClubSeeds(): ClubSeed[] {
   return seeds;
 }
 
+/** The NRL (v1.64): the 17 clubs of 2026, colours from data/nrl/nrl-clubs.json. Last, so the English world builds as before. */
+export function nrlClubSeeds(): ClubSeed[] {
+  return (nrlData.clubs as Array<{ id: string; name: string; short: string; primary: string; secondary: string; accent?: string }>).map((c) => ({
+    id: c.id,
+    name: c.name,
+    short: c.short,
+    primary: c.primary,
+    secondary: c.secondary,
+    accent: c.accent,
+    division: "nrl" as const,
+    strength: 77,
+    dataName: c.id,
+  }));
+}
+
 export const DIVISION_LABEL: Record<Division, string> = {
   "super-league": "Super League",
   championship: "Championship",
+  nrl: "NRL",
 };
+
+/** The two worlds: the NRL, and Super League + Championship (the English game). */
+export type Code = "nrl" | "uk";
+export function codeOfDivision(division: Division): Code {
+  return division === "nrl" ? "nrl" : "uk";
+}
+/** The top flight of a code: where its champions come from. */
+export function topDivision(code: Code): Division {
+  return code === "nrl" ? "nrl" : "super-league";
+}

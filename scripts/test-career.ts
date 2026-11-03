@@ -401,7 +401,7 @@ for (const [i, clubId] of ["salford-rlfc", "wigan-warriors", "north-wales-crusad
   let legacy = emptyLegacy();
   gone.clear(); // real players share ids across careers
   invariants(s, `${clubId} start`);
-  check(s.calendar.length === 34, `${clubId}: 34 matchdays (26 league + 5 cup + 3 play-off)`);
+  check(s.calendar.length === 35, `${clubId}: 35 matchdays (World Club Challenge + 26 league + 5 cup + 3 play-off)`);
   check(s.challenges.length === 3, `${clubId}: 3 season challenges`);
 
   for (let season = 1; season <= 6; season++) {
@@ -625,6 +625,9 @@ for (const clubId of ["london-broncos", "leeds-rhinos", "north-wales-crusaders"]
       const old = { ...s, board: undefined } as CareerState;
       check(boardGoal(old).target === goal.target, `${seed}/${division}: old save derives the same target`);
       s = playFriendlies(s, []);
+      // v1.64: the World Club Challenge opens the season (the hub stops for it), then Round 1.
+      check(seasonProgress(s).label === "World Club Challenge", `${seed}/${division}: progress reads World Club Challenge first`);
+      s = skipIdleWeeks(playMatchday(s));
       check(seasonProgress(s).label === "Round 1 of " + seasonProgress(s).total, `${seed}/${division}: progress reads Round 1 of N`);
       // Sim to each stop; the calendar preview says where it stops and how many games it plays.
       let guard = 0;

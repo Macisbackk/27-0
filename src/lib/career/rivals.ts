@@ -2,7 +2,7 @@
  * Rivals and derbies. Real rivalries for the clubs that have them; any club without one is
  * paired with its nearest club. A derby is any fixture between rivals (league, cup or play-off).
  */
-import type { CareerState, Fixture } from "./types";
+import type { CareerState, Division, Fixture } from "./types";
 
 /** Real rivalries (club ids). Order doesn't matter. */
 const RIVALRIES: Array<[string, string]> = [
@@ -34,6 +34,22 @@ const RIVALRIES: Array<[string, string]> = [
   ["keighley-cougars", "bradford-bulls"],
   ["hunslet-rlfc", "leeds-rhinos"],
   ["sheffield-eagles", "doncaster-rlfc"],
+  // The NRL (v1.64).
+  ["nrl-sydney-roosters", "nrl-south-sydney-rabbitohs"],
+  ["nrl-brisbane-broncos", "nrl-north-queensland-cowboys"],
+  ["nrl-brisbane-broncos", "nrl-dolphins"],
+  ["nrl-brisbane-broncos", "nrl-gold-coast-titans"],
+  ["nrl-st-george-illawarra-dragons", "nrl-cronulla-sharks"],
+  ["nrl-st-george-illawarra-dragons", "nrl-sydney-roosters"],
+  ["nrl-parramatta-eels", "nrl-canterbury-bulldogs"],
+  ["nrl-parramatta-eels", "nrl-wests-tigers"],
+  ["nrl-parramatta-eels", "nrl-penrith-panthers"],
+  ["nrl-canterbury-bulldogs", "nrl-south-sydney-rabbitohs"],
+  ["nrl-melbourne-storm", "nrl-manly-sea-eagles"],
+  ["nrl-manly-sea-eagles", "nrl-sydney-roosters"],
+  ["nrl-newcastle-knights", "nrl-manly-sea-eagles"],
+  ["nrl-canberra-raiders", "nrl-new-zealand-warriors"],
+  ["nrl-wests-tigers", "nrl-canterbury-bulldogs"],
 ];
 
 /** Rough home grounds (lat, lon) for the nearest-club fallback. */
@@ -110,8 +126,8 @@ export function isDerby(state: Pick<CareerState, "clubs">, f: Pick<Fixture, "hom
 }
 
 /** Cash for beating a rival. */
-export function derbyBonus(division: "super-league" | "championship"): number {
-  return division === "super-league" ? 30_000 : 15_000;
+export function derbyBonus(division: Division): number {
+  return division === "nrl" ? 40_000 : division === "super-league" ? 30_000 : 15_000;
 }
 export const DERBY_LEGACY = 3;
 /** Rating lift for the next game after a derby win (the dressing room's up). */

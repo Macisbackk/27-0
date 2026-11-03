@@ -92,7 +92,8 @@ export function aiLegendSigning(s: CareerState): CareerPlayer | undefined {
   recordDeal(s, { year: s.year, at: 0, playerId: p.id, playerName: p.name, pos: p.pos, rating: p.rating, from: null, to: pickd.club.id, fee: 0, summer: true });
   s.news = [`${pickd.club.name} sign legend ${p.name} (${p.rating})!`, ...s.news].slice(0, 30);
   tagNews(s, s.news[0]!, [pickd.club.id]);
-  pushEvent(s, {
+  // Super League news: no pop-up for an NRL manager.
+  if (s.clubs[s.userClubId]?.division !== "nrl") pushEvent(s, {
     id: `legend-signing:${s.year}:${p.id}`,
     kind: "legend-signing",
     year: s.year,

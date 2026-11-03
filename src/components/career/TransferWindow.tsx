@@ -5,6 +5,7 @@ import { GameButton } from "@/components/ui/GameButton";
 import { useArmed } from "@/hooks/useArmed";
 import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
 import {
+  NRL_SALARY_CAP,
   SQUAD_MAX,
   deadlineClock,
   SQUAD_MIN,
@@ -38,6 +39,7 @@ const ERROR_TEXT: Record<TransferError, string> = {
   "not-available": "That player is no longer available.",
   lineup: "Couldn't update the team.",
   "window-shut": "The transfer window is shut.",
+  "salary-cap": `That would take you over the NRL salary cap (${formatMoney(NRL_SALARY_CAP)} wages). Sell someone first.`,
 };
 
 /** £45k → "£45k/yr wages". */

@@ -491,6 +491,14 @@ function pickRegionForClub(clubId?: string | null): NameRegion {
     return "british";
   }
 
+  // NRL clubs (ids "nrl-…"): mostly Australian and New Zealand, a big Pacific share
+  if (normClub.startsWith("nrl-")) {
+    const roll = Math.random();
+    if (roll < 0.55) return "antipodean";
+    if (roll < 0.93) return "pacific";
+    return "british";
+  }
+
   // Welsh clubs — lean Celtic (and Celtic picks lean Welsh; see buildNameFromRegion)
   if (isWelshClub(normClub)) {
     const roll = Math.random();

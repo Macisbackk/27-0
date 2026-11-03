@@ -87,6 +87,9 @@ export function clubsNamed(s: Pick<CareerState, "clubs">, line: string): string[
 /** Lines written about the user's own business ("Sold X to …", "Signed …", "… bid £… for your …"). */
 const USER_LINE = /^(Sold |Signed |You |Your |Deadline Day: .* (bid|trump))/;
 
+/** Lines for every manager: the World Club Challenge (Super League v NRL). */
+const EVERYONE_LINE = /World Club Challenge/;
+
 /**
  * Older saves: infer tags for the news already in the feed. A line naming the user's club (by
  * name or short code) or naming no club stays untagged; otherwise it gets the named clubs' divisions.
@@ -96,7 +99,7 @@ export function inferNewsTags(s: Pick<CareerState, "clubs" | "userClubId" | "new
   const mine = new RegExp(`(^|[^A-Za-z])(${escapeRe(me.name)}|${escapeRe(me.short)})([^A-Za-z]|$)`);
   const tags: Record<string, Division[]> = {};
   for (const line of s.news) {
-    if (mine.test(line) || USER_LINE.test(line)) continue;
+    if (mine.test(line) || USER_LINE.test(line) || EVERYONE_LINE.test(line)) continue;
     const divs = divisionsOf(s, clubsNamed(s, line));
     if (divs.length) tags[line] = divs;
   }

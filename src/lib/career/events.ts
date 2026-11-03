@@ -97,9 +97,10 @@ export const EVENTS_PER_SEASON = 3;
 const EVENT_GAP = 5;
 const RANDOM_KINDS = ["transfer-request", "record-bid", "sponsor", "wonderkid", "takeover"] as const;
 
-/** A Super League club with room (not yours), for bids. */
+/** A top-flight club with room (not yours) in your game, for bids: Super League, or the NRL for an NRL club. */
 function bidder(s: CareerState, rng: () => number, p: CareerPlayer): string | undefined {
-  const sl = Object.values(s.clubs).filter((c) => c.id !== s.userClubId && c.division === "super-league" && c.squad.length < SQUAD_MAX - 1);
+  const top = s.clubs[s.userClubId]?.division === "nrl" ? "nrl" : "super-league";
+  const sl = Object.values(s.clubs).filter((c) => c.id !== s.userClubId && c.division === top && c.squad.length < SQUAD_MAX - 1);
   const need = pickBuyer(s, p, rng);
   if (need && sl.some((c) => c.id === need.clubId)) return need.clubId;
   return sl.length ? pick(rng, sl).id : undefined;
@@ -125,7 +126,7 @@ export function rollRandomEvent(s: CareerState, mdIndex: number): CareerEvent | 
   const id = `${kind}:${s.year}:${mdIndex}`;
   const me = s.clubs[s.userClubId]!;
   const squad = squadOf(s, me.id).filter((p) => !p.legend).sort((a, b) => b.rating - a.rating);
-  const sl = me.division === "super-league";
+  const sl = me.division === "super-league" || me.division === "nrl";
   let e: Omit<CareerEvent, "seen"> | undefined;
   switch (kind) {
     case "transfer-request": {

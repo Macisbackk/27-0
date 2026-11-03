@@ -24,3 +24,6 @@ export * from "./legend-moves";
 export * from "./news";
 export * from "./stats";
 export * from "./story";
+export * from "./nrl";
+export { addNrlWorld } from "./nrl-world";
+export { codeOfDivision, topDivision, type Code } from "./clubs";

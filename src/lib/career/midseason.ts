@@ -14,6 +14,7 @@
 import { LINEUP_SLOTS, SQUAD_MAX, SQUAD_MIN, effectiveRating, formatMoney, playerValue, transferFee, wageBill, wagesDueNow } from "./players";
 import { buyersFor } from "./buyers";
 import { tagNews, withDealDivisions } from "./news";
+import { codeOfDivision } from "./clubs";
 import { pick, rngFor, shuffle, type Rng } from "./rng";
 import type { CareerPlayer, CareerState, DeadlineClock, DeadlineOffer, Pos, TransferDeal } from "./types";
 
@@ -174,10 +175,12 @@ function makeOffer(state: CareerState, clock: DeadlineClock, rng: Rng): Deadline
   const contested = open.length && rng() < 0.35 ? mine.filter((p) => open.some((o) => o.playerId === p.id)) : [];
   const target = contested.length ? pick(rng, contested) : pick(rng, mine.filter((p) => !open.some((o) => o.playerId === p.id)).concat(mine).slice(0, 10));
   const already = open.filter((o) => o.playerId === target.id);
-  const needs = buyersFor(state, target).filter(
+  // Bids come from your own game's top flight (Super League, or the NRL), or anyone for a Championship club.
+  const top = me.division === "nrl" ? "nrl" : "super-league";
+  const needs = buyersFor(state, target, codeOfDivision(me.division)).filter(
     (n) =>
       !already.some((o) => o.clubId === n.clubId) &&
-      (state.clubs[n.clubId]!.division === "super-league" || me.division === "championship")
+      (state.clubs[n.clubId]!.division === top || me.division === "championship")
   );
   if (needs.length === 0) return null;
   const need = pick(rng, needs.slice(0, 4));
@@ -407,8 +410,11 @@ function aiDeal(state: CareerState, rng: Rng, buyerId: string, deadlineDay: bool
 
   type Cand = { p: CareerPlayer; from: string | null };
   const candidates: Cand[] = [];
+  const code = codeOfDivision(buyer.division);
   for (const club of Object.values(state.clubs)) {
     if (club.id === buyerId || club.id === state.userClubId) continue;
+    // AI clubs deal within their own game (NRL clubs among themselves).
+    if (codeOfDivision(club.division) !== code) continue;
     if (club.squad.length <= SQUAD_MIN + 2) continue;
     // Clubs don't sell their two best players mid-season.
     const sorted = squad(state, club.id).sort((a, b) => b.rating - a.rating);

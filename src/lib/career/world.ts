@@ -1,6 +1,7 @@
 // Slim copy of data/current-squads.json (npm run build:runtime-player-data).
 import currentSquads from "../players/generated/career-squads.runtime.json";
-import { buildClubSeeds, type ClubSeed } from "./clubs";
+import { buildClubSeeds, nrlClubSeeds, type ClubSeed } from "./clubs";
+import { addNrlWorld } from "./nrl-world";
 import { registerOccupiedPlayerNames } from "./names";
 import { SQUAD_MAX, SQUAD_TEMPLATE, autoPickLineup, generatePlayer, lineupRating, posFromData } from "./players";
 import { newCareerSeed, randInt, rngFor } from "./rng";
@@ -49,10 +50,10 @@ function realPlayer(row: SquadRow, rng: () => number): CareerPlayer {
   };
 }
 
-/** Starting prestige: Super League 2.5–4, Championship 1–2.5, by squad strength within the division. */
+/** Starting prestige: Super League 2.5–4, Championship 1–2.5, NRL 3–5, by squad strength within the division. */
 function startingPrestige(seed: ClubSeed, rankInDivision: number, divisionSize: number): number {
   const share = 1 - rankInDivision / Math.max(1, divisionSize - 1);
-  const raw = seed.division === "super-league" ? 2.5 + share * 1.5 : 1 + share * 1.5;
+  const raw = seed.division === "nrl" ? 3 + share * 2 : seed.division === "super-league" ? 2.5 + share * 1.5 : 1 + share * 1.5;
   return Math.round(raw * 2) / 2;
 }
 
@@ -101,9 +102,10 @@ export function buildWorld(seed: string): { clubs: Record<string, CareerClub>; p
     const counts: Record<Pos, number> = { FB: 0, WG: 0, CE: 0, SO: 0, SH: 0, PR: 0, HK: 0, SR: 0, LF: 0 };
     for (const id of club.squad) counts[players[id]!.pos]++;
     const level = s.division === "super-league" ? 79 : s.strength;
+    const depthRng = rng;
     for (const pos of Object.keys(SQUAD_TEMPLATE) as Pos[]) {
       while (counts[pos] < SQUAD_TEMPLATE[pos]) {
-        const p = generatePlayer(rng, { clubId: s.id, pos, level, age: randInt(rng, 19, 31), idPrefix: `w-${s.id}` });
+        const p = generatePlayer(depthRng, { clubId: s.id, pos, level, age: randInt(depthRng, 19, 31), idPrefix: `w-${s.id}` });
         players[p.id] = p;
         club.squad.push(p.id);
         counts[pos]++;
@@ -124,9 +126,13 @@ export function buildWorld(seed: string): { clubs: Record<string, CareerClub>; p
     }
   }
 
+  // The NRL's 2026 squads (v1.64), on their own rng so the English world builds exactly as before.
+  for (const [id, n] of Object.entries(addNrlWorld(clubs, players, seed, START_YEAR))) realCounts[id] = n;
+
   const choices: ClubChoice[] = [];
-  for (const division of ["super-league", "championship"] as const) {
-    const inDiv = seeds
+  const allSeeds = [...seeds, ...nrlClubSeeds()];
+  for (const division of ["super-league", "championship", "nrl"] as const) {
+    const inDiv = allSeeds
       .filter((s) => s.division === division)
       .map((s) => ({ s, rating: lineupRating(autoPickLineup(clubs[s.id]!.squad.map((id) => players[id]!)), players) }))
       .sort((a, b) => b.rating - a.rating);
@@ -174,7 +180,7 @@ export function createCareer(opts: { clubId: string; managerName: string; seed?:
     freeAgents: [],
     calendar: [],
     matchdayIndex: 0,
-    tables: { "super-league": [], championship: [] },
+    tables: { "super-league": [], championship: [], nrl: [] },
     challenges: [],
     seasonTrack: { unbeatenRun: 0, bestUnbeatenRun: 0, biggestWinMargin: 0, academyDebutIds: [], pointsScored: 0, cupRoundReached: 0 },
     phase: "season",
@@ -203,8 +209,16 @@ function unattachedPool(state: CareerState): string[] {
     state.players[p.id] = p;
     ids.push(p.id);
   }
+  // A few out-of-contract NRL-level players too (their own rng: the English pool is unchanged).
+  const nrlRng = rngFor(state.seed, "free-agents-nrl");
+  for (let i = 0; i < START_NRL_FREE_AGENTS; i++) {
+    const p = generatePlayer(nrlRng, { clubId: "nrl-free", pos: positions[(i * 4 + 1) % positions.length]!, level: i % 2 ? 80 : 77, age: randInt(nrlRng, 23, 32), idPrefix: "fa0n" });
+    state.players[p.id] = p;
+    ids.push(p.id);
+  }
   return ids;
 }
+const START_NRL_FREE_AGENTS = 6;
 
 /** Minimum budget on day one of a new career. */
 export const STARTING_BUDGET_FLOOR = 100_000;

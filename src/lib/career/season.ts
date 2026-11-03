@@ -4,13 +4,25 @@ import { autoPickBench, autoPickLineup, fillLineupGaps, teamRating, formatMoney,
 import { rngFor, shuffle } from "./rng";
 import { CUP_ROUND_LABELS, buildCalendar } from "./schedule";
 import { DIVISION_LABEL } from "./clubs";
+import {
+  NRL_BYE_POINTS,
+  NRL_FINALISTS,
+  NRL_FINALS_LABEL,
+  NRL_GAMES,
+  WCC_LABEL,
+  isNrlFinalKind,
+  recordChampions,
+  wccFixture,
+  wccParticipants,
+} from "./nrl";
 import { boardTargetForRank } from "./board";
 import { academyIntake } from "./academy";
-import { rollRandomEvent } from "./events";
+import { pushEvent, rollRandomEvent } from "./events";
 import { MAN_OF_STEEL_LEGACY, awardLabel, computeSeasonAwards, userWonManOfSteel } from "./awards";
 import { defaultCaptain, syncCaptain, userCaptain } from "./captain";
 import { DERBY_LEGACY, DERBY_MORALE, derbyBonus, isDerby } from "./rivals";
 import { isMagicWeekend } from "./schedule";
+import { addNrlWorld } from "./nrl-world";
 import { inferNewsTags, pruneNewsTags, tagNews, withDealDivisions } from "./news";
 import { settleFixture } from "./stats";
 import { buildSeasonStory, calendarIsFinishedSeason } from "./story";
@@ -28,7 +40,7 @@ import type {
   TrophyId,
 } from "./types";
 
-export const DIVISIONS: Division[] = ["super-league", "championship"];
+export const DIVISIONS: Division[] = ["super-league", "championship", "nrl"];
 
 /* ------------------------------------------------------------------ helpers */
 
@@ -172,13 +184,14 @@ function buildChallenges(state: CareerState): SeasonChallenge[] {
   const ranking = expectedRanking(state, division);
   const expectedRank = ranking.indexOf(club.id) + 1;
   const size = ranking.length;
-  const rounds = division === "super-league" ? 26 : 21;
+  const rounds = division === "nrl" ? NRL_GAMES : division === "super-league" ? 26 : 21;
   // 1 = favourites … 0 = expected to finish bottom.
   const share = 1 - (expectedRank - 1) / (size - 1);
   const tier: "strong" | "mid" | "weak" = share >= 0.7 ? "strong" : share >= 0.35 ? "mid" : "weak";
   const academyCount = club.squad.filter((id) => state.players[id]?.academy).length;
 
-  const kinds = shuffle(rng, CHALLENGE_KINDS).filter((k) => k !== "academy-debuts" || academyCount >= 2);
+  // NRL clubs aren't in the Challenge Cup.
+  const kinds = shuffle(rng, CHALLENGE_KINDS).filter((k) => (k !== "academy-debuts" || academyCount >= 2) && (k !== "cup-reach" || division !== "nrl"));
   return kinds.slice(0, 3).map((kind, i): SeasonChallenge => {
     const base = { id: `${state.year}-ch-${i}`, kind, progress: 0, done: false };
     switch (kind) {
@@ -190,7 +203,7 @@ function buildChallenges(state: CareerState): SeasonChallenge[] {
         const target = Math.max(1, expectedRank - 2);
         return {
           ...base,
-          title: target === 1 ? `Finish top of the ${DIVISION_LABEL[division]}` : `Finish in the top ${target}`,
+          title: target === 1 ? (division === "nrl" ? "Win the minor premiership" : `Finish top of the ${DIVISION_LABEL[division]}`) : `Finish in the top ${target}`,
           target,
           rewardCash: 100_000,
           rewardLegacy: 25,
@@ -225,10 +238,15 @@ function buildChallenges(state: CareerState): SeasonChallenge[] {
 
 /** Prestige → season income. */
 export function seasonIncome(state: CareerState): number {
-  return userClub(state).division === "super-league"
+  const division = userClub(state).division;
+  // The NRL is the richer league: its wage bills are higher, and so is what its boards pay (v1.64).
+  if (division === "nrl") return NRL_INCOME_BASE + Math.round(state.prestige * NRL_INCOME_PER_STAR);
+  return division === "super-league"
     ? 500_000 + Math.round(state.prestige * 200_000)
     : 150_000 + Math.round(state.prestige * 80_000);
 }
+export const NRL_INCOME_BASE = 600_000;
+export const NRL_INCOME_PER_STAR = 350_000;
 
 export function startSeason(state: CareerState): CareerState {
   const next: CareerState = structuredClone(state);
@@ -236,6 +254,7 @@ export function startSeason(state: CareerState): CareerState {
   const divisions: Record<Division, string[]> = {
     "super-league": clubsIn(next, "super-league"),
     championship: clubsIn(next, "championship"),
+    nrl: clubsIn(next, "nrl"),
   };
 
   // Challenge Cup: all 14 Super League clubs + the 18 strongest Championship clubs (always incl. the user).
@@ -244,11 +263,18 @@ export function startSeason(state: CareerState): CareerState {
   if (!champEntrants.includes(next.userClubId) && next.clubs[next.userClubId]!.division === "championship") {
     champEntrants[champEntrants.length - 1] = next.userClubId;
   }
-  next.calendar = buildCalendar(rng, next.year, divisions, [...divisions["super-league"], ...champEntrants]);
+  // v1.64: last year's Super League and NRL champions open the season in the World Club Challenge.
+  const wcc = divisions.nrl.length ? wccParticipants(next, next.year, (d) => expectedRanking(next, d)[0]) : null;
+  next.calendar = buildCalendar(rng, next.year, divisions, [...divisions["super-league"], ...champEntrants], {
+    wcc: wcc ? wccFixture(next.year, wcc.sl, wcc.nrl) : undefined,
+    nrlRng: rngFor(next.seed, next.year, "nrl-calendar"),
+    nrlLabels: next.clubs[next.userClubId]!.division === "nrl",
+  });
   next.matchdayIndex = 0;
   next.tables = {
     "super-league": divisions["super-league"].map(emptyRow),
     championship: divisions.championship.map(emptyRow),
+    nrl: divisions.nrl.map(emptyRow),
   };
   for (const p of Object.values(next.players)) {
     p.apps = 0;
@@ -289,6 +315,13 @@ export function startSeason(state: CareerState): CareerState {
     next,
     `${next.year} season begins in the ${DIVISION_LABEL[userClub(next).division]}. Board income ${formatMoney(income)}, wages ${formatMoney(wages)}.`
   );
+  if (wcc) {
+    const mine = wcc.sl === next.userClubId || wcc.nrl === next.userClubId;
+    const line = mine
+      ? `${WCC_LABEL}: you face ${next.clubs[wcc.sl === next.userClubId ? wcc.nrl : wcc.sl]!.name} before Round 1.`
+      : `${WCC_LABEL}: ${next.clubs[wcc.sl]!.name} v ${next.clubs[wcc.nrl]!.name} opens the season.`;
+    addNews(next, line);
+  }
   next.updatedAt = Date.now();
   return next;
 }
@@ -363,6 +396,15 @@ export function placeInTeam(state: CareerState, where: "xiii" | "bench", index: 
 export function migrateCareer<T extends CareerState | null>(state: T): T {
   if (!state) return state;
   let s: CareerState = state;
+  // The NRL (v1.64): older saves gain its 17 clubs and squads. It runs in the background from the
+  // next season (with the World Club Challenge in that pre-season); this season's calendar is unchanged.
+  if (!Object.values(s.clubs).some((c) => c.division === "nrl")) {
+    const clubs = { ...s.clubs };
+    const players = { ...s.players };
+    addNrlWorld(clubs, players, s.seed, s.year);
+    s = { ...s, clubs, players, tables: { ...s.tables, nrl: s.tables.nrl ?? [] } };
+  }
+  if (!Array.isArray(s.tables.nrl)) s = { ...s, tables: { ...s.tables, nrl: [] } };
   if (!Array.isArray(s.bench)) s = withTeamFixed({ ...s, bench: [] });
   if (!Array.isArray(s.academy) || s.academy.some((id) => !s.players[id])) {
     s = { ...s, academy: (Array.isArray(s.academy) ? s.academy : []).filter((id) => !!s.players[id]) };
@@ -402,10 +444,21 @@ export function autoPickTeam(state: CareerState): { lineup: string[]; bench: str
 /* ------------------------------------------------------------------ draws */
 
 function knockoutWinners(md: Matchday | undefined): string[] {
-  return (md?.fixtures ?? []).map(winnerOf).filter((x): x is string => !!x);
+  // Cup ties only: the NRL's games share some cup weeks.
+  return (md?.fixtures ?? []).filter((f) => f.kind === "cup").map(winnerOf).filter((x): x is string => !!x);
 }
 
 function drawPending(state: CareerState, md: Matchday) {
+  if (md.pendingDraw) {
+    // Super League's draws replace the week's fixtures: the NRL games sharing the week stay.
+    const nrl = md.fixtures.filter((f) => f.division === "nrl");
+    drawUk(state, md);
+    md.fixtures = [...md.fixtures.filter((f) => f.division !== "nrl"), ...nrl];
+  }
+  if (md.nrlDraw) drawNrlFinals(state, md);
+}
+
+function drawUk(state: CareerState, md: Matchday) {
   if (!md.pendingDraw) return;
   const rng = rngFor(state.seed, state.year, "draw", md.index);
   const prevCup = [...state.calendar.slice(0, md.index)].reverse().find((m) => m.fixtures.some((f) => f.kind === "cup"));
@@ -478,6 +531,84 @@ function drawPending(state: CareerState, md: Matchday) {
     }
   }
   md.pendingDraw = undefined;
+}
+
+/**
+ * NRL finals (top eight). Week 1: qualifying finals 1v4 and 2v3, elimination finals 5v8 and 6v7.
+ * Week 2: the qualifying-final losers host the elimination-final winners (QF1 loser v EF1 winner).
+ * Week 3: the qualifying-final winners host the semi-final winners (QF1 winner v SF2 winner).
+ * Then the Grand Final, the higher ladder finisher the nominal home side.
+ */
+function drawNrlFinals(state: CareerState, md: Matchday) {
+  const draw = md.nrlDraw;
+  if (!draw) return;
+  md.nrlDraw = undefined;
+  const ladder = sortTable(state.tables.nrl ?? []).map((r) => r.clubId);
+  if (ladder.length < NRL_FINALISTS) return;
+  const finals = state.calendar.slice(0, md.index).flatMap((m) => m.fixtures).filter((f) => f.division === "nrl" && isNrlFinalKind(f.kind));
+  const byId = (id: string) => finals.find((f) => f.id === `${state.year}-${id}`);
+  const mk = (id: string, kind: FixtureKind, round: number, label: string, home: string, away: string): Fixture => ({
+    id: `${state.year}-${id}`,
+    kind,
+    round,
+    label,
+    home,
+    away,
+    division: "nrl",
+  });
+  const w = (id: string) => {
+    const f = byId(id);
+    return f ? winnerOf(f) : null;
+  };
+  const l = (id: string) => {
+    const f = byId(id);
+    return f ? loserOf(f) : null;
+  };
+  const out: Fixture[] = [];
+  if (draw === "nrl-w1") {
+    const [a, b, c, d, e, f, g, h] = ladder;
+    out.push(mk("nrl-qf1", "nrl-final", 1, NRL_FINALS_LABEL.qf, a!, d!));
+    out.push(mk("nrl-qf2", "nrl-final", 1, NRL_FINALS_LABEL.qf, b!, c!));
+    out.push(mk("nrl-ef1", "nrl-final", 1, NRL_FINALS_LABEL.ef, e!, h!));
+    out.push(mk("nrl-ef2", "nrl-final", 1, NRL_FINALS_LABEL.ef, f!, g!));
+  } else if (draw === "nrl-w2") {
+    const pairs: Array<[string | null, string | null]> = [
+      [l("nrl-qf1"), w("nrl-ef1")],
+      [l("nrl-qf2"), w("nrl-ef2")],
+    ];
+    pairs.forEach(([home, away], i) => {
+      if (home && away) out.push(mk(`nrl-sf${i + 1}`, "nrl-final", 2, NRL_FINALS_LABEL.sf, home, away));
+    });
+  } else if (draw === "nrl-w3") {
+    const pairs: Array<[string | null, string | null]> = [
+      [w("nrl-qf1"), w("nrl-sf2")],
+      [w("nrl-qf2"), w("nrl-sf1")],
+    ];
+    pairs.forEach(([home, away], i) => {
+      if (home && away) out.push(mk(`nrl-pf${i + 1}`, "nrl-final", 3, NRL_FINALS_LABEL.pf, home, away));
+    });
+  } else {
+    const a = w("nrl-pf1");
+    const b = w("nrl-pf2");
+    if (a && b) {
+      const [home, away] = ladder.indexOf(a) < ladder.indexOf(b) ? [a, b] : [b, a];
+      out.push(mk("nrl-gf", "nrl-gf", 1, NRL_FINALS_LABEL.gf, home, away));
+    }
+  }
+  md.fixtures.push(...out);
+}
+
+/** NRL byes this week: 2 ladder points each (in place). */
+function applyByes(state: CareerState, md: Matchday) {
+  const rows = state.tables.nrl;
+  if (!md.byes?.length || !rows) return;
+  for (const id of md.byes) {
+    const row = rows.find((r) => r.clubId === id);
+    if (!row) continue;
+    row.pts += NRL_BYE_POINTS;
+    row.b = (row.b ?? 0) + 1;
+  }
+  if (md.byes.includes(state.userClubId)) addNews(state, `Bye week: +${NRL_BYE_POINTS} ladder points.`);
 }
 
 /* --------------------------------------------------------------- play matchday */
@@ -677,19 +808,21 @@ function playMatchdayInPlace(next: CareerState, played?: PlayedResult): void {
     else if (f.away === next.userClubId) trackUserResult(next, f, away);
     applyBans(next, f);
   }
+  applyByes(next, md);
   // A man just sent off drops out of your 17 now (the bench covers), so the Team tab is right.
   fixTeam(next);
 
   // Headline results the user cares about even when not involved.
   for (const f of md.fixtures) {
-    if (f.kind === "grand-final" || (f.kind === "cup" && f.round === 5)) {
+    if (f.kind === "grand-final" || f.kind === "nrl-gf" || (f.kind === "cup" && f.round === 5)) {
       const w = winnerOf(f);
       if (w && w !== next.userClubId) {
-        addNews(next, `${next.clubs[w]!.name} win the ${f.kind === "grand-final" ? "Grand Final" : "Challenge Cup"}.`);
-        // The Grand Final is Super League news; the Challenge Cup is everyone's.
-        if (f.kind === "grand-final") tagNews(next, next.news[0]!, [w]);
+        addNews(next, `${next.clubs[w]!.name} win the ${f.kind === "grand-final" ? "Grand Final" : f.kind === "nrl-gf" ? "NRL Grand Final" : "Challenge Cup"}.`);
+        // The Grand Finals are their league's news; the Challenge Cup is everyone's.
+        if (f.kind !== "cup") tagNews(next, next.news[0]!, [w]);
       }
     }
+    if (f.kind === "wcc") wccPlayed(next, f);
   }
 
   // Now and then something happens off the field (a pop-up on the hub).
@@ -699,13 +832,51 @@ function playMatchdayInPlace(next: CareerState, played?: PlayedResult): void {
   next.matchdayIndex++;
   // Draw the next knockout round now so the hub can show the upcoming tie.
   const upcoming = next.calendar[next.matchdayIndex];
-  if (upcoming?.pendingDraw) drawPending(next, upcoming);
+  if (upcoming?.pendingDraw || upcoming?.nrlDraw) drawPending(next, upcoming);
   pruneNewsTags(next);
   next.updatedAt = Date.now();
   if (next.matchdayIndex >= next.calendar.length) finishSeason(next);
   // Mid-season window: AI deals, Deadline Day and rival bids for the round now coming up.
   else onMatchdayReached(next);
 }
+
+/** Legacy for winning the World Club Challenge (on top of the trophy). */
+export const WCC_LEGACY = 80;
+
+/** The World Club Challenge has been played: the news and a pop-up for everyone. */
+function wccPlayed(state: CareerState, f: Fixture) {
+  const w = winnerOf(f);
+  const r = f.result;
+  if (!w || !r) return;
+  const loser = w === f.home ? f.away : f.home;
+  const ws = Math.max(r.homeScore, r.awayScore);
+  const ls = Math.min(r.homeScore, r.awayScore);
+  const mine = w === state.userClubId || loser === state.userClubId;
+  const score = `${ws}–${ls}${r.goldenPoint ? " (golden point)" : ""}`;
+  const line =
+    w === state.userClubId
+      ? `World champions! You beat ${state.clubs[loser]!.name} ${score} in the ${WCC_LABEL}.`
+      : `${state.clubs[w]!.name} beat ${state.clubs[loser]!.name} ${score} in the ${WCC_LABEL}.`;
+  addNews(state, line);
+  pushEvent(state, {
+    id: `wcc:${state.year}`,
+    kind: "world-club-challenge",
+    year: state.year,
+    clubId: w,
+    amount: w === state.userClubId ? WCC_PRIZE : undefined,
+    title: w === state.userClubId ? "World champions!" : `${state.clubs[w]!.short} are world champions`,
+    text: mine
+      ? w === state.userClubId
+        ? `You beat ${state.clubs[loser]!.name} ${score}. The ${WCC_LABEL} is yours.`
+        : `${state.clubs[w]!.name} beat you ${score} in the ${WCC_LABEL}.`
+      : `${state.clubs[w]!.name} beat ${state.clubs[loser]!.name} ${score} in the ${WCC_LABEL}.`,
+    options: [{ id: "ok", label: w === state.userClubId ? "Get in" : "OK" }],
+  });
+  if (w === state.userClubId) state.budget += WCC_PRIZE;
+}
+
+/** Prize money for winning the World Club Challenge. */
+export const WCC_PRIZE = 150_000;
 
 /** Keep each club's latest team sheet so tapping a club name shows who actually played. */
 function recordLineups(state: CareerState, f: Fixture, home: TeamSheet, away: TeamSheet) {
@@ -754,7 +925,10 @@ export function simRestOfSeason(state: CareerState): CareerState {
 const PRIZE: Record<Division, (position: number, size: number) => number> = {
   "super-league": (pos) => Math.max(200_000, 900_000 - (pos - 1) * 50_000),
   championship: (pos, size) => Math.max(80_000, Math.round(380_000 - ((pos - 1) * 300_000) / (size - 1))),
+  nrl: (pos) => Math.max(400_000, 1_400_000 - (pos - 1) * 70_000),
 };
+/** Extra prize money for reaching each NRL finals week (1 = made the eight … 4 = the Grand Final). */
+const NRL_FINALS_PRIZE = [0, 100_000, 160_000, 240_000, 360_000];
 const CUP_PRIZE = [0, 10_000, 25_000, 50_000, 100_000, 160_000, 300_000];
 
 export const LEGACY_FOR_TROPHY: Record<TrophyId, number> = {
@@ -765,6 +939,9 @@ export const LEGACY_FOR_TROPHY: Record<TrophyId, number> = {
   promotion: 40,
   "million-pound-game": 40,
   "perfect-season": 200,
+  "nrl-premiership": 100,
+  "minor-premiership": 60,
+  "world-club-challenge": WCC_LEGACY,
 };
 
 export const TROPHY_LABEL: Record<TrophyId, string> = {
@@ -775,6 +952,9 @@ export const TROPHY_LABEL: Record<TrophyId, string> = {
   promotion: "Promotion",
   "million-pound-game": "Million Pound Game",
   "perfect-season": "Perfect season",
+  "nrl-premiership": "NRL Premiership",
+  "minor-premiership": "Minor Premiership",
+  "world-club-challenge": "World Club Challenge",
 };
 
 function finishSeason(state: CareerState): CareerState {
@@ -790,18 +970,29 @@ function finishSeason(state: CareerState): CareerState {
   const trophies: TrophyId[] = [];
   const all = s.calendar.flatMap((m) => m.fixtures);
   const gf = all.find((f) => f.kind === "grand-final");
+  const nrlGf = all.find((f) => f.kind === "nrl-gf");
+  const wcc = all.find((f) => f.kind === "wcc");
   const cupFinal = all.find((f) => f.kind === "cup" && f.round === 5);
   const mpg = all.find((f) => f.kind === "mpg");
 
+  if (wcc && winnerOf(wcc) === club.id) trophies.push("world-club-challenge");
   if (gf && winnerOf(gf) === club.id) trophies.push("grand-final");
+  if (nrlGf && winnerOf(nrlGf) === club.id) trophies.push("nrl-premiership");
   if (division === "super-league" && position === 1) trophies.push("league-leaders");
+  if (division === "nrl" && position === 1 && row.p > 0) trophies.push("minor-premiership");
   if (cupFinal && winnerOf(cupFinal) === club.id) trophies.push("challenge-cup");
   if (division === "championship" && position === 1) trophies.push("championship-title");
+  // Next year's World Club Challenge: this year's champions.
+  recordChampions(s, s.year, gf ? winnerOf(gf) ?? undefined : undefined, nrlGf ? winnerOf(nrlGf) ?? undefined : undefined);
+  // How far the user got in the NRL finals (1 = made the eight … 4 = the Grand Final).
+  const nrlWeeks = division === "nrl"
+    ? Math.max(0, ...all.filter((f) => isNrlFinalKind(f.kind) && (f.home === club.id || f.away === club.id)).map((f) => (f.kind === "nrl-gf" ? 4 : f.round)))
+    : 0;
 
   // Promotion / relegation: Championship champions up, Super League bottom down,
-  // Million Pound Game decides one more place.
-  const promoted = new Set<string>([chTable[0]!.clubId]);
-  const relegated = new Set<string>([slTable[slTable.length - 1]!.clubId]);
+  // Million Pound Game decides one more place. (Not the NRL: nobody goes up or down.)
+  const promoted = new Set<string>(chTable[0] ? [chTable[0].clubId] : []);
+  const relegated = new Set<string>(slTable.length ? [slTable[slTable.length - 1]!.clubId] : []);
   if (mpg) {
     const w = winnerOf(mpg);
     if (w === mpg.away) {
@@ -825,7 +1016,9 @@ function finishSeason(state: CareerState): CareerState {
   // Money
   let prize = PRIZE[division](position, table.length);
   prize += CUP_PRIZE[Math.min(6, s.seasonTrack.cupRoundReached)] ?? 0;
+  prize += NRL_FINALS_PRIZE[nrlWeeks] ?? 0;
   if (trophies.includes("grand-final")) prize += 400_000;
+  if (trophies.includes("nrl-premiership")) prize += 600_000;
   if (userPromoted) prize += 600_000;
 
   // Challenges settled at season end
@@ -847,12 +1040,15 @@ function finishSeason(state: CareerState): CareerState {
 
   // Prestige
   let delta = 0;
-  if (trophies.includes("grand-final")) delta += 1;
-  if (trophies.includes("league-leaders") || trophies.includes("challenge-cup")) delta += 0.5;
+  if (trophies.includes("grand-final") || trophies.includes("nrl-premiership")) delta += 1;
+  if (trophies.includes("league-leaders") || trophies.includes("challenge-cup") || trophies.includes("minor-premiership")) delta += 0.5;
+  if (trophies.includes("world-club-challenge")) delta += 0.5;
   if (userPromoted) delta += 0.5;
   if (division === "super-league" && position <= 6 && !trophies.includes("grand-final")) delta += 0.5;
+  if (division === "nrl" && position <= NRL_FINALISTS && !trophies.includes("nrl-premiership")) delta += 0.5;
   if (userRelegated) delta -= 1;
   else if (division === "super-league" && position >= table.length - 2) delta -= 0.5;
+  else if (division === "nrl" && position >= table.length - 2) delta -= 0.5;
   s.prestige = Math.max(1, Math.min(5, s.prestige + Math.min(1.5, delta)));
 
   s.budget += prize;
@@ -880,18 +1076,19 @@ function finishSeason(state: CareerState): CareerState {
     // Who won what, the play-offs, the cup and every result of yours: kept for the history.
     story: buildSeasonStory(s),
   };
-  if (trophies.includes("grand-final") && s.firstGrandFinalSeason == null) s.firstGrandFinalSeason = s.seasonNumber;
+  if ((trophies.includes("grand-final") || trophies.includes("nrl-premiership")) && s.firstGrandFinalSeason == null) s.firstGrandFinalSeason = s.seasonNumber;
   s.lastOutcome = outcome;
   s.history = [...s.history, outcome];
   s.phase = "review";
   addNews(s, `${s.year} season over: ${ordinal(position)} in the ${DIVISION_LABEL[division]}.`);
-  const steel = awards.find((a) => a.id === "man-of-steel" && a.division === "super-league");
+  const topDiv = division === "nrl" ? "nrl" : "super-league";
+  const steel = awards.find((a) => a.id === "man-of-steel" && a.division === topDiv);
   if (steel) {
     addNews(s, `${awardLabel(steel)}: ${steel.name} (${steel.clubName}).`);
-    // Super League's Man of Steel: Super League news (the user's own winner is untagged).
-    if (steel.clubId !== s.userClubId) s.newsTags = { ...(s.newsTags ?? {}), [s.news[0]!]: ["super-league"] };
+    // The league's best player: that league's news (the user's own winner is untagged).
+    if (steel.clubId !== s.userClubId) s.newsTags = { ...(s.newsTags ?? {}), [s.news[0]!]: [topDiv] };
   }
-  if (mos) addNews(s, `${mos.name} is Man of Steel! +${MAN_OF_STEEL_LEGACY} Legacy.`);
+  if (mos) addNews(s, mos.division === "nrl" ? `${mos.name} wins the Dally M Medal! +${MAN_OF_STEEL_LEGACY} Legacy.` : `${mos.name} is Man of Steel! +${MAN_OF_STEEL_LEGACY} Legacy.`);
   return s;
 }
 

@@ -5,7 +5,8 @@
  * plain JSON so a whole career saves to localStorage / Supabase as one document.
  */
 
-export type Division = "super-league" | "championship";
+/** The NRL (v1.64) runs as its own competition: 17 clubs, no promotion or relegation, no Challenge Cup. */
+export type Division = "super-league" | "championship" | "nrl";
 
 /** Short position codes used across the career engine and UI. */
 export type Pos = "FB" | "WG" | "CE" | "SO" | "SH" | "PR" | "HK" | "SR" | "LF";
@@ -84,7 +85,8 @@ export type CareerEventKind =
   | "sponsor"
   | "wonderkid"
   | "takeover"
-  | "club-record";
+  | "club-record"
+  | "world-club-challenge";
 
 /** A pop-up on the Manager hub: shown once, one at a time, then marked seen. */
 export interface CareerEvent {
@@ -119,7 +121,11 @@ export interface CareerClub {
   squad: string[];
 }
 
-export type FixtureKind = "league" | "cup" | "eliminator" | "semi" | "grand-final" | "mpg";
+/**
+ * "wcc": the World Club Challenge (pre-season: Super League champions v NRL premiers).
+ * "nrl-final": NRL finals weeks 1–3 (round = week); "nrl-gf": the NRL Grand Final.
+ */
+export type FixtureKind = "league" | "cup" | "eliminator" | "semi" | "grand-final" | "mpg" | "wcc" | "nrl-final" | "nrl-gf";
 
 export interface FixtureResult {
   homeScore: number;
@@ -137,7 +143,8 @@ export interface FixtureResult {
   ratings?: Record<string, number>;
 }
 
-export type AwardId = "man-of-steel" | "young-player" | "top-try-scorer" | "club-player";
+/** man-of-steel is the NRL's Dally M Medal when the division is "nrl"; clive-churchill: NRL Grand Final player of the match. */
+export type AwardId = "man-of-steel" | "young-player" | "top-try-scorer" | "club-player" | "clive-churchill";
 
 /** One end-of-season award. */
 export interface SeasonAward {
@@ -175,6 +182,8 @@ export interface TableRow {
   pts: number;
   /** Last five results, newest last: "W" | "D" | "L". */
   form: string[];
+  /** NRL byes so far (2 ladder points each; counted in pts, not in p). */
+  b?: number;
 }
 
 /** One step of the season. Holds every fixture played that step (any competition). */
@@ -184,6 +193,10 @@ export interface Matchday {
   fixtures: Fixture[];
   /** Knockout rounds whose fixtures are drawn when the previous round completes. */
   pendingDraw?: "cup-r16" | "cup-qf" | "cup-sf" | "cup-final" | "playoff-elims" | "playoff-semis" | "grand-final";
+  /** NRL finals drawn when the week before completes (the NRL shares the calendar with Super League). */
+  nrlDraw?: "nrl-w1" | "nrl-w2" | "nrl-w3" | "nrl-gf";
+  /** NRL clubs with a bye this round (2 ladder points each). */
+  byes?: string[];
   played: boolean;
 }
 
@@ -268,6 +281,10 @@ export interface SeasonStory {
   /** Clubs going up to Super League / down to the Championship. */
   promoted: string[];
   relegated: string[];
+  /** NRL (v1.64; older seasons: none): the top eight, the finals and the World Club Challenge. */
+  nrlTop?: string[];
+  nrlFinals?: MiniResult[];
+  wcc?: MiniResult;
 }
 
 export type TrophyId =
@@ -277,7 +294,10 @@ export type TrophyId =
   | "championship-title"
   | "promotion"
   | "million-pound-game"
-  | "perfect-season";
+  | "perfect-season"
+  | "nrl-premiership"
+  | "minor-premiership"
+  | "world-club-challenge";
 
 export interface CareerState {
   version: 1;
@@ -366,6 +386,11 @@ export interface CareerState {
   captainId?: string;
   /** The board's league target for `year` (finish `target`th or better). Older saves derive it. */
   board?: { year: number; target: number };
+  /**
+   * Each season's champions (Super League Grand Final, NRL Grand Final), for the next World Club
+   * Challenge. Kept for the last few seasons only.
+   */
+  champions?: Array<{ year: number; sl?: string; nrl?: string }>;
 }
 
 export interface Departures {
