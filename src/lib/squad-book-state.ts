@@ -1,8 +1,8 @@
 /**
- * Read-only Squad Book state for pages that only show it (home "Squad Book" count, profile,
- * records). lib/squad-book.ts imports the player database for its catalog, so importing its
- * hook put the whole database into those pages' first-load JS. This mirrors getSquadBook /
- * normalizeSquadBook / useSquadBook there: keep the two in step.
+ * The collected Squad Book cards, read-only, for pages that only show them (home "Squad Book"
+ * count, profile, records). lib/squad-book.ts imports the player database for its catalog, so
+ * importing its hook put the whole database into those pages' first-load JS. This reads the
+ * same storage and keeps the cards normalizeSquadBook would keep (keep the two in step).
  */
 import { useEffect, useState } from "react";
 import type { SquadBookEntry, SquadBookSource, SquadBookState } from "./squad-book";
@@ -11,12 +11,9 @@ import { STORAGE_KEYS } from "./storage/keys";
 /** Same value as SQUAD_BOOK_CHANGED_EVENT in lib/squad-book.ts. */
 export const SQUAD_BOOK_STATE_CHANGED_EVENT = "27-0-squad-book-changed";
 
-const MAX_RUN_IDS = 100;
-const SOURCES: SquadBookSource[] = ["classic", "era", "daily", "weekly"];
+export type SquadBookCards = Pick<SquadBookState, "cards">;
 
-function empty(): SquadBookState {
-  return { v: 1, cards: {}, claimed: [], runs: [] };
-}
+const SOURCES: SquadBookSource[] = ["classic", "era", "daily", "weekly"];
 
 function normalizeEntry(raw: unknown): SquadBookEntry | null {
   if (!raw || typeof raw !== "object") return null;
@@ -32,36 +29,33 @@ function normalizeEntry(raw: unknown): SquadBookEntry | null {
   };
 }
 
-export function normalizeSquadBookState(raw: unknown): SquadBookState {
-  const base = empty();
-  if (!raw || typeof raw !== "object") return base;
-  const r = raw as Partial<SquadBookState>;
-  if (r.cards && typeof r.cards === "object") {
+export function normalizeSquadBookCards(raw: unknown): SquadBookCards {
+  const cards: Record<string, SquadBookEntry> = {};
+  const r = raw && typeof raw === "object" ? (raw as Partial<SquadBookState>) : null;
+  if (r?.cards && typeof r.cards === "object") {
     for (const [id, value] of Object.entries(r.cards)) {
       const entry = normalizeEntry(value);
-      if (id && entry) base.cards[id] = entry;
+      if (id && entry) cards[id] = entry;
     }
   }
-  if (Array.isArray(r.claimed)) base.claimed = [...new Set(r.claimed.filter((id): id is string => typeof id === "string"))];
-  if (Array.isArray(r.runs)) base.runs = [...new Set(r.runs.filter((id): id is string => typeof id === "string"))].slice(-MAX_RUN_IDS);
-  return base;
+  return { cards };
 }
 
-export function readSquadBookState(): SquadBookState {
-  if (typeof window === "undefined") return empty();
+export function readSquadBookCards(): SquadBookCards {
+  if (typeof window === "undefined") return { cards: {} };
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.squadBook);
-    return raw ? normalizeSquadBookState(JSON.parse(raw)) : empty();
+    return raw ? normalizeSquadBookCards(JSON.parse(raw)) : { cards: {} };
   } catch {
-    return empty();
+    return { cards: {} };
   }
 }
 
-/** React hook: the book, re-rendering on change (same as useSquadBook, without the catalog). */
-export function useSquadBookState(): SquadBookState {
-  const [state, setState] = useState<SquadBookState>(empty);
+/** React hook: the collected cards, re-rendering on change (like useSquadBook, without the catalog). */
+export function useSquadBookState(): SquadBookCards {
+  const [state, setState] = useState<SquadBookCards>(() => ({ cards: {} }));
   useEffect(() => {
-    const read = () => setState(readSquadBookState());
+    const read = () => setState(readSquadBookCards());
     read();
     window.addEventListener(SQUAD_BOOK_STATE_CHANGED_EVENT, read);
     window.addEventListener("storage", read);
