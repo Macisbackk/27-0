@@ -85,7 +85,11 @@ function RarityChip({ rarity, className = "" }: { rarity: CardRarity; className?
   );
 }
 
-/** One card tile: rarity-coloured edge when collected, a faint dashed one when not. */
+/**
+ * One card tile: rarity-coloured edge when collected, a faint dashed one when not. Nothing is
+ * truncated: the name, the club line and the meta line each wrap (up to two lines), the rating and
+ * rarity sit in their own column, and tiles stretch to the tallest in their grid row.
+ */
 function BookCard({
   card,
   collected,
@@ -95,12 +99,14 @@ function BookCard({
 }: {
   card: SquadBookCatalogCard;
   collected: boolean;
+  /** Third line: mode / appearances / slot / lock state. */
   sub: string;
   onClick?: () => void;
   /** Starred from the player profile. */
   favourite?: boolean;
 }) {
   const colour = RARITY_COLOUR[card.rarity];
+  const clubLine = `${card.club}${card.year ? ` · ${card.year}` : ""}`;
   const body = (
     <>
       {collected ? (
@@ -114,24 +120,28 @@ function BookCard({
         </span>
       )}
       <span className="min-w-0 flex-1 text-left">
-        <span className={`block truncate text-sm font-semibold ${collected ? "text-white" : "text-[color:var(--fl-muted)]"}`}>
+        <span
+          className={`line-clamp-2 break-words text-sm font-semibold leading-snug [overflow-wrap:anywhere] ${collected ? "text-white" : "text-[color:var(--fl-muted)]"}`}
+        >
           {favourite ? (
             <span className="mr-1 text-amber-300" aria-label="Favourite">
               ★
             </span>
           ) : null}
           {card.name}
-          {card.category !== "current" && card.year ? ` (${card.year})` : ""}
         </span>
-        <span className="mt-0.5 flex min-w-0 items-center gap-1.5">
-          <RarityChip rarity={card.rarity} className={collected ? "" : "opacity-60"} />
-          <span className="truncate text-xs text-[color:var(--fl-muted)]">{sub}</span>
-        </span>
+        <span className="mt-0.5 line-clamp-2 break-words text-xs leading-snug text-[color:var(--fl-muted)]">{clubLine}</span>
+        <span className="mt-0.5 block break-words text-[11px] leading-snug text-[color:var(--fl-muted)] opacity-80">{sub}</span>
       </span>
-      {collected ? <span className="shrink-0 font-display text-base font-bold tabular-nums text-white">{card.rating}</span> : null}
+      <span className="flex shrink-0 flex-col items-end gap-1">
+        <span className={`font-display text-lg font-bold leading-none tabular-nums ${collected ? "text-white" : "text-[color:var(--fl-muted)] opacity-60"}`}>
+          {collected ? card.rating : "?"}
+        </span>
+        <RarityChip rarity={card.rarity} className={collected ? "" : "opacity-60"} />
+      </span>
     </>
   );
-  const cls = `flex w-full min-w-0 items-center gap-2 rounded-tile border-2 p-2.5 ${collected ? "bg-pitch-900" : "border-dashed bg-pitch-950/40"}`;
+  const cls = `flex h-full min-h-[64px] w-full min-w-0 items-start gap-2 rounded-tile border-2 p-2.5 ${collected ? "bg-pitch-900" : "border-dashed bg-pitch-950/40"}`;
   const style = collected
     ? { borderColor: colour, boxShadow: card.rarity === "legendary" ? `0 0 10px ${colour}55` : undefined }
     : { borderColor: `${colour}55` };
@@ -541,11 +551,11 @@ export default function SquadBookPage() {
                 </p>
                 <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
                   {clubRows.slice(0, clubShown).map((row) => (
-                    <li key={row.key}>
+                    <li key={row.key} className="flex">
                       <BookCard
                         card={row.card}
                         collected={row.collected}
-                        sub={row.collected ? `${row.have}/${row.cards} card${row.cards === 1 ? "" : "s"}` : row.cards > 1 ? `${row.cards} cards · locked` : "locked"}
+                        sub={row.collected ? `${row.have}/${row.cards} card${row.cards === 1 ? "" : "s"}` : row.cards > 1 ? `${row.cards} cards · locked` : "Locked"}
                         favourite={favouriteIds.has(row.card.id)}
                         onClick={() => setProfileId(row.card.id)}
                       />
@@ -621,11 +631,11 @@ export default function SquadBookPage() {
               {filtered.slice(0, shown).map((c) => {
                 const entry = book.cards[c.id];
                 return (
-                  <li key={c.id}>
+                  <li key={c.id} className="flex">
                     <BookCard
                       card={c}
                       collected={Boolean(entry)}
-                      sub={entry ? `${c.club} · ${SOURCE_LABEL[entry.source]}${entry.times > 1 ? ` · ×${entry.times}` : ""}` : `${c.club} · locked`}
+                      sub={entry ? `${SOURCE_LABEL[entry.source]}${entry.times > 1 ? ` · fielded ×${entry.times}` : ""}` : "Locked"}
                       favourite={favouriteIds.has(c.id)}
                       onClick={() => setProfileId(c.id)}
                     />
@@ -681,7 +691,7 @@ export default function SquadBookPage() {
                     </span>
                     <span className="min-w-0 flex-1">
                       {card ? (
-                        <BookCard card={card} collected sub={`${slot.label} · ${card.club}`} onClick={() => { setPickQuery(""); setPickSlot(i); }} />
+                        <BookCard card={card} collected sub={slot.label} onClick={() => { setPickQuery(""); setPickSlot(i); }} />
                       ) : (
                         <button
                           type="button"
@@ -733,7 +743,7 @@ export default function SquadBookPage() {
                     <BookCard
                       card={c}
                       collected
-                      sub={`${c.club}${book.dreamTeam.includes(c.id) ? " · in team" : ""}`}
+                      sub={book.dreamTeam.includes(c.id) ? "In your team" : "Collected"}
                       onClick={() => {
                         setDreamTeamSlot(pickSlot, c.id);
                         setPickSlot(null);

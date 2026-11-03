@@ -831,4 +831,61 @@ for (const [w, h] of [[320, 640], [390, 844]]) {
   await ctx.close();
 }
 
+// Squad Book card tiles + the player card sheet (v1.72): seeded book and history, 320/375/desktop, dark + light.
+{
+  const ids = [
+    "castleford-hist-derrell-olpherts-2022", "castleford-cur-phoenix-laulu-togagae", "catalans-cur-guillermo-aispuro-bichet",
+    "castleford-cur-krystian-mapapalangi", "leeds-leg-kevin-sinfield-2009", "leeds-leg-kevin-sinfield-2015",
+    "st-helens-hist-paul-wellens-2006", "st-helens-cur-jack-welsby", "catalans-cur-iszac-faasuamaleaui",
+  ];
+  const seed = (args) => {
+    const [cardIds, on] = args;
+    localStorage.setItem("27-0-dark-mode", JSON.stringify({ on, updatedAt: 1 }));
+    if (localStorage.getItem("27-0-squad-book")) return;
+    const cards = {};
+    cardIds.forEach((id, i) => { cards[id] = { name: id, club: "", year: null, firstAt: 1735689600000 + i * 86400000, source: i % 2 ? "era" : "classic", times: 1 + (i % 4) }; });
+    localStorage.setItem("27-0-squad-book", JSON.stringify({ v: 1, cards, claimed: [], runs: [], dreamTeam: Array(13).fill(null), dreamTeamAt: 0, favourites: [cardIds[4]], favouritesAt: 1 }));
+    const counts = Object.fromEntries(cardIds.map((id, i) => [id, 2 + i]));
+    localStorage.setItem("27-0-stats-schema-version", "3");
+    if (!localStorage.getItem("27-0-stats")) {
+      localStorage.setItem("27-0-stats", JSON.stringify({ normal: { draftCounts: counts, playerSeasonWins: Object.fromEntries(cardIds.map((id, i) => [id, 40 + i * 5])), playerSeasonLosses: Object.fromEntries(cardIds.map((id) => [id, 12])), playerPerfectSeasons: { [cardIds[4]]: 1 }, playerTries: { [cardIds[4]]: 9 } } }));
+    }
+  };
+  for (const [w, h, label] of [[320, 640, "320"], [375, 812, "375"], [1366, 900, "desktop"]]) {
+    for (const dark of [true, false]) {
+      const mobile = w < 1000;
+      const ctx = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: mobile ? 2 : 1, isMobile: mobile, hasTouch: mobile });
+      await ctx.addInitScript(seed, [ids, dark]);
+      const page = await ctx.newPage();
+      const tag = `97-${label}-${dark ? "dark" : "light"}`;
+      try {
+        await page.goto(BASE + "/squad-book", { waitUntil: "networkidle", timeout: 30000 });
+        await page.waitForTimeout(900);
+        await page.getByRole("tab", { name: /Cards/ }).first().click({ timeout: 5000 }).catch(async () => {
+          await page.getByRole("button", { name: /^Cards$/ }).first().click({ timeout: 5000 });
+        });
+        await page.getByRole("button", { name: /^collected$/i }).first().click({ timeout: 5000 }).catch(() => {});
+        await page.waitForTimeout(700);
+        await page.screenshot({ path: `${OUT}/${tag}-squad-book-cards.png`, fullPage: true });
+        await page.locator("[data-rarity]", { hasText: "Kevin Sinfield" }).first().click({ timeout: 5000 });
+        await page.waitForTimeout(900);
+        await page.screenshot({ path: `${OUT}/${tag}-card-sheet.png` });
+        const dialog = page.locator("[role='dialog'] [data-scroll-lock-allow], [role='dialog']").first();
+        await page.evaluate(() => {
+          const el = document.querySelector("[role='dialog']");
+          const scrollers = el ? [el, ...el.querySelectorAll("*")].filter((n) => n.scrollHeight > n.clientHeight + 20) : [];
+          for (const n of scrollers) n.scrollTop = n.scrollHeight;
+        });
+        void dialog;
+        await page.waitForTimeout(400);
+        await page.screenshot({ path: `${OUT}/${tag}-card-sheet-end.png` });
+        console.log("shot", tag);
+      } catch (e) {
+        console.log("skip", tag, String(e).slice(0, 200));
+      }
+      await ctx.close();
+    }
+  }
+}
+
 await browser.close();
