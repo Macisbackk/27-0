@@ -25,15 +25,18 @@ import {
   playUiClick,
 } from "@/lib/sound";
 import {
-  UI_THEME_PURCHASE_PRICE,
+  getUiThemeById,
   sortUiThemesForStore,
+  uiThemePrice,
   UI_THEMES,
   type UiThemeDefinition,
 } from "@/lib/ui-themes";
+import { syncAchievementKits } from "@/lib/achievement-kits";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { GameButton } from "./ui/GameButton";
 import { FramesStore, InUseBadge, KitStore, ModesStore, PitchStore, TitlesStore } from "./StoreCosmetics";
+import { StorePreviewSheet, type StorePreviewItem } from "./StorePreview";
 
 type StoreTab = "themes" | "kit" | "pitches" | "titles" | "frames" | "modes";
 
@@ -84,13 +87,14 @@ function ThemePreview({ theme }: { theme: UiThemeDefinition }) {
 }
 
 export function StorePanel() {
-  // Opens on what this coach can buy now (themes are £2.5m: a new player can't afford one).
+  // Opens on themes (v1.66: £750k–£4m each, see docs/store-economy.md).
   const [tab, setTab] = useState<StoreTab>("themes");
   const [balance, setBalance] = useState(0);
   const [selectedId, setSelectedId] = useState("default");
   const [unlocked, setUnlocked] = useState<string[]>(["default"]);
   const [purchaseError, setPurchaseError] = useState<string | null>(null);
   const [purchasingId, setPurchasingId] = useState<string | null>(null);
+  const [preview, setPreview] = useState<StorePreviewItem | null>(null);
 
   const refresh = useCallback(() => {
     const state = getUiThemeStoreState();
@@ -102,6 +106,7 @@ export function StorePanel() {
   useEffect(() => {
     refresh();
     playStoreOpen();
+    syncAchievementKits();
 
     const onFunds = () => setBalance(getClubFundsBalance());
     const onTheme = () => refresh();
@@ -129,9 +134,24 @@ export function StorePanel() {
     }
   };
 
-  const handlePurchase = (theme: UiThemeDefinition) => {
-    if (purchasingId) return;
+  /** Tap a theme → preview sheet in its colours → Buy / Cancel. */
+  const openPreview = (theme: UiThemeDefinition) => {
     playUiClick();
+    setPurchaseError(null);
+    setPreview({
+      id: theme.id,
+      name: theme.label,
+      blurb: theme.blurb,
+      price: uiThemePrice(theme.id),
+      look: { kind: "theme", theme },
+      owned: unlocked.includes(theme.id),
+    });
+  };
+
+  const handlePurchase = (themeId: string) => {
+    if (purchasingId) return;
+    const theme = getUiThemeById(themeId);
+    const price = uiThemePrice(theme.id);
     setPurchaseError(null);
     setPurchasingId(theme.id);
 
@@ -140,18 +160,23 @@ export function StorePanel() {
     refresh();
     setPurchasingId(null);
 
-    if (result.success) {
-      playThemePurchaseSuccess();
+    if (result.success || result.reason === "already_unlocked") {
+      if (result.success) playThemePurchaseSuccess();
+      setPreview(null);
       return;
     }
 
     playThemePurchaseFail();
     if (result.reason === "insufficient") {
-      setPurchaseError(
-        `Need ${formatClubFundsExact(UI_THEME_PURCHASE_PRICE)} — balance ${formatClubFundsExact(result.newBalance)}`
-      );
+      setPurchaseError(`Need ${formatClubFundsExact(price)} — balance ${formatClubFundsExact(result.newBalance)}`);
     }
   };
+
+  // Progress bar: towards the cheapest theme not yet owned.
+  const nextTheme = displayThemes
+    .filter((t) => !unlocked.includes(t.id))
+    .reduce<UiThemeDefinition | null>((best, t) => (!best || uiThemePrice(t.id) < uiThemePrice(best.id) ? t : best), null);
+  const nextPrice = nextTheme ? uiThemePrice(nextTheme.id) : 0;
 
   return (
     <div>
@@ -200,25 +225,29 @@ export function StorePanel() {
           </p>
         </div>
         <div className="min-w-[9rem] flex-1 sm:max-w-xs">
-          <p className={`${TYPO.bodySm} text-gray-400`}>
-            Themes {formatClubFunds(UI_THEME_PURCHASE_PRICE)} each
-          </p>
-          <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-pitch-800" aria-hidden>
-            <div
-              className="h-full rounded-full bg-accent-gold transition-[width] duration-500 ease-out motion-reduce:transition-none"
-              style={{ width: `${Math.min(100, (balance / UI_THEME_PURCHASE_PRICE) * 100)}%` }}
-            />
-          </div>
-          <p className={`mt-1 ${TYPO.bodySm} ${balance >= UI_THEME_PURCHASE_PRICE ? "text-lime-300" : "text-[color:var(--fl-muted)]"}`}>
-            {balance >= UI_THEME_PURCHASE_PRICE
-              ? "You can afford a theme"
-              : `${formatClubFunds(UI_THEME_PURCHASE_PRICE - balance)} to your next theme`}
-          </p>
+          {nextTheme ? (
+            <>
+              <p className={`${TYPO.bodySm} text-gray-400`}>
+                Next: {nextTheme.label} · {formatClubFunds(nextPrice)}
+              </p>
+              <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-pitch-800" aria-hidden>
+                <div
+                  className="h-full rounded-full bg-accent-gold transition-[width] duration-500 ease-out motion-reduce:transition-none"
+                  style={{ width: `${Math.min(100, (balance / Math.max(1, nextPrice)) * 100)}%` }}
+                />
+              </div>
+              <p className={`mt-1 ${TYPO.bodySm} ${balance >= nextPrice ? "text-lime-300" : "text-[color:var(--fl-muted)]"}`}>
+                {balance >= nextPrice ? "You can afford a theme" : `${formatClubFunds(nextPrice - balance)} to your next theme`}
+              </p>
+            </>
+          ) : (
+            <p className={`${TYPO.bodySm} text-lime-300`}>Every theme owned</p>
+          )}
         </div>
       </div>
 
       {purchaseError && (
-        <p className="mt-4 text-sm font-medium text-red-400" role="alert">
+        <p className="mt-4 text-center text-sm font-medium text-red-400" role="alert">
           {purchaseError}
         </p>
       )}
@@ -227,7 +256,8 @@ export function StorePanel() {
         {displayThemes.map((theme) => {
           const isUnlocked = unlocked.includes(theme.id);
           const isSelected = selectedId === theme.id;
-          const canAfford = balance >= UI_THEME_PURCHASE_PRICE;
+          const price = uiThemePrice(theme.id);
+          const canAfford = balance >= price;
 
           return (
             <li
@@ -236,7 +266,9 @@ export function StorePanel() {
                 isSelected ? "ring-2 ring-theme-primary" : ""
               }`}
             >
-              <ThemePreview theme={theme} />
+              <button type="button" onClick={() => openPreview(theme)} aria-label={`Preview ${theme.label}`} className="block text-left">
+                <ThemePreview theme={theme} />
+              </button>
               <div className="flex flex-1 flex-col p-3">
                 <p className="min-w-0 font-cond text-[15px] font-bold leading-tight text-white">{theme.label}</p>
                 {theme.blurb ? <p className="mt-0.5 text-xs text-[color:var(--fl-muted)]">{theme.blurb}</p> : null}
@@ -255,12 +287,9 @@ export function StorePanel() {
                     <GameButton
                       variant={canAfford ? "theme" : "secondary"}
                       size="sm"
-                      disabled={!canAfford || purchasingId === theme.id}
-                      onClick={() => handlePurchase(theme)}
+                      onClick={() => openPreview(theme)}
                     >
-                      {canAfford
-                        ? `Buy · ${formatClubFunds(UI_THEME_PURCHASE_PRICE)}`
-                        : `Need ${formatClubFunds(UI_THEME_PURCHASE_PRICE - balance)} more`}
+                      {canAfford ? `Buy · ${formatClubFunds(price)}` : formatClubFunds(price)}
                     </GameButton>
                   )}
                 </div>
@@ -269,6 +298,13 @@ export function StorePanel() {
           );
         })}
       </ul>
+      <StorePreviewSheet
+        item={preview}
+        balance={balance}
+        busy={purchasingId !== null}
+        onBuy={(item) => handlePurchase(item.id)}
+        onClose={() => setPreview(null)}
+      />
         </>
       )}
       </div>

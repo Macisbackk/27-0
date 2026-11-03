@@ -4,6 +4,7 @@ import {
   getUiThemeById,
   isDefaultUiTheme,
   isKnownUiThemeId,
+  uiThemePrice,
   type UiThemeDefinition,
 } from "../ui-themes";
 import { STORAGE_KEYS } from "./keys";
@@ -156,7 +157,7 @@ export function purchaseUiTheme(themeId: string): UiThemePurchaseResult {
     return { success: true, newBalance: getClubFundsBalance() };
   }
 
-  const spend = spendClubFunds(UI_THEME_PURCHASE_PRICE, purchaseId);
+  const spend = spendClubFunds(uiThemePrice(themeId), purchaseId);
   if (!spend.success) {
     return {
       success: false,
