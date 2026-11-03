@@ -74,7 +74,8 @@ for (let run = 0; run < 40; run++) {
         if (r < 0.45) s = playMatchday(closeDeadlineDay(s));
         else if (r < 0.55) s = simToNextBigGame(closeDeadlineDay(s));
         else if (r < 0.58) s = simRestOfSeason(s);
-        else if (r < 0.7) s = { ...s, tactic: pick<Tactic>(["attack", "balanced", "defend"]) };
+        else if (r < 0.64) s = { ...s, tactic: pick<Tactic>(["attack", "balanced", "defend"]), tactics: undefined };
+        else if (r < 0.7) s = { ...s, tactics: { attack: pick<"expansive" | "balanced" | "direct">(["expansive", "balanced", "direct"]), defence: pick<"rush" | "balanced" | "drift">(["rush", "balanced", "drift"]), kicking: pick<"territory" | "balanced" | "attacking">(["territory", "balanced", "attacking"]) } };
         else if (r < 0.9) {
           const squad = squadOf(s, s.userClubId);
           const p = pick(squad);

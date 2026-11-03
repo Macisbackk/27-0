@@ -11,7 +11,22 @@ export type Division = "super-league" | "championship" | "nrl";
 /** Short position codes used across the career engine and UI. */
 export type Pos = "FB" | "WG" | "CE" | "SO" | "SH" | "PR" | "HK" | "SR" | "LF";
 
+/** The old single game plan (saves before v1.66). Still kept in step with `tactics` for anything reading it. */
 export type Tactic = "attack" | "balanced" | "defend";
+
+/** Attacking style: throw it wide, the middle way, or carry it up the guts. */
+export type AttackStyle = "expansive" | "balanced" | "direct";
+/** Defensive line: rush up, hold the line, or slide and drift. */
+export type DefenceLine = "rush" | "balanced" | "drift";
+/** Kicking game: pin them back, mix it up, or kick to score. */
+export type KickingGame = "territory" | "balanced" | "attacking";
+
+/** The three game-plan settings (v1.66). */
+export interface TacticSettings {
+  attack: AttackStyle;
+  defence: DefenceLine;
+  kicking: KickingGame;
+}
 
 export interface CareerPlayer {
   id: string;
@@ -54,6 +69,10 @@ export interface CareerPlayer {
   ban?: number;
   /** Legends: the last season he plays (he retires that summer). Older saves derive it from signedYear. */
   retireAfter?: number;
+  /** Games left out injured: misses his club's next match(es), like a ban. Older saves: none. */
+  injury?: number;
+  /** Rating gained (or lost) last summer, shown as +N on the Team tab (user's squad only). */
+  grew?: number;
 }
 
 /** A player's totals at one club in this save (every game here is rated, so avg = ratingSum / apps). Zeros are left out. */
@@ -86,7 +105,10 @@ export type CareerEventKind =
   | "wonderkid"
   | "takeover"
   | "club-record"
-  | "world-club-challenge";
+  | "world-club-challenge"
+  | "injury"
+  | "board-warning"
+  | "fans";
 
 /** A pop-up on the Manager hub: shown once, one at a time, then marked seen. */
 export interface CareerEvent {
@@ -139,6 +161,10 @@ export interface FixtureResult {
   /** Players sent off (red card): banned for their club's next game. */
   homeSentOff?: string[];
   awaySentOff?: string[];
+  /** Players injured in this game and the games each will miss. */
+  injuries?: Record<string, number>;
+  /** Live matches: the user's player who went off hurt (his lay-off is rolled when the result is banked). */
+  knocks?: string[];
   /** Match ratings out of 10 for both 17s (kept on the user's latest game only, to keep saves small). */
   ratings?: Record<string, number>;
 }
@@ -244,10 +270,39 @@ export interface SeasonOutcome {
   derbies?: { w: number; d: number; l: number };
   /** The board's league target for the season (finish this place or better), when one was set. */
   boardTarget?: number;
+  /** Club objectives beyond the league target, and whether each was met (v1.66; older seasons: none). */
+  objectives?: Array<{ title: string; done: boolean }>;
+  /** Board confidence and supporter mood at the end of the season (0–100). */
+  confidence?: number;
+  fans?: number;
+  /** The user's signings and sales this season (kept here so they survive the deals list cap). */
+  ins?: SeasonDeal[];
+  outs?: SeasonDeal[];
   /** Set once this season has been banked into the cross-career legacy. */
   banked?: boolean;
   /** Who won what, the play-offs, the cup and every result of yours (seasons before this was kept: none). See story.ts. */
   story?: SeasonStory;
+}
+
+/** A signing or sale, kept on the season's history. `club`: the other club (null = free agent / released). */
+export interface SeasonDeal {
+  name: string;
+  pos: Pos;
+  rating: number;
+  club: string | null;
+  fee: number;
+}
+
+export type ObjectiveKind = "cup-run" | "play-youth" | "budget" | "derbies" | "finals";
+
+/** A board objective on top of the league target. */
+export interface ClubObjective {
+  id: string;
+  kind: ObjectiveKind;
+  title: string;
+  target: number;
+  progress: number;
+  done: boolean;
 }
 
 /** One game kept for the season story: club ids and the score only (small saves). */
@@ -317,6 +372,15 @@ export interface CareerState {
   /** 1–5, in half steps. Drives income and which players will sign. */
   prestige: number;
   tactic: Tactic;
+  /** Attacking style, defensive line and kicking game (v1.66). Older saves: derived from `tactic` on load. */
+  tactics?: TacticSettings;
+  /** Supporter mood and board confidence, 0–100 (v1.66; older saves start at 60 on load). */
+  fans?: number;
+  boardConfidence?: number;
+  /** This season's board objectives on top of the league target. */
+  objectives?: { year: number; list: ClubObjective[] };
+  /** The user's deals this season (copied onto the season's history at the end). */
+  seasonDeals?: { year: number; ins: SeasonDeal[]; outs: SeasonDeal[] };
   /** 13 player ids in shirt order 1–13 (see LINEUP_SLOTS). */
   lineup: string[];
   /** Interchange bench: 4 squad players not in the XIII (shirts 14–17). Older saves get one on load. */
@@ -404,6 +468,8 @@ export interface Departures {
   released?: string[];
   /** Academy graduates who joined this summer. */
   academy: string[];
+  /** How the user's young players developed this summer (biggest movers first). */
+  growth?: Array<{ name: string; pos: Pos; age: number; from: number; to: number; apps: number }>;
 }
 
 export interface FriendlyResult {

@@ -58,7 +58,8 @@ import {
   saveLocalLegacy,
   syncCareerFromCloud,
 } from "./storage";
-import type { CareerLegacy, CareerState, SeasonOutcome, Tactic } from "./types";
+import type { CareerLegacy, CareerState, SeasonOutcome, Tactic, TacticSettings } from "./types";
+import { legacyTactic, tacticsFromLegacy, tacticsOf } from "./tactics";
 import { createCareer } from "./world";
 import { promoteAcademy as promoteAcademyPure, releaseAcademy as releaseAcademyPure, type AcademyError } from "./academy";
 import { setCaptain as setCaptainPure } from "./captain";
@@ -81,6 +82,8 @@ interface CareerContextValue {
   /** Finish the matchday with the result of a match the user played live. */
   playLive: (played: PlayedResult) => void;
   setTactic: (t: Tactic) => void;
+  /** Change one part of the game plan (attacking style, defensive line or kicking game). */
+  setTactics: (t: Partial<TacticSettings>) => void;
   setLineupSlot: (slot: number, playerId: string) => void;
   /** Put a player on the interchange bench (spot 0–3); swaps if he's already in the 17. */
   setBenchSlot: (spot: number, playerId: string) => void;
@@ -384,7 +387,13 @@ export function CareerProvider({ children }: { children: ReactNode }) {
       if (stateRef.current) settle(simRestOfSeason(stateRef.current));
     },
     setTactic: (t) => {
-      if (stateRef.current) commit({ ...stateRef.current, tactic: t, updatedAt: Date.now() });
+      if (stateRef.current) commit({ ...stateRef.current, tactic: t, tactics: tacticsFromLegacy(t), updatedAt: Date.now() });
+    },
+    setTactics: (t) => {
+      const s = stateRef.current;
+      if (!s) return;
+      const tactics = { ...tacticsOf(s), ...t };
+      commit({ ...s, tactics, tactic: legacyTactic(tactics), updatedAt: Date.now() });
     },
     setLineupSlot: (slot, playerId) => {
       const s = stateRef.current;

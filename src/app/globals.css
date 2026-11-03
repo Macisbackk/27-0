@@ -343,6 +343,16 @@ html[data-ui-overlay="1"] {
   font-size: 0.84rem;
 }
 
+/* Manager game plan (v1.66): three pill rows, full width, a touch tighter so "Expansive" fits a phone. */
+.game-plan-row .mode-toggle--compact {
+  width: 100%;
+}
+.game-plan-row .mode-toggle button {
+  min-height: 32px;
+  font-size: 0.8rem;
+  padding-inline: 0.3rem;
+}
+
 .mode-toggle {
   grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
 }

@@ -27,3 +27,6 @@ export * from "./story";
 export * from "./nrl";
 export { addNrlWorld } from "./nrl-world";
 export { codeOfDivision, topDivision, type Code } from "./clubs";
+export * from "./tactics";
+export * from "./injuries";
+export * from "./club-mood";
