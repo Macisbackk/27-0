@@ -73,6 +73,7 @@ export const ALLOWED_SUBSTRINGS: readonly string[] = [
   "therapist",
   "swank",
   "shitake",
+  "penisini", // Will Penisini (NRL)
 ];
 
 /** Real words that look like a BLOCKED_WORDS term plus a suffix ("cocky", "sexton" …). */
@@ -86,4 +87,5 @@ export const ALLOWED_TOKENS: readonly string[] = [
   // Real surnames in the game's player data.
   "dykes", // Adam Dykes
   "fages", // Theo Fages
+  "bonner", // Dayle Bonner (NRL)
 ];
