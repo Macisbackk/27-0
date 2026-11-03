@@ -1,4 +1,5 @@
 import { STORAGE_KEYS } from "@/lib/storage/keys";
+import { notifyDeviceStatsChanged } from "@/lib/storage/device-stats-events";
 import { WORDLE_STATS_SCHEMA, type WordleRun, type WordleStats } from "./types";
 import { createEmptyWordleStats, normalizeWordleRun } from "./run-utils";
 
@@ -105,4 +106,5 @@ export function loadWordleStats(): WordleStats {
 
 export function saveWordleStats(stats: WordleStats): void {
   writeJson(STORAGE_KEYS.wordleStats, stats);
+  notifyDeviceStatsChanged();
 }

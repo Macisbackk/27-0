@@ -1,4 +1,5 @@
 import { STORAGE_KEYS } from "@/lib/storage/keys";
+import { notifyDeviceStatsChanged } from "@/lib/storage/device-stats-events";
 import {
   QUIZ_SCHEMA_VERSION,
   QUIZ_STATS_SCHEMA_VERSION,
@@ -197,6 +198,7 @@ export function loadQuizStats(): QuizStats {
 
 export function saveQuizStats(stats: QuizStats): void {
   writeJson(STORAGE_KEYS.quizStats, stats);
+  notifyDeviceStatsChanged();
 }
 
 export function getTeamStats(stats: QuizStats, teamId: QuizTeamId): QuizTeamStats {

@@ -1,4 +1,5 @@
 import { STORAGE_KEYS } from "@/lib/storage/keys";
+import { notifyDeviceStatsChanged } from "@/lib/storage/device-stats-events";
 import { HANGMAN_STATS_SCHEMA, type HangmanRun, type HangmanStats } from "./types";
 import { createEmptyHangmanStats } from "./stats-defaults";
 
@@ -124,4 +125,5 @@ export function loadHangmanStats(): HangmanStats {
 
 export function saveHangmanStats(stats: HangmanStats): void {
   writeJson(STORAGE_KEYS.hangmanStats, stats);
+  notifyDeviceStatsChanged();
 }
