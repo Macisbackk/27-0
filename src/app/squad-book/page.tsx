@@ -40,7 +40,7 @@ import { AlbumGlyph } from "@/components/icons/rugby-icons";
 
 type Tab = "collections" | "clubs" | "cards" | "dream";
 const TABS: { id: Tab; label: string; shortLabel?: string }[] = [
-  { id: "collections", label: "Collections", shortLabel: "Sets" },
+  { id: "collections", label: "Collections", shortLabel: "Book" },
   { id: "clubs", label: "Clubs" },
   { id: "cards", label: "Cards" },
   { id: "dream", label: "Dream Team", shortLabel: "Dream 13" },
