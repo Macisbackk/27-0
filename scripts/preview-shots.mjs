@@ -870,14 +870,10 @@ for (const [w, h] of [[320, 640], [390, 844]]) {
         await page.locator("[data-rarity]", { hasText: "Kevin Sinfield" }).first().click({ timeout: 5000 });
         await page.waitForTimeout(900);
         await page.screenshot({ path: `${OUT}/${tag}-card-sheet.png` });
-        const box = await page.locator("[role='dialog']").first().boundingBox();
-        if (box) await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
-        await page.mouse.wheel(0, 700);
-        await page.waitForTimeout(400);
-        await page.screenshot({ path: `${OUT}/${tag}-card-sheet-mid.png` });
-        for (let i = 0; i < 6; i++) await page.mouse.wheel(0, 900);
-        await page.waitForTimeout(400);
-        await page.screenshot({ path: `${OUT}/${tag}-card-sheet-end.png` });
+        // A tall viewport shows the whole sheet (it scrolls inside a capped-height panel).
+        await page.setViewportSize({ width: w, height: 3000 });
+        await page.waitForTimeout(500);
+        await page.screenshot({ path: `${OUT}/${tag}-card-sheet-full.png` });
         console.log("shot", tag);
       } catch (e) {
         console.log("skip", tag, String(e).slice(0, 200));
