@@ -307,8 +307,6 @@ export default function SquadBookPage() {
   const value = (m: SquadBookMilestone) => progress?.milestoneValue.get(m.id) ?? 0;
   const milestonesFor = (kind: SquadBookMilestone["kind"], group: string) =>
     catalog?.milestones.filter((m) => m.kind === kind && m.group === group) ?? [];
-  const totalMilestones = catalog?.milestones.filter((m) => m.kind === "total") ?? [];
-  const earned = catalog?.milestones.filter((m) => book.claimed.includes(m.id)).reduce((s, m) => s + m.reward, 0) ?? 0;
 
   const openClub = (c: string) => {
     setClubView(c);
@@ -349,10 +347,6 @@ export default function SquadBookPage() {
               ))}
             </ul>
           ) : null}
-          <div className="flex justify-center">
-            <MilestoneChips milestones={totalMilestones} value={value} claimed={book.claimed} />
-          </div>
-          {earned > 0 ? <p className="mt-2 text-xs text-[color:var(--fl-muted)]">{formatClubFunds(earned)} Club Funds earned from the book</p> : null}
           {paid.length ? (
             <p className="mt-2 text-sm font-semibold text-theme-primary" role="status">
               {paid.map((l) => `${l.label.replace(/^Squad Book: /, "")} +${formatClubFunds(l.amount)}`).join(" · ")}
