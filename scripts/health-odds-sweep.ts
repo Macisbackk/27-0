@@ -16,15 +16,18 @@ const LADDERS: { mode: SimFormulaMode; cards: DraftMode; flow: DraftFlow; label:
 ];
 const TIERS: DraftStrategy[] = ["best", "good", "random"];
 const STEPS = [0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.5];
+const LEVER = process.env.ODDS_LEVER === "elite" ? "elite" : "edge";
+const ELITE_STEPS = [0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.5, 2.0];
 const pct = (x: number) => `${(x * 100).toFixed(x >= 0.1 ? 1 : 2)}%`;
 const out: string[] = ["# 27-0 odds sweep", `${N} drafts per tier; chance = formula (product of the 27 win chances), wins = expected league wins.`, ""];
 for (const L of LADDERS) {
   const squads: Record<string, ReturnType<typeof draftSquad>[]> = {};
   for (const t of TIERS) squads[t] = Array.from({ length: N }, (_, i) => draftSquad(`odds-${L.cards}-${L.flow}-${t}-${i}`, L.cards, t, { flow: L.flow }));
-  const base = SIM_FORMULA_MODE_SCALE[L.mode].opponentEdge ?? 0;
-  out.push(`## ${L.label} (current opponent edge ${base})`, "", `| Extra edge | Best 27-0 | Best wins | Good 27-0 | Good wins | Random 27-0 | Random wins |`, `|---|---|---|---|---|---|---|`);
-  for (const extra of STEPS) {
-    SIM_FORMULA_MODE_SCALE[L.mode].opponentEdge = base + extra;
+  const base = LEVER === "elite" ? SIM_FORMULA_MODE_SCALE[L.mode].eliteRating : SIM_FORMULA_MODE_SCALE[L.mode].opponentEdge ?? 0;
+  out.push(`## ${L.label} (current ${LEVER === "elite" ? "elite anchor" : "opponent edge"} ${base})`, "", `| ${LEVER === "elite" ? "Elite anchor +" : "Extra edge"} | Best 27-0 | Best wins | Good 27-0 | Good wins | Random 27-0 | Random wins |`, `|---|---|---|---|---|---|---|`);
+  for (const extra of LEVER === "elite" ? ELITE_STEPS : STEPS) {
+    if (LEVER === "elite") SIM_FORMULA_MODE_SCALE[L.mode].eliteRating = base + extra;
+    else SIM_FORMULA_MODE_SCALE[L.mode].opponentEdge = base + extra;
     const cells: string[] = [];
     for (const t of TIERS) {
       let chance = 0;
@@ -37,7 +40,8 @@ for (const L of LADDERS) {
     }
     out.push(`| +${extra} | ${cells.join(" | ")} |`);
   }
-  SIM_FORMULA_MODE_SCALE[L.mode].opponentEdge = base;
+  if (LEVER === "elite") SIM_FORMULA_MODE_SCALE[L.mode].eliteRating = base;
+  else SIM_FORMULA_MODE_SCALE[L.mode].opponentEdge = base;
   out.push("");
 }
 const md = out.join("\n") + "\n";
