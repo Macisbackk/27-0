@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
+import { useArmed } from "@/hooks/useArmed";
 import {
   DEADLINE_MINUTES,
   WINDOW_CLOSES_BEFORE_ROUND,
@@ -12,6 +13,7 @@ import {
   isDeadlineDay,
   isWindowOpen,
   clubsNamed,
+  currentStage,
   liveOffers,
   relevantDeals,
   roundsUntilDeadline,
@@ -310,6 +312,9 @@ export function WindowStatusLine({ className = "" }: { className?: string }) {
 export function TransferWindowCard({ onOpenMarket }: { onOpenMarket: () => void }) {
   const { state } = useCareer();
   const s = state!;
+  // A double tap on Play 2 (friendlies) or Start the season must not fall through to Open market,
+  // which can land under the finger when the stage changes.
+  const armed = useArmed(450, currentStage(s), { armedOnMount: true });
   // Deadline Day keeps its card after the window shuts, as a round-up of the day.
   if (isDeadlineDay(s)) return <DeadlineDayCard onOpenMarket={onOpenMarket} />;
   const w = windowStatus(s);
@@ -322,7 +327,7 @@ export function TransferWindowCard({ onOpenMarket }: { onOpenMarket: () => void 
           <span className="font-semibold text-white">Last chance before the season.</span> Buy and sell until Round 1. After that the window
           shuts until Deadline Day. Free agents cost no fee, only wages.
         </p>
-        <GameButton size="md" variant="secondary" className="mt-3" onClick={() => { playUiClick(); onOpenMarket(); }}>
+        <GameButton size="md" variant="secondary" className="mt-3" disabled={!armed} onClick={() => { playUiClick(); onOpenMarket(); }}>
           Open market
         </GameButton>
       </section>
