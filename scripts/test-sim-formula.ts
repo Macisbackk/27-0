@@ -180,8 +180,14 @@ for (const { mode, cards, flow } of LADDERS) {
         ? [0.003, 0.12]
         : (mode === "classic" || mode === "classic-spin") && tier === "random"
           ? [0.0003, 0.06]
-          : (mode === "classic" || mode === "classic-spin") && tier === "best"
+          : mode === "classic" && tier === "best"
+          ? // v1.70 target ≈11% for a near-perfect Classic draft.
+            [0.07, 0.17]
+          : mode === "classic-spin" && tier === "best"
           ? [0.08, 0.45]
+          : mode === "era" && tier === "best"
+          ? // v1.70 target ≈16% for a near-perfect Era draft.
+            [0.1, 0.24]
           : BANDS[tier];
     assert(
       avg >= lo && avg <= hi,

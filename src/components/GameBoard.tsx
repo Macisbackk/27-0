@@ -91,6 +91,7 @@ import {
   awardClubFundsLines,
 } from "@/lib/storage/club-funds";
 import { recordCompletedRun, recordPlayoffCompletion } from "@/lib/storage/run";
+import { logRunEvent, runEventKind } from "@/lib/run-analytics";
 import { reportMissionEvent } from "@/lib/daily-missions";
 import { seasonMissionEvent } from "@/lib/daily-missions-season";
 import { triggerQuickSeasonAchievements } from "@/lib/achievements/achievementTriggers";
@@ -617,6 +618,24 @@ export function GameBoard({
   useEffect(() => {
     lockedSlotTargetsRef.current = new Map();
   }, [runId]);
+  // Anonymous run analytics (v1.70): real 27-0 / attempt / quit rates. Not for challenge links
+  // or the joke modes (Super Sam Hallas forces every win).
+  const analyticsKind = useMemo(
+    () =>
+      challenge || joeMellorMode || superSamHallasMode
+        ? null
+        : runEventKind({
+            era: normalEraMode,
+            hard: difficulty === "HARD",
+            daily: dailyChallengeMode,
+            weekly: weeklyChallengeMode,
+            side: isSideMode ? sideMode?.kind ?? null : null,
+          }),
+    [challenge, joeMellorMode, superSamHallasMode, normalEraMode, difficulty, dailyChallengeMode, weeklyChallengeMode, isSideMode, sideMode]
+  );
+  useEffect(() => {
+    if (analyticsKind && !isDraftMode) logRunEvent(runId, "start", analyticsKind);
+  }, [runId, analyticsKind, isDraftMode]);
   const [dailyAttemptCounts, setDailyAttemptCounts] = useState(true);
   useEffect(() => {
     if (dailyChallengeMode) setDailyAttemptCounts(claimDailyChallengeAttempt(runId, dailyDate));
@@ -1521,6 +1540,9 @@ export function GameBoard({
       recordedRef.current = true;
       // Challenge runs are unranked and earn nothing (a known seed would otherwise be farmable).
       if (challenge) return;
+      if (analyticsKind && !isDraftMode) {
+        logRunEvent(runId, "finish", analyticsKind, { wins: result.wins, losses: result.losses, perfect: result.isPerfect });
+      }
       if (isSideMode) {
         // Unranked side modes: no stats, leaderboards, missions, achievements or Club Funds —
         // and no Squad Book (its collections pay Club Funds).
@@ -1693,6 +1715,8 @@ export function GameBoard({
       challenge,
       isSideMode,
       oneClub,
+      analyticsKind,
+      isDraftMode,
     ]
   );
 
