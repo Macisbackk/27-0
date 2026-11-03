@@ -3,9 +3,10 @@
 import { useSyncExternalStore } from "react";
 
 /**
- * While the Manager Mode hub is on screen, the phone bottom bar switches from the site's modes
- * (Home · Classic · Manager · Puzzles · Profile) to the hub's sections (Home · Match · Team ·
- * Table · Club). CareerApp registers the hub here; BottomNav reads it.
+ * While a Manager Mode career is on screen (the hub and every full-screen step: the market,
+ * Deadline Day, the summer window, departures, the review), the phone bottom bar switches from
+ * the site's modes (Home · Classic · Manager · Puzzles · Profile) to the Manager sections
+ * (Match · Team · Table · Club). CareerApp registers here; BottomNav reads it.
  */
 export type ManagerTab = "match" | "team" | "table" | "club";
 
@@ -34,7 +35,7 @@ function subscribe(l: () => void) {
   return () => listeners.delete(l);
 }
 
-/** The hub's sections, or null when the Manager hub isn't showing (server render: always null). */
+/** The Manager sections, or null when no career is on screen (server render: always null). */
 export function useManagerNav(): ManagerNavState | null {
   return useSyncExternalStore(
     subscribe,

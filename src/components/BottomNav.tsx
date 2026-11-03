@@ -33,7 +33,7 @@ const ITEMS = [
   },
 ];
 
-/** Manager Mode hub sections, shown in place of the site's modes while the hub is on screen. */
+/** Manager Mode sections, shown in place of the site's modes on every Manager screen of a running career. */
 const MANAGER_ITEMS: { id: ManagerTab; label: string; icon: ReactNode }[] = [
   { id: "match", label: "Match", icon: <BallGlyph /> },
   { id: "team", label: "Team", icon: <ShirtGlyph /> },

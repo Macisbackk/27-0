@@ -397,7 +397,7 @@ export function PastSeasonSheet({ state, outcome, onClose }: { state: CareerStat
               <summary className="cursor-pointer text-center text-sm font-semibold text-white">
                 Your results · {recordLine(data.results, state.userClubId)}
               </summary>
-              <ResultsList results={data.results} clubs={state.clubs} userClubId={state.userClubId} />
+              <ResultsList results={[...data.results].reverse()} clubs={state.clubs} userClubId={state.userClubId} />
             </details>
           ) : null}
           {!data.full ? <p className="text-center text-[12px] text-gray-500">Full results, play-offs and cup weren&apos;t kept for this season.</p> : null}

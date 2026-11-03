@@ -96,7 +96,22 @@ async function deadlineChecks() {
   await page.getByRole("region", { name: "Deadline Day clock" }).waitFor({ timeout }).catch(() => fail("no Deadline Day clock in the market"));
   await noSideways("Deadline Day market");
   await btn("Pause the clock").click().catch(() => {});
+  // v1.62: the Manager bottom bar (Match · Team · Table · Club) stays up in the market, not the
+  // site's main bar; Team from the market keeps the market (and the clock) for Match to come back to.
+  const managerBar = page.getByRole("navigation", { name: "Manager sections" });
+  if (!(await visible(managerBar))) fail("Deadline Day market: the Manager bottom bar isn't showing");
+  if (await visible(page.getByRole("navigation", { name: "Main" }))) fail("Deadline Day market: the site's main bottom bar is showing");
   await shot("window-deadline-market");
+  if (await visible(managerBar)) {
+    const paused = (await save())?.deadline?.paused;
+    await managerBar.getByRole("tab", { name: "Team" }).click();
+    await page.getByTestId("captain").waitFor({ timeout }).catch(() => fail("Team from the Deadline Day market didn't open the Team tab"));
+    if ((await save())?.deadline?.paused !== paused) fail("Team from the Deadline Day market changed the clock's paused state");
+    await shot("deadline-market-to-team");
+    await managerBar.getByRole("tab", { name: "Match" }).click();
+    await page.getByRole("region", { name: "Deadline Day clock" }).waitFor({ timeout }).catch(() => fail("Match from the Team tab didn't go back to the Deadline Day market"));
+    step("Deadline Day market: Manager bottom bar showing; Team and back to the market");
+  }
   await btn("Resume the clock").click().catch(() => {});
   await page.getByRole("tab", { name: "Sell" }).click();
   const sell = page.getByRole("button", { name: /^Sell / }).first();
@@ -215,6 +230,12 @@ try {
   await shot("hub-result", true);
   // Round 1 kicked off: the window is shut until Deadline Day, with no market button anywhere.
   if (await visible(btn("Open market"))) fail("Open market offered after Round 1");
+  // Table → Results: newest first (v1.62).
+  await page.getByRole("tab", { name: "Table" }).click();
+  await page.getByRole("tab", { name: "Results", exact: true }).click().catch(() => {});
+  await page.getByTestId("table-results").waitFor({ timeout }).catch(() => fail("no Your results on the Table tab"));
+  await page.waitForTimeout(400);
+  await shot("table-results");
   await page.getByRole("tab", { name: "Team" }).click();
   {
     const status = await page.getByTestId("window-status").first().innerText().catch(() => "");
