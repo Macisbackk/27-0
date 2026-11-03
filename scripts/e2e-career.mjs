@@ -102,7 +102,7 @@ try {
   await shot("picker");
 
   // v1.18: Super League is the default list; switch to the Championship and pick the first club.
-  await page.getByRole("tab", { name: /Championship/ }).click();
+  await page.getByRole("tab", { name: /^Champ/ }).click();
   const clubs = page.getByRole("list", { name: "Clubs" }).getByRole("button");
   await clubs.first().waitFor({ timeout });
   const clubCount = await clubs.count();
