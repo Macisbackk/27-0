@@ -13,15 +13,20 @@ export function LeagueOverCard() {
   const table = sortTable(s.tables[pic.division]);
   const opponentId = pic.next ? (pic.next.home === s.userClubId ? pic.next.away : pic.next.home) : null;
   const opponent = opponentId ? s.clubs[opponentId] : null;
-  // The rows that decide things: the top six (or top two) and the bottom two.
-  const keyRows = pic.division === "super-league" ? [0, 1, 2, 3, 4, 5, table.length - 2, table.length - 1] : [0, 1];
+  // The rows that decide things: the top six (or top two) and the bottom two; the NRL's top eight.
+  const keyRows =
+    pic.division === "nrl" ? [0, 1, 2, 3, 4, 5, 6, 7] : pic.division === "super-league" ? [0, 1, 2, 3, 4, 5, table.length - 2, table.length - 1] : [0, 1];
   const shown = new Set([...keyRows, pic.position - 1]);
   // The other division in one line, so both ends of the pyramid are clear.
   const sl = sortTable(s.tables["super-league"]);
   const ch = sortTable(s.tables.championship);
   const nm = (row?: { clubId: string }) => (row ? s.clubs[row.clubId]?.name ?? "?" : "?");
   const other =
-    pic.division === "super-league"
+    pic.division === "nrl"
+      ? sl.length
+        ? `Super League: ${nm(sl[0])} win the League Leaders' Shield.`
+        : ""
+      : pic.division === "super-league"
       ? ch.length
         ? `Championship: ${nm(ch[0])} are champions and go up. ${nm(ch[1])} play ${nm(sl[sl.length - 2])} in the Million Pound Game.`
         : ""

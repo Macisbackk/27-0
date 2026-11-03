@@ -1,3 +1,4 @@
+import { addNrlToCalendar, WCC_LABEL } from "./nrl";
 import { shuffle, type Rng } from "./rng";
 import type { Division, Fixture, Matchday } from "./types";
 
@@ -42,7 +43,12 @@ export function buildCalendar(
   rng: Rng,
   year: number,
   divisions: Record<Division, string[]>,
-  cupEntrants: string[]
+  cupEntrants: string[],
+  /**
+   * v1.65: the World Club Challenge opens the season (matchday 0) and the NRL runs alongside
+   * (its own rng, so Super League's draw is unchanged). nrlLabels: the weeks are named the NRL way.
+   */
+  opts: { wcc?: Fixture; nrlRng?: Rng; nrlLabels?: boolean } = {}
 ): Matchday[] {
   const sl = roundRobin(shuffle(rng, divisions["super-league"]));
   const slRounds = [...sl, ...sl.map((round) => round.map(([h, a]) => [a, h] as [string, string]))];
@@ -87,5 +93,10 @@ export function buildCalendar(
   push("Play-off eliminators & Million Pound Game", [], "playoff-elims");
   push("Play-off semi-finals", [], "playoff-semis");
   push("Super League Grand Final", [], "grand-final");
+  if (opts.nrlRng && (divisions.nrl ?? []).length) addNrlToCalendar(matchdays, opts.nrlRng, year, divisions.nrl, !!opts.nrlLabels);
+  if (opts.wcc) {
+    matchdays.unshift({ index: 0, label: WCC_LABEL, fixtures: [opts.wcc], played: false });
+    matchdays.forEach((m, i) => (m.index = i));
+  }
   return matchdays;
 }

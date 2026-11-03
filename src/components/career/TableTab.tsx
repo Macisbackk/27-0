@@ -5,7 +5,9 @@ import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
 import {
   DIVISION_LABEL,
   MAGIC_ROUND,
+  NRL_BYE_POINTS,
   buildSeasonStory,
+  nrlBracket,
   cupRounds,
   leagueFinished,
   miniWinner,
@@ -20,7 +22,7 @@ import {
 import { useCareer } from "@/lib/career/context";
 import { Card, ClubBadge, Eyebrow, FixtureTags, FormDots } from "./bits";
 import { ClubLink } from "./ClubSheet";
-import { CupView, PlayoffBracketView, ResultsList, Stepper, TieRow, recordLine } from "./SeasonStory";
+import { CupView, NrlBracketView, PlayoffBracketView, ResultsList, Stepper, TieRow, WccResult, recordLine } from "./SeasonStory";
 
 /** The Table tab in four short views (v1.58): the table, your results (and any round's scores), your fixtures, the cup. */
 type TableView = "table" | "results" | "fixtures" | "cup";
@@ -31,6 +33,10 @@ const TABLE_VIEWS: Array<{ id: TableView; label: string }> = [
   { id: "fixtures", label: "Fixtures" },
   { id: "cup", label: "Cup" },
 ];
+/** An NRL club isn't in the Challenge Cup: its fourth view is the finals (and the World Club Challenge). */
+const NRL_TABLE_VIEWS: Array<{ id: TableView; label: string }> = TABLE_VIEWS.map((v) => (v.id === "cup" ? { id: "cup", label: "Finals" } : v));
+
+const DIVISION_SHORT: Record<Division, string> = { "super-league": "Super League", championship: "Champ", nrl: "NRL" };
 /** Remembered while the hub is open. */
 let lastTableView: TableView = "table";
 
@@ -38,6 +44,18 @@ let lastTableView: TableView = "table";
 export function PlayoffsCard({ state }: { state: CareerState }) {
   const story = useMemo(() => buildSeasonStory(state), [state]);
   if (state.phase !== "season" || !leagueFinished(state)) return null;
+  if (state.clubs[state.userClubId]?.division === "nrl") {
+    const b = nrlBracket(story);
+    if (!b) return null;
+    return (
+      <Card>
+        <section aria-label="NRL finals" data-testid="live-playoffs">
+          <Eyebrow>NRL finals</Eyebrow>
+          <NrlBracketView bracket={b} clubs={state.clubs} userClubId={state.userClubId} />
+        </section>
+      </Card>
+    );
+  }
   const bracket = playoffBracket(story, state.calendar);
   return (
     <Card>
@@ -131,7 +149,53 @@ function CupTab({ state, cupLine }: { state: CareerState; cupLine: string }) {
   );
 }
 
+/** An NRL club's fourth view: the World Club Challenge, then the finals (live once the league is over). */
+function NrlFinalsTab({ state }: { state: CareerState }) {
+  const s = state;
+  const story = useMemo(() => buildSeasonStory(s), [s]);
+  const b = nrlBracket(story);
+  const ladder = sortTable(s.tables.nrl ?? []);
+  return (
+    <>
+      {story.wcc ? (
+        <Card>
+          <section aria-label="World Club Challenge" data-testid="table-wcc">
+            <Eyebrow>World Club Challenge</Eyebrow>
+            <WccResult m={story.wcc} clubs={s.clubs} userClubId={s.userClubId} />
+          </section>
+        </Card>
+      ) : null}
+      <Card>
+        <section aria-label="NRL finals" data-testid="table-finals">
+          <Eyebrow>NRL finals</Eyebrow>
+          {b && leagueFinished(s) ? (
+            <NrlBracketView bracket={b} clubs={s.clubs} userClubId={s.userClubId} />
+          ) : (
+            <>
+              <p className="mt-1 text-center text-sm text-gray-300 sm:text-left">The top 8 after Round 27 make the finals. As it stands:</p>
+              <ol className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1 text-[13px]">
+                {ladder.slice(0, 8).map((r, i) => (
+                  <li key={r.clubId} className={`flex min-w-0 items-center gap-1.5 ${r.clubId === s.userClubId ? "font-bold text-white" : "text-gray-300"}`}>
+                    <span className="w-4 shrink-0 text-right tabular-nums text-gray-500">{i + 1}</span>
+                    <ClubBadge club={s.clubs[r.clubId]!} size="sm" />
+                    <span className="truncate">{s.clubs[r.clubId]!.short}</span>
+                  </li>
+                ))}
+              </ol>
+            </>
+          )}
+        </section>
+      </Card>
+    </>
+  );
+}
+
 function zone(division: Division, pos: number, size: number): { tone: string; label: string } | null {
+  if (division === "nrl") {
+    if (pos <= 4) return { tone: "border-l-theme-primary", label: "Finals · top 4" };
+    if (pos <= 8) return { tone: "border-l-accent-gold", label: "Finals" };
+    return null;
+  }
   if (division === "super-league") {
     if (pos <= 2) return { tone: "border-l-theme-primary", label: "Play-offs · bye" };
     if (pos <= 6) return { tone: "border-l-theme-primary", label: "Play-offs" };
@@ -148,13 +212,14 @@ export function TableTab() {
   const { state } = useCareer();
   const s = state!;
   const mine = s.clubs[s.userClubId]!.division;
+  const nrlUser = mine === "nrl";
   const [division, setDivision] = useState<Division>(mine);
   const [view, setViewState] = useState<TableView>(lastTableView);
   const setView = (v: TableView) => {
     lastTableView = v;
     setViewState(v);
   };
-  const rows = sortTable(s.tables[division]);
+  const rows = sortTable(s.tables[division] ?? []);
 
   // Cup status line
   const cupFixtures = s.calendar.flatMap((m) => m.fixtures).filter((f) => f.kind === "cup" && (f.home === s.userClubId || f.away === s.userClubId));
@@ -185,19 +250,19 @@ export function TableTab() {
     .filter((md) => md.pendingDraw && (md.pendingDraw.startsWith("cup-") ? cupAlive && !!lastCup : false))
     .map((md) => md.label);
 
+  // An NRL club's bye weeks (2 ladder points each), played ones ticked.
+  const byeRounds = s.calendar.filter((md) => md.byes?.includes(s.userClubId)).map((md) => `${md.label}${md.played ? " ✓" : ""}`);
+
   return (
     <div className="flex flex-col gap-4">
-      <GameSegmentedControl<TableView> options={TABLE_VIEWS} value={view} onChange={setView} fullWidth ariaLabel="Table sections" />
+      <GameSegmentedControl<TableView> options={nrlUser ? NRL_TABLE_VIEWS : TABLE_VIEWS} value={view} onChange={setView} fullWidth ariaLabel="Table sections" />
       {view === "results" ? <ResultsView state={s} /> : null}
-      {view === "cup" ? <CupTab state={s} cupLine={cupLine} /> : null}
+      {view === "cup" ? nrlUser ? <NrlFinalsTab state={s} /> : <CupTab state={s} cupLine={cupLine} /> : null}
       {view === "table" ? (
       <>
       <PlayoffsCard state={s} />
       <GameSegmentedControl<Division>
-        options={[
-          { id: "super-league", label: DIVISION_LABEL["super-league"] },
-          { id: "championship", label: DIVISION_LABEL.championship },
-        ]}
+        options={(["super-league", "championship", "nrl"] as const).map((d) => ({ id: d, label: DIVISION_LABEL[d], shortLabel: DIVISION_SHORT[d] }))}
         value={division}
         onChange={setDivision}
         ariaLabel="League table"
@@ -249,8 +314,17 @@ export function TableTab() {
           </tbody>
         </table>
         <p className="mt-2 px-2 text-[11px] text-gray-400">Tap a club to see their last team sheet and transfers.</p>
+        {division === "nrl" && !rows.some((r) => r.p > 0 || r.b) && !s.calendar.some((m) => m.fixtures.some((f) => f.division === "nrl")) ? (
+          <p className="mt-2 px-2 text-center text-[12px] text-gray-400 sm:text-left" data-testid="nrl-next-season">The NRL starts here next season.</p>
+        ) : null}
         <p className="mt-2 flex flex-wrap gap-x-4 gap-y-1 px-2 text-[11px] text-gray-400">
-          {division === "super-league" ? (
+          {division === "nrl" ? (
+            <>
+              <span><span className="mr-1 inline-block h-2 w-2 rounded-sm bg-theme-primary" />Top 4</span>
+              <span><span className="mr-1 inline-block h-2 w-2 rounded-sm bg-accent-gold" />Finals (top 8)</span>
+              <span>Bye: {NRL_BYE_POINTS} pts</span>
+            </>
+          ) : division === "super-league" ? (
             <>
               <span><span className="mr-1 inline-block h-2 w-2 rounded-sm bg-theme-primary" />Play-offs</span>
               <span><span className="mr-1 inline-block h-2 w-2 rounded-sm bg-accent-gold" />Million Pound Game</span>
@@ -288,7 +362,9 @@ export function TableTab() {
             })}
           </ul>
           {toDraw.length ? <p className="mt-2 text-center text-[12px] text-gray-400 sm:text-left">Still to be drawn: {toDraw.join(", ").replace(/Challenge Cup /g, "Cup ")}.</p> : null}
-          <p className="mt-2 text-center text-[11px] text-gray-400 sm:text-left">Round {MAGIC_ROUND} is Magic Weekend: neutral venue for every game.</p>
+          <p className="mt-2 text-center text-[11px] text-gray-400 sm:text-left">
+            Round {MAGIC_ROUND} is {nrlUser ? "Magic Round" : "Magic Weekend"}: neutral venue for every game.
+          </p>
         </Card>
       ) : (
         <Card>
@@ -298,10 +374,19 @@ export function TableTab() {
           </p>
         </Card>
       )}
-      <Card>
-        <Eyebrow>Challenge Cup</Eyebrow>
-        <p className="mt-1 text-center text-sm text-gray-300 sm:text-left">{cupLine}</p>
-      </Card>
+      {nrlUser ? (
+        <Card>
+          <Eyebrow>Your byes</Eyebrow>
+          <p className="mt-1 text-center text-sm text-gray-300 sm:text-left" data-testid="nrl-byes">
+            {byeRounds.length ? `${byeRounds.join(", ")}. Each bye is worth ${NRL_BYE_POINTS} points.` : "No byes this season."}
+          </p>
+        </Card>
+      ) : (
+        <Card>
+          <Eyebrow>Challenge Cup</Eyebrow>
+          <p className="mt-1 text-center text-sm text-gray-300 sm:text-left">{cupLine}</p>
+        </Card>
+      )}
       </>
       ) : null}
     </div>

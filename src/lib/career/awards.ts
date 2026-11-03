@@ -11,17 +11,28 @@ export const AWARD_LABEL: Record<AwardId, string> = {
   "young-player": "Young Player of the Year",
   "top-try-scorer": "Top try scorer",
   "club-player": "Player of the Season",
+  "clive-churchill": "Clive Churchill Medal",
+};
+
+/** The NRL's names for its awards (v1.65). */
+const NRL_AWARD_LABEL: Record<AwardId, string> = {
+  "man-of-steel": "Dally M Medal",
+  "young-player": "NRL Young Player of the Year",
+  "top-try-scorer": "NRL top try scorer",
+  "club-player": "Player of the Season",
+  "clive-churchill": "Clive Churchill Medal",
 };
 
 /** "Man of Steel", or "Championship Player of the Year" for the second tier. */
 export function awardLabel(a: Pick<SeasonAward, "id" | "division">): string {
+  if (a.division === "nrl") return NRL_AWARD_LABEL[a.id];
   if (a.division === "championship" && a.id !== "club-player") {
     return a.id === "man-of-steel" ? "Championship Player of the Year" : `${DIVISION_LABEL.championship} ${AWARD_LABEL[a.id].toLowerCase()}`;
   }
   return AWARD_LABEL[a.id];
 }
 
-/** Legacy points when one of your players is Man of Steel. */
+/** Legacy points when one of your players is Man of Steel (or wins the Dally M Medal). */
 export const MAN_OF_STEEL_LEGACY = 15;
 
 /** Games a player needs to be in the running for the big awards. */
@@ -89,14 +100,24 @@ function clubAward(state: CareerState): SeasonAward | undefined {
 /** Every award for the season just finished. Call before clubs change division. */
 export function computeSeasonAwards(state: CareerState): SeasonAward[] {
   const mine = state.clubs[state.userClubId]?.division;
-  const divisions: Division[] = mine === "championship" ? ["super-league", "championship"] : ["super-league"];
+  const divisions: Division[] = mine === "nrl" ? ["nrl"] : mine === "championship" ? ["super-league", "championship"] : ["super-league"];
   const out = divisions.flatMap((d) => divisionAwards(state, d));
+  // The NRL Grand Final's player of the match: the Clive Churchill Medal.
+  if (mine === "nrl") {
+    const gf = state.calendar.flatMap((m) => m.fixtures).find((f) => f.kind === "nrl-gf" && f.result);
+    const motm = gf?.result?.motm ? state.players[gf.result.motm] : undefined;
+    if (gf && motm) {
+      const clubId = [gf.home, gf.away].find((id) => state.clubs[id]?.squad.includes(motm.id)) ?? gf.home;
+      const r = gf.result!;
+      out.push(award(state, "clive-churchill", "nrl", motm, clubId, `NRL Grand Final, ${r.homeScore}–${r.awayScore}`));
+    }
+  }
   const club = clubAward(state);
   if (club) out.push(club);
   return out;
 }
 
-/** True when one of the user's players won Super League's Man of Steel. */
+/** True when one of the user's players won Super League's Man of Steel (or the NRL's Dally M Medal). */
 export function userWonManOfSteel(state: Pick<CareerState, "userClubId">, awards: readonly SeasonAward[]): SeasonAward | undefined {
-  return awards.find((a) => a.id === "man-of-steel" && a.division === "super-league" && a.clubId === state.userClubId);
+  return awards.find((a) => a.id === "man-of-steel" && (a.division === "super-league" || a.division === "nrl") && a.clubId === state.userClubId);
 }

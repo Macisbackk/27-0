@@ -395,13 +395,18 @@ const scores: number[] = [];
 let homeWins = 0;
 let games = 0;
 let draws = 0;
+const nrlScores: number[] = [];
+const nrlWinsTop: number[] = [];
+const nrlWinsBottom: number[] = [];
+let nrlGames = 0;
+let nrlHomeWins = 0;
 
 for (const [i, clubId] of ["salford-rlfc", "wigan-warriors", "north-wales-crusaders", "york-knights"].entries()) {
   let s = createCareer({ clubId, managerName: "Test", seed: `career-${i}` });
   let legacy = emptyLegacy();
   gone.clear(); // real players share ids across careers
   invariants(s, `${clubId} start`);
-  check(s.calendar.length === 34, `${clubId}: 34 matchdays (26 league + 5 cup + 3 play-off)`);
+  check(s.calendar.length === 35, `${clubId}: 35 matchdays (World Club Challenge + 26 league + 5 cup + 3 play-off)`);
   check(s.challenges.length === 3, `${clubId}: 3 season challenges`);
 
   for (let season = 1; season <= 6; season++) {
@@ -429,6 +434,16 @@ for (const [i, clubId] of ["salford-rlfc", "wigan-warriors", "north-wales-crusad
     }
     for (const f of all) {
       if (!f.result) continue;
+      // The NRL runs alongside (v1.65): its calibration is reported on its own line.
+      if (f.division === "nrl" || f.kind === "wcc" || f.kind === "nrl-final" || f.kind === "nrl-gf") {
+        if (f.kind !== "league") check(f.result.homeScore !== f.result.awayScore, `${label}: ${f.label} has a winner`);
+        if (f.division === "nrl" && f.kind === "league") {
+          nrlGames++;
+          nrlScores.push(f.result.homeScore, f.result.awayScore);
+          if (f.result.homeScore > f.result.awayScore) nrlHomeWins++;
+        }
+        continue;
+      }
       games++;
       scores.push(f.result.homeScore, f.result.awayScore);
       if (f.result.homeScore > f.result.awayScore) homeWins++;
@@ -439,6 +454,10 @@ for (const [i, clubId] of ["salford-rlfc", "wigan-warriors", "north-wales-crusad
     // Table snapshot is pre-promotion; record top/bottom wins.
     slWinsTop.push(sl[0]!.w);
     slWinsBottom.push(sl[sl.length - 1]!.w);
+    const nrlLadder = sortTable(s.tables.nrl);
+    check(nrlLadder.length === 17 && nrlLadder.every((r) => r.p === 24 && r.b === 3), `${label}: every NRL club played 24 with 3 byes (in the background)`);
+    nrlWinsTop.push(nrlLadder[0]!.w);
+    nrlWinsBottom.push(nrlLadder[nrlLadder.length - 1]!.w);
 
     const outcome = s.lastOutcome!;
     check(!!outcome, `${label}: outcome recorded`);
@@ -625,6 +644,9 @@ for (const clubId of ["london-broncos", "leeds-rhinos", "north-wales-crusaders"]
       const old = { ...s, board: undefined } as CareerState;
       check(boardGoal(old).target === goal.target, `${seed}/${division}: old save derives the same target`);
       s = playFriendlies(s, []);
+      // v1.65: the World Club Challenge opens the season (the hub stops for it), then Round 1.
+      check(seasonProgress(s).label === "World Club Challenge", `${seed}/${division}: progress reads World Club Challenge first`);
+      s = skipIdleWeeks(playMatchday(s));
       check(seasonProgress(s).label === "Round 1 of " + seasonProgress(s).total, `${seed}/${division}: progress reads Round 1 of N`);
       // Sim to each stop; the calendar preview says where it stops and how many games it plays.
       let guard = 0;
@@ -677,7 +699,12 @@ console.log(
   `\nCalibration: avg score ${avg(scores).toFixed(1)}, home win ${(100 * homeWins / games).toFixed(0)}%, draws ${(100 * draws / games).toFixed(1)}%, ` +
     `SL leader wins ${avg(slWinsTop).toFixed(1)}/26, SL bottom wins ${avg(slWinsBottom).toFixed(1)}/26`
 );
+console.log(
+  `NRL calibration (background): avg score ${avg(nrlScores).toFixed(1)}, home win ${(100 * nrlHomeWins / nrlGames).toFixed(0)}%, ` +
+    `ladder leader wins ${avg(nrlWinsTop).toFixed(1)}/24, bottom wins ${avg(nrlWinsBottom).toFixed(1)}/24`
+);
 check(avg(scores) > 12 && avg(scores) < 30, "average team score in a realistic range");
+check(avg(nrlScores) > 12 && avg(nrlScores) < 30, "NRL: average team score in a realistic range");
 check(avg(slWinsTop) >= 17 && avg(slWinsTop) <= 25, "SL leaders win 17–25 of 26");
 check(avg(slWinsBottom) >= 2 && avg(slWinsBottom) <= 10, "SL bottom club wins 2–10 of 26");
 

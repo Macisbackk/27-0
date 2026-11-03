@@ -24,6 +24,7 @@ const fail = (m: string) => { if (problems.length < 200) problems.push(m); };
 function invariants(s: CareerState, where: string) {
   if (clubsIn(s, "super-league").length !== 14) fail(`${where}: SL has ${clubsIn(s, "super-league").length} clubs`);
   if (clubsIn(s, "championship").length !== 22) fail(`${where}: Champ has ${clubsIn(s, "championship").length} clubs`);
+  if (clubsIn(s, "nrl").length !== 17) fail(`${where}: NRL has ${clubsIn(s, "nrl").length} clubs`);
   const seen = new Map<string, string>();
   for (const c of Object.values(s.clubs)) {
     if (c.squad.length < 13) fail(`${where}: ${c.name} has only ${c.squad.length} players`);
@@ -45,7 +46,7 @@ function invariants(s: CareerState, where: string) {
   if (!Number.isFinite(s.budget)) fail(`${where}: budget ${s.budget}`);
   if (s.prestige < 1 || s.prestige > 5) fail(`${where}: prestige ${s.prestige}`);
   if (s.phase === "season" && s.matchdayIndex > s.calendar.length) fail(`${where}: matchdayIndex overflow`);
-  for (const div of ["super-league", "championship"] as const) {
+  for (const div of ["super-league", "championship", "nrl"] as const) {
     const rows = s.tables[div];
     if (s.phase === "season" && rows.length !== clubsIn(s, div).length) fail(`${where}: ${div} table rows ${rows.length}`);
   }
@@ -116,9 +117,9 @@ for (let run = 0; run < 40; run++) {
 console.log(`A) fuzz: ${actions} actions in ${((Date.now() - tA) / 1000).toFixed(1)}s, problems so far ${problems.length}`);
 
 /* ---------------- B) soak ---------------- */
-for (const club of ["wigan-warriors", "cornwall-rlfc"]) {
+for (const club of ["wigan-warriors", "cornwall-rlfc", "nrl-gold-coast-titans"]) {
   let s = createCareer({ clubId: club, managerName: "Soak", seed: `soak-${club}` });
-  const avgTop = (div: "super-league" | "championship") => {
+  const avgTop = (div: "super-league" | "championship" | "nrl") => {
     const ids = clubsIn(s, div);
     return ids.reduce((sum, id) => sum + clubRating(s, id), 0) / ids.length;
   };
@@ -132,7 +133,7 @@ for (const club of ["wigan-warriors", "cornwall-rlfc"]) {
     s = finishTransfers(s);
     invariants(s, `soak ${club} S${season}`);
     if (season % 5 === 0 || season === 1)
-      console.log(`  S${String(season).padStart(2)} ${o.division === "super-league" ? "SL" : "CH"}#${String(o.position).padStart(2)}  SL avg XIII ${avgTop("super-league").toFixed(1)}  CH avg ${avgTop("championship").toFixed(1)}  you ${clubRating(s, s.userClubId).toFixed(1)}  budget £${(s.budget / 1e6).toFixed(2)}M  players ${Object.keys(s.players).length}  FA ${s.freeAgents.length}  save ${(JSON.stringify(s).length / 1024).toFixed(0)}KB  sim ${tSeason.toFixed(0)}ms`);
+      console.log(`  S${String(season).padStart(2)} ${o.division === "super-league" ? "SL" : o.division === "nrl" ? "NRL" : "CH"}#${String(o.position).padStart(2)}  SL avg XIII ${avgTop("super-league").toFixed(1)}  CH avg ${avgTop("championship").toFixed(1)}  NRL avg ${avgTop("nrl").toFixed(1)}  you ${clubRating(s, s.userClubId).toFixed(1)}  budget £${(s.budget / 1e6).toFixed(2)}M  players ${Object.keys(s.players).length}  FA ${s.freeAgents.length}  save ${(JSON.stringify(s).length / 1024).toFixed(0)}KB  sim ${tSeason.toFixed(0)}ms`);
   }
 }
 

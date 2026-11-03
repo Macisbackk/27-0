@@ -5,6 +5,7 @@
  */
 import { LINEUP_SLOTS, POS_LABEL, SQUAD_MAX, SQUAD_TEMPLATE } from "./players";
 import { pick, type Rng } from "./rng";
+import { codeOfDivision, type Code } from "./clubs";
 import type { CareerPlayer, CareerState } from "./types";
 
 export interface BuyerNeed {
@@ -46,9 +47,18 @@ export function clubNeed(state: CareerState, clubId: string, p: CareerPlayer): B
   return { clubId, score, reason };
 }
 
-/** Clubs that need this player, best fit first. */
-export function buyersFor(state: CareerState, p: CareerPlayer): BuyerNeed[] {
+/** The user's game: the NRL, or Super League and the Championship. */
+function userCode(state: CareerState): Code {
+  return codeOfDivision(state.clubs[state.userClubId]?.division ?? "super-league");
+}
+
+/**
+ * Clubs that need this player, best fit first. `code` keeps it to one game (the NRL, or Super
+ * League and the Championship); no code = anyone (free agents can cross codes).
+ */
+export function buyersFor(state: CareerState, p: CareerPlayer, code?: Code): BuyerNeed[] {
   return Object.keys(state.clubs)
+    .filter((id) => !code || codeOfDivision(state.clubs[id]!.division) === code)
     .map((id) => clubNeed(state, id, p))
     .filter((x): x is BuyerNeed => !!x)
     .sort((a, b) => b.score - a.score);
@@ -60,14 +70,16 @@ export function buyersFor(state: CareerState, p: CareerPlayer): BuyerNeed[] {
  * that has room, so a sale always has a real destination.
  */
 export function pickBuyer(state: CareerState, p: CareerPlayer, rng: Rng): BuyerNeed | null {
-  const needs = buyersFor(state, p);
+  // A player sold by the user stays in the user's game (NRL to NRL, Super League to the English game).
+  const code = userCode(state);
+  const needs = buyersFor(state, p, code);
   if (needs.length) {
     const top = needs[0]!.score;
     const close = needs.filter((n) => n.score >= top - 2).slice(0, 3);
     return pick(rng, close);
   }
   const roomy = Object.values(state.clubs)
-    .filter((c) => c.id !== state.userClubId && c.squad.length < SQUAD_MAX && !c.squad.includes(p.id))
+    .filter((c) => c.id !== state.userClubId && c.squad.length < SQUAD_MAX && !c.squad.includes(p.id) && codeOfDivision(c.division) === code)
     .map((c) => ({ c, n: c.squad.filter((id) => state.players[id]?.pos === p.pos).length }))
     .sort((a, b) => a.n - b.n || a.c.squad.length - b.c.squad.length);
   const c = roomy[0]?.c;

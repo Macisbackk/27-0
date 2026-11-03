@@ -196,7 +196,12 @@ try {
   await btn("Play match").waitFor({ timeout });
   await page.waitForTimeout(300);
   if (await visible(btn("Skip to full time"))) fail("double tap on Play 2 started Round 1 live");
-  if ((await save()).matchdayIndex !== 0) fail("double tap on Play 2 played a round");
+  {
+    // v1.65: someone else's World Club Challenge (week 0) plays straight through; Round 1 must still be unplayed.
+    const sv = await save();
+    const first = (sv?.calendar ?? []).findIndex((m) => m.fixtures.some((f) => f.kind === "league"));
+    if (sv?.matchdayIndex > first) fail("double tap on Play 2 played a round");
+  }
   await reloadAndCheck("friendly results", "Pre-season results");
   await shot("preseason-results");
   step("Pre-season → Round 1 with the results above it; reloads keep the stage; double taps safe");
@@ -207,6 +212,11 @@ try {
   await btn("Play match").waitFor({ timeout }).catch(() => fail("back button lost the Manager Mode hub"));
   step("Back/forward keeps the hub");
 
+  // v1.65: the World Club Challenge result pops up before Round 1: answer it first.
+  for (let i = 0; i < 4 && (await page.getByTestId("career-event").isVisible().catch(() => false)); i++) {
+    await page.keyboard.press("Escape");
+    await page.waitForTimeout(300);
+  }
   // Every tab fits at 320px.
   for (const t of ["Team", "Table", "Club", "Match"]) {
     await page.getByRole("tab", { name: t }).click();

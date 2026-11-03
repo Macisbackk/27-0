@@ -73,6 +73,7 @@ export const ALLOWED_SUBSTRINGS: readonly string[] = [
   "therapist",
   "swank",
   "shitake",
+  "penisini", // Will Penisini (NRL, in Manager Mode since v1.65)
 ];
 
 /** Real words that look like a BLOCKED_WORDS term plus a suffix ("cocky", "sexton" …). */

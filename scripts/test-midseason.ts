@@ -83,7 +83,15 @@ for (const [n, choice] of choices.filter((_, i) => i % 4 === 0).slice(0, 8).entr
     if (d.to && d.to !== s.userClubId && !s.clubs[d.to]) fail("deal to unknown club");
   }
   const ll = s.lastLineups ?? {};
-  for (const id of Object.keys(s.clubs)) if (!ll[id] || ll[id]!.lineup.length !== 13) fail(`${id}: no last line-up`);
+  // v1.65: team sheets are kept for your own game's clubs (the NRL's show their expected XIII instead).
+  const mine = s.clubs[s.userClubId]!.division === "nrl";
+  for (const id of Object.keys(s.clubs)) {
+    if ((s.clubs[id]!.division === "nrl") !== mine) {
+      if (ll[id] && !(s.clubs[ll[id]!.opponentId]?.division === "nrl") === mine) fail(`${id}: other game's line-up kept`);
+      continue;
+    }
+    if (!ll[id] || ll[id]!.lineup.length !== 13) fail(`${id}: no last line-up`);
+  }
 }
 ok(`8 seasons: ${totalDeals} AI/user deals, ${deadlineDeals} on Deadline Day, squads always legal, no player at two clubs`);
 if (totalDeals < 8 * 4) fail(`too few deals (${totalDeals})`);

@@ -7,6 +7,7 @@ import type { Division } from "./types";
 
 /** Places the board picks from, best first. */
 function bands(division: Division, size: number): number[] {
+  if (division === "nrl") return [2, 4, 8, 12, Math.max(1, size - 2)];
   if (division === "super-league") return [4, 6, 9, Math.max(1, size - 2)];
   return [2, 5, Math.ceil(size / 2), Math.max(1, size - 2)];
 }
@@ -19,6 +20,11 @@ export function boardTargetForRank(division: Division, expectedRank: number, siz
 
 /** "Reach the play-offs", "Finish in the top 6", "Stay up"… */
 export function boardTargetLabel(division: Division, target: number, size: number): string {
+  if (division === "nrl") {
+    if (target === 8) return "Make the finals (top 8)";
+    if (target >= size - 2) return `Avoid the wooden spoon (${target}th or better)`;
+    return `Finish in the top ${target}`;
+  }
   if (division === "super-league") {
     if (target === 6) return "Reach the play-offs (top 6)";
     if (target >= size - 2) return `Stay up (${target}th or better)`;

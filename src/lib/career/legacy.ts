@@ -9,6 +9,9 @@ export const EMPTY_TROPHIES: Record<TrophyId, number> = {
   promotion: 0,
   "million-pound-game": 0,
   "perfect-season": 0,
+  "nrl-premiership": 0,
+  "minor-premiership": 0,
+  "world-club-challenge": 0,
 };
 
 export function emptyLegacy(): CareerLegacy {
@@ -64,6 +67,7 @@ export function bankSeason(
     next.perfectSeasons += 1;
     breaks.perfect = true;
   }
+  // Best season stays a Super League record (the "Best Season" leaderboard is Super League wins).
   if (outcome.division === "super-league") {
     const best = next.bestSeason;
     const better = !best || outcome.won > best.wins || (outcome.won === best.wins && outcome.lost < best.losses);
@@ -126,5 +130,8 @@ export function unlockLegend(legacy: CareerLegacy, legendId: string): { legacy: 
 
 export function totalMajorTrophies(legacy: CareerLegacy): number {
   const t = legacy.trophies;
-  return t["grand-final"] + t["league-leaders"] + t["challenge-cup"] + t["championship-title"] + t["million-pound-game"];
+  return (
+    t["grand-final"] + t["league-leaders"] + t["challenge-cup"] + t["championship-title"] + t["million-pound-game"] +
+    (t["nrl-premiership"] ?? 0) + (t["minor-premiership"] ?? 0) + (t["world-club-challenge"] ?? 0)
+  );
 }

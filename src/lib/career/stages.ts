@@ -10,6 +10,7 @@ import { boardTargetForRank, boardTargetLabel } from "./board";
 import { deadlineDecisionPending, windowBounds } from "./midseason";
 import { preseasonOpen } from "./preseason";
 import { expectedRanking, playMatchday, sortTable, userFixture, winnerOf } from "./season";
+import { NRL_FINALISTS } from "./nrl";
 import type { CareerState, Division, Fixture, Matchday } from "./types";
 
 /** "season-over": the final whistle screen (your last game, the Grand Final) before the review. */
@@ -35,8 +36,10 @@ export function markStageSeen(state: CareerState, key: StageKey): CareerState {
   return { ...state, stagesSeen: [...keep, tag], updatedAt: Date.now() };
 }
 
-function isPlayoffMatchday(md: Matchday | undefined): boolean {
+/** The first week after the league: Super League's play-offs, or the NRL's finals week 1 for an NRL manager. */
+function isPlayoffMatchday(md: Matchday | undefined, nrl = false): boolean {
   if (!md) return false;
+  if (nrl) return md.nrlDraw === "nrl-w1" || md.fixtures.some((f) => f.kind === "nrl-final" && f.round === 1);
   return (
     md.pendingDraw === "playoff-elims" ||
     md.pendingDraw === "playoff-semis" ||
@@ -44,17 +47,20 @@ function isPlayoffMatchday(md: Matchday | undefined): boolean {
   );
 }
 
-function isGrandFinalMatchday(md: Matchday | undefined): boolean {
+function isGrandFinalMatchday(md: Matchday | undefined, nrl = false): boolean {
   if (!md) return false;
+  if (nrl) return md.nrlDraw === "nrl-gf" || md.fixtures.some((f) => f.kind === "nrl-gf");
   return md.pendingDraw === "grand-final" || md.fixtures.some((f) => f.kind === "grand-final");
 }
+
+const userIsNrl = (state: CareerState) => state.clubs[state.userClubId]?.division === "nrl";
 
 export function currentStage(state: CareerState): MatchStage {
   if (state.phase !== "season") return "fixture";
   if (preseasonOpen(state)) return "preseason";
   const pre = state.preseason;
   if (
-    state.matchdayIndex === 0 &&
+    beforeRoundOne(state) &&
     pre?.year === state.year &&
     pre.done &&
     pre.results.length > 0 &&
@@ -64,8 +70,10 @@ export function currentStage(state: CareerState): MatchStage {
   }
   if (deadlineDecisionPending(state)) return "deadline";
   const md = state.calendar[state.matchdayIndex];
-  if (isPlayoffMatchday(md) && !stageSeen(state, "league-over")) return "league-over";
-  if (isGrandFinalMatchday(md) && !stageSeen(state, "promotion")) return "promotion";
+  const nrl = userIsNrl(state);
+  if (isPlayoffMatchday(md, nrl) && !stageSeen(state, "league-over")) return "league-over";
+  // Nobody goes up or down in the NRL: no promotion picture before its Grand Final.
+  if (!nrl && isGrandFinalMatchday(md) && !stageSeen(state, "promotion")) return "promotion";
   return "fixture";
 }
 
@@ -87,7 +95,16 @@ export function leagueOverPicture(state: CareerState): LeagueOverPicture {
   const md = state.calendar[state.matchdayIndex];
   const next = userFixture(md, state.userClubId);
   let verdict: string;
-  if (division === "championship") {
+  if (division === "nrl") {
+    verdict =
+      position === 1
+        ? "Minor premiers! A home qualifying final, and a second chance."
+        : position <= 4
+          ? "Top four. A qualifying final, and a second chance if you lose."
+          : position <= NRL_FINALISTS
+            ? "Into the finals. Lose the elimination final and you're out."
+            : "Out of the top eight. The finals go on without you.";
+  } else if (division === "championship") {
     verdict =
       position === 1
         ? "Champions. Promoted to Super League."
@@ -141,7 +158,23 @@ function needsManager(state: CareerState): boolean {
   if (currentStage(state) !== "fixture") return true;
   const md = state.calendar[state.matchdayIndex];
   if (!md) return true;
+  // Someone else's World Club Challenge plays straight through: its result pops up and leads the news.
   return !!userFixture(md, state.userClubId) || !!md.pendingDraw;
+}
+
+/** Nothing of the league played yet this season (pre-season, or only the World Club Challenge). */
+export function beforeRoundOne(state: Pick<CareerState, "calendar" | "matchdayIndex">): boolean {
+  return !state.calendar.slice(0, state.matchdayIndex).some((m) => m.fixtures.some((f) => f.kind === "league"));
+}
+
+/** The pre-season week of the World Club Challenge. */
+export function isWccMatchday(md: Matchday | undefined): boolean {
+  return !!md?.fixtures.some((f) => f.kind === "wcc");
+}
+
+/** This season's World Club Challenge fixture, if there is one. */
+export function wccOf(state: Pick<CareerState, "calendar">): Fixture | undefined {
+  return state.calendar[0]?.fixtures.find((f) => f.kind === "wcc");
 }
 
 /**
@@ -212,13 +245,14 @@ export function nextStop(state: CareerState): NextStop | null {
   const deadline = windowBounds(state)?.deadline ?? -1;
   const deadlineDone = state.deadlineClosedYear === state.year;
   const alive = aliveInCup(state);
+  const nrl = userIsNrl(state);
   let games = 0;
   for (let i = state.matchdayIndex; i < state.calendar.length; i++) {
     const md = state.calendar[i]!;
     if (i > state.matchdayIndex) {
       if (i === deadline && !deadlineDone) return { games, label: "Deadline Day" };
-      if (isPlayoffMatchday(md)) return { games, label: "the end of the league" };
-      if (isGrandFinalMatchday(md)) return { games, label: "the Grand Final" };
+      if (isPlayoffMatchday(md, nrl)) return { games, label: nrl ? "the finals" : "the end of the league" };
+      if (isGrandFinalMatchday(md, nrl)) return { games, label: "the Grand Final" };
       const f = userFixture(md, state.userClubId);
       if (f && f.kind !== "league") return { games, label: md.label };
       if (alive && md.pendingDraw?.startsWith("cup-")) return { games, label: md.label };
@@ -282,7 +316,7 @@ export function seasonProgress(state: CareerState): SeasonProgress {
   let label: string;
   if (!md) label = "Season complete";
   else if (md.label.startsWith("Round ")) label = `${md.label} of ${total}`;
-  else if (isPlayoffMatchday(md)) label = "Play-offs";
+  else if (isPlayoffMatchday(md, userIsNrl(state))) label = userIsNrl(state) ? "Finals" : "Play-offs";
   else label = md.label;
   return { label, done, total };
 }

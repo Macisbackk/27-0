@@ -156,7 +156,8 @@ console.log("Season story: honours, play-offs, cup, results, history");
 
   const lines = honoursBoard(o, s.clubs, s.userClubId);
   const by = (id: string) => lines.find((l) => l.id === id);
-  check(lines.map((l) => l.id).join(",") === "grand-final,league-leaders,challenge-cup,championship-title,mpg,promoted,relegated", `honours board in order (${lines.map((l) => l.id).join(", ")})`);
+  // v1.65: the World Club Challenge opens the board; the NRL's honours close it for a Super League manager.
+  check(lines.map((l) => l.id).join(",") === "wcc,grand-final,league-leaders,challenge-cup,championship-title,mpg,promoted,relegated,nrl-premiership,minor-premiership", `honours board in order (${lines.map((l) => l.id).join(", ")})`);
   check(by("grand-final")?.clubIds[0] === winnerOf(gf) && /^Beat .+ \d+–\d+/.test(by("grand-final")!.text), `Grand Final winner and score: ${by("grand-final")?.text}`);
   check(by("league-leaders")?.clubIds[0] === sl[0], "League Leaders' Shield: top of Super League");
   check(by("challenge-cup")?.clubIds[0] === winnerOf(cupFinal) && by("challenge-cup")!.text.includes("in the final"), `Challenge Cup winner and final score: ${by("challenge-cup")?.text}`);
@@ -177,11 +178,12 @@ console.log("Season story: honours, play-offs, cup, results, history");
   check(elimPairs === "3v6,4v5", `eliminators are 3v6 and 4v5 (${elimPairs})`);
 
   const data = seasonReviewData(o, s.clubs, s.userClubId);
-  check(data.full && data.honours.length === 7 && data.awards.some((a) => a.id === "man-of-steel") && !!data.bracket, "review data: every winner, awards and the bracket");
+  check(data.full && data.honours.length === 10 && data.awards.some((a) => a.id === "man-of-steel") && !!data.bracket, "review data: every winner, awards and the bracket");
   check(data.results.length === st.mine.length && data.cupRun.every((m) => m.k === "cup") && data.cupFinal?.r === 5, "review data: your results, your cup run and the final");
   check(st.cup.length === 3 && st.cup.filter((m) => m.r === 4).length === 2, "cup: the semi-finals and the final kept");
   const bytes = JSON.stringify(st).length;
-  check(bytes < 4000, `story stays small (${bytes} bytes)`);
+  // v1.65 adds the NRL's top eight, its finals and the World Club Challenge (about 0.6 KB).
+  check(bytes < 5000, `story stays small (${bytes} bytes)`);
 
   // An old save sitting on the review screen: the story is rebuilt from the calendar on load.
   const old = structuredClone(s);

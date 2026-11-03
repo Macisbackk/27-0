@@ -53,6 +53,12 @@ export function miniLabel(m: Pick<MiniResult, "k" | "r">, short = false): string
       return short ? "GF" : "Grand Final";
     case "mpg":
       return short ? "MPG" : "Million Pound Game";
+    case "wcc":
+      return short ? "WCC" : "World Club Challenge";
+    case "nrl-final":
+      return short ? ["QF/EF", "SF", "PF"][m.r - 1] ?? "Final" : ["Finals week 1", "Semi-final", "Preliminary final"][m.r - 1] ?? "Final";
+    case "nrl-gf":
+      return short ? "GF" : "NRL Grand Final";
   }
 }
 
@@ -94,6 +100,9 @@ export function buildSeasonStory(state: CareerState): SeasonStory {
       relegated.push(mpgF.home);
     }
   }
+  const nrl = sortTable(state.tables.nrl ?? []).map((r) => r.clubId);
+  const nrlFinals = all.filter((f) => f.kind === "nrl-final" || f.kind === "nrl-gf").map(toMini);
+  const wcc = all.find((f) => f.kind === "wcc");
   return {
     mine: all.filter((f) => f.home === user || f.away === user).map(toMini),
     playoffs: all.filter((f) => PLAYOFF_KINDS.has(f.kind)).map(toMini),
@@ -103,6 +112,8 @@ export function buildSeasonStory(state: CareerState): SeasonStory {
     chTop: ch.slice(0, 2),
     promoted,
     relegated,
+    ...(nrl.length && all.some((f) => f.division === "nrl") ? { nrlTop: nrl.slice(0, 8), nrlFinals } : {}),
+    ...(wcc ? { wcc: toMini(wcc) } : {}),
   };
 }
 
@@ -115,7 +126,17 @@ export function calendarIsFinishedSeason(state: CareerState, year: number): bool
 
 /* ------------------------------------------------------------------- honours */
 
-export type HonourId = "grand-final" | "league-leaders" | "challenge-cup" | "championship-title" | "mpg" | "promoted" | "relegated";
+export type HonourId =
+  | "grand-final"
+  | "league-leaders"
+  | "challenge-cup"
+  | "championship-title"
+  | "mpg"
+  | "promoted"
+  | "relegated"
+  | "nrl-premiership"
+  | "minor-premiership"
+  | "wcc";
 
 export interface HonourLine {
   id: HonourId;
@@ -155,12 +176,24 @@ export function honoursBoard(o: Pick<SeasonOutcome, "story" | "trophies" | "prom
       ["challenge-cup", "challenge-cup", "Challenge Cup", "Cup winners"],
       ["championship-title", "championship-title", "Championship title", "Top of the Championship"],
       ["million-pound-game", "mpg", "Million Pound Game", "Won the Million Pound Game"],
+      ["world-club-challenge", "wcc", "World Club Challenge", "World champions"],
+      ["nrl-premiership", "nrl-premiership", "NRL Premiership", "Premiers"],
+      ["minor-premiership", "minor-premiership", "Minor Premiership", "Top of the NRL"],
     ];
     for (const [t, id, title, text] of own) if (o.trophies.includes(t)) push(id, title, [userClubId], text);
     if (o.promoted) push("promoted", "Promoted", [userClubId], "Up to Super League");
     if (o.relegated) push("relegated", "Relegated", [userClubId], "Down to the Championship");
     return lines;
   }
+  // The World Club Challenge opened the season; an NRL manager's own league comes first after it.
+  if (st.wcc && miniWinner(st.wcc)) push("wcc", "World Club Challenge", [miniWinner(st.wcc)!], `Beat ${nameOf(clubs, miniLoser(st.wcc)!)} ${winnerScore(st.wcc)}`);
+  const nrlLines = () => {
+    const ngf = st.nrlFinals?.find((m) => m.k === "nrl-gf");
+    const ngfWinner = ngf ? miniWinner(ngf) : null;
+    if (ngf && ngfWinner) push("nrl-premiership", "NRL Premiership", [ngfWinner], `Beat ${nameOf(clubs, miniLoser(ngf)!)} ${winnerScore(ngf)} in the Grand Final`);
+    if (st.nrlTop?.[0]) push("minor-premiership", "Minor Premiership", [st.nrlTop[0]], "Top of the NRL ladder");
+  };
+  if (o.division === "nrl") nrlLines();
   const gf = st.playoffs.find((m) => m.k === "grand-final");
   const gfWinner = gf ? miniWinner(gf) : null;
   if (gf && gfWinner) push("grand-final", "Super League Grand Final", [gfWinner], `Beat ${nameOf(clubs, miniLoser(gf)!)} ${winnerScore(gf)}`);
@@ -181,7 +214,33 @@ export function honoursBoard(o: Pick<SeasonOutcome, "story" | "trophies" | "prom
   }
   if (st.promoted.length) push("promoted", "Promoted", st.promoted, `Up to ${DIVISION_LABEL["super-league"]}`);
   if (st.relegated.length) push("relegated", "Relegated", st.relegated, `Down to the ${DIVISION_LABEL.championship}`);
+  if (o.division !== "nrl") nrlLines();
   return lines;
+}
+
+/* ------------------------------------------------------------------ NRL finals */
+
+export interface NrlBracket {
+  /** The top eight going in (ladder order). */
+  top: string[];
+  /** Week 1: qualifying finals (1v4, 2v3) then elimination finals (5v8, 6v7). */
+  week1: MiniResult[];
+  semis: MiniResult[];
+  prelims: MiniResult[];
+  final?: MiniResult;
+}
+
+/** The NRL finals from a story (null for seasons with no NRL). */
+export function nrlBracket(st: SeasonStory): NrlBracket | null {
+  if (!st.nrlTop?.length) return null;
+  const f = st.nrlFinals ?? [];
+  return {
+    top: st.nrlTop,
+    week1: f.filter((m) => m.k === "nrl-final" && m.r === 1),
+    semis: f.filter((m) => m.k === "nrl-final" && m.r === 2),
+    prelims: f.filter((m) => m.k === "nrl-final" && m.r === 3),
+    final: f.find((m) => m.k === "nrl-gf"),
+  };
 }
 
 /* ------------------------------------------------------------------ play-offs */
@@ -211,6 +270,10 @@ export interface ReviewData {
   honours: HonourLine[];
   awards: SeasonAward[];
   bracket: PlayoffBracket | null;
+  /** The NRL finals (an NRL manager's season). */
+  nrlBracket: NrlBracket | null;
+  /** The World Club Challenge that opened the season. */
+  wcc?: MiniResult;
   /** The user's Challenge Cup ties, in order. */
   cupRun: MiniResult[];
   cupFinal?: MiniResult;
@@ -226,7 +289,9 @@ export function seasonReviewData(o: SeasonOutcome, clubs: ClubNames, userClubId:
   return {
     honours: honoursBoard(o, clubs, userClubId),
     awards: o.awards ?? [],
-    bracket: st && (st.playoffs.length || st.slTop.length) ? playoffBracket(st) : null,
+    bracket: o.division !== "nrl" && st && (st.playoffs.length || st.slTop.length) ? playoffBracket(st) : null,
+    nrlBracket: o.division === "nrl" && st ? nrlBracket(st) : null,
+    wcc: st?.wcc,
     cupRun: st ? st.mine.filter((m) => m.k === "cup") : [],
     cupFinal: st?.cup.find((m) => m.r === 5),
     results: st?.mine ?? [],
@@ -257,7 +322,11 @@ export function playedRounds(state: CareerState, division: Division = state.club
   const out: RoundResults[] = [];
   for (const md of state.calendar) {
     if (!md.played) continue;
-    const games = md.fixtures.filter((f) => f.result && (f.kind !== "league" || f.division === division)).map(toMini);
+    // Knockouts of your own game only: an NRL manager sees the WCC and the NRL finals, not the Cup or Super League's play-offs.
+    const nrl = division === "nrl";
+    const games = md.fixtures
+      .filter((f) => f.result && (f.kind === "league" ? f.division === division : nrl ? f.kind === "wcc" || f.kind === "nrl-final" || f.kind === "nrl-gf" : f.kind !== "nrl-final" && f.kind !== "nrl-gf"))
+      .map(toMini);
     if (games.length) out.push({ index: md.index, label: md.label, games });
   }
   return out;

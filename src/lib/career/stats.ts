@@ -8,6 +8,7 @@
  * Match is the top mark.
  */
 import recordsData from "../../../data/club-records.json";
+import { nrlSeedRecords } from "./nrl";
 import { rngFor } from "./rng";
 import type { CareerPlayer, CareerState, ClubRecord, ClubTotals, Division, Fixture, FixtureResult, RecordKind } from "./types";
 import type { TeamSheet } from "./match";
@@ -258,6 +259,13 @@ const SEED = (recordsData as { clubs: Record<string, SeedRecords> }).clubs;
 
 /** The real all-time records a club starts with (empty where we found no reliable figure). */
 export function seedRecords(clubId: string): Partial<Record<RecordKind, ClubRecord>> {
+  // NRL clubs (v1.65): their records since 1998 from data/nrl/ (AFL Tables season rows).
+  const nrl = clubId.startsWith("nrl-") ? nrlSeedRecords(clubId) : undefined;
+  if (nrl) {
+    const out: Partial<Record<RecordKind, ClubRecord>> = {};
+    for (const k of RECORD_KINDS) if (nrl[k]) out[k] = { ...nrl[k]! };
+    return out;
+  }
   const r = SEED[clubId];
   if (!r) return {};
   const out: Partial<Record<RecordKind, ClubRecord>> = {};
@@ -266,6 +274,7 @@ export function seedRecords(clubId: string): Partial<Record<RecordKind, ClubReco
 }
 
 export function recordSources(clubId: string): string[] {
+  if (clubId.startsWith("nrl-")) return ["NRL era only (1998–2026): AFL Tables season scorers"];
   return SEED[clubId]?.sources ?? [];
 }
 
@@ -372,4 +381,12 @@ export function settleFixture(state: CareerState, f: Fixture, home: TeamSheet, a
   } else delete r.ratings;
   checkRecords(state, f.home, [...home.lineup, ...(home.bench ?? [])]);
   checkRecords(state, f.away, [...away.lineup, ...(away.bench ?? [])]);
+  // Other clubs' try scorers are credited above and never shown again: drop them (v1.65, saves
+  // stay small with the NRL running alongside). Your own games keep theirs.
+  if (f.home !== state.userClubId && f.away !== state.userClubId) {
+    r.homeTries = [];
+    r.awayTries = [];
+    // Player of the Match is only shown for finals (the Clive Churchill Medal is the NRL Grand Final's).
+    if (f.kind === "league") delete r.motm;
+  }
 }

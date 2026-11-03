@@ -57,7 +57,7 @@ declare
     'gypo', 'gippo'
   ];
   allowed_substrings constant text[] := array[
-    'scunthorpe', 'penistone', 'therapist', 'swank', 'shitake'
+    'scunthorpe', 'penistone', 'therapist', 'swank', 'shitake', 'penisini'
   ];
   allowed_tokens constant text[] := array[
     'cocky', 'cocker', 'cockers', 'nobby', 'nobbys', 'nobbies', 'spicy', 'spicer', 'spicers',

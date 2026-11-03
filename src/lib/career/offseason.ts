@@ -22,7 +22,21 @@ import { pushEvent } from "./events";
 import { tagNews } from "./news";
 import { aiLegendSigning, legendAvailable, legendSummer, signLegend } from "./legend-moves";
 import { autoPickTeam, fixTeam, repairTeam, squadOf, startSeason, userClub } from "./season";
+import { codeOfDivision, type Code } from "./clubs";
 import type { CareerPlayer, CareerState, Pos } from "./types";
+
+/** Which game a club plays in: the NRL, or Super League and the Championship. */
+export function clubCode(state: Pick<CareerState, "clubs">, clubId: string | null | undefined): Code | null {
+  const d = clubId ? state.clubs[clubId]?.division : undefined;
+  return d ? codeOfDivision(d) : null;
+}
+
+/** NRL salary cap (v1.65): an NRL club's season wage bill can't go past it with a signing. */
+export const NRL_SALARY_CAP = 2_400_000;
+/** Fee premium for signing a player from the other code (an NRL club buying from Super League, or the other way). */
+export const CROSS_CODE_PREMIUM = 1.5;
+/** Clubs from the other code whose players show up in a window's market. */
+const CROSS_CODE_CLUBS = 4;
 
 export interface MarketListing {
   playerId: string;
@@ -60,7 +74,8 @@ function developPlayer(rngRoll: () => number, p: CareerPlayer) {
   } else {
     p.rating -= 1 + Math.floor(rngRoll() * 3);
   }
-  p.rating = Math.max(55, Math.min(95, p.rating));
+  // NRL stars start above 95 (Cleary 98): they keep their level rather than drop to the old cap.
+  p.rating = Math.max(55, Math.min(99, p.rating));
 }
 
 function retires(rngRoll: () => number, p: CareerPlayer): boolean {
@@ -72,7 +87,7 @@ function retires(rngRoll: () => number, p: CareerPlayer): boolean {
 
 /** Level used when topping up an AI squad: a touch below its current XIII. */
 /** Typical first-team level of each division on the 27-0 rating scale (2026 squads). */
-const DIVISION_ANCHOR = { "super-league": 81, championship: 74 } as const;
+const DIVISION_ANCHOR = { "super-league": 81, championship: 74, nrl: 82.5 } as const;
 
 /**
  * Level used when topping up an AI squad. Pulled halfway toward the division norm so the
@@ -249,7 +264,7 @@ export function finishDepartures(state: CareerState): CareerState {
   fixTeam(s);
   s.phase = "transfers";
   s.news = [
-    `Transfer window open until Round 1 kicks off. Budget ${formatMoney(s.budget)}.`,
+    `Transfer window open until the season kicks off. Budget ${formatMoney(s.budget)}.`,
     ...(leaving.length ? [`Left on a free: ${leavingNames.join(", ")}.`] : []),
     ...s.news,
   ].slice(0, 30);
@@ -266,13 +281,22 @@ export function buildMarket(state: CareerState, unlockedLegends: string[], salt 
   const listings: MarketListing[] = [];
 
   // Players at other clubs who'd move: not their club's very best, under the prestige cap.
-  for (const clubId of shuffle(rng, Object.keys(state.clubs))) {
+  // Clubs in your own game first; a few clubs from the other code list someone too, at a premium
+  // (an NRL star to Super League, or a Super League man heading down under).
+  const myCode = clubCode(state, state.userClubId);
+  const ids = shuffle(rng, Object.keys(state.clubs));
+  const crossClubs = new Set(
+    ids.filter((id) => clubCode(state, id) !== myCode && state.clubs[id]!.division !== "championship").slice(0, CROSS_CODE_CLUBS)
+  );
+  for (const clubId of ids) {
     if (clubId === state.userClubId) continue;
+    const cross = clubCode(state, clubId) !== myCode;
+    if (cross && !crossClubs.has(clubId)) continue;
     const squad = squadOf(state, clubId).sort((a, b) => b.rating - a.rating);
     if (squad.length <= SQUAD_MIN + 1) continue;
     const available = squad.slice(2).filter((p) => p.rating <= cap && !p.legend);
     for (const p of shuffle(rng, available).slice(0, 1)) {
-      listings.push({ playerId: p.id, fromClubId: clubId, price: transferFee(p, 1.2), wages: playerWage(p) });
+      listings.push({ playerId: p.id, fromClubId: clubId, price: transferFee(p, cross ? 1.2 * CROSS_CODE_PREMIUM : 1.2), wages: playerWage(p) });
     }
   }
   // Free agents: no fee, just wages. Same prestige pull as anyone else, and not a man you let go
@@ -303,7 +327,13 @@ export function buildMarket(state: CareerState, unlockedLegends: string[], salt 
   return [...legends, ...top, ...rest];
 }
 
-export type TransferError = "budget" | "squad-full" | "squad-min" | "not-available" | "lineup" | "window-shut";
+export type TransferError = "budget" | "squad-full" | "squad-min" | "not-available" | "lineup" | "window-shut" | "salary-cap";
+
+/** An NRL club's wage bill with this player added (null for Super League and Championship clubs: no cap). */
+export function wagesAfterSigning(state: CareerState, playerWages: number): number | null {
+  if (userClub(state).division !== "nrl") return null;
+  return wageBill(squadOf(state, state.userClubId)) + playerWages;
+}
 
 /** What signing this listing costs right now: the fee (none for a free agent) plus any wages due now. */
 export function signingCost(state: CareerState, listing: MarketListing): { fee: number; wagesNow: number; total: number } {
@@ -327,6 +357,9 @@ export function buyPlayer(
   const cost = signingCost(state, listing);
   if (state.budget < cost.total) return { state, error: "budget" };
   if (club.squad.length >= SQUAD_MAX) return { state, error: "squad-full" };
+  // The NRL's salary cap: no signing that takes the wage bill past it.
+  const capped = wagesAfterSigning(state, listing.wages);
+  if (capped != null && capped > NRL_SALARY_CAP) return { state, error: "salary-cap" };
   const s: CareerState = structuredClone(state);
   const me = userClub(s);
 
@@ -514,7 +547,7 @@ export function finishTransfers(state: CareerState): CareerState {
   // New season, best XIII (so new signings play); the user can still change it.
   Object.assign(s, autoPickTeam(s));
   const next = startSeason(s);
-  next.news = [`The window stays open through pre-season and shuts when Round 1 kicks off.`, ...next.news].slice(0, 30);
+  next.news = [`The window stays open through pre-season and shuts when the season kicks off.`, ...next.news].slice(0, 30);
   return next;
 }
 

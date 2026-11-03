@@ -143,7 +143,7 @@ export function FixtureTags({ state, fixture }: { state: Pick<CareerState, "club
     <span className="inline-flex flex-wrap items-center justify-center gap-1">
       {magic ? (
         <span data-testid="magic-weekend" className="rounded-full bg-violet-400/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-violet-200">
-          Magic Weekend
+          {fixture.division === "nrl" ? "Magic Round" : "Magic Weekend"}
         </span>
       ) : null}
       {derby ? (

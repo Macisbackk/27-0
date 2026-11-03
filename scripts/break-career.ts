@@ -60,6 +60,7 @@ const fail = (m: string) => {
 function invariants(s: CareerState, where: string) {
   if (clubsIn(s, "super-league").length !== 14) fail(`${where}: SL has ${clubsIn(s, "super-league").length} clubs`);
   if (clubsIn(s, "championship").length !== 22) fail(`${where}: Champ has ${clubsIn(s, "championship").length} clubs`);
+  if (clubsIn(s, "nrl").length !== 17) fail(`${where}: NRL has ${clubsIn(s, "nrl").length} clubs`);
   const seen = new Map<string, string>();
   for (const c of Object.values(s.clubs)) {
     for (const id of c.squad) {

@@ -3,6 +3,7 @@
  * Each one played gives the XIII a little match sharpness for the opening three rounds
  * and brings in gate money (home) or an appearance fee (away). Deterministic per save + year.
  */
+import { codeOfDivision } from "./clubs";
 import { formatMoney } from "./players";
 import { rngFor, shuffle } from "./rng";
 import { clubRating, sheetFor } from "./season";
@@ -29,8 +30,10 @@ export function preseasonOpen(state: CareerState): boolean {
 export function friendlyOptions(state: CareerState): FriendlyOption[] {
   const rng = rngFor(state.seed, state.year, "friendlies");
   const me = clubRating(state, state.userClubId);
+  // Warm-up games against clubs in your own game (an NRL side plays NRL sides).
+  const mine = codeOfDivision(state.clubs[state.userClubId]!.division);
   const others = Object.keys(state.clubs)
-    .filter((id) => id !== state.userClubId)
+    .filter((id) => id !== state.userClubId && codeOfDivision(state.clubs[id]!.division) === mine)
     .map((id) => ({ id, gap: clubRating(state, id) - me }));
   const pickFrom = (list: typeof others, n: number) => shuffle(rng, list).slice(0, n);
   const tough = pickFrom(others.filter((o) => o.gap > 1.5), 2);
@@ -40,7 +43,7 @@ export function friendlyOptions(state: CareerState): FriendlyOption[] {
   const add = (o: { id: string }, label: FriendlyOption["label"], i: number) => {
     const home = i % 2 === 0;
     const opp = state.clubs[o.id]!;
-    const draw = opp.division === "super-league" ? 45_000 : 20_000;
+    const draw = opp.division === "super-league" || opp.division === "nrl" ? 45_000 : 20_000;
     out.push({ opponentId: o.id, home, label, money: home ? draw : 10_000 });
   };
   tough.forEach((o, i) => add(o, "Big test", i));
