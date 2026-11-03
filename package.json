@@ -104,7 +104,7 @@
     "test:dark-mode": "bun scripts/test-dark-mode.ts",
     "test:share": "tsx scripts/test-share-result.ts",
     "test:social": "tsx scripts/test-social.ts",
-    "test:squadbook": "bun scripts/test-squad-book.ts",
+    "test:squadbook": "bun scripts/test-squad-book.ts && bun scripts/test-squad-book-collections.ts",
     "test:mode-unlocks": "bun scripts/test-mode-unlocks.ts",
     "test:missions": "tsx scripts/test-missions.ts",
     "test:moderation": "tsx scripts/test-name-filter.ts",

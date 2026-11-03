@@ -8,13 +8,22 @@
  * Collections (per club, per decade, totals and a few themed sets built from the honours data)
  * pay Club Funds once each, under the ledger id `squadbook:<milestoneId>`.
  *
+ * Club collections (v1.66): each club's pool is every distinct player with a card at that club
+ * (all of a player's year cards at the club count as one). 25 / 50 / 100% of the pool pay Club
+ * Funds, and 100% grants that club's notForSale "Completist" title (lib/collection-rewards.ts).
+ * These are claimed by hand on the Squad Book page (with a celebration), not paid automatically.
+ * Each card also has a rarity (lib/card-rarity.ts) and the coach can pick an all-time Dream Team
+ * (13 collected cards, positions 1-13).
+ *
  * Storage: localStorage (STORAGE_KEYS.squadBook, cleared with the other per-account keys) plus a
  * `user_stats` row (GLOBAL / squad_book). Merges are unions — a card or a claimed milestone is
- * never dropped — and a failed cloud read never overwrites anything.
+ * never dropped — and a failed cloud read never overwrites anything. The Dream Team rides the
+ * same row (newest pick wins). Books saved before v1.66 have no dreamTeam field and load with an
+ * empty one.
  */
 
 import { useEffect, useState } from "react";
-import type { Player, SquadSlot } from "./types";
+import type { Player, Position, SquadSlot } from "./types";
 import { getRecruitablePlayers, getPlayerById, isHiddenPlayer } from "./players";
 import {
   resolveChallengeCupYears,
@@ -28,6 +37,15 @@ import type { ClubFundsEarnedLine } from "./club-funds";
 import { STORAGE_KEYS } from "./storage/keys";
 import { isSupabaseConfigured, supabase } from "./supabase";
 import { getAuthUserId } from "./auth-session";
+import { cardRarity, type CardRarity } from "./card-rarity";
+import {
+  COLLECTION_MIN_POOL,
+  COLLECTION_TIERS,
+  collectionSlug,
+  collectionTarget,
+  collectionTitleFor,
+} from "./collection-rewards";
+import { grantCosmetic } from "./storage/cosmetics-store";
 
 export const SQUAD_BOOK_CHANGED_EVENT = "27-0-squad-book-changed";
 export const SQUAD_BOOK_FUNDS_PREFIX = "squadbook:";
@@ -54,13 +72,51 @@ export interface SquadBookState {
   claimed: string[];
   /** Run ids already recorded, so a re-render can't count a season twice. Newest last, capped. */
   runs: string[];
+  /** All-time Dream Team: 13 card ids (index 0 = No. 1 Fullback ... 12 = No. 13 Loose Forward), null = empty. */
+  dreamTeam: (string | null)[];
+  /** When the Dream Team was last changed (epoch ms); the newer pick wins a merge. 0 = never. */
+  dreamTeamAt: number;
 }
 
 const MAX_RUN_IDS = 100;
+
+/** Dream Team shirt numbers 1-13 → position. */
+export const DREAM_TEAM_SLOTS: readonly { number: number; position: Position; label: string }[] = [
+  { number: 1, position: "FULLBACK", label: "Fullback" },
+  { number: 2, position: "WING", label: "Wing" },
+  { number: 3, position: "CENTRE", label: "Centre" },
+  { number: 4, position: "CENTRE", label: "Centre" },
+  { number: 5, position: "WING", label: "Wing" },
+  { number: 6, position: "STAND_OFF", label: "Stand-off" },
+  { number: 7, position: "SCRUM_HALF", label: "Scrum-half" },
+  { number: 8, position: "PROP", label: "Prop" },
+  { number: 9, position: "HOOKER", label: "Hooker" },
+  { number: 10, position: "PROP", label: "Prop" },
+  { number: 11, position: "SECOND_ROW", label: "Second row" },
+  { number: 12, position: "SECOND_ROW", label: "Second row" },
+  { number: 13, position: "LOOSE_FORWARD", label: "Loose forward" },
+];
+export const DREAM_TEAM_SIZE = DREAM_TEAM_SLOTS.length;
+
+const emptyDreamTeam = (): (string | null)[] => Array.from({ length: DREAM_TEAM_SIZE }, () => null);
+
+function normalizeDreamTeam(raw: unknown): (string | null)[] {
+  const out = emptyDreamTeam();
+  if (!Array.isArray(raw)) return out;
+  const seen = new Set<string>();
+  for (let i = 0; i < DREAM_TEAM_SIZE; i += 1) {
+    const id = raw[i];
+    if (typeof id === "string" && id && !seen.has(id)) {
+      out[i] = id;
+      seen.add(id);
+    }
+  }
+  return out;
+}
 const SOURCES: SquadBookSource[] = ["classic", "era", "daily", "weekly"];
 
 export function emptySquadBook(): SquadBookState {
-  return { v: 1, cards: {}, claimed: [], runs: [] };
+  return { v: 1, cards: {}, claimed: [], runs: [], dreamTeam: emptyDreamTeam(), dreamTeamAt: 0 };
 }
 
 function normalizeEntry(raw: unknown): SquadBookEntry | null {
@@ -89,6 +145,9 @@ export function normalizeSquadBook(raw: unknown): SquadBookState {
   }
   if (Array.isArray(r.claimed)) base.claimed = [...new Set(r.claimed.filter((id): id is string => typeof id === "string"))];
   if (Array.isArray(r.runs)) base.runs = [...new Set(r.runs.filter((id): id is string => typeof id === "string"))].slice(-MAX_RUN_IDS);
+  // Pre-v1.66 books have no Dream Team: they load with an empty one.
+  base.dreamTeam = normalizeDreamTeam(r.dreamTeam);
+  base.dreamTeamAt = typeof r.dreamTeamAt === "number" && Number.isFinite(r.dreamTeamAt) && r.dreamTeamAt > 0 ? r.dreamTeamAt : 0;
   return base;
 }
 
@@ -106,11 +165,15 @@ export function mergeSquadBookStates(aRaw: unknown, bRaw: unknown): SquadBookSta
     const earliest = mine.firstAt && (!entry.firstAt || mine.firstAt <= entry.firstAt) ? mine : entry;
     cards[id] = { ...earliest, times: Math.max(mine.times, entry.times) };
   }
+  // Dream Team: the newer pick wins (a tie keeps the first argument, i.e. local).
+  const team = b.dreamTeamAt > a.dreamTeamAt ? b : a;
   return {
     v: 1,
     cards,
     claimed: [...new Set([...a.claimed, ...b.claimed])],
     runs: [...new Set([...a.runs, ...b.runs])].slice(-MAX_RUN_IDS),
+    dreamTeam: [...team.dreamTeam],
+    dreamTeamAt: team.dreamTeamAt,
   };
 }
 
@@ -159,9 +222,16 @@ export interface SquadBookCatalogCard {
   year: number | null;
   decade: number | null;
   category: Player["category"];
+  rating: number;
+  rarity: CardRarity;
+  position: Position;
+  positions: Position[];
+  /** Same real player at the same club (all their year cards there): `club|name`. */
+  playerKey: string;
 }
 
-export type SquadBookGroupKind = "club" | "decade" | "total" | "set";
+/** "club" / "decade" / "total" / "set" pay automatically; "collection" (club %) is claimed by hand. */
+export type SquadBookGroupKind = "club" | "decade" | "total" | "set" | "collection";
 
 export interface SquadBookMilestone {
   id: string;
@@ -171,6 +241,10 @@ export interface SquadBookMilestone {
   label: string;
   target: number;
   reward: number;
+  /** Club collection tiers only: the percent of the pool. */
+  percent?: number;
+  /** Club collection tiers only: cosmetic granted on claim (the club's Completist title at 100%). */
+  cosmeticId?: string;
 }
 
 export interface SquadBookSet {
@@ -189,6 +263,8 @@ export interface SquadBookCatalog {
   clubs: string[];
   clubCards: Map<string, string[]>;
   clubCurrent: Map<string, string[]>;
+  /** Club collection pool: playerKey → that player's card ids at the club. */
+  clubPlayers: Map<string, Map<string, string[]>>;
   decades: number[];
   sets: SquadBookSet[];
   milestones: SquadBookMilestone[];
@@ -218,6 +294,10 @@ export const decadeLabel = (decade: number) => `${decade}s`;
 
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 
+/** Collection identity of a player at a club: club + folded name (year cards of one player share it). */
+export const collectionPlayerKey = (club: string, name: string) =>
+  `${club}|${name.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim()}`;
+
 /** Honour won in the card's own season (the data's honour maps, filtered to that year). */
 function wonInCardYear(p: Player, resolve: (p: Player) => number[]): boolean {
   return typeof p.year === "number" && resolve(p).includes(p.year);
@@ -229,6 +309,7 @@ export function buildSquadBookCatalog(players: readonly Player[]): SquadBookCata
   const byId = new Map<string, SquadBookCatalogCard>();
   const clubCards = new Map<string, string[]>();
   const clubCurrent = new Map<string, string[]>();
+  const clubPlayers = new Map<string, Map<string, string[]>>();
   const decadeSet = new Set<number>();
   const mos = new Set<string>();
   const legends = new Set<string>();
@@ -239,11 +320,30 @@ export function buildSquadBookCatalog(players: readonly Player[]): SquadBookCata
   for (const p of players) {
     if (byId.has(p.id) || isHiddenPlayer(p)) continue;
     const year = typeof p.year === "number" ? p.year : null;
-    const card: SquadBookCatalogCard = { id: p.id, name: p.name, club: p.club, year, decade: decadeOf(year), category: p.category };
+    const rating = typeof p.peakRating === "number" && Number.isFinite(p.peakRating) ? p.peakRating : 0;
+    const positions = [...new Set([p.position, ...(Array.isArray(p.positions) ? p.positions : [])])].filter(Boolean) as Position[];
+    const playerKey = collectionPlayerKey(p.club, p.name);
+    const card: SquadBookCatalogCard = {
+      id: p.id,
+      name: p.name,
+      club: p.club,
+      year,
+      decade: decadeOf(year),
+      category: p.category,
+      rating,
+      rarity: cardRarity(p),
+      position: p.position,
+      positions,
+      playerKey,
+    };
     cards.push(card);
     byId.set(p.id, card);
     if (!clubCards.has(p.club)) clubCards.set(p.club, []);
     clubCards.get(p.club)!.push(p.id);
+    if (!clubPlayers.has(p.club)) clubPlayers.set(p.club, new Map());
+    const pool = clubPlayers.get(p.club)!;
+    if (!pool.has(playerKey)) pool.set(playerKey, []);
+    pool.get(playerKey)!.push(p.id);
     if (p.category === "current" && year === CURRENT_SEASON_YEAR) {
       if (!clubCurrent.has(p.club)) clubCurrent.set(p.club, []);
       clubCurrent.get(p.club)!.push(p.id);
@@ -279,6 +379,23 @@ export function buildSquadBookCatalog(players: readonly Player[]): SquadBookCata
       milestones.push({ id: `club-${slug(club)}-squad-${CURRENT_SEASON_YEAR}`, kind: "club", group: club, label: `${club}: full ${CURRENT_SEASON_YEAR} squad`, target: current, reward: CLUB_CURRENT_SQUAD_REWARD });
     }
   }
+  for (const club of clubs) {
+    const pool = clubPlayers.get(club)?.size ?? 0;
+    if (pool < COLLECTION_MIN_POOL) continue;
+    const titleId = collectionTitleFor(club);
+    for (const tier of COLLECTION_TIERS) {
+      milestones.push({
+        id: `collection-${collectionSlug(club)}-${tier.percent}`,
+        kind: "collection",
+        group: club,
+        label: `${club}: ${tier.percent}% collected`,
+        target: collectionTarget(pool, tier.percent),
+        reward: tier.reward,
+        percent: tier.percent,
+        ...(tier.title && titleId ? { cosmeticId: titleId } : {}),
+      });
+    }
+  }
   for (const decade of decades) {
     const size = cards.filter((c) => c.decade === decade).length;
     for (const tier of DECADE_TIERS) {
@@ -293,7 +410,7 @@ export function buildSquadBookCatalog(players: readonly Player[]): SquadBookCata
     milestones.push({ id: `set-${set.id}`, kind: "set", group: set.name, label: `${set.name} set`, target: set.target, reward: set.reward });
   }
 
-  return { cards, byId, clubs, clubCards, clubCurrent, decades, sets, milestones };
+  return { cards, byId, clubs, clubCards, clubCurrent, clubPlayers, decades, sets, milestones };
 }
 
 let catalogCache: { size: number; catalog: SquadBookCatalog } | null = null;
@@ -316,6 +433,10 @@ export interface SquadBookProgress {
   byClub: Map<string, { have: number; of: number; currentHave: number; currentOf: number }>;
   byDecade: Map<number, { have: number; of: number }>;
   bySet: Map<string, { have: number; of: number; target: number }>;
+  /** Club collection: distinct players collected / in the pool. */
+  byClubPlayers: Map<string, { have: number; of: number }>;
+  /** Collected cards per rarity (catalogue cards only). */
+  byRarity: Record<CardRarity, number>;
   /** Progress value per milestone id. */
   milestoneValue: Map<string, number>;
 }
@@ -358,10 +479,32 @@ export function computeSquadBookProgress(state: SquadBookState, catalog: SquadBo
     bySet.set(set.id, { have, of: set.ids.size, target: set.target });
   }
 
+  const collectedKeys = new Set<string>();
+  const byRarity: Record<CardRarity, number> = { common: 0, rare: 0, epic: 0, legendary: 0 };
+  for (const id of ids) {
+    const known = catalog.byId.get(id);
+    if (known) {
+      collectedKeys.add(known.playerKey);
+      byRarity[known.rarity] += 1;
+    } else {
+      // Retired card: its snapshot can still match the player's other cards at the club.
+      const entry = state.cards[id];
+      collectedKeys.add(collectionPlayerKey(entry.club, entry.name));
+    }
+  }
+  const byClubPlayers = new Map<string, { have: number; of: number }>();
+  for (const club of catalog.clubs) {
+    const pool = catalog.clubPlayers.get(club) ?? new Map<string, string[]>();
+    let have = 0;
+    for (const key of pool.keys()) if (collectedKeys.has(key)) have += 1;
+    byClubPlayers.set(club, { have, of: pool.size });
+  }
+
   const milestoneValue = new Map<string, number>();
   for (const m of catalog.milestones) {
     let value = 0;
     if (m.kind === "total") value = ids.length;
+    else if (m.kind === "collection") value = byClubPlayers.get(m.group)?.have ?? 0;
     else if (m.kind === "club") {
       const c = byClub.get(m.group);
       value = m.id.includes("-squad-") ? (c?.currentHave ?? 0) : (c?.have ?? 0);
@@ -370,13 +513,27 @@ export function computeSquadBookProgress(state: SquadBookState, catalog: SquadBo
     milestoneValue.set(m.id, value);
   }
 
-  return { total: ids.length, collectedInCatalog, byClub, byDecade, bySet, milestoneValue };
+  return { total: ids.length, collectedInCatalog, byClub, byDecade, bySet, byClubPlayers, byRarity, milestoneValue };
 }
 
-/** Milestones reached but not yet in `state.claimed`. Pure. */
+/** Auto-paid milestones reached but not yet in `state.claimed` (club collections excluded). Pure. */
 export function pendingSquadBookMilestones(state: SquadBookState, catalog: SquadBookCatalog): SquadBookMilestone[] {
   const progress = computeSquadBookProgress(state, catalog);
-  return catalog.milestones.filter((m) => !state.claimed.includes(m.id) && (progress.milestoneValue.get(m.id) ?? 0) >= m.target);
+  return catalog.milestones.filter(
+    (m) => m.kind !== "collection" && !state.claimed.includes(m.id) && (progress.milestoneValue.get(m.id) ?? 0) >= m.target
+  );
+}
+
+/** Club collection tiers reached and waiting for the coach to claim them. Pure. */
+export function claimableCollectionRewards(state: SquadBookState, catalog: SquadBookCatalog, club?: string): SquadBookMilestone[] {
+  const progress = computeSquadBookProgress(state, catalog);
+  return catalog.milestones.filter(
+    (m) =>
+      m.kind === "collection" &&
+      (club === undefined || m.group === club) &&
+      !state.claimed.includes(m.id) &&
+      (progress.milestoneValue.get(m.id) ?? 0) >= m.target
+  );
 }
 
 /* ------------------------------------------------------------------ storage */
@@ -419,6 +576,106 @@ export function claimSquadBookMilestones(): ClubFundsEarnedLine[] {
   saveLocal(state);
   void saveCloud();
   return paid;
+}
+
+export interface CollectionClaimResult {
+  /** Club Funds paid this call (a tier already in the ledger pays nothing). */
+  paid: ClubFundsEarnedLine[];
+  /** Cosmetic ids newly granted (the club's Completist title). */
+  cosmetics: string[];
+  /** Milestones marked claimed this call. */
+  claimed: SquadBookMilestone[];
+}
+
+/**
+ * Claim reached club collection tiers (all of them, or one club's). Funds go through the ledger
+ * under `squadbook:<milestoneId>` (paid once ever); the 100% tier also grants the club title via
+ * grantCosmetic (owned once ever). Never throws.
+ */
+export function claimCollectionRewards(club?: string): CollectionClaimResult {
+  const out: CollectionClaimResult = { paid: [], cosmetics: [], claimed: [] };
+  try {
+    const state = getSquadBook();
+    const ready = claimableCollectionRewards(state, getSquadBookCatalog(), club);
+    if (ready.length === 0) return out;
+    for (const m of ready) {
+      const line: ClubFundsEarnedLine = { id: `squadbook-${m.id}`, label: `Squad Book: ${m.label}`, amount: m.reward };
+      const result = awardClubFundsLines(`${SQUAD_BOOK_FUNDS_PREFIX}${m.id}`, [line]);
+      if (result.awarded) out.paid.push(line);
+      if (m.cosmeticId) {
+        try {
+          if (grantCosmetic(m.cosmeticId)) out.cosmetics.push(m.cosmeticId);
+        } catch {
+          /* storage blocked: the claim is kept, the title can be re-granted by the backfill below */
+        }
+      }
+      state.claimed.push(m.id);
+      out.claimed.push(m);
+    }
+    saveLocal(state);
+    void saveCloud();
+  } catch (err) {
+    console.error("[squad-book] collection claim failed:", err);
+  }
+  return out;
+}
+
+/**
+ * A 100% tier claimed on another device (or before a storage reset) still owns its title: grant
+ * any claimed tier's cosmetic that isn't owned. Returns the ids granted. Never throws.
+ */
+export function syncCollectionCosmetics(): string[] {
+  const out: string[] = [];
+  try {
+    const state = getSquadBook();
+    for (const m of getSquadBookCatalog().milestones) {
+      if (m.kind !== "collection" || !m.cosmeticId || !state.claimed.includes(m.id)) continue;
+      if (grantCosmetic(m.cosmeticId)) out.push(m.cosmeticId);
+    }
+  } catch {
+    /* storage blocked */
+  }
+  return out;
+}
+
+/** Collected cards that can play a Dream Team slot (index 0-12). Pure. */
+export function dreamTeamCandidates(state: SquadBookState, catalog: SquadBookCatalog, slotIndex: number): SquadBookCatalogCard[] {
+  const slot = DREAM_TEAM_SLOTS[slotIndex];
+  if (!slot) return [];
+  const out: SquadBookCatalogCard[] = [];
+  for (const id of Object.keys(state.cards)) {
+    const card = catalog.byId.get(id);
+    if (card && card.positions.includes(slot.position)) out.push(card);
+  }
+  return out.sort((a, b) => b.rating - a.rating || a.name.localeCompare(b.name));
+}
+
+/**
+ * Put a collected card in a Dream Team slot (null clears it). The same card can't be in two
+ * slots (it moves). Pure; returns the unchanged state when the card isn't collected.
+ */
+export function setDreamTeamSlotPure(state: SquadBookState, slotIndex: number, cardId: string | null, now: number = Date.now()): SquadBookState {
+  if (!Number.isInteger(slotIndex) || slotIndex < 0 || slotIndex >= DREAM_TEAM_SIZE) return state;
+  if (cardId !== null && !state.cards[cardId]) return state;
+  const team = state.dreamTeam.map((id) => (cardId !== null && id === cardId ? null : id));
+  team[slotIndex] = cardId;
+  // Always newer than the last pick, so a device clock behind the cloud's can't lose an edit.
+  return { ...state, dreamTeam: team, dreamTeamAt: Math.max(now, state.dreamTeamAt + 1) };
+}
+
+/** Save a Dream Team pick (local + cloud). */
+export function setDreamTeamSlot(slotIndex: number, cardId: string | null): void {
+  const before = getSquadBook();
+  const next = setDreamTeamSlotPure(before, slotIndex, cardId);
+  if (next === before) return;
+  saveLocal(next);
+  void saveCloud();
+}
+
+export function clearDreamTeam(): void {
+  const state = getSquadBook();
+  saveLocal({ ...state, dreamTeam: emptyDreamTeam(), dreamTeamAt: Math.max(Date.now(), state.dreamTeamAt + 1) });
+  void saveCloud();
 }
 
 export interface RecordSquadBookRunInput {
@@ -535,7 +792,11 @@ export async function mergeSquadBookFromCloud(): Promise<void> {
   const merged = mergeSquadBookStates(local, cloud);
   saveLocal(merged);
   const cloudCount = Object.keys(cloud.cards).length;
-  if (Object.keys(merged.cards).length !== cloudCount || merged.claimed.length !== cloud.claimed.length) {
+  if (
+    Object.keys(merged.cards).length !== cloudCount ||
+    merged.claimed.length !== cloud.claimed.length ||
+    merged.dreamTeamAt !== cloud.dreamTeamAt
+  ) {
     await saveCloud();
   }
 }
