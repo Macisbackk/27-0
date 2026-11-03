@@ -54,6 +54,16 @@ function Tags({ p, captain }: { p: CareerPlayer; captain?: boolean }) {
           Banned · {p.ban} game{p.ban > 1 ? "s" : ""}
         </span>
       ) : null}
+      {p.injury ? (
+        <span className="ml-1.5 whitespace-nowrap rounded bg-danger/15 px-1 text-[10px] font-bold uppercase text-danger" data-testid="injury-badge" title={`Injured: out for ${p.injury} game${p.injury > 1 ? "s" : ""}`}>
+          ✚ Injured · {p.injury}
+        </span>
+      ) : null}
+      {p.grew ? (
+        <span className={`ml-1.5 whitespace-nowrap text-[10px] font-bold tabular-nums ${p.grew > 0 ? "text-success" : "text-gray-500"}`} title="Rating change since last season" data-testid="growth-badge">
+          {p.grew > 0 ? `+${p.grew}` : p.grew}
+        </span>
+      ) : null}
     </>
   );
 }
@@ -167,7 +177,7 @@ export function TeamTab() {
   // other bench men, then starters (by rating: a bench man covers anywhere).
   const pickSlot = pick?.kind === "xiii" ? LINEUP_SLOTS[pick.index]! : null;
   const fit = (p: CareerPlayer) => (pickSlot ? effectiveRating(p, pickSlot) : p.rating);
-  const group = (p: CareerPlayer) => (p.ban ? 3 : pick?.kind !== "bench" ? 0 : inXiii.has(p.id) ? 2 : onBench.has(p.id) ? 1 : 0);
+  const group = (p: CareerPlayer) => (p.ban || p.injury ? 3 : pick?.kind !== "bench" ? 0 : inXiii.has(p.id) ? 2 : onBench.has(p.id) ? 1 : 0);
   const candidates = pick ? [...squad].sort((a, b) => group(a) - group(b) || fit(b) - fit(a)) : [];
   const currentId = pick ? (pick.kind === "xiii" ? s.lineup[pick.index] : bench[pick.index]) : undefined;
   const sheetTitle = !pick
@@ -371,6 +381,8 @@ export function TeamTab() {
                   : ` · ${outgoing.name} to the squad`;
             const where = p.ban
               ? `Banned · ${p.ban} game${p.ban > 1 ? "s" : ""}`
+              : p.injury
+                ? `Injured · out for ${p.injury} game${p.injury > 1 ? "s" : ""}`
               : current
                 ? "Selected here"
                 : xiiiAt >= 0
@@ -382,7 +394,7 @@ export function TeamTab() {
               <li key={p.id}>
                 <button
                   type="button"
-                  disabled={current || !!p.ban}
+                  disabled={current || !!p.ban || !!p.injury}
                   onClick={() => {
                     playPlayerSelect();
                     if (pick!.kind === "xiii") setLineupSlot(pick!.index, p.id);

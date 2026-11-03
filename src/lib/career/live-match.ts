@@ -289,10 +289,11 @@ export function createLiveMatch(params: {
     goldenPoint: false,
     finished: false,
     base: {
-      homeTries: expectedTries(h.attack, a.defence, !params.neutral),
-      awayTries: expectedTries(a.attack, h.defence, false),
-      homePens: Math.max(0.1, 0.45 + Math.max(0, h.rating - 80) * 0.03 - (params.userSide === "home" ? userPenCut : 0)),
-      awayPens: Math.max(0.1, 0.45 + Math.max(0, a.rating - 80) * 0.03 - (params.userSide === "away" ? userPenCut : 0)),
+      // Game plans: the tempo of the game (both sides' try rates) and penalties a rushing line gives away.
+      homeTries: expectedTries(h.attack, a.defence, !params.neutral) * h.tempo * a.tempo,
+      awayTries: expectedTries(a.attack, h.defence, false) * h.tempo * a.tempo,
+      homePens: Math.max(0.1, 0.45 + Math.max(0, h.rating - 80) * 0.03 + a.pens - (params.userSide === "home" ? userPenCut : 0)),
+      awayPens: Math.max(0.1, 0.45 + Math.max(0, a.rating - 80) * 0.03 + h.pens - (params.userSide === "away" ? userPenCut : 0)),
       homeKick: kickAccuracy(h.rating),
       awayKick: kickAccuracy(a.rating),
       homeRating: h.rating,
@@ -1220,6 +1221,8 @@ export function liveResult(m: LiveMatch, rng: Rng, players: Record<string, Caree
     motm,
     homeSentOff: m.sentOff?.home.length ? [...m.sentOff.home] : undefined,
     awaySentOff: m.sentOff?.away.length ? [...m.sentOff.away] : undefined,
+    // The man who went off hurt: his lay-off is rolled when the result is banked (see injuries.ts).
+    knocks: m.injured ? [m.injured] : undefined,
   };
 }
 

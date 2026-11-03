@@ -26,6 +26,9 @@ import { addNrlWorld } from "./nrl-world";
 import { inferNewsTags, pruneNewsTags, tagNews, withDealDivisions } from "./news";
 import { settleFixture } from "./stats";
 import { buildSeasonStory, calendarIsFinishedSeason } from "./story";
+import { LONG_INJURY, injuryName, isAvailable, rollInjuries } from "./injuries";
+import { tacticsOf } from "./tactics";
+import { moodAfterGame, moodIncomeFactor, moodWarnings, newSeasonMood, noteFinalsWin, setObjectives, settleSeasonMood } from "./club-mood";
 import type {
   CareerState,
   ChallengeKind,
@@ -35,6 +38,7 @@ import type {
   FixtureResult,
   Matchday,
   SeasonChallenge,
+  SeasonDeal,
   SeasonOutcome,
   TableRow,
   TrophyId,
@@ -58,9 +62,59 @@ export function squadOf(state: CareerState, clubId: string) {
   return (state.clubs[clubId]?.squad ?? []).map((id) => state.players[id]!).filter(Boolean);
 }
 
-/** Players who can be picked: the squad minus anyone serving a ban. */
+/** Players who can be picked: the squad minus anyone serving a ban or out injured. */
 export function availableSquad(state: CareerState, clubId: string) {
-  return squadOf(state, clubId).filter((p) => !p.ban);
+  const squad = squadOf(state, clubId);
+  const fit = squad.filter(isAvailable);
+  if (fit.length >= 17) return fit;
+  // Short of bodies: the men nearest to fitness play through it (never a banned man).
+  const knocks = squad.filter((p) => !p.ban && p.injury).sort((a, b) => a.injury! - b.injury! || b.rating - a.rating);
+  return [...fit, ...knocks.slice(0, 17 - fit.length)];
+}
+
+/**
+ * Injuries after a match, for both clubs (like bans): anyone already out has now missed a game,
+ * and anyone hurt in it misses the next `n`. The user hears about his own; long ones get a pop-up.
+ */
+function applyInjuries(state: CareerState, f: Fixture, home: TeamSheet, away: TeamSheet) {
+  const r = f.result;
+  if (!r) return;
+  const rng = rngFor(state.seed, state.year, f.id, "injuries");
+  const fresh: Record<string, number> = {
+    ...rollInjuries(rng, matchday17(home), state.players, f.home === state.userClubId ? (r.knocks ?? []) : []),
+    ...rollInjuries(rng, matchday17(away), state.players, f.away === state.userClubId ? (r.knocks ?? []) : []),
+  };
+  delete r.knocks;
+  // Kept on the user's own games only (small saves).
+  if (Object.keys(fresh).length && (f.home === state.userClubId || f.away === state.userClubId)) r.injuries = fresh;
+  for (const clubId of [f.home, f.away]) {
+    for (const id of state.clubs[clubId]?.squad ?? []) {
+      const p = state.players[id];
+      if (p?.injury) p.injury = p.injury > 1 ? p.injury - 1 : undefined;
+    }
+  }
+  for (const [id, games] of Object.entries(fresh)) {
+    const p = state.players[id];
+    if (!p) continue;
+    p.injury = Math.max(p.injury ?? 0, games);
+    if (!state.clubs[state.userClubId]?.squad.includes(id)) continue;
+    const what = injuryName(games, id.length + games + state.matchdayIndex);
+    addNews(state, games >= LONG_INJURY ? `Blow: ${p.name} has ${what} and is out for ${games} games.` : `${p.name} picks up ${what}: out for ${games} game${games > 1 ? "s" : ""}.`);
+    if (games >= LONG_INJURY) {
+      pushEvent(state, {
+        id: `injury:${state.year}:${state.matchdayIndex}:${id}`,
+        kind: "injury",
+        year: state.year,
+        clubId: state.userClubId,
+        playerId: id,
+        name: p.name,
+        rating: p.rating,
+        title: `${p.name} is injured`,
+        text: `${p.name} has ${what} and will miss the next ${games} games. The bench covers for now.`,
+        options: [{ id: "ok", label: "OK" }],
+      });
+    }
+  }
 }
 
 /**
@@ -93,7 +147,7 @@ function applyBans(state: CareerState, f: Fixture) {
 const aiTeamCache = new Map<string, { lineup: string[]; bench: string[]; captain?: string }>();
 function aiTeam(state: CareerState, clubId: string): { lineup: string[]; bench: string[]; captain?: string } {
   const squad = state.clubs[clubId]?.squad ?? [];
-  const banned = squad.filter((id) => state.players[id]?.ban).join(",");
+  const banned = squad.filter((id) => !isAvailable(state.players[id])).join(",");
   const key = `${state.seed}|${state.year}|${clubId}|${squad.join(",")}|${banned}`;
   const hit = aiTeamCache.get(key);
   if (hit) return hit;
@@ -240,10 +294,15 @@ function buildChallenges(state: CareerState): SeasonChallenge[] {
 export function seasonIncome(state: CareerState): number {
   const division = userClub(state).division;
   // The NRL is the richer league: its wage bills are higher, and so is what its boards pay (v1.65).
-  if (division === "nrl") return NRL_INCOME_BASE + Math.round(state.prestige * NRL_INCOME_PER_STAR);
-  return division === "super-league"
-    ? 500_000 + Math.round(state.prestige * 200_000)
-    : 150_000 + Math.round(state.prestige * 80_000);
+  const base =
+    division === "nrl"
+      ? NRL_INCOME_BASE + Math.round(state.prestige * NRL_INCOME_PER_STAR)
+      : division === "super-league"
+        ? 500_000 + Math.round(state.prestige * 200_000)
+        : 150_000 + Math.round(state.prestige * 80_000);
+  // Happy fans fill the ground and a confident board backs you (v1.66): a few per cent either way.
+  const factor = moodIncomeFactor(state);
+  return factor === 1 ? base : Math.round((base * factor) / 1000) * 1000;
 }
 export const NRL_INCOME_BASE = 600_000;
 export const NRL_INCOME_PER_STAR = 350_000;
@@ -283,6 +342,8 @@ export function startSeason(state: CareerState): CareerState {
     delete p.goals;
     delete p.rated;
     delete p.ratingSum;
+    // Knocks heal over the summer.
+    delete p.injury;
   }
   fixTeam(next);
   next.seasonTrack = {
@@ -300,6 +361,9 @@ export function startSeason(state: CareerState): CareerState {
     const division = userClub(next).division;
     const ranking = expectedRanking(next, division);
     next.board = { year: next.year, target: boardTargetForRank(division, ranking.indexOf(next.userClubId) + 1, ranking.length) };
+    // The board's other asks this season (a cup run or a derby, the kids or the books).
+    const rank = ranking.indexOf(next.userClubId);
+    setObjectives(next, ranking.length > 1 ? 1 - rank / (ranking.length - 1) : 0.5);
   }
   next.phase = "season";
   next.lastOutcome = undefined;
@@ -308,6 +372,8 @@ export function startSeason(state: CareerState): CareerState {
   next.budget += income - wages;
   next.lastWages = wages;
   next.lastIncome = income;
+  // Last season's mood carries over, softened.
+  newSeasonMood(next);
   // Pre-season: a new batch of kids joins the academy.
   academyIntake(next);
   pruneNewsTags(next);
@@ -406,6 +472,8 @@ export function migrateCareer<T extends CareerState | null>(state: T): T {
   }
   if (!Array.isArray(s.tables.nrl)) s = { ...s, tables: { ...s.tables, nrl: [] } };
   if (!Array.isArray(s.bench)) s = withTeamFixed({ ...s, bench: [] });
+  // The three-part game plan (v1.66): older saves' single tactic carries over.
+  if (!s.tactics || tacticsOf(s) !== s.tactics) s = { ...s, tactics: tacticsOf(s) };
   if (!Array.isArray(s.academy) || s.academy.some((id) => !s.players[id])) {
     s = { ...s, academy: (Array.isArray(s.academy) ? s.academy : []).filter((id) => !!s.players[id]) };
   }
@@ -620,7 +688,7 @@ export function sheetFor(state: CareerState, clubId: string): TeamSheet {
     const sharp = pre && pre.year === state.year && state.matchdayIndex < 3 ? pre.results.length * 0.5 : 0;
     // A derby win lifts the next game.
     const morale = state.seasonTrack?.moraleAt === state.matchdayIndex ? DERBY_MORALE : 0;
-    return { clubId, lineup: state.lineup, bench: userBench(state), tactic: state.tactic, boost: sharp + morale, captain: userCaptain(state) };
+    return { clubId, lineup: state.lineup, bench: userBench(state), tactic: state.tactic, tactics: tacticsOf(state), boost: sharp + morale, captain: userCaptain(state) };
   }
   const team = aiTeam(state, clubId);
   return { clubId, lineup: team.lineup, bench: team.bench, tactic: "balanced", captain: team.captain };
@@ -683,6 +751,19 @@ function trackUserResult(state: CareerState, f: Fixture, sheet: TeamSheet) {
       t.bonusLegacy = (t.bonusLegacy ?? 0) + DERBY_LEGACY;
       t.moraleAt = nextUserMatchday(state);
       addNews(state, `Derby win over ${state.clubs[opponent]?.name ?? "them"}! +${formatMoney(cash)}, +${DERBY_LEGACY} Legacy.`);
+    }
+  }
+  // The supporters and the board have their say.
+  moodAfterGame(state, f, us, them, isDerby(state, f));
+  if (won && (f.kind === "nrl-final" || f.kind === "nrl-gf")) noteFinalsWin(state);
+  // Young men getting games come on during the season too: a point at 10 and 20 appearances.
+  for (const id of matchday17(sheet)) {
+    const p = state.players[id];
+    if (!p || p.age > 21 || (p.apps !== 10 && p.apps !== 20) || p.rating >= p.potential) continue;
+    if (rngFor(state.seed, state.year, "grow", id, p.apps)() < 0.5) {
+      p.rating += 1;
+      p.grew = (p.grew ?? 0) + 1;
+      addNews(state, `${p.name} is coming on with games: +1 rating (${p.rating}).`);
     }
   }
   if (isMagicWeekend(f) && won) {
@@ -807,6 +888,7 @@ function playMatchdayInPlace(next: CareerState, played?: PlayedResult): void {
     if (f.home === next.userClubId) trackUserResult(next, f, home);
     else if (f.away === next.userClubId) trackUserResult(next, f, away);
     applyBans(next, f);
+    applyInjuries(next, f, home, away);
   }
   applyByes(next, md);
   // A man just sent off drops out of your 17 now (the bench covers), so the Team tab is right.
@@ -827,6 +909,8 @@ function playMatchdayInPlace(next: CareerState, played?: PlayedResult): void {
 
   // Now and then something happens off the field (a pop-up on the hub).
   rollRandomEvent(next, next.matchdayIndex);
+  // A worried board or angry fans say so (once a season each).
+  moodWarnings(next);
 
   md.played = true;
   next.matchdayIndex++;
@@ -1057,8 +1141,20 @@ function finishSeason(state: CareerState): CareerState {
 
   s.budget += prize;
 
+  // The season's over: knocks heal over the summer.
+  for (const p of Object.values(s.players)) if (p.injury) delete p.injury;
   const squad = squadOf(s, club.id).sort((a, b) => b.tries - a.tries);
   const top = squad[0];
+  // The board's verdict and the fans' mood; the season's signings and sales for the history.
+  const boardTarget = s.board?.year === s.year ? s.board.target : undefined;
+  const verdict = settleSeasonMood(s, {
+    position,
+    target: boardTarget,
+    trophies: trophies.filter((t) => t !== "promotion" && t !== "perfect-season").length,
+    promoted: userPromoted,
+    relegated: userRelegated,
+  });
+  const deals = seasonDealsFor(s, s.year);
   const outcome: SeasonOutcome = {
     year: s.year,
     division,
@@ -1074,7 +1170,12 @@ function finishSeason(state: CareerState): CareerState {
     legacyEarned,
     challengesDone: s.challenges.filter((c) => c.done).length,
     topTryScorer: top && top.tries > 0 ? { name: top.name, tries: top.tries } : undefined,
-    boardTarget: s.board?.year === s.year ? s.board.target : undefined,
+    boardTarget,
+    objectives: verdict.objectives.length ? verdict.objectives : undefined,
+    confidence: verdict.board,
+    fans: verdict.fans,
+    ins: deals.ins,
+    outs: deals.outs,
     awards,
     derbies: s.seasonTrack.derbies ? { ...s.seasonTrack.derbies } : undefined,
     // Who won what, the play-offs, the cup and every result of yours: kept for the history.
@@ -1094,6 +1195,15 @@ function finishSeason(state: CareerState): CareerState {
   }
   if (mos) addNews(s, mos.division === "nrl" ? `${mos.name} wins the Dally M Medal! +${MAN_OF_STEEL_LEGACY} Legacy.` : `${mos.name} is Man of Steel! +${MAN_OF_STEEL_LEGACY} Legacy.`);
   return s;
+}
+
+/** The user's signings and sales in `year`: the running record, or (older saves) what the capped deals list still has. */
+export function seasonDealsFor(s: CareerState, year: number): { ins: SeasonDeal[]; outs: SeasonDeal[] } {
+  if (s.seasonDeals?.year === year) return { ins: [...s.seasonDeals.ins], outs: [...s.seasonDeals.outs] };
+  const me = s.userClubId;
+  const mine = (s.transfers ?? []).filter((d) => d.year === year && (d.from === me || d.to === me)).reverse();
+  const entry = (d: (typeof mine)[number], other: string | null): SeasonDeal => ({ name: d.playerName, pos: d.pos, rating: d.rating, club: other, fee: d.fee });
+  return { ins: mine.filter((d) => d.to === me).map((d) => entry(d, d.from)), outs: mine.filter((d) => d.from === me).map((d) => entry(d, d.to)) };
 }
 
 export function ordinal(n: number): string {
