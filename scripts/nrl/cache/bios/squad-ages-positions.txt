@@ -1,0 +1,106 @@
+# Tournament squad tables with age and position (nation|player|age at tournament|positions|club|event year)
+# 2023: https://en.wikipedia.org/wiki/2023_Rugby_League_Pacific_Championships_squads (tournament Oct-Nov 2023; NRL-club players kept) fetched 2026-11-03 via WebFetch
+Australia|James Tedesco|30|Fullback|Sydney Roosters|2023
+Australia|Dylan Edwards|27|Wing, Fullback|Penrith Panthers|2023
+Australia|Hamiso Tabuai-Fidow|22|Centre, Fullback|Dolphins|2023
+Australia|Kotoni Staggs|25|Centre|Brisbane Broncos|2023
+Australia|Valentine Holmes|28|Wing|North Queensland Cowboys|2023
+Australia|Cameron Munster|29|Five-eighth|Melbourne Storm|2023
+Australia|Daly Cherry-Evans|34|Halfback|Manly Warringah Sea Eagles|2023
+Australia|Payne Haas|23|Prop|Brisbane Broncos|2023
+Australia|Ben Hunt|33|Hooker, Halfback|St. George Illawarra Dragons|2023
+Australia|Tino Fa'asuamaleaui|23|Prop|Gold Coast Titans|2023
+Australia|Reuben Cotter|24|Second-row, Prop|North Queensland Cowboys|2023
+Australia|Liam Martin|26|Second-row|Penrith Panthers|2023
+Australia|Isaah Yeo|28|Lock|Penrith Panthers|2023
+Australia|Harry Grant|25|Hooker|Melbourne Storm|2023
+Australia|Lindsay Collins|27|Prop|Sydney Roosters|2023
+Australia|Patrick Carrigan|25|Lock|Brisbane Broncos|2023
+Australia|Nicho Hynes|27|Halfback, Fullback|Cronulla-Sutherland Sharks|2023
+Australia|Thomas Flegler|24|Prop|Brisbane Broncos|2023
+Australia|Cameron Murray|25|Second-row, Lock|South Sydney Rabbitohs|2023
+Australia|Selwyn Cobbo|21|Wing|Brisbane Broncos|2023
+Australia|Jake Trbojevic|29|Prop, Lock|Manly Warringah Sea Eagles|2023
+New Zealand|Charnze Nicoll-Klokstad|28|Fullback|New Zealand Warriors|2023
+New Zealand|Ronaldo Mulitalo|23|Wing|Cronulla-Sutherland Sharks|2023
+New Zealand|Matthew Timoko|23|Centre|Canberra Raiders|2023
+New Zealand|Joseph Manu|27|Centre, Fullback|Sydney Roosters|2023
+New Zealand|Jamayne Isaako|27|Wing|Dolphins|2023
+New Zealand|Dylan Brown|23|Five-eighth|Parramatta Eels|2023
+New Zealand|Jahrome Hughes|29|Halfback|Melbourne Storm|2023
+New Zealand|James Fisher-Harris|27|Prop|Penrith Panthers|2023
+New Zealand|Kieran Foran|33|Hooker|Gold Coast Titans|2023
+New Zealand|Moses Leota|28|Prop|Penrith Panthers|2023
+New Zealand|Isaiah Papali'i|25|Second-row|Wests Tigers|2023
+New Zealand|Briton Nikora|25|Second-row|Cronulla-Sutherland Sharks|2023
+New Zealand|Joseph Tapine|29|Prop|Canberra Raiders|2023
+New Zealand|Fa'amanu Brown|28|Hooker|Newcastle Knights|2023
+New Zealand|Nelson Asofa-Solomona|27|Prop, Second-row|Melbourne Storm|2023
+New Zealand|Griffin Neame|22|Prop, Second-row|North Queensland Cowboys|2023
+New Zealand|Leo Thompson|23|Prop|Newcastle Knights|2023
+New Zealand|Naufahu Whyte|21|Lock|Sydney Roosters|2023
+New Zealand|Danny Levi|27|Hooker|Canberra Raiders|2023
+New Zealand|Wiremu Greig|23|Prop|Parramatta Eels|2023
+New Zealand|Keano Kini|19|Wing|Gold Coast Titans|2023
+Samoa|Sualauvi Fa'alogo|20|Fullback|Melbourne Storm|2023
+Samoa|Murray Taulagi|24|Wing|North Queensland Cowboys|2023
+Samoa|Tommy Talau|23|Centre, Wing|Wests Tigers|2023
+Samoa|Marion Seve|28|Centre|Melbourne Storm|2023
+Samoa|Greg Marzhew|26|Wing|Newcastle Knights|2023
+Samoa|Stephen Crichton|23|Five-eighth, Centre|Penrith Panthers|2023
+Samoa|Daejarn Asi|23|Halfback|Parramatta Eels|2023
+Samoa|Stefano Utoikamanu|23|Prop|Wests Tigers|2023
+Samoa|Gordon Chan Kum Tong||Hooker|Manly Warringah Sea Eagles|2023
+Samoa|Junior Paulo|29|Prop|Parramatta Eels|2023
+Samoa|Luciano Leilua|27|Second-row|North Queensland Cowboys|2023
+Samoa|Heilum Luki|22|Second-row|North Queensland Cowboys|2023
+Samoa|Spencer Leniu|23|Lock, Prop|Penrith Panthers|2023
+Samoa|Keenan Palasia|26|Lock, Prop|Brisbane Broncos|2023
+Samoa|Terrell May|24|Prop|Sydney Roosters|2023
+Samoa|Royce Hunt|28|Prop|Cronulla-Sutherland Sharks|2023
+Samoa|Ronald Volkman|21|Five-eighth|New Zealand Warriors|2023
+Samoa|Justin Matamua|20|Prop|Wests Tigers|2023
+Samoa|Connelly Lemuelu|25|Second-row|Dolphins|2023
+Samoa|Izack Tago|21|Centre|Penrith Panthers|2023
+Samoa|Brian To'o|25|Wing|Penrith Panthers|2023
+Samoa|Young Tonumaipea|31|Centre|Melbourne Storm|2023
+Cook Islands|Davvy Moale|20|Prop|South Sydney Rabbitohs|2023
+Cook Islands|Makahesi Makatoa|30|Prop|Parramatta Eels|2023
+Fiji|Jahream Bula|21|Fullback|Wests Tigers|2023
+Fiji|Maika Sivo|30|Wing|Parramatta Eels|2023
+Fiji|Mikaele Ravalawa|25|Centre, Wing|St. George Illawarra Dragons|2023
+Fiji|Waqa Blake|29|Centre, Wing|Parramatta Eels|2023
+Fiji|Kurt Donoghoe|21|Five-eighth, Lock|Dolphins|2023
+Fiji|Brandon Wakeham|24|Halfback, Five-eighth|Wests Tigers|2023
+Fiji|Tui Kamikamica|29|Prop|Melbourne Storm|2023
+Fiji|Penioni Tagituimua|24|Hooker|Canterbury-Bankstown Bulldogs|2023
+Fiji|Taane Milne|28|Second-row, Wing|South Sydney Rabbitohs|2023
+Fiji|Apisalome Saukuru|21|Second-row, Lock|Wests Tigers|2023
+Fiji|Caleb Navale||Lock|Manly Warringah Sea Eagles|2023
+Fiji|Kitione Kautoga|21|Second-row|Canterbury-Bankstown Bulldogs|2023
+Fiji|Noah Nailagoliva||Hooker|Newcastle Knights|2023
+Fiji|Sunia Turuva|21|Centre, Wing|Penrith Panthers|2023
+Fiji|Mesake Ravonu||Prop|Canterbury-Bankstown Bulldogs|2023
+Papua New Guinea|Alex Johnston|28|Fullback, Wing|South Sydney Rabbitohs|2023
+Papua New Guinea|Robert Derby|21|Wing|North Queensland Cowboys|2023
+Papua New Guinea|Zac Laybutt|21|Centre|North Queensland Cowboys|2023
+Papua New Guinea|Daniel Russell|27|Second-row|St. George Illawarra Dragons|2023
+Papua New Guinea|Jack de Belin|32|Lock, Prop|St. George Illawarra Dragons|2023
+Papua New Guinea|Jacob Alick|24|Second-row, Lock|Gold Coast Titans|2023
+Papua New Guinea|Justin Olam|29|Centre|Melbourne Storm|2023
+New Zealand A|Will Warbrick|25|Wing|Melbourne Storm|2023
+New Zealand A|Rocco Berry|22|Centre|New Zealand Warriors|2023
+New Zealand A|Bailey Simonsson|25|Wing, Centre|Parramatta Eels|2023
+New Zealand A|Ali Leiataua|20|Centre|New Zealand Warriors|2023
+New Zealand A|Taine Tuaupiki|24|Fullback|New Zealand Warriors|2023
+New Zealand A|Zach Dockar-Clay|28|Lock|Sydney Roosters|2023
+New Zealand A|Pasami Saulo|25|Prop|Canberra Raiders|2023
+New Zealand A|Jack Howarth|20|Second-row, Centre|Melbourne Storm|2023
+New Zealand A|Jacob Laban||Second-row|New Zealand Warriors|2023
+New Zealand A|Kalani Going|26|Second-row|New Zealand Warriors|2023
+New Zealand A|Paul Roache|24|Hooker|New Zealand Warriors|2023
+New Zealand A|Joe Chan|21|Second-row|Melbourne Storm|2023
+New Zealand A|Benjamin Te Kura||Prop|Brisbane Broncos|2023
+New Zealand A|Asu Kepaoa|23|Centre, Wing|Wests Tigers|2023
+New Zealand A|Trey Mooney|21|Prop, Second-row|Canberra Raiders|2023
+New Zealand A|Tanner Stowers-Smith||Prop|New Zealand Warriors|2023

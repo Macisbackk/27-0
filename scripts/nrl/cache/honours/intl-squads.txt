@@ -167,3 +167,152 @@ Fiji|Mark Nawaqanitawase|2025|pac2025
 Fiji|Ronald Philitoga|2025|pac2025
 Cook Islands|Brad Takairangi|2025|pac2025
 Cook Islands|Rhys Dakin|2025|pac2025
+# 2017 RLWC: https://en.wikipedia.org/wiki/2017_Rugby_League_World_Cup_squads (NRL-club players only) fetched 2026-11-03 via WebFetch
+Australia|Reagan Campbell-Gillard|2017|rlwc2017
+Australia|Will Chambers|2017|rlwc2017
+Australia|Boyd Cordner|2017|rlwc2017
+Australia|Cooper Cronk|2017|rlwc2017
+Australia|Josh Dugan|2017|rlwc2017
+Australia|Tyson Frizell|2017|rlwc2017
+Australia|Dane Gagai|2017|rlwc2017
+Australia|Matt Gillett|2017|rlwc2017
+Australia|Wade Graham|2017|rlwc2017
+Australia|Valentine Holmes|2017|rlwc2017
+Australia|Ben Hunt|2017|rlwc2017
+Australia|Felise Kaufusi|2017|rlwc2017
+Australia|David Klemmer|2017|rlwc2017
+Australia|James Maloney|2017|rlwc2017
+Australia|Josh Mansour|2017|rlwc2017
+Australia|Josh McGuire|2017|rlwc2017
+Australia|Jordan McLean|2017|rlwc2017
+Australia|Michael Morgan|2017|rlwc2017
+Australia|Cameron Munster|2017|rlwc2017
+Australia|Billy Slater|2017|rlwc2017
+Australia|Cameron Smith|2017|rlwc2017
+Australia|Jake Trbojevic|2017|rlwc2017
+Australia|Tom Trbojevic|2017|rlwc2017
+Australia|Aaron Woods|2017|rlwc2017
+England|Sam Burgess|2017|rlwc2017
+England|Tom Burgess|2017|rlwc2017
+England|Chris Heighington|2017|rlwc2017
+England|James Graham|2017|rlwc2017
+England|Josh Hodgson|2017|rlwc2017
+England|Elliott Whitehead|2017|rlwc2017
+England|Gareth Widdop|2017|rlwc2017
+Lebanon|Adam Doueihi|2017|rlwc2017
+Lebanon|Robbie Farah|2017|rlwc2017
+Lebanon|Anthony Layoun|2017|rlwc2017
+Lebanon|Michael Lichaa|2017|rlwc2017
+Lebanon|Bilal Maarbani|2017|rlwc2017
+Lebanon|Tim Mannah|2017|rlwc2017
+Lebanon|Mitchell Moses|2017|rlwc2017
+Lebanon|Ray Moujalli|2017|rlwc2017
+Lebanon|Jaleel Seve-Derbas|2017|rlwc2017
+Lebanon|Alex Twal|2017|rlwc2017
+Lebanon|Andrew Kazzi|2017|rlwc2017
+New Zealand|Nelson Asofa-Solomona|2017|rlwc2017
+New Zealand|Gerard Beale|2017|rlwc2017
+New Zealand|Adam Blair|2017|rlwc2017
+New Zealand|Kenny Bromwich|2017|rlwc2017
+New Zealand|Addin Fonua-Blake|2017|rlwc2017
+New Zealand|Shaun Johnson|2017|rlwc2017
+New Zealand|Danny Levi|2017|rlwc2017
+New Zealand|Isaac Liu|2017|rlwc2017
+New Zealand|Simon Mannering|2017|rlwc2017
+New Zealand|Te Maire Martin|2017|rlwc2017
+New Zealand|Jason Nightingale|2017|rlwc2017
+New Zealand|Kodi Nikorima|2017|rlwc2017
+New Zealand|Russell Packer|2017|rlwc2017
+New Zealand|Jordan Rapana|2017|rlwc2017
+New Zealand|Brad Takairangi|2017|rlwc2017
+New Zealand|Joseph Tapine|2017|rlwc2017
+New Zealand|Martin Taupau|2017|rlwc2017
+New Zealand|Elijah Taylor|2017|rlwc2017
+New Zealand|Roger Tuivasa-Sheck|2017|rlwc2017
+New Zealand|Jared Waerea-Hargreaves|2017|rlwc2017
+New Zealand|Dallin Watene-Zelezniak|2017|rlwc2017
+New Zealand|Dean Whare|2017|rlwc2017
+Samoa|Bunty Afoa|2017|rlwc2017
+Samoa|Leeson Ah Mau|2017|rlwc2017
+Samoa|Fa'amanu Brown|2017|rlwc2017
+Samoa|Herman Ese'ese|2017|rlwc2017
+Samoa|Pita Godinet|2017|rlwc2017
+Samoa|Tim Lafai|2017|rlwc2017
+Samoa|Joey Leilua|2017|rlwc2017
+Samoa|Ricky Leutele|2017|rlwc2017
+Samoa|Sam Lisone|2017|rlwc2017
+Samoa|Jarome Luai|2017|rlwc2017
+Samoa|Suaia Matagi|2017|rlwc2017
+Samoa|Peter Mata'utia|2017|rlwc2017
+Samoa|Ken Maumalo|2017|rlwc2017
+Samoa|Zane Musgrove|2017|rlwc2017
+Samoa|Josh Papalii|2017|rlwc2017
+Samoa|Joseph Paulo|2017|rlwc2017
+Samoa|Junior Paulo|2017|rlwc2017
+Samoa|Frank Pritchard|2017|rlwc2017
+Samoa|Sam Tagataese|2017|rlwc2017
+Samoa|Jazz Tevaga|2017|rlwc2017
+Samoa|Young Tonumaipea|2017|rlwc2017
+Samoa|Frank Winterstein|2017|rlwc2017
+Samoa|Matthew Wright|2017|rlwc2017
+Scotland|Jarred Anderson|2017|rlwc2017
+Scotland|James Bell|2017|rlwc2017
+Scotland|Lachlan Stein|2017|rlwc2017
+Tonga|Andrew Fifita|2017|rlwc2017
+Tonga|David Fusitu'a|2017|rlwc2017
+Tonga|Siliva Havili|2017|rlwc2017
+Tonga|Ata Hingano|2017|rlwc2017
+Tonga|Will Hopoate|2017|rlwc2017
+Tonga|Konrad Hurrell|2017|rlwc2017
+Tonga|Michael Jennings|2017|rlwc2017
+Tonga|Solomone Kata|2017|rlwc2017
+Tonga|Sione Katoa|2017|rlwc2017
+Tonga|Tuimoala Lolohea|2017|rlwc2017
+Tonga|Manu Ma'u|2017|rlwc2017
+Tonga|Joe Ofahengaue|2017|rlwc2017
+Tonga|Tevita Pangai Junior|2017|rlwc2017
+Tonga|Siosiua Taukeiaho|2017|rlwc2017
+Tonga|Jason Taumalolo|2017|rlwc2017
+Tonga|Peni Terepo|2017|rlwc2017
+Tonga|Daniel Tupou|2017|rlwc2017
+Ireland|Michael Morgan|2017|rlwc2017
+Papua New Guinea|Kurt Baptiste|2017|rlwc2017
+Papua New Guinea|Rod Griffin|2017|rlwc2017
+Papua New Guinea|Lachlan Lam|2017|rlwc2017
+Papua New Guinea|Nene Macdonald|2017|rlwc2017
+Papua New Guinea|Rhyse Martin|2017|rlwc2017
+Papua New Guinea|David Mead|2017|rlwc2017
+Papua New Guinea|Justin Olam|2017|rlwc2017
+Papua New Guinea|Kato Ottio|2017|rlwc2017
+Papua New Guinea|James Segeyaro|2017|rlwc2017
+Fiji|Kane Evans|2017|rlwc2017
+Fiji|Salesi Junior Fainga'a|2017|rlwc2017
+Fiji|Jarryd Hayne|2017|rlwc2017
+Fiji|Tui Kamikamica|2017|rlwc2017
+Fiji|Viliame Kikau|2017|rlwc2017
+Fiji|Apisai Koroisau|2017|rlwc2017
+Fiji|Joe Lovodua|2017|rlwc2017
+Fiji|Taane Milne|2017|rlwc2017
+Fiji|Sitiveni Moceidreke|2017|rlwc2017
+Fiji|Marcelo Montoya|2017|rlwc2017
+Fiji|Kevin Naiqama|2017|rlwc2017
+Fiji|Ben Nakubuwai|2017|rlwc2017
+Fiji|Mikaele Ravalawa|2017|rlwc2017
+Fiji|Jacob Saifiti|2017|rlwc2017
+Fiji|Korbin Sims|2017|rlwc2017
+Fiji|Pio Sokobalavu|2017|rlwc2017
+Fiji|Akuila Uate|2017|rlwc2017
+Fiji|Eloni Vunakece|2017|rlwc2017
+Fiji|Suliasi Vunivalu|2017|rlwc2017
+Italy|Daniel Alvaro|2017|rlwc2017
+Italy|Nathan Brown|2017|rlwc2017
+Italy|Jack Johns|2017|rlwc2017
+Italy|Mason Cerruto|2017|rlwc2017
+Italy|Nathan Milone|2017|rlwc2017
+Italy|James Tedesco|2017|rlwc2017
+Italy|Joseph Tramontana|2017|rlwc2017
+Italy|Paul Vaughan|2017|rlwc2017
+Italy|Jayden Walker|2017|rlwc2017
+Italy|Brenden Santi|2017|rlwc2017
+United States|Bureta Faraimo|2017|rlwc2017
+United States|Eddy Pettybourne|2017|rlwc2017

@@ -131,8 +131,8 @@ for (const [s, y] of aus.rows) {
   }
 }
 for (const [n, y] of nz.rows) testPlayers.push({ nation: "New Zealand", name: n, debut: +y!, playerId: pid(n!, +y!, null, 2), sourceUrl: NZ_SRC });
-const intlSrc: Record<string, string> = { rlwc2021: "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads", pac2025: "https://en.wikipedia.org/wiki/2025_Rugby_League_Pacific_Championships_squads" };
-const squads = intl.rows.map(([nation, n, y, src]) => ({ nation, name: n, year: +y!, event: src === "rlwc2021" ? "2021 Rugby League World Cup (2022)" : "2025 Pacific Championships", playerId: pid(n!, +y!, null, 2), sourceUrl: intlSrc[src!] }));
+const intlSrc: Record<string, string> = { rlwc2021: "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads", pac2025: "https://en.wikipedia.org/wiki/2025_Rugby_League_Pacific_Championships_squads", rlwc2017: "https://en.wikipedia.org/wiki/2017_Rugby_League_World_Cup_squads" };
+const squads = intl.rows.map(([nation, n, y, src]) => ({ nation, name: n, year: +y!, event: ({ rlwc2021: "2021 Rugby League World Cup (2022)", pac2025: "2025 Pacific Championships", rlwc2017: "2017 Rugby League World Cup" } as Record<string, string>)[src!], playerId: pid(n!, +y!, null, 2), sourceUrl: intlSrc[src!] }));
 out("nrl-test-players.json", { about: "International (Test) representatives: Australia and New Zealand Test debutants 1995+ and the NRL players in the 2021 RLWC / 2025 Pacific Championships squads (all nations). Used for nationality / representative nation on cards and as a rating anchor.", generatedAt: GEN, notes: ["The Australia list gives surnames only; a surname is matched to the player with that surname who played that season (null when ambiguous)."], testDebuts: testPlayers, tournamentSquads: squads });
 
 const resolvedRate = (arr: any[]) => `${arr.filter((x) => x.playerId).length}/${arr.length}`;

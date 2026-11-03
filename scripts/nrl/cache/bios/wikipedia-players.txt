@@ -1,0 +1,26 @@
+# Player infobox fields from each player's Wikipedia article, fetched 2026-11-03 via WebFetch (search → article).
+# name|article URL|DOB|birthplace|height cm|weight kg|positions (infobox)|first-grade debut year|State of Origin side|international teams
+Nathan Cleary|https://en.wikipedia.org/wiki/Nathan_Cleary|1997-11-14|Sydney, New South Wales, Australia|182|92|Halfback|2016|New South Wales|Australia
+James Tedesco|https://en.wikipedia.org/wiki/James_Tedesco|1993-01-08|Ryde, New South Wales, Australia|184|95|Fullback|2012|New South Wales|Italy;Australia
+Jahrome Hughes|https://en.wikipedia.org/wiki/Jahrome_Hughes|1994-10-08|Wellington, New Zealand|183|90|Halfback;Fullback|2013||New Zealand
+Harry Grant|https://en.wikipedia.org/wiki/Harry_Grant_(rugby_league)|1998-02-17|Yeppoon, Queensland, Australia|177|87|Hooker|2018|Queensland|Australia
+Payne Haas|https://en.wikipedia.org/wiki/Payne_Haas|1999-12-02|Newcastle, New South Wales, Australia|194|117|Prop|2018|New South Wales|Australia;Samoa
+Reece Walsh|https://en.wikipedia.org/wiki/Reece_Walsh|2002-07-10|Southport, Queensland, Australia|177|88|Fullback|2021|Queensland|Australia
+Kalyn Ponga|https://en.wikipedia.org/wiki/Kalyn_Ponga|1998-03-30|Port Hedland, Western Australia, Australia|184|92|Fullback;Five-eighth|2016|Queensland|
+Isaah Yeo|https://en.wikipedia.org/wiki/Isaah_Yeo|1994-11-06|Dubbo, New South Wales, Australia|195|106|Lock;Second-row;Centre|2014|New South Wales|Australia
+Stephen Crichton|https://en.wikipedia.org/wiki/Stephen_Crichton|2000-09-22|Apia, Samoa|193|99|Centre;Five-eighth|2019|New South Wales|Samoa
+Addin Fonua-Blake|https://en.wikipedia.org/wiki/Addin_Fonua-Blake|1995-11-06|Brisbane, Queensland, Australia|189|123|Prop|2016|New South Wales|Tonga;New Zealand
+Patrick Carrigan|https://en.wikipedia.org/wiki/Patrick_Carrigan|1998-01-01|Brisbane, Queensland, Australia|190|106|Lock;Prop|2019|Queensland|Australia
+Nicho Hynes|https://en.wikipedia.org/wiki/Nicho_Hynes|1996-06-18|Gosford, New South Wales, Australia|188|90|Halfback;Fullback|2019|New South Wales|Australia
+Dylan Edwards|https://en.wikipedia.org/wiki/Dylan_Edwards|1996-01-10|Albury, New South Wales, Australia|183|94|Fullback|2016|New South Wales|Australia
+Cameron Munster|https://en.wikipedia.org/wiki/Cameron_Munster|1994-09-13|Rockhampton, Queensland, Australia|185|89|Five-eighth;Fullback|2014|Queensland|Australia
+Tom Dearden|https://en.wikipedia.org/wiki/Tom_Dearden|2001-03-13|Toowoomba, Queensland, Australia|177|87|Five-eighth;Halfback|2019|Queensland|Australia
+Reuben Cotter|https://en.wikipedia.org/wiki/Reuben_Cotter|1998-12-28|Mackay, Queensland, Australia|180|95|Lock;Prop;Second-row;Hooker|2019|Queensland|Australia
+Kotoni Staggs|https://en.wikipedia.org/wiki/Kotoni_Staggs|1998-10-29|Wellington, New South Wales, Australia|183|95|Centre|2018|New South Wales|Tonga;Australia
+James Fisher-Harris|https://en.wikipedia.org/wiki/James_Fisher-Harris|1996-01-05|Kohukohu, New Zealand|187|104|Prop;Lock;Second-row|2016||New Zealand
+Joseph Tapine|https://en.wikipedia.org/wiki/Joseph_Tapine|1994-05-04|Wellington, New Zealand|190|106|Prop;Lock;Second-row|2014||New Zealand
+Daly Cherry-Evans|https://en.wikipedia.org/wiki/Daly_Cherry-Evans|1989-02-20|Redcliffe, Queensland, Australia|183|85|Halfback;Five-eighth|2011|Queensland|Australia
+Mitchell Moses|https://en.wikipedia.org/wiki/Mitchell_Moses|1994-09-16|Ryde, New South Wales, Australia|182|87|Halfback;Five-eighth|2014|New South Wales|Lebanon;Australia
+Jason Taumalolo|https://en.wikipedia.org/wiki/Jason_Taumalolo|1993-05-31|Auckland, New Zealand|190|118|Lock;Prop;Second-row|2010||Tonga;New Zealand
+Viliame Kikau|https://en.wikipedia.org/wiki/Viliame_Kikau|1995-04-05|Nausori, Fiji|195|116|Second-row|2017||Fiji
+Jarome Luai|https://en.wikipedia.org/wiki/Jarome_Luai|1997-01-16|Sydney, New South Wales, Australia|184|90|Five-eighth;Halfback|2018|New South Wales|Samoa
