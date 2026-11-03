@@ -3,6 +3,7 @@
  * Ball Knower mode is harder, not easier.
  */
 import type { ClubKit, KitPattern } from "./club-kits";
+import { COLLECTION_REWARD_COSMETICS, isCollectionRewardId } from "./collection-rewards";
 
 export type CosmeticKind = "kit" | "pitch" | "title" | "frame" | "mode";
 
@@ -96,6 +97,9 @@ export const COSMETICS: CosmeticItem[] = [
   { id: GAUNTLET_MODE_ID, kind: "mode", name: "Gauntlet", blurb: "Beat great Grand Final winners in a row.", price: 0, notForSale: true },
   { id: PAST_DAILIES_MODE_ID, kind: "mode", name: "Past Dailies", blurb: "Replay recent Dailies as practice.", price: 0, notForSale: true },
   { id: BALL_KNOWER_ID, kind: "mode", name: "Ball Knower mode", blurb: "Classic with ratings hidden and no respins. Unlocked by going 27-0.", price: 0, notForSale: true },
+
+  // Squad Book club collection titles (earned at 100% of a club, never sold): lib/collection-rewards.ts.
+  ...COLLECTION_REWARD_COSMETICS,
 ];
 
 export function cosmeticById(id: string): CosmeticItem | undefined {
@@ -106,7 +110,7 @@ export const titleName = (id: string | null | undefined): string | null => (id ?
 
 /** Items of one kind for the Store: Starter rung first, then the catalogue order. */
 export function cosmeticsOfKind(kind: CosmeticKind): CosmeticItem[] {
-  const all = COSMETICS.filter((c) => c.kind === kind);
+  const all = COSMETICS.filter((c) => c.kind === kind && !isCollectionRewardId(c.id));
   return [...all.filter((c) => c.tier === "starter"), ...all.filter((c) => c.tier !== "starter")];
 }
 

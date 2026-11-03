@@ -70,8 +70,8 @@ async function main(): Promise<void> {
   check(cos.nextStoreUnlock(1e12)?.remaining === 0, "huge balance");
   const earnedModes = [cos.BALL_KNOWER_ID, cos.ONE_CLUB_MODE_ID, cos.GAUNTLET_MODE_ID, cos.PAST_DAILIES_MODE_ID];
   check(
-    cos.COSMETICS.filter((c) => c.notForSale).every((c) => earnedModes.includes(c.id) && c.kind === "mode"),
-    "only the More modes are earned, not sold"
+    cos.COSMETICS.filter((c) => c.notForSale).every((c) => (earnedModes.includes(c.id) && c.kind === "mode") || c.id.startsWith("title-collector-")),
+    "only the More modes and the Squad Book club titles are earned, not sold"
   );
   check(earnedModes.every((id) => cos.cosmeticById(id)?.notForSale === true), "every More mode is a notForSale item");
   check(cos.COSMETICS.filter((c) => c.kind === "mode").every((c) => c.notForSale), "no mode is for sale");
