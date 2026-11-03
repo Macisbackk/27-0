@@ -49,6 +49,8 @@ export async function recordCompletedRun(
     dailyChallengeMode?: boolean;
     /** Weekly Challenge runs: own board (storage/weekly-leaderboard.ts), treated like the Daily here. */
     weeklyChallengeMode?: boolean;
+    /** Card id → regular-season tries (player profiles: tries with you). */
+    seasonPlayerTries?: Record<string, number>;
   }
 ): Promise<CompletedRunResult> {
   const totalValue = run.totalValue || getSquadValue(run.squad);
@@ -173,6 +175,7 @@ export async function recordCompletedRun(
         playoffLosses,
         playoffFinish: options.playoffFinish,
         topSixFinish: options.topSixFinish,
+        playerTries: options.seasonPlayerTries,
       },
       difficulty,
       statsBucket
