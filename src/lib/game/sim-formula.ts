@@ -68,13 +68,20 @@ export interface SimFormulaModeScale {
  * 0.80% → 1.07%, typical 0.11% → 0.09%; Classic spin best 14.2% → 14.1%, good 1.15% → 1.35%,
  * typical 0.15% → 0.11%. (On test-sim-formula's 100-squad sample: Classic best 18.1% → 16.6%,
  * spin 16.2% → 15.7%.) Era is untouched.
+ *
+ * v1.70 (owner: perfect runs should feel rarer, targets Classic ≈11%, Era ≈16% for a near-perfect
+ * draft): only the elite anchors move — Classic 86.62 → 86.97, Era 87.5 → 88.05 — so a top squad
+ * sits a little lower on its ladder while a typical draft (q = 0) is untouched. 400-draft sweep
+ * (scripts/health-odds-sweep.ts, ODDS_LEVER=elite): Classic best 15.2% → ~11%, good 0.85% →
+ * ~0.55%, typical wins 15.3 unchanged; Era best 29% → ~16%, good 7.8% → ~3.8%, typical 18.2
+ * wins unchanged. Classic spin (Daily / Weekly / Gauntlet) is unchanged.
  */
 export const SIM_FORMULA_MODE_SCALE: Record<SimFormulaMode, SimFormulaModeScale> = {
-  classic: { typicalRating: 82.18, eliteRating: 86.62, typicalChemistry: 1.09, opponentEdge: 2, chemistryWeight: 0.8 },
+  classic: { typicalRating: 82.18, eliteRating: 86.97, typicalChemistry: 1.09, opponentEdge: 2, chemistryWeight: 0.8 },
   // v1.48: Daily / Gauntlet on 2026 cards get tougher opponents like Classic (owner: same feel);
   // +1.6 lands their best drafts on Classic's odds (no 3-club choice to lift the rating).
   "classic-spin": { typicalRating: 81.82, eliteRating: 86.14, typicalChemistry: 0, opponentEdge: 1.6, chemistryWeight: 0.8 },
-  era: { typicalRating: 85.6, eliteRating: 87.5, typicalChemistry: 0, opponentEdge: 0.4, noChemistry: true },
+  era: { typicalRating: 85.6, eliteRating: 88.05, typicalChemistry: 0, opponentEdge: 0.4, noChemistry: true },
 };
 
 /**
