@@ -2,7 +2,7 @@ name: Validate
 
 on:
   push:
-    branches: [main]
+    branches: [main, "health/perf-*"]
   pull_request:
     branches: [main]
 
