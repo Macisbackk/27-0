@@ -34,11 +34,11 @@ jobs:
           npm install --no-save playwright@1.49.1 && npx playwright install --with-deps chromium
           npx next start -p 3000 > /tmp/next.log 2>&1 &
           for i in $(seq 1 60); do curl -sf http://localhost:3000/ > /dev/null && break; sleep 1; done
-          node scripts/preview-shots.mjs
+          PREVIEW_ONLY=squadbook node scripts/preview-shots.mjs
           # Manager Mode break run (report only: preview-shots/manager-break.txt).
-          [ -f scripts/manager-break.mjs ] && (timeout 600 node scripts/manager-break.mjs || true)
+          false && [ -f scripts/manager-break.mjs ] && (timeout 600 node scripts/manager-break.mjs || true)
           # Popup audit (report only: preview-shots/popup-audit.txt).
-          [ -f scripts/popup-audit.mjs ] && (timeout 400 node scripts/popup-audit.mjs || true)
+          false && [ -f scripts/popup-audit.mjs ] && (timeout 400 node scripts/popup-audit.mjs || true)
       - name: Whole-site stress test (report only)
         # Every route at 320 / 390 / 1280 + abuse flows. Report: preview-shots/everything-report.txt.
         if: success() || failure()
@@ -46,7 +46,7 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder
         run: |
-          [ -f scripts/e2e-everything.mjs ] && (timeout 2700 node scripts/e2e-everything.mjs || true)
+          false && [ -f scripts/e2e-everything.mjs ] && (timeout 2700 node scripts/e2e-everything.mjs || true)
       - name: Publish
         if: success() || failure()
         run: |

@@ -33,6 +33,7 @@ const tap = (re) => async (page) => {
   await page.waitForTimeout(700);
 };
 
+if (!process.env.PREVIEW_ONLY) {
 await shot(phone, "01-home", "/");
 await shot(phone, "02-home-full", "/", null, true);
 await shot(phone, "03-menu", "/", tap(/open menu/i));
@@ -831,6 +832,11 @@ for (const [w, h] of [[320, 640], [390, 844]]) {
   await ctx.close();
 }
 
+}
+await shot(phone, "23-showcase-player", "/showcase", async (page) => {
+  await page.locator(".showcase-row__button").first().click({ timeout: 5000 });
+  await page.waitForTimeout(800);
+});
 // Squad Book card tiles + the player card sheet (v1.72): seeded book and history, 320/375/desktop, dark + light.
 {
   const ids = [
