@@ -326,7 +326,7 @@ export function CareerProvider({ children }: { children: ReactNode }) {
     },
     // The friendly results show on the Round 1 screen, so they don't need a stage of their own.
     playFriendlies: (picks) => {
-      // Someone else's World Club Challenge then plays straight through (v1.64): you land on Round 1.
+      // Someone else's World Club Challenge then plays straight through (v1.65): you land on Round 1.
       if (stateRef.current) commit(skipIdleWeeks(markStageSeen(playFriendliesPure(stateRef.current, picks), "preseason")));
     },
     passStage: (key) => {

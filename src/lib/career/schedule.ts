@@ -45,7 +45,7 @@ export function buildCalendar(
   divisions: Record<Division, string[]>,
   cupEntrants: string[],
   /**
-   * v1.64: the World Club Challenge opens the season (matchday 0) and the NRL runs alongside
+   * v1.65: the World Club Challenge opens the season (matchday 0) and the NRL runs alongside
    * (its own rng, so Super League's draw is unchanged). nrlLabels: the weeks are named the NRL way.
    */
   opts: { wcc?: Fixture; nrlRng?: Rng; nrlLabels?: boolean } = {}

@@ -5,7 +5,7 @@
  * plain JSON so a whole career saves to localStorage / Supabase as one document.
  */
 
-/** The NRL (v1.64) runs as its own competition: 17 clubs, no promotion or relegation, no Challenge Cup. */
+/** The NRL (v1.65) runs as its own competition: 17 clubs, no promotion or relegation, no Challenge Cup. */
 export type Division = "super-league" | "championship" | "nrl";
 
 /** Short position codes used across the career engine and UI. */
@@ -281,7 +281,7 @@ export interface SeasonStory {
   /** Clubs going up to Super League / down to the Championship. */
   promoted: string[];
   relegated: string[];
-  /** NRL (v1.64; older seasons: none): the top eight, the finals and the World Club Challenge. */
+  /** NRL (v1.65; older seasons: none): the top eight, the finals and the World Club Challenge. */
   nrlTop?: string[];
   nrlFinals?: MiniResult[];
   wcc?: MiniResult;

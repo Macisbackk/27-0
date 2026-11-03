@@ -259,7 +259,7 @@ const SEED = (recordsData as { clubs: Record<string, SeedRecords> }).clubs;
 
 /** The real all-time records a club starts with (empty where we found no reliable figure). */
 export function seedRecords(clubId: string): Partial<Record<RecordKind, ClubRecord>> {
-  // NRL clubs (v1.64): their records since 1998 from data/nrl/ (AFL Tables season rows).
+  // NRL clubs (v1.65): their records since 1998 from data/nrl/ (AFL Tables season rows).
   const nrl = clubId.startsWith("nrl-") ? nrlSeedRecords(clubId) : undefined;
   if (nrl) {
     const out: Partial<Record<RecordKind, ClubRecord>> = {};
@@ -381,7 +381,7 @@ export function settleFixture(state: CareerState, f: Fixture, home: TeamSheet, a
   } else delete r.ratings;
   checkRecords(state, f.home, [...home.lineup, ...(home.bench ?? [])]);
   checkRecords(state, f.away, [...away.lineup, ...(away.bench ?? [])]);
-  // Other clubs' try scorers are credited above and never shown again: drop them (v1.64, saves
+  // Other clubs' try scorers are credited above and never shown again: drop them (v1.65, saves
   // stay small with the NRL running alongside). Your own games keep theirs.
   if (f.home !== state.userClubId && f.away !== state.userClubId) {
     r.homeTries = [];

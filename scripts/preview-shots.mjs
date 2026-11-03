@@ -735,7 +735,7 @@ for (const [w, h] of [[320, 640], [390, 844]]) {
   await ctx.close();
 }
 
-// v1.64: the NRL in Manager Mode and the World Club Challenge, at 320 wide (and 390).
+// v1.65: the NRL in Manager Mode and the World Club Challenge, at 320 wide (and 390).
 for (const [w, h] of [[320, 640], [390, 844]]) {
   const ctx = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
   const page = await ctx.newPage();

@@ -31,7 +31,7 @@ export function clubCode(state: Pick<CareerState, "clubs">, clubId: string | nul
   return d ? codeOfDivision(d) : null;
 }
 
-/** NRL salary cap (v1.64): an NRL club's season wage bill can't go past it with a signing. */
+/** NRL salary cap (v1.65): an NRL club's season wage bill can't go past it with a signing. */
 export const NRL_SALARY_CAP = 2_400_000;
 /** Fee premium for signing a player from the other code (an NRL club buying from Super League, or the other way). */
 export const CROSS_CODE_PREMIUM = 1.5;

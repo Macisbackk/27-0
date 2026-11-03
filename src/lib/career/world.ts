@@ -126,7 +126,7 @@ export function buildWorld(seed: string): { clubs: Record<string, CareerClub>; p
     }
   }
 
-  // The NRL's 2026 squads (v1.64), on their own rng so the English world builds exactly as before.
+  // The NRL's 2026 squads (v1.65), on their own rng so the English world builds exactly as before.
   for (const [id, n] of Object.entries(addNrlWorld(clubs, players, seed, START_YEAR))) realCounts[id] = n;
 
   const choices: ClubChoice[] = [];

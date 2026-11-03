@@ -34,7 +34,7 @@ const RIVALRIES: Array<[string, string]> = [
   ["keighley-cougars", "bradford-bulls"],
   ["hunslet-rlfc", "leeds-rhinos"],
   ["sheffield-eagles", "doncaster-rlfc"],
-  // The NRL (v1.64).
+  // The NRL (v1.65).
   ["nrl-sydney-roosters", "nrl-south-sydney-rabbitohs"],
   ["nrl-brisbane-broncos", "nrl-north-queensland-cowboys"],
   ["nrl-brisbane-broncos", "nrl-dolphins"],

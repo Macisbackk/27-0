@@ -1,5 +1,5 @@
 /**
- * The NRL's clubs and 2026 squads in a career's world (v1.64): new careers get them on day one,
+ * The NRL's clubs and 2026 squads in a career's world (v1.65): new careers get them on day one,
  * older saves when they load (the NRL then runs in the background from the next season).
  */
 import { nrlClubSeeds } from "./clubs";

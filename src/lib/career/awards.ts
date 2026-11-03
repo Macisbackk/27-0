@@ -14,7 +14,7 @@ export const AWARD_LABEL: Record<AwardId, string> = {
   "clive-churchill": "Clive Churchill Medal",
 };
 
-/** The NRL's names for its awards (v1.64). */
+/** The NRL's names for its awards (v1.65). */
 const NRL_AWARD_LABEL: Record<AwardId, string> = {
   "man-of-steel": "Dally M Medal",
   "young-player": "NRL Young Player of the Year",

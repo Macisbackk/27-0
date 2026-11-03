@@ -238,7 +238,7 @@ export function PlayoffBracketView({ bracket, clubs, userClubId }: { bracket: Pl
 }
 
 /**
- * The NRL finals (v1.64): week 1 (qualifying finals 1v4, 2v3; elimination finals 5v8, 6v7), the
+ * The NRL finals (v1.65): week 1 (qualifying finals 1v4, 2v3; elimination finals 5v8, 6v7), the
  * semi-finals, the preliminary finals and the Grand Final.
  */
 export function NrlBracketView({ bracket, clubs, userClubId }: { bracket: NrlBracket; clubs: Clubs; userClubId: string }) {

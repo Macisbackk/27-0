@@ -112,7 +112,7 @@ export function buildClubSeeds(): ClubSeed[] {
   return seeds;
 }
 
-/** The NRL (v1.64): the 17 clubs of 2026, colours from data/nrl/nrl-clubs.json. Last, so the English world builds as before. */
+/** The NRL (v1.65): the 17 clubs of 2026, colours from data/nrl/nrl-clubs.json. Last, so the English world builds as before. */
 export function nrlClubSeeds(): ClubSeed[] {
   return (nrlData.clubs as Array<{ id: string; name: string; short: string; primary: string; secondary: string; accent?: string }>).map((c) => ({
     id: c.id,

@@ -58,7 +58,7 @@ function lastUserFixture(state: CareerState): Fixture | undefined {
 const STREAK_WORD = { W: ["win", "wins"], L: ["defeat", "defeats"], D: ["draw", "draws"] } as const;
 
 /**
- * The World Club Challenge (v1.64): Super League champions v NRL premiers before Round 1. Yours: a
+ * The World Club Challenge (v1.65): Super League champions v NRL premiers before Round 1. Yours: a
  * big banner on the next-match card. Someone else's: the tie on its own card, to watch.
  */
 /** The World Club Challenge result (someone else's), one card. */
@@ -380,7 +380,7 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
     return (
       <div className="flex flex-col gap-4">
         <PreseasonCard />
-        {/* Coming up before Round 1 (v1.64): the World Club Challenge. */}
+        {/* Coming up before Round 1 (v1.65): the World Club Challenge. */}
         {seasonWcc ? <WccBanner state={s} fixture={seasonWcc} /> : null}
         <TransferWindowCard onOpenMarket={onOpenMarket} />
       </div>

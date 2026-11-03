@@ -1,5 +1,5 @@
 /**
- * The NRL in Manager Mode (v1.64) and the World Club Challenge.
+ * The NRL in Manager Mode (v1.65) and the World Club Challenge.
  *
  * The NRL is its own competition: 17 clubs on the real 2026 squads (data/nrl/, built into
  * nrl-career.runtime.json), 27 rounds in which every club plays 24 games and has 3 byes (2 ladder

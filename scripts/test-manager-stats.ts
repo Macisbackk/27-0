@@ -188,7 +188,7 @@ console.log("\nMatch ratings");
 
   /* ------------------------------------------------------------------ stats */
   console.log("\nPlayer stats");
-  // v1.64: other clubs' games drop their try scorers once credited (saves stay small); yours keep them.
+  // v1.65: other clubs' games drop their try scorers once credited (saves stay small); yours keep them.
   const mineFx = fixtures.filter((x) => x.home === done.userClubId || x.away === done.userClubId);
   check(fixtures.filter((x) => !mineFx.includes(x)).every((x) => !x.result!.homeTries.length && !x.result!.awayTries.length), "other clubs' games don't keep try scorers");
   const totalTries = mineFx.reduce((t, x) => t + (x.home === done.userClubId ? x.result!.homeTries.length : x.result!.awayTries.length), 0);

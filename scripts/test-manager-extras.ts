@@ -156,7 +156,7 @@ console.log("Season story: honours, play-offs, cup, results, history");
 
   const lines = honoursBoard(o, s.clubs, s.userClubId);
   const by = (id: string) => lines.find((l) => l.id === id);
-  // v1.64: the World Club Challenge opens the board; the NRL's honours close it for a Super League manager.
+  // v1.65: the World Club Challenge opens the board; the NRL's honours close it for a Super League manager.
   check(lines.map((l) => l.id).join(",") === "wcc,grand-final,league-leaders,challenge-cup,championship-title,mpg,promoted,relegated,nrl-premiership,minor-premiership", `honours board in order (${lines.map((l) => l.id).join(", ")})`);
   check(by("grand-final")?.clubIds[0] === winnerOf(gf) && /^Beat .+ \d+–\d+/.test(by("grand-final")!.text), `Grand Final winner and score: ${by("grand-final")?.text}`);
   check(by("league-leaders")?.clubIds[0] === sl[0], "League Leaders' Shield: top of Super League");
@@ -182,7 +182,7 @@ console.log("Season story: honours, play-offs, cup, results, history");
   check(data.results.length === st.mine.length && data.cupRun.every((m) => m.k === "cup") && data.cupFinal?.r === 5, "review data: your results, your cup run and the final");
   check(st.cup.length === 3 && st.cup.filter((m) => m.r === 4).length === 2, "cup: the semi-finals and the final kept");
   const bytes = JSON.stringify(st).length;
-  // v1.64 adds the NRL's top eight, its finals and the World Club Challenge (about 0.6 KB).
+  // v1.65 adds the NRL's top eight, its finals and the World Club Challenge (about 0.6 KB).
   check(bytes < 5000, `story stays small (${bytes} bytes)`);
 
   // An old save sitting on the review screen: the story is rebuilt from the calendar on load.

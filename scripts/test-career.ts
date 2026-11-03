@@ -434,7 +434,7 @@ for (const [i, clubId] of ["salford-rlfc", "wigan-warriors", "north-wales-crusad
     }
     for (const f of all) {
       if (!f.result) continue;
-      // The NRL runs alongside (v1.64): its calibration is reported on its own line.
+      // The NRL runs alongside (v1.65): its calibration is reported on its own line.
       if (f.division === "nrl" || f.kind === "wcc" || f.kind === "nrl-final" || f.kind === "nrl-gf") {
         if (f.kind !== "league") check(f.result.homeScore !== f.result.awayScore, `${label}: ${f.label} has a winner`);
         if (f.division === "nrl" && f.kind === "league") {
@@ -644,7 +644,7 @@ for (const clubId of ["london-broncos", "leeds-rhinos", "north-wales-crusaders"]
       const old = { ...s, board: undefined } as CareerState;
       check(boardGoal(old).target === goal.target, `${seed}/${division}: old save derives the same target`);
       s = playFriendlies(s, []);
-      // v1.64: the World Club Challenge opens the season (the hub stops for it), then Round 1.
+      // v1.65: the World Club Challenge opens the season (the hub stops for it), then Round 1.
       check(seasonProgress(s).label === "World Club Challenge", `${seed}/${division}: progress reads World Club Challenge first`);
       s = skipIdleWeeks(playMatchday(s));
       check(seasonProgress(s).label === "Round 1 of " + seasonProgress(s).total, `${seed}/${division}: progress reads Round 1 of N`);

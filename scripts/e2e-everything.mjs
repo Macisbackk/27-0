@@ -1024,6 +1024,78 @@ if (ONLY === "all" || ONLY === "flows") {
     note("Manager: storage cleared mid-career, reloaded");
   }, SMALL);
 
+  /* --- Manager (v1.65): an NRL career at 320 — the picker's NRL tab, the World Club Challenge, the ladder, the finals. */
+  await flow("Manager NRL", async (page) => {
+    await page.evaluate(() => localStorage.removeItem("27-0-career-v2-save"));
+    await page.goto(`${BASE}/manager`, { waitUntil: "domcontentloaded" });
+    await settle(page, 800);
+    await page.getByRole("tab", { name: "NRL", exact: true }).click({ timeout }).catch(() => problem("flow", "Manager: no NRL tab on the club picker"));
+    await page.waitForTimeout(300);
+    await audit(page, "Manager picker › NRL @320", SMALL);
+    const nrlCount = await page.getByRole("list", { name: "Clubs" }).getByRole("button").count();
+    if (nrlCount !== 17) problem("manager", `NRL tab lists ${nrlCount} clubs (expected 17)`);
+    await page.getByRole("list", { name: "Clubs" }).getByRole("button", { name: /Brisbane Broncos/ }).click({ timeout }).catch(() => {});
+    await btn(page, /Take charge of/).dblclick({ timeout }).catch(() => {});
+    await page.getByRole("dialog", { name: "Manager Mode walkthrough" }).getByRole("button", { name: "Skip" }).click({ timeout: 8000 }).catch(() => {});
+    await settle(page, 600);
+    await audit(page, "Manager NRL pre-season @320", SMALL);
+    await btn(page, /^Skip pre-season/).dblclick().catch(() => {});
+    await page.waitForTimeout(600);
+    if (!(await visible(page.getByTestId("wcc-banner")))) problem("manager", "NRL: no World Club Challenge banner for Brisbane");
+    await audit(page, "Manager World Club Challenge @320", SMALL);
+    await btn(page, "Quick sim").dblclick().catch(() => {});
+    await page.waitForTimeout(700);
+    await audit(page, "Manager WCC result pop-up @320", SMALL);
+    for (let i = 0; i < 4 && (await page.getByTestId("career-event").isVisible().catch(() => false)); i++) await page.keyboard.press("Escape");
+    for (const t of ["Team", "Table", "Club", "Match"]) {
+      await page.getByRole("tab", { name: t }).click({ timeout: 2000 }).catch(() => {});
+      await page.waitForTimeout(300);
+      await audit(page, `Manager NRL ${t} tab @320`, SMALL);
+      const sub = page.getByRole("tab");
+      const n = Math.min(await sub.count(), 14);
+      for (let i = 0; i < n; i++) {
+        const st = sub.nth(i);
+        const nm = (await st.innerText().catch(() => "")).trim();
+        if (["Team", "Table", "Club", "Match"].includes(nm)) continue;
+        await st.click({ timeout: 1500 }).catch(() => {});
+        await page.waitForTimeout(250);
+        await audit(page, `Manager NRL ${t} › ${nm.slice(0, 20)} @320`, SMALL);
+      }
+    }
+    await page.getByRole("tab", { name: "Match" }).click({ timeout: 2000 }).catch(() => {});
+    const seen = new Set();
+    for (let i = 0; i < 500; i++) {
+      if (await visible(page.getByRole("region", { name: "Season over" }))) break;
+      if (await crashed(page)) {
+        problem("crash", "Manager NRL season shows the error screen").shot ||= await shot(page, "manager-nrl-crash");
+        break;
+      }
+      if (await page.getByTestId("career-event").isVisible().catch(() => false)) await page.keyboard.press("Escape");
+      const shut = btn(page, "Shut the window");
+      if (await visible(shut)) {
+        await shut.click().catch(() => {});
+        await page.waitForTimeout(300);
+        continue;
+      }
+      if (!seen.has("league") && (await visible(page.getByRole("region", { name: "League over" })))) {
+        seen.add("league");
+        await audit(page, "Manager NRL league over @320", SMALL);
+      }
+      const go = btn(page, /^(On to the finals|Watch the finals|Quick sim|Continue|Skip to full time)$/);
+      if (await visible(go)) await go.click({ force: true, noWaitAfter: true }).catch(() => {});
+      await page.waitForTimeout(140);
+    }
+    if (await visible(page.getByRole("region", { name: "Season over" }))) {
+      await audit(page, "Manager NRL season over @320", SMALL);
+      await btn(page, "See the season review").click().catch(() => {});
+      if (await page.getByTestId("season-review").waitFor({ timeout }).then(() => true, () => false)) {
+        await audit(page, "Manager NRL season review @320", SMALL);
+        if (!(await visible(page.getByTestId("review-nrl-finals")))) problem("manager", "NRL review: no NRL finals bracket");
+        note(`Manager NRL: season to the review (${[...seen].join(", ")})`);
+      } else problem("flow", "Manager NRL never reached the season review");
+    } else problem("flow", "Manager NRL season never finished", "Manager NRL").shot ||= await shot(page, "manager-nrl-no-end");
+  }, SMALL);
+
   /* --- Mini-games and quiz: play each quickly, with button mashing. */
   await flow("Mini-games", async (page) => {
     for (const route of ["/mini-games/quiz", "/mini-games/wordle", "/mini-games/grid"]) {

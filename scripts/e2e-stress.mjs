@@ -253,7 +253,12 @@ try {
   step("Friendlies: max two, double-tap plays once, paid once");
   // v1.29: the friendly results sit above Round 1; the double tap on Play must not kick it off.
   await page.getByRole("button", { name: "Play match" }).waitFor({ timeout });
-  if ((await page.evaluate((k) => JSON.parse(localStorage.getItem(k) || "{}").matchdayIndex, SAVE_KEY)) !== 0) fail("double tap on Play friendlies played Round 1");
+  // v1.65: someone else's World Club Challenge (week 0) plays straight through; Round 1 must still be unplayed.
+  const r1 = await page.evaluate((k) => {
+    const s = JSON.parse(localStorage.getItem(k) || "{}");
+    return { at: s.matchdayIndex, first: (s.calendar || []).findIndex((m) => m.fixtures.some((f) => f.kind === "league")) };
+  }, SAVE_KEY);
+  if (r1.at > r1.first) fail("double tap on Play friendlies played Round 1");
   step("Friendly results above Round 1 (double-tap safe)");
 
   // Drive to Deadline Day with Quick sim; nothing should get past it until the window is shut.

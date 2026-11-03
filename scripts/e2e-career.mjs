@@ -440,7 +440,7 @@ try {
   await page.getByRole("link", { name: /Manager Mode/ }).first().waitFor({ timeout });
   step("Home page Manager Mode card");
 
-  // v1.64: an NRL career. Brisbane (2025 premiers) open the season in the World Club Challenge v Hull KR.
+  // v1.65: an NRL career. Brisbane (2025 premiers) open the season in the World Club Challenge v Hull KR.
   await page.evaluate(() => localStorage.removeItem("27-0-career-v2-save"));
   await page.goto(`${BASE}/manager`, { waitUntil: "networkidle" });
   await page.getByRole("heading", { name: "Pick your club" }).waitFor({ timeout });

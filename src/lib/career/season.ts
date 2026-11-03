@@ -239,7 +239,7 @@ function buildChallenges(state: CareerState): SeasonChallenge[] {
 /** Prestige → season income. */
 export function seasonIncome(state: CareerState): number {
   const division = userClub(state).division;
-  // The NRL is the richer league: its wage bills are higher, and so is what its boards pay (v1.64).
+  // The NRL is the richer league: its wage bills are higher, and so is what its boards pay (v1.65).
   if (division === "nrl") return NRL_INCOME_BASE + Math.round(state.prestige * NRL_INCOME_PER_STAR);
   return division === "super-league"
     ? 500_000 + Math.round(state.prestige * 200_000)
@@ -263,7 +263,7 @@ export function startSeason(state: CareerState): CareerState {
   if (!champEntrants.includes(next.userClubId) && next.clubs[next.userClubId]!.division === "championship") {
     champEntrants[champEntrants.length - 1] = next.userClubId;
   }
-  // v1.64: last year's Super League and NRL champions open the season in the World Club Challenge.
+  // v1.65: last year's Super League and NRL champions open the season in the World Club Challenge.
   const wcc = divisions.nrl.length ? wccParticipants(next, next.year, (d) => expectedRanking(next, d)[0]) : null;
   next.calendar = buildCalendar(rng, next.year, divisions, [...divisions["super-league"], ...champEntrants], {
     wcc: wcc ? wccFixture(next.year, wcc.sl, wcc.nrl) : undefined,
@@ -396,7 +396,7 @@ export function placeInTeam(state: CareerState, where: "xiii" | "bench", index: 
 export function migrateCareer<T extends CareerState | null>(state: T): T {
   if (!state) return state;
   let s: CareerState = state;
-  // The NRL (v1.64): older saves gain its 17 clubs and squads. It runs in the background from the
+  // The NRL (v1.65): older saves gain its 17 clubs and squads. It runs in the background from the
   // next season (with the World Club Challenge in that pre-season); this season's calendar is unchanged.
   if (!Object.values(s.clubs).some((c) => c.division === "nrl")) {
     const clubs = { ...s.clubs };
@@ -882,6 +882,10 @@ export const WCC_PRIZE = 150_000;
 function recordLineups(state: CareerState, f: Fixture, home: TeamSheet, away: TeamSheet) {
   if (!f.result) return;
   const at = state.matchdayIndex;
+  // The other game's team sheets (the NRL for a Super League manager, and the other way) aren't
+  // kept: their club sheets show the expected XIII instead (v1.65, saves stay small).
+  const mine = state.clubs[state.userClubId]?.division === "nrl";
+  if ((state.clubs[f.home]?.division === "nrl") !== mine && (state.clubs[f.away]?.division === "nrl") !== mine) return;
   const book = (state.lastLineups ??= {});
   book[f.home] = { fixtureId: f.id, label: f.label, opponentId: f.away, home: true, us: f.result.homeScore, them: f.result.awayScore, lineup: [...home.lineup], bench: [...(home.bench ?? [])], at };
   book[f.away] = { fixtureId: f.id, label: f.label, opponentId: f.home, home: false, us: f.result.awayScore, them: f.result.homeScore, lineup: [...away.lineup], bench: [...(away.bench ?? [])], at };
