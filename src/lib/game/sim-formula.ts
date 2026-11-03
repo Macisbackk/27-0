@@ -68,13 +68,20 @@ export interface SimFormulaModeScale {
  * 0.80% → 1.07%, typical 0.11% → 0.09%; Classic spin best 14.2% → 14.1%, good 1.15% → 1.35%,
  * typical 0.15% → 0.11%. (On test-sim-formula's 100-squad sample: Classic best 18.1% → 16.6%,
  * spin 16.2% → 15.7%.) Era is untouched.
+ *
+ * v1.70 (owner: perfect runs should feel rarer, targets Classic ≈11%, Era ≈16% for a near-perfect
+ * draft): only the elite anchors move — Classic 86.62 → 86.97, Era 87.5 → 88.05 — so a top squad
+ * sits a little lower on its ladder while a typical draft (q = 0) is untouched. 400-draft sweep
+ * (scripts/health-odds-sweep.ts, ODDS_LEVER=elite): Classic best 15.2% → ~11%, good 0.85% →
+ * ~0.55%, typical wins 15.3 unchanged; Era best 29% → ~16%, good 7.8% → ~3.8%, typical 18.2
+ * wins unchanged. Classic spin (Daily / Weekly / Gauntlet) is unchanged.
  */
 export const SIM_FORMULA_MODE_SCALE: Record<SimFormulaMode, SimFormulaModeScale> = {
-  classic: { typicalRating: 82.18, eliteRating: 86.62, typicalChemistry: 1.09, opponentEdge: 2, chemistryWeight: 0.8 },
+  classic: { typicalRating: 82.18, eliteRating: 86.97, typicalChemistry: 1.09, opponentEdge: 2, chemistryWeight: 0.8 },
   // v1.48: Daily / Gauntlet on 2026 cards get tougher opponents like Classic (owner: same feel);
   // +1.6 lands their best drafts on Classic's odds (no 3-club choice to lift the rating).
   "classic-spin": { typicalRating: 81.82, eliteRating: 86.14, typicalChemistry: 0, opponentEdge: 1.6, chemistryWeight: 0.8 },
-  era: { typicalRating: 85.6, eliteRating: 87.5, typicalChemistry: 0, opponentEdge: 0.4, noChemistry: true },
+  era: { typicalRating: 85.6, eliteRating: 88.05, typicalChemistry: 0, opponentEdge: 0.4, noChemistry: true },
 };
 
 /**
@@ -117,10 +124,17 @@ export function getSimFormulaMode(currentSeasonOnly: boolean): SimFormulaMode {
   return currentSeasonOnly ? "classic" : "era";
 }
 
+/**
+ * Era elite anchor before v1.70. The Gauntlet (gauntlet.ts) rates both your Era squad and its
+ * champion sides on this, so the v1.70 Classic / Era 27-0 retune leaves its odds untouched.
+ */
+export const GAUNTLET_ERA_ELITE_RATING = 87.5;
+
 /** Where a squad rating sits on its mode's draft ladder (0 typical, 1 near-perfect). */
-export function getDraftQuality(avgRating: number, mode: SimFormulaMode): number {
+export function getDraftQuality(avgRating: number, mode: SimFormulaMode, eliteOverride?: number): number {
   const scale = SIM_FORMULA_MODE_SCALE[mode];
-  return (avgRating - scale.typicalRating) / (scale.eliteRating - scale.typicalRating);
+  const elite = eliteOverride ?? scale.eliteRating;
+  return (avgRating - scale.typicalRating) / (elite - scale.typicalRating);
 }
 
 export interface TeamStrengthInput {
@@ -131,6 +145,8 @@ export interface TeamStrengthInput {
   chemistry?: number;
   /** Halfway-call rating change for the round (getHalfwayRatingDelta). */
   ratingDelta?: number;
+  /** Use this elite anchor instead of the mode's (the Gauntlet's pinned Era ladder). */
+  eliteRating?: number;
 }
 
 /** Mode-normalised team strength on the league scale (typical draft ≈ 80). */
@@ -138,7 +154,7 @@ export function getTeamStrength(input: TeamStrengthInput): number {
   const scale = SIM_FORMULA_MODE_SCALE[input.mode];
   return (
     TEAM_STRENGTH_TYPICAL +
-    TEAM_STRENGTH_SPREAD * getDraftQuality(input.avgRating, input.mode) +
+    TEAM_STRENGTH_SPREAD * getDraftQuality(input.avgRating, input.mode, input.eliteRating) +
     ((input.chemistry ?? 0) - scale.typicalChemistry) * (scale.chemistryWeight ?? 1) +
     (input.ratingDelta ?? 0) -
     (scale.opponentEdge ?? 0)

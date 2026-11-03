@@ -39,8 +39,13 @@ export default function PrivacyPage() {
         <Section title="If you play as a guest">
           <p>
             Your progress (squads, records, Manager Mode career, Club Funds, settings) is saved only on your device, in
-            your browser or app storage. Nothing about you is sent to us. Clearing the app&rsquo;s data or your browser
+            your browser or app storage. Nothing that identifies you is sent to us. Clearing the app&rsquo;s data or your browser
             data removes it.
+          </p>
+          <p>
+            To balance the game, we count runs anonymously: when a run starts and when its season ends, we record the
+            mode, the win&ndash;loss record, whether it was a 27-0, the game version and a random id made on your
+            device. It isn&rsquo;t linked to you or your account, and nothing else is sent.
           </p>
         </Section>
 
