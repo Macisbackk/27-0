@@ -212,6 +212,11 @@ try {
   await btn("Play match").waitFor({ timeout }).catch(() => fail("back button lost the Manager Mode hub"));
   step("Back/forward keeps the hub");
 
+  // v1.65: the World Club Challenge result pops up before Round 1: answer it first.
+  for (let i = 0; i < 4 && (await page.getByTestId("career-event").isVisible().catch(() => false)); i++) {
+    await page.keyboard.press("Escape");
+    await page.waitForTimeout(300);
+  }
   // Every tab fits at 320px.
   for (const t of ["Team", "Table", "Club", "Match"]) {
     await page.getByRole("tab", { name: t }).click();

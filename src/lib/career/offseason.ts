@@ -264,7 +264,7 @@ export function finishDepartures(state: CareerState): CareerState {
   fixTeam(s);
   s.phase = "transfers";
   s.news = [
-    `Transfer window open until Round 1 kicks off. Budget ${formatMoney(s.budget)}.`,
+    `Transfer window open until the season kicks off. Budget ${formatMoney(s.budget)}.`,
     ...(leaving.length ? [`Left on a free: ${leavingNames.join(", ")}.`] : []),
     ...s.news,
   ].slice(0, 30);
@@ -547,7 +547,7 @@ export function finishTransfers(state: CareerState): CareerState {
   // New season, best XIII (so new signings play); the user can still change it.
   Object.assign(s, autoPickTeam(s));
   const next = startSeason(s);
-  next.news = [`The window stays open through pre-season and shuts when Round 1 kicks off.`, ...next.news].slice(0, 30);
+  next.news = [`The window stays open through pre-season and shuts when the season kicks off.`, ...next.news].slice(0, 30);
   return next;
 }
 

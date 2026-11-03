@@ -325,7 +325,7 @@ export function TransferWindowCard({ onOpenMarket }: { onOpenMarket: () => void 
       <section aria-label="Transfer window open" className="rounded-card bg-pitch-900 p-4 text-left ring-1 ring-success/40">
         <WindowStatusLine />
         <p className="mt-2 text-sm text-[color:var(--fl-muted)]">
-          <span className="font-semibold text-white">Last chance before the season.</span> Buy and sell until Round 1. After that the window
+          <span className="font-semibold text-white">Last chance before the season.</span> Buy and sell until the first game. After that the window
           shuts until Deadline Day. Free agents cost no fee, only wages.
         </p>
         <GameButton size="md" variant="secondary" className="mt-3" disabled={!armed} onClick={() => { playUiClick(); onOpenMarket(); }}>
@@ -389,7 +389,7 @@ export function TransferRoundUp() {
         <p className="mt-1 text-sm text-[color:var(--fl-muted)]">
           {(() => {
             const w = windowStatus(s);
-            if (w.open) return w.kind === "deadline" ? "No deals yet. The clock is running." : "No deals yet. The window is open until Round 1 kicks off.";
+            if (w.open) return w.kind === "deadline" ? "No deals yet. The clock is running." : "No deals yet. The window is open until the season kicks off.";
             return roundsUntilDeadline(s) === null ? "No deals this season." : `No deals yet. Trade on Deadline Day, before Round ${WINDOW_CLOSES_BEFORE_ROUND}.`;
           })()}
         </p>

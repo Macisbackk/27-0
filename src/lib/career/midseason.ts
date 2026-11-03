@@ -56,11 +56,11 @@ function beforeKickOff(state: CareerState): boolean {
  * from any version (made mid-summer, mid-season, on Deadline Day…) get the right answer.
  */
 export function windowStatus(state: CareerState): WindowStatus {
-  if (state.phase === "transfers") return { open: true, kind: "summer", label: "Window open", detail: "Shuts when Round 1 kicks off" };
+  if (state.phase === "transfers") return { open: true, kind: "summer", label: "Window open", detail: "Shuts when the season kicks off" };
   if (state.phase === "review" || state.phase === "departures") {
     return { open: false, kind: null, label: "Window shut", detail: "Opens after the summer departures" };
   }
-  if (beforeKickOff(state)) return { open: true, kind: "preseason", label: "Window open", detail: "Shuts when Round 1 kicks off" };
+  if (beforeKickOff(state)) return { open: true, kind: "preseason", label: "Window open", detail: "Shuts when the season kicks off" };
   if (deadlineDecisionPending(state)) return { open: true, kind: "deadline", label: "Deadline Day", detail: "Window open until 0:00" };
   const b = windowBounds(state);
   if (b && state.matchdayIndex < b.deadline) {

@@ -1026,8 +1026,9 @@ if (ONLY === "all" || ONLY === "flows") {
 
   /* --- Manager (v1.65): an NRL career at 320 — the picker's NRL tab, the World Club Challenge, the ladder, the finals. */
   await flow("Manager NRL", async (page) => {
-    await page.evaluate(() => localStorage.removeItem("27-0-career-v2-save"));
     await page.goto(`${BASE}/manager`, { waitUntil: "domcontentloaded" });
+    await page.evaluate(() => localStorage.removeItem("27-0-career-v2-save"));
+    await page.reload({ waitUntil: "domcontentloaded" });
     await settle(page, 800);
     await page.getByRole("tab", { name: "NRL", exact: true }).click({ timeout }).catch(() => problem("flow", "Manager: no NRL tab on the club picker"));
     await page.waitForTimeout(300);
