@@ -73,6 +73,8 @@ export interface SeasonLifetimeInput {
   playoffFinish?: string;
   superLeagueTitle?: boolean;
   topSixFinish?: boolean;
+  /** Card id → tries scored this regular season (only your squad's scorers). */
+  playerTries?: Record<string, number>;
 }
 
 export function applySeasonLifetimeUpdate(
@@ -98,6 +100,7 @@ export function applySeasonLifetimeUpdate(
     playoffFinish,
     superLeagueTitle = false,
     topSixFinish = false,
+    playerTries: seasonTries = {},
   } = input;
 
   if (superSamHallasMode) {
@@ -142,11 +145,18 @@ export function applySeasonLifetimeUpdate(
   const draftCounts = { ...existing.draftCounts };
   const playerSeasonWins = { ...existing.playerSeasonWins };
   const playerSeasonLosses = { ...existing.playerSeasonLosses };
+  const playerPerfectSeasons = { ...(existing.playerPerfectSeasons ?? {}) };
+  const playerTries = { ...(existing.playerTries ?? {}) };
 
   for (const id of signedIds) {
     draftCounts[id] = (draftCounts[id] ?? 0) + 1;
     playerSeasonWins[id] = (playerSeasonWins[id] ?? 0) + overallWins;
     playerSeasonLosses[id] = (playerSeasonLosses[id] ?? 0) + overallLosses;
+    if (isPerfect) playerPerfectSeasons[id] = (playerPerfectSeasons[id] ?? 0) + 1;
+    const tries = seasonTries[id];
+    if (typeof tries === "number" && Number.isFinite(tries) && tries > 0) {
+      playerTries[id] = (playerTries[id] ?? 0) + Math.round(tries);
+    }
   }
 
   const isFirstSeason = existing.totalSeasonsSimulated === 0;
@@ -274,6 +284,8 @@ export function applySeasonLifetimeUpdate(
     draftCounts,
     playerSeasonWins,
     playerSeasonLosses,
+    playerPerfectSeasons,
+    playerTries,
   };
 
   return updated;

@@ -1582,6 +1582,9 @@ export function GameBoard({
           normalEraMode,
           dailyChallengeMode,
           weeklyChallengeMode,
+          seasonPlayerTries: Object.fromEntries(
+            (result.tryScorers ?? []).map((row) => [row.playerId, row.tries])
+          ),
         }
       )
         .then((completed) => {
