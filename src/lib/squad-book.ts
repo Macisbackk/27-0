@@ -20,6 +20,10 @@
  * never dropped — and a failed cloud read never overwrites anything. The Dream Team rides the
  * same row (newest pick wins). Books saved before v1.66 have no dreamTeam field and load with an
  * empty one.
+ *
+ * Favourites (v1.68): card ids the coach has starred from a player profile (components/
+ * PlayerProfileSections). Same newest-wins merge as the Dream Team (`favouritesAt`); older books load
+ * with none.
  */
 
 import { useEffect, useState } from "react";
@@ -76,7 +80,13 @@ export interface SquadBookState {
   dreamTeam: (string | null)[];
   /** When the Dream Team was last changed (epoch ms); the newer pick wins a merge. 0 = never. */
   dreamTeamAt: number;
+  /** Starred card ids (favourite players). */
+  favourites: string[];
+  /** When the favourites last changed (epoch ms); the newer list wins a merge. 0 = never. */
+  favouritesAt: number;
 }
+
+export const MAX_FAVOURITES = 200;
 
 const MAX_RUN_IDS = 100;
 
@@ -116,7 +126,7 @@ function normalizeDreamTeam(raw: unknown): (string | null)[] {
 const SOURCES: SquadBookSource[] = ["classic", "era", "daily", "weekly"];
 
 export function emptySquadBook(): SquadBookState {
-  return { v: 1, cards: {}, claimed: [], runs: [], dreamTeam: emptyDreamTeam(), dreamTeamAt: 0 };
+  return { v: 1, cards: {}, claimed: [], runs: [], dreamTeam: emptyDreamTeam(), dreamTeamAt: 0, favourites: [], favouritesAt: 0 };
 }
 
 function normalizeEntry(raw: unknown): SquadBookEntry | null {
@@ -148,6 +158,11 @@ export function normalizeSquadBook(raw: unknown): SquadBookState {
   // Pre-v1.66 books have no Dream Team: they load with an empty one.
   base.dreamTeam = normalizeDreamTeam(r.dreamTeam);
   base.dreamTeamAt = typeof r.dreamTeamAt === "number" && Number.isFinite(r.dreamTeamAt) && r.dreamTeamAt > 0 ? r.dreamTeamAt : 0;
+  // Pre-v1.68 books have no favourites.
+  if (Array.isArray(r.favourites)) {
+    base.favourites = [...new Set(r.favourites.filter((id): id is string => typeof id === "string" && id.length > 0))].slice(0, MAX_FAVOURITES);
+  }
+  base.favouritesAt = typeof r.favouritesAt === "number" && Number.isFinite(r.favouritesAt) && r.favouritesAt > 0 ? r.favouritesAt : 0;
   return base;
 }
 
@@ -167,6 +182,7 @@ export function mergeSquadBookStates(aRaw: unknown, bRaw: unknown): SquadBookSta
   }
   // Dream Team: the newer pick wins (a tie keeps the first argument, i.e. local).
   const team = b.dreamTeamAt > a.dreamTeamAt ? b : a;
+  const favs = b.favouritesAt > a.favouritesAt ? b : a;
   return {
     v: 1,
     cards,
@@ -174,6 +190,8 @@ export function mergeSquadBookStates(aRaw: unknown, bRaw: unknown): SquadBookSta
     runs: [...new Set([...a.runs, ...b.runs])].slice(-MAX_RUN_IDS),
     dreamTeam: [...team.dreamTeam],
     dreamTeamAt: team.dreamTeamAt,
+    favourites: [...favs.favourites],
+    favouritesAt: favs.favouritesAt,
   };
 }
 
@@ -672,6 +690,35 @@ export function setDreamTeamSlot(slotIndex: number, cardId: string | null): void
   void saveCloud();
 }
 
+/**
+ * Star / unstar cards (a player profile passes all of that player's card ids, so unstarring clears
+ * every one of them). Pure; returns the unchanged state when nothing changes.
+ */
+export function setFavouritePure(state: SquadBookState, cardIds: readonly string[], on: boolean, now: number = Date.now()): SquadBookState {
+  const ids = cardIds.filter((id) => typeof id === "string" && id);
+  if (ids.length === 0) return state;
+  const current = new Set(state.favourites);
+  if (on) {
+    // One id is enough to mark the player: keep the card the coach starred from.
+    if (ids.some((id) => current.has(id))) return state;
+    if (current.size >= MAX_FAVOURITES) return state;
+    current.add(ids[0]);
+  } else {
+    if (!ids.some((id) => current.has(id))) return state;
+    for (const id of ids) current.delete(id);
+  }
+  return { ...state, favourites: [...current], favouritesAt: Math.max(now, state.favouritesAt + 1) };
+}
+
+/** Save a favourite star (local + cloud). */
+export function setFavourite(cardIds: readonly string[], on: boolean): void {
+  const before = getSquadBook();
+  const next = setFavouritePure(before, cardIds, on);
+  if (next === before) return;
+  saveLocal(next);
+  void saveCloud();
+}
+
 export function clearDreamTeam(): void {
   const state = getSquadBook();
   saveLocal({ ...state, dreamTeam: emptyDreamTeam(), dreamTeamAt: Math.max(Date.now(), state.dreamTeamAt + 1) });
@@ -795,7 +842,8 @@ export async function mergeSquadBookFromCloud(): Promise<void> {
   if (
     Object.keys(merged.cards).length !== cloudCount ||
     merged.claimed.length !== cloud.claimed.length ||
-    merged.dreamTeamAt !== cloud.dreamTeamAt
+    merged.dreamTeamAt !== cloud.dreamTeamAt ||
+    merged.favouritesAt !== cloud.favouritesAt
   ) {
     await saveCloud();
   }

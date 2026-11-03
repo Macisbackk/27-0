@@ -11,7 +11,10 @@ import { PAGE, LINK } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { formatClubFunds } from "@/lib/club-funds";
 import type { ClubFundsEarnedLine } from "@/lib/club-funds";
-import { ensurePlayersLoaded } from "@/lib/players";
+import { ensurePlayersLoaded, getPlayerById } from "@/lib/players";
+import { PlayerDetailModal } from "@/components/PlayerDetailModal";
+import { getProfileIndex } from "@/components/PlayerProfileSections";
+import { findPlayerCards } from "@/lib/player-profile";
 import {
   DREAM_TEAM_SLOTS,
   claimCollectionRewards,
@@ -45,7 +48,7 @@ const TABS: { id: Tab; label: string; shortLabel?: string }[] = [
   { id: "cards", label: "Cards" },
   { id: "dream", label: "Dream Team", shortLabel: "Dream 13" },
 ];
-type Status = "all" | "collected" | "missing";
+type Status = "all" | "collected" | "missing" | "favourites";
 const PAGE_SIZE = 60;
 
 const SOURCE_LABEL: Record<SquadBookSource, string> = { classic: "Classic", era: "Era", daily: "Daily", weekly: "Weekly" };
@@ -88,11 +91,14 @@ function BookCard({
   collected,
   sub,
   onClick,
+  favourite = false,
 }: {
   card: SquadBookCatalogCard;
   collected: boolean;
   sub: string;
   onClick?: () => void;
+  /** Starred from the player profile. */
+  favourite?: boolean;
 }) {
   const colour = RARITY_COLOUR[card.rarity];
   const body = (
@@ -109,6 +115,11 @@ function BookCard({
       )}
       <span className="min-w-0 flex-1 text-left">
         <span className={`block truncate text-sm font-semibold ${collected ? "text-white" : "text-[color:var(--fl-muted)]"}`}>
+          {favourite ? (
+            <span className="mr-1 text-amber-300" aria-label="Favourite">
+              ★
+            </span>
+          ) : null}
           {card.name}
           {card.category !== "current" && card.year ? ` (${card.year})` : ""}
         </span>
@@ -181,6 +192,8 @@ export default function SquadBookPage() {
   const [celebration, setCelebration] = useState<CollectionClaimResult | null>(null);
   const [pickSlot, setPickSlot] = useState<number | null>(null);
   const [pickQuery, setPickQuery] = useState("");
+  const [profileId, setProfileId] = useState<string | null>(null);
+  const profilePlayer = profileId ? getPlayerById(profileId) ?? null : null;
 
   useEffect(() => {
     let live = true;
@@ -222,6 +235,19 @@ export default function SquadBookPage() {
     return best;
   }, [catalog, progress, clubView]);
 
+  /** Starred players: every card of a starred player shows the star (favourites hold one card id). */
+  const favouriteIds = useMemo(() => {
+    const out = new Set<string>();
+    if (!catalog || book.favourites.length === 0) return out;
+    const index = getProfileIndex();
+    for (const id of book.favourites) {
+      out.add(id);
+      const p = getPlayerById(id);
+      if (p) for (const card of findPlayerCards(p, index)) out.add(card.id);
+    }
+    return out;
+  }, [catalog, book]);
+
   const filtered = useMemo(() => {
     if (!catalog) return [];
     const q = query.trim().toLowerCase();
@@ -230,6 +256,7 @@ export default function SquadBookPage() {
         const have = Boolean(book.cards[c.id]);
         if (status === "collected" && !have) return false;
         if (status === "missing" && have) return false;
+        if (status === "favourites" && !(have && favouriteIds.has(c.id))) return false;
         if (club !== "all" && c.club !== club) return false;
         if (decade !== "all" && String(c.decade) !== decade) return false;
         if (rarity !== "all" && c.rarity !== rarity) return false;
@@ -242,7 +269,7 @@ export default function SquadBookPage() {
         if (ha !== hb) return ha - hb;
         return a.club.localeCompare(b.club) || (b.year ?? 0) - (a.year ?? 0) || a.name.localeCompare(b.name);
       });
-  }, [catalog, book, query, status, club, decade, rarity]);
+  }, [catalog, book, query, status, club, decade, rarity, favouriteIds]);
 
   /** The active club's pool, one row per player: their best card, collected if any card is. */
   const clubRows = useMemo(() => {
@@ -564,6 +591,8 @@ export default function SquadBookPage() {
                         card={row.card}
                         collected={row.collected}
                         sub={row.collected ? `${row.have}/${row.cards} card${row.cards === 1 ? "" : "s"}` : row.cards > 1 ? `${row.cards} cards · locked` : "locked"}
+                        favourite={favouriteIds.has(row.card.id)}
+                        onClick={() => setProfileId(row.card.id)}
                       />
                     </li>
                   ))}
@@ -615,7 +644,7 @@ export default function SquadBookPage() {
               </select>
             </div>
             <div className="flex flex-wrap justify-center gap-2">
-              {(["all", "collected", "missing"] as Status[]).map((s) => (
+              {(["all", "collected", "missing", "favourites"] as Status[]).map((s) => (
                 <button
                   key={s}
                   type="button"
@@ -630,7 +659,7 @@ export default function SquadBookPage() {
               ))}
             </div>
             <p className={`text-center ${TYPO.bodySm}`}>
-              {filtered.length} card{filtered.length === 1 ? "" : "s"}
+              {filtered.length} card{filtered.length === 1 ? "" : "s"} · tap one for his profile
             </p>
 
             <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
@@ -642,6 +671,8 @@ export default function SquadBookPage() {
                       card={c}
                       collected={Boolean(entry)}
                       sub={entry ? `${c.club} · ${SOURCE_LABEL[entry.source]}${entry.times > 1 ? ` · ×${entry.times}` : ""}` : `${c.club} · locked`}
+                      favourite={favouriteIds.has(c.id)}
+                      onClick={() => setProfileId(c.id)}
                     />
                   </li>
                 );
@@ -778,6 +809,8 @@ export default function SquadBookPage() {
           </div>
         ) : null}
       </GameModal>
+
+      {profilePlayer ? <PlayerDetailModal player={profilePlayer} onClose={() => setProfileId(null)} /> : null}
 
       <GameModal open={celebration !== null} onClose={() => setCelebration(null)} labelledBy="collection-claim-title">
         {celebration ? (

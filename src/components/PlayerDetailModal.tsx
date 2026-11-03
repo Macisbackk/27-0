@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Player, Position } from "@/lib/types";
 import {
   formatPlayerAge,
   formatValue,
+  getPlayerById,
   getPlayerDisplayName,
 } from "@/lib/players";
 import { getCachedPlayerAchievements } from "@/lib/players/achievement-cache";
@@ -15,6 +16,7 @@ import {
 import { playPopupOpen } from "@/lib/sound";
 import { AchievementChipList } from "./cards/AchievementChipList";
 import { PlayerTierBadge } from "./cards/PlayerTierBadge";
+import { PlayerProfileSections } from "./PlayerProfileSections";
 import { MobileBottomSheet } from "@/components/ui/MobileOverlay";
 import { TeamColourStrip } from "@/components/ui/TeamColourStrip";
 import { POSITION_LABELS } from "@/lib/positions";
@@ -41,12 +43,17 @@ interface PlayerDetailModalProps {
 }
 
 export function PlayerDetailModal({
-  player,
+  player: openedPlayer,
   onClose,
   ratingContext,
   seasonYear,
   cardDisplayName,
 }: PlayerDetailModalProps) {
+  // The season list in the profile can switch the sheet to another of his cards.
+  const [activeId, setActiveId] = useState(openedPlayer.id);
+  useEffect(() => setActiveId(openedPlayer.id), [openedPlayer.id]);
+  const switched = activeId !== openedPlayer.id;
+  const player = (switched ? getPlayerById(activeId) : undefined) ?? openedPlayer;
   const view = useMemo(() => toPlayerShowcaseViewModel(player), [player]);
   const displayName = view.displayName || getPlayerDisplayName(player);
   const colourCtx = useMemo(
@@ -54,8 +61,8 @@ export function PlayerDetailModal({
     [player]
   );
   const achievements = getCachedPlayerAchievements(player, "expanded");
-  const resolvedRatingContext = getPlayerRatingContext(player, ratingContext);
-  const resolvedSeasonYear = getPlayerSeasonRatingYear(player, seasonYear);
+  const resolvedRatingContext = getPlayerRatingContext(player, switched ? undefined : ratingContext);
+  const resolvedSeasonYear = getPlayerSeasonRatingYear(player, switched ? undefined : seasonYear);
   const ratingLabel = getPlayerRatingLabel(resolvedRatingContext);
   const positionLabel =
     POSITION_LABELS[view.position as Position] ?? view.position;
@@ -65,14 +72,14 @@ export function PlayerDetailModal({
   }, []);
 
   useEffect(() => {
-    if (cardDisplayName !== undefined) {
+    if (cardDisplayName !== undefined && !switched) {
       assertShowcaseCardPopupNameMatch(
         player.id,
         cardDisplayName,
         displayName
       );
     }
-  }, [cardDisplayName, displayName, player.id]);
+  }, [cardDisplayName, displayName, player.id, switched]);
 
   return (
     <MobileBottomSheet
@@ -131,10 +138,12 @@ export function PlayerDetailModal({
 
       {achievements.length > 0 && (
         <div className={`mt-4 min-w-0 ${CARD.inset} ${SPACING.cardPaddingSm}`}>
-          <p className={`${TYPO.sectionTitle} mb-2`}>Achievements</p>
+          <p className={`${TYPO.sectionTitle} mb-2`}>This card&apos;s honours</p>
           <AchievementChipList achievements={achievements} />
         </div>
       )}
+
+      <PlayerProfileSections player={player} activeCardId={player.id} onSelectCard={setActiveId} />
     </MobileBottomSheet>
   );
 }

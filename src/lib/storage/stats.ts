@@ -91,6 +91,10 @@ export const EMPTY_STATS: UserStatsData = {
 
   playerSeasonLosses: {},
 
+  playerPerfectSeasons: {},
+
+  playerTries: {},
+
   joeMellorRuns: 0,
 
   bestJoeMellorWins: 0,
