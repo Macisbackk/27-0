@@ -66,6 +66,30 @@ const OBSERVE = () => {
 };
 
 const results = [];
+// PERF_PROFILE="/,/play": CPU-profile those pages (first phone, cold) and print where main-thread time goes.
+const PROFILE_PATHS = (process.env.PERF_PROFILE || "").split(",").map((x) => x.trim()).filter(Boolean);
+const profiles = [];
+function summarizeProfile(path, profile) {
+  const byId = new Map(profile.nodes.map((n) => [n.id, n]));
+  const hits = new Map();
+  const dt = profile.timeDeltas || [];
+  profile.samples.forEach((id, i) => hits.set(id, (hits.get(id) || 0) + (dt[i + 1] ?? dt[i] ?? 0)));
+  const byUrl = new Map();
+  const byFn = new Map();
+  let total = 0;
+  for (const [id, us] of hits) {
+    const n = byId.get(id);
+    const cf = n.callFrame;
+    const url = cf.url ? cf.url.replace(/^https?:\/\/[^/]+/, "").replace(/\?.*$/, "") : `(${cf.functionName || "native"})`;
+    if (url === "(idle)") continue;
+    total += us;
+    byUrl.set(url, (byUrl.get(url) || 0) + us);
+    const fk = `${cf.functionName || "(anon)"} ${url}:${cf.lineNumber + 1}:${cf.columnNumber + 1}`;
+    byFn.set(fk, (byFn.get(fk) || 0) + us);
+  }
+  const top = (m, n) => [...m.entries()].sort((a, b) => b[1] - a[1]).slice(0, n).map(([k, v]) => `  ${(v / 1000).toFixed(0).padStart(6)} ms  ${k}`);
+  profiles.push([`CPU profile ${path} (busy ${(total / 1000).toFixed(0)} ms, self time by script):`, ...top(byUrl, 12), "  by function:", ...top(byFn, 15)].join("\n"));
+}
 const browser = await chromium.launch();
 for (const profile of PROFILES) {
   for (const path of PAGES) {
@@ -91,7 +115,13 @@ for (const profile of PROFILES) {
         }
       });
       const row = { profile: profile.name, path, visit };
+      const doProfile = visit === "cold" && profile === PROFILES[0] && PROFILE_PATHS.includes(path);
       try {
+        if (doProfile) {
+          await cdp.send("Profiler.enable");
+          await cdp.send("Profiler.setSamplingInterval", { interval: 500 });
+          await cdp.send("Profiler.start");
+        }
         if (visit === "warm") {
           await page.goto(`${BASE}${path}`, { waitUntil: "load", timeout: 90_000 });
           jsBytes = 0;
@@ -124,6 +154,10 @@ for (const profile of PROFILES) {
           };
         });
         Object.assign(row, m, { jsKB: Math.round(jsBytes / 1024), totalKB: Math.round(totalBytes / 1024) });
+        if (doProfile) {
+          const { profile: cpu } = await cdp.send("Profiler.stop");
+          summarizeProfile(path, cpu);
+        }
       } catch (err) {
         row.error = String(err?.message || err).split("\n")[0];
       }
@@ -156,6 +190,12 @@ lines.push("Layout shifts (≥0.01; time ms, score, shifted element):");
 for (const r of results) {
   if (!r.shifts || !r.shifts.length) continue;
   lines.push(`- ${r.profile} ${r.path} ${r.visit}: ${r.shifts.map((x) => `@${x.t} ${x.v} ${x.src}`).join(" ; ")}`);
+}
+if (profiles.length) {
+  lines.push("");
+  lines.push("```");
+  lines.push(...profiles);
+  lines.push("```");
 }
 const md = lines.join("\n") + "\n";
 process.stdout.write(md);
