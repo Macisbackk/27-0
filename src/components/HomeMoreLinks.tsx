@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/heavy-routes";
 import { AlbumGlyph, CupGlyph, LadderGlyph, ShopGlyph } from "@/components/icons/rugby-icons";
 import { useSquadBookState } from "@/lib/squad-book-state";
 
@@ -20,6 +21,7 @@ export function HomeMoreLinks() {
         <Link
           key={href}
           href={href}
+          prefetch={linkPrefetch(href)}
           aria-label={href === "/squad-book" && cards > 0 ? `${label}, ${cards} cards` : undefined}
           className="relative flex min-h-[56px] flex-col items-center justify-center gap-1 rounded-control text-[12px] font-semibold text-[color:var(--fl-muted)] hover:bg-pitch-900 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/70"
         >

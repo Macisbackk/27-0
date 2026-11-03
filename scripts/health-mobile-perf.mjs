@@ -200,6 +200,7 @@ if (profiles.length) {
 const md = lines.join("\n") + "\n";
 process.stdout.write(md);
 if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, md);
-mkdirSync("health", { recursive: true });
-writeFileSync("health/mobile-perf.json", JSON.stringify(results, null, 2));
-writeFileSync("health/mobile-perf.md", md);
+const OUT = process.env.PERF_OUT_DIR || "health";
+mkdirSync(OUT, { recursive: true });
+writeFileSync(`${OUT}/mobile-perf.json`, JSON.stringify(results, null, 2));
+writeFileSync(`${OUT}/mobile-perf.md`, md);

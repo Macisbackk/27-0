@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { PlayPageClient } from "./PlayPageClient";
+import { PlayLoading } from "./PlayLoading";
 
 export const metadata: Metadata = {
   title: "Classic — 27-0",
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
  */
 export default function PlayPage() {
   return (
-    <Suspense fallback={<p className="p-6 text-center text-pitch-400">Loading…</p>}>
+    <Suspense fallback={<PlayLoading />}>
       <PlayPageClient />
     </Suspense>
   );
