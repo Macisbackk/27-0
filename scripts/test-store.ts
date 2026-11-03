@@ -62,21 +62,38 @@ async function main(): Promise<void> {
   // ---------------------------------------------------------------- nextStoreUnlock
   const cheapest = Math.min(...cos.COSMETICS.filter((c) => !c.notForSale).map((c) => c.price));
   const starters = cos.COSMETICS.filter((c) => c.tier === "starter");
-  check(starters.length > 0 && starters.every((c) => c.price >= 150_000 && c.price <= 450_000), "starter rung is £150k–£450k");
+  check(starters.length > 0 && starters.every((c) => c.price >= 50_000 && c.price <= 300_000), "starter rung is £50k–£300k");
+  // v1.66 ladder: every kind for sale has something in the starter rung, and day one is affordable.
+  for (const kind of ["kit", "pitch", "title", "frame"] as const) {
+    check(cos.COSMETICS.some((c) => c.kind === kind && c.tier === "starter" && !c.notForSale), `starter ${kind} exists`);
+  }
+  check(cos.COSMETICS.filter((c) => !c.notForSale).every((c) => c.price > 0), "every item for sale has a price");
+  const themes = await import("../src/lib/ui-themes");
+  const themePrices = themes.STYLE_UI_THEMES.map((t) => themes.uiThemePrice(t.id));
+  check(themePrices.every((p) => p >= 500_000 && p <= 4_000_000), "themes £500k–£4m");
+  check(Math.min(...themePrices) <= 1_000_000, "a theme within £1m");
+  check(themes.sortUiThemesForStore(themes.UI_THEMES, ["default"])[1]?.id === "steel", "locked themes cheapest first");
   check(cos.nextStoreUnlock(0)?.price === cheapest && cos.nextStoreUnlock(0)?.remaining === cheapest, "empty wallet: cheapest item, full price remaining");
   check(cos.nextStoreUnlock(-500)?.remaining === cheapest, "negative balance treated as 0");
   check(cos.nextStoreUnlock(cheapest)?.remaining === 0, "exact balance: affordable");
   check(cos.nextStoreUnlock(cheapest - 1)?.remaining === 1, "£1 short");
   check(cos.nextStoreUnlock(1e12)?.remaining === 0, "huge balance");
   const earnedModes = [cos.BALL_KNOWER_ID, cos.ONE_CLUB_MODE_ID, cos.GAUNTLET_MODE_ID, cos.PAST_DAILIES_MODE_ID];
+  const earnedKits = [cos.KIT_PERFECT_ID, cos.KIT_29_0_ID, cos.KIT_STREAK_30_ID, cos.KIT_STREAK_100_ID, cos.KIT_MANAGER_GF_ID];
   check(
-    cos.COSMETICS.filter((c) => c.notForSale).every((c) => (earnedModes.includes(c.id) && c.kind === "mode") || c.id.startsWith("title-collector-")),
-    "only the More modes and the Squad Book club titles are earned, not sold"
+    cos.COSMETICS.filter((c) => c.notForSale).every(
+      (c) => (earnedModes.includes(c.id) && c.kind === "mode") || (earnedKits.includes(c.id) && c.kind === "kit") || c.id.startsWith("title-collector-")
+    ),
+    "only the More modes, achievement kits and Squad Book club titles are earned, not sold"
   );
+  check(earnedKits.every((id) => cos.cosmeticById(id)?.notForSale === true && cos.isKitPreset(id)), "every achievement kit is a notForSale preset");
+  check(cos.COSMETICS.filter((c) => c.kind === "kit" && c.id !== cos.KIT_DESIGNER_ID).every((c) => cos.isKitPreset(c.id)), "every ready-made kit has a shirt");
+  check(!cos.cosmeticsOfKind("kit").some((c) => c.notForSale), "earned kits never listed for sale");
   check(earnedModes.every((id) => cos.cosmeticById(id)?.notForSale === true), "every More mode is a notForSale item");
   check(cos.COSMETICS.filter((c) => c.kind === "mode").every((c) => c.notForSale), "no mode is for sale");
   check(cos.nextStoreUnlock(1000, cos.COSMETICS.map((c) => c.id)) === null, "everything owned: no next unlock");
-  check(cos.nextStoreUnlock(0, ["title-rookie"])?.id === "title-ball-boy", "owned starter drops out, tie keeps catalogue order");
+  check(cos.nextStoreUnlock(0)?.id === "pitch-park", "cheapest first, catalogue order on a tie");
+  check(cos.nextStoreUnlock(0, ["pitch-park"])?.id === "title-mascot", "owned starter drops out, tie keeps catalogue order");
   const allButOne = cos.COSMETICS.filter((c) => c.id !== "title-27-0-legend").map((c) => c.id);
   check(cos.nextStoreUnlock(0, allButOne)?.id === "title-27-0-legend", "only the dearest left");
   check(cos.cosmeticsOfKind("title")[0]?.tier === "starter", "starter items listed first");
@@ -92,11 +109,51 @@ async function main(): Promise<void> {
   const bal0 = funds.getClubFundsBalance();
   const buy = store.purchaseCosmetic(cos.CHALK_FRAME_ID);
   check(!buy.success && buy.reason === "owned" && funds.getClubFundsBalance() === bal0, "buying a granted item charges nothing");
-  funds.setClubFundsBalance(225_000);
+  funds.setClubFundsBalance(cos.cosmeticById("pitch-training")!.price);
   const r1 = store.purchaseCosmetic("pitch-training");
   const r2 = store.purchaseCosmetic("pitch-training");
   check(r1.success && funds.getClubFundsBalance() === 0 && !r2.success, "exact-balance purchase once");
   check(!store.purchaseCosmetic("title-rookie").success, "can't buy at £0");
+  check(!store.purchaseCosmetic(cos.KIT_PERFECT_ID).success, "an achievement kit can't be bought");
+
+  // ---------------------------------------------------------------- ready-made kits
+  storage.clear();
+  funds.setClubFundsBalance(10_000_000);
+  check(store.purchaseCosmetic("kit-blue-hoops").success, "buy a ready-made kit");
+  check(store.getCosmetics().equipped.kit === "kit-blue-hoops", "bought kit goes straight on");
+  check(store.purchaseCosmetic(cos.KIT_DESIGNER_ID).success, "buy the kit designer");
+  let st = store.getCosmetics();
+  check(st.kit.enabled && st.equipped.kit === null, "designer on takes the ready-made kit off");
+  store.equipCosmetic("kit", "kit-blue-hoops");
+  st = store.getCosmetics();
+  check(st.equipped.kit === "kit-blue-hoops" && !st.kit.enabled, "wearing a ready-made kit switches the designer off");
+  store.equipCosmetic("kit", cos.KIT_DESIGNER_ID);
+  check(store.getCosmetics().equipped.kit === "kit-blue-hoops", "the designer is not a ready-made kit slot");
+  store.equipCosmetic("kit", "kit-retro-v");
+  check(store.getCosmetics().equipped.kit === "kit-blue-hoops", "can't wear a kit you don't own");
+  storage.setItem("27-0-cosmetics-store", JSON.stringify({ owned: ["kit-designer"], equipped: { kit: "kit-designer" }, kit: { enabled: true } }));
+  check(store.getCosmetics().equipped.kit === null && store.getCosmetics().kit.enabled, "tampered kit slot ignored");
+
+  // ---------------------------------------------------------------- achievement kits
+  const ak = await import("../src/lib/achievement-kits");
+  const none = { achievements: [], bestDailyStreak: 0, owned: [] };
+  check(ak.earnedAchievementKitIds(none).length === 0, "no feats: no kits");
+  check(ak.earnedAchievementKitIds({ ...none, achievements: ["perfect-season"] }).includes(cos.KIT_PERFECT_ID), "27-0 earns the Invincibles kit");
+  check(ak.earnedAchievementKitIds({ ...none, owned: [cos.BALL_KNOWER_ID] }).includes(cos.KIT_PERFECT_ID), "Ball Knower owned (a past 27-0) earns it too");
+  check(ak.earnedAchievementKitIds({ ...none, achievements: ["29-0"] }).includes(cos.KIT_29_0_ID), "29-0 earns its kit");
+  check(ak.earnedAchievementKitIds({ ...none, achievements: ["manager-old-trafford"] }).includes(cos.KIT_MANAGER_GF_ID), "Manager Grand Final earns its kit");
+  const streak = (n: number) => ak.earnedAchievementKitIds({ ...none, bestDailyStreak: n });
+  check(!streak(29).includes(cos.KIT_STREAK_30_ID) && streak(30).includes(cos.KIT_STREAK_30_ID), "30-day streak kit at 30");
+  check(!streak(99).includes(cos.KIT_STREAK_100_ID) && streak(100).includes(cos.KIT_STREAK_100_ID), "100-day streak kit at 100");
+  check(ak.ACHIEVEMENT_KITS.every((k) => k.earn.length > 0 && cos.cosmeticById(k.id)), "every achievement kit has earn text and a catalogue item");
+  storage.clear();
+  storage.setItem("27-0-daily-challenge-meta", JSON.stringify({ currentStreak: 3, bestStreak: 31 }));
+  const g1 = ak.syncAchievementKits();
+  check(g1.includes(cos.KIT_STREAK_30_ID) && !g1.includes(cos.KIT_STREAK_100_ID), "sync grants the 30-day kit from the Daily meta");
+  check(ak.syncAchievementKits().length === 0, "sync is idempotent");
+  check(store.getCosmetics().equipped.kit === cos.KIT_STREAK_30_ID, "earned kit goes on when no shirt is worn");
+  const bal1 = funds.getClubFundsBalance();
+  check(!store.purchaseCosmetic(cos.KIT_STREAK_30_ID).success && funds.getClubFundsBalance() === bal1, "earned kit costs nothing");
 
   // ---------------------------------------------------------------- login welcome
   storage.clear();

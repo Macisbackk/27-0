@@ -815,7 +815,20 @@ if (ONLY === "all" || ONLY === "flows") {
       });
       await page.waitForTimeout(500);
       // A confirm step, if any.
-      await tapFirst(page, [/^Confirm|^Buy it|^Yes/i]);
+      // v1.66: Buy lives in the preview sheet the price button opens; triple-tap it too.
+      const sheetBuy = page.getByRole("dialog").getByRole("button", { name: /^Buy ·/ });
+      if (await visible(sheetBuy)) {
+        const h2 = await sheetBuy.elementHandle().catch(() => null);
+        await h2?.evaluate((el) => {
+          el.click();
+          el.click();
+          el.click();
+        }).catch(() => {});
+      } else {
+        await tapFirst(page, [/^Confirm|^Buy it|^Yes/i]);
+      }
+      // v1.66 preview sheet: close it if it is still open (unaffordable / already owned).
+      if (await page.getByRole("dialog").count().catch(() => 0)) await page.keyboard.press("Escape").catch(() => {});
       await page.waitForTimeout(400);
       const spent = b0 - (await balance());
       if (m && spent > Number(m[1]) * (m[2] === "m" ? 1_000_000 : 1_000) + 1) problem("double-action", `Store ${tab.trim()}: triple tap on "${label}" spent £${spent.toLocaleString()}`);

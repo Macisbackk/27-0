@@ -36,16 +36,60 @@ jobs:
 
   mobile-perf:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 70
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder
+      NEXT_TELEMETRY_DISABLED: "1"
+      # Schedule / dispatch measure the live site; a push to a health/* branch measures that branch's own build.
+      PERF_LOCAL: ${{ github.event_name == 'push' && '1' || '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+          cache: npm
+      - name: Install
+        if: env.PERF_LOCAL == '1'
+        run: npm ci
+      - name: Build this branch (with chunk report)
+        if: env.PERF_LOCAL == '1'
+        run: CHUNK_REPORT=1 npm run build
+      - name: What the client JS is made of
+        if: env.PERF_LOCAL == '1'
+        continue-on-error: true
+        run: node scripts/health-chunk-report.mjs 25
       - name: Install Playwright
         run: npm install --no-save --no-package-lock playwright@1.49.1 && npx playwright install --with-deps chromium
-      - name: Mobile performance (live site)
-        run: node scripts/health-mobile-perf.mjs "${{ github.event.inputs.perf_url || 'https://www.27-0.co.uk' }}"
+      - name: Start the site
+        if: env.PERF_LOCAL == '1'
+        run: |
+          npx next start -p 3000 > /tmp/next.log 2>&1 &
+          for i in $(seq 1 60); do curl -sf http://localhost:3000/ > /dev/null && break; sleep 1; done
+      # Same runner, same conditions: build main too and measure it first, so a health/* branch
+      # gets a like-for-like before/after (CI runners differ a lot in CPU speed).
+      - name: Build main for comparison
+        if: env.PERF_LOCAL == '1'
+        run: |
+          git fetch --depth=1 origin main
+          git worktree add ../base FETCH_HEAD
+          cd ../base && npm ci && npm run build
+      - name: Mobile performance (main, same runner)
+        if: env.PERF_LOCAL == '1'
+        continue-on-error: true
+        env:
+          PERF_OUT_DIR: health/main
+        run: |
+          (cd ../base && npx next start -p 3001 > /tmp/next-base.log 2>&1 &)
+          for i in $(seq 1 60); do curl -sf http://localhost:3001/ > /dev/null && break; sleep 1; done
+          echo "## main (baseline, this runner)"
+          node scripts/health-mobile-perf.mjs http://localhost:3001
+          pkill -f "next start -p 3001" || true
+      - name: Mobile performance
+        env:
+          # e.g. "/,/play" to print a CPU profile of those pages (adds overhead to their numbers).
+          PERF_PROFILE: ""
+        run: node scripts/health-mobile-perf.mjs "${{ env.PERF_LOCAL == '1' && 'http://localhost:3000' || github.event.inputs.perf_url || 'https://www.27-0.co.uk' }}"
       - uses: actions/upload-artifact@v4
         if: always()
         with:

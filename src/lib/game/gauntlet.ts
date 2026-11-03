@@ -35,13 +35,15 @@ import { buildSlotRevealTarget } from "./recruitment-slot-reveal";
 import { eligiblePlayersForSlot, placeSlotRecruitPlayerAtSlot } from "./slot-team-year-pick";
 import { pickDecisiveScorePair } from "./rl-scores";
 import {
+  GAUNTLET_ERA_ELITE_RATING,
   getTeamStrength,
   modeUsesChemistry,
   winProbability,
   type SimFormulaMode,
 } from "./sim-formula";
 
-export const GAUNTLET_LENGTH = 10;
+import { GAUNTLET_LENGTH } from "./gauntlet-constants";
+export { GAUNTLET_LENGTH };
 export const GAUNTLET_MAX_PER_CLUB = 3;
 /**
  * Strength points taken off every great side so a near-perfect draft has roughly the same
@@ -103,11 +105,17 @@ export function getGauntletCandidates(): GauntletOpponent[] {
       label: formatEraDisplayName(final.winnerName, year),
       squadRating,
       ladder,
-      strength: getTeamStrength({ avgRating: squadRating, mode: ladder }) - GAUNTLET_FIELD_OFFSET,
+      strength:
+        getTeamStrength({ avgRating: squadRating, mode: ladder, eliteRating: gauntletElite(ladder) }) - GAUNTLET_FIELD_OFFSET,
       honour: `Beat ${final.runnerUpName} ${final.score ?? ""} in the ${final.year} Grand Final`.replace("  ", " "),
     });
   }
   return out.sort((a, b) => b.strength - a.strength || a.year - b.year);
+}
+
+/** The Gauntlet keeps the pre-v1.70 Era ladder (the 27-0 retune is for league seasons). */
+function gauntletElite(mode: SimFormulaMode): number | undefined {
+  return mode === "era" ? GAUNTLET_ERA_ELITE_RATING : undefined;
 }
 
 /** The ten sides, weakest first. Same for everyone (pure function of the data). */
@@ -152,6 +160,7 @@ export function getGauntletTeamStrength(squad: SquadSlot[], mode: SimFormulaMode
   return getTeamStrength({
     avgRating: getAverageSquadRating(squad),
     mode,
+    eliteRating: gauntletElite(mode),
     // Era: chemistry has no effect (v1.40).
     chemistry: modeUsesChemistry(mode) ? computeChemistry(squad).bonus : 0,
   });

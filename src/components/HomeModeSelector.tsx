@@ -9,6 +9,7 @@ import {
   TilesGlyph,
 } from "@/components/icons/rugby-icons";
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/heavy-routes";
 import { useEffect, useState, type ReactNode } from "react";
 import {
   getDailyChallengeAttemptUsed,
@@ -44,18 +45,26 @@ import { getNormalEraVariant, setNormalEraVariant } from "@/lib/storage/preferen
 import { playModeClassicStart, playUiClick } from "@/lib/sound";
 import { formatClubFunds } from "@/lib/club-funds";
 import { loadLocalCareer } from "@/lib/career/storage";
-import { DIVISION_LABEL } from "@/lib/career/clubs";
+import type { Division } from "@/lib/career/types";
 import { getAllStats } from "@/lib/storage/stats";
 import { getPaidRunIds } from "@/lib/storage/club-funds";
 import { getLocalDateKey } from "@/lib/mini-games/date";
 import { PAST_DAILIES_MODE_ID } from "@/lib/cosmetics";
 import { countUnlockedModes, syncModeUnlocks } from "@/lib/mode-unlocks";
 import { useCosmetics } from "@/lib/storage/cosmetics-store";
+import { syncAchievementKits } from "@/lib/achievement-kits";
 import { DAILY_ARCHIVE_PAGE } from "@/lib/daily-archive";
 import { MODES_PAGE } from "@/lib/play-side-modes";
 import { PitchHero } from "@/components/ui/PitchHero";
 import { loadRunResume } from "@/lib/game/run-resume";
 import { TOTAL_SLOTS } from "@/lib/positions";
+
+// Same labels as DIVISION_LABEL in lib/career/clubs.ts, which also bundles the NRL club data.
+const DIVISION_LABEL: Record<Division, string> = {
+  "super-league": "Super League",
+  championship: "Championship",
+  nrl: "NRL",
+};
 
 /** Everything on the home hub that depends on this device (filled in after mount). */
 interface HubState {
@@ -211,6 +220,7 @@ function ModeTile({
   return (
     <Link
       href={href}
+      prefetch={linkPrefetch(href)}
       aria-label={ariaLabel}
       onClick={() => {
         playUiClick();
@@ -262,13 +272,18 @@ export function HomeModeSelector() {
     }
     // More modes unlock by challenges (v1.50): grant any already met (27-0, Grand Final…).
     syncModeUnlocks();
+    syncAchievementKits();
     try {
       setEra(getNormalEraVariant());
     } catch {
       /* storage blocked: Current squads */
     }
     try {
-      setHub(readHub());
+      const next = readHub();
+      setHub(next);
+      // Keep the pre-paint guess (lib/ui/first-run-bootstrap.ts) right for later visits to home.
+      if (next.firstRun) document.documentElement.setAttribute("data-first-run", "1");
+      else document.documentElement.removeAttribute("data-first-run");
     } catch {
       setHub(null);
     }
@@ -381,15 +396,19 @@ export function HomeModeSelector() {
         badge={resumeSigned != null ? "Run in progress" : best ? `Best ${best}` : undefined}
         titleAs="p"
         title={
-          firstRun ? (
-            <>
-              Sign a 13.
-              <br />
-              Win all 27.
-            </>
-          ) : (
-            "Chase 27-0"
-          )
+          // Until the hub is read, a new player's card keeps room for the two-line title
+          // (data-first-run, lib/ui/first-run-bootstrap.ts) so it doesn't grow after paint.
+          <span className={hub ? undefined : "home-classic-title"}>
+            {firstRun ? (
+              <>
+                Sign a 13.
+                <br />
+                Win all 27.
+              </>
+            ) : (
+              "Chase 27-0"
+            )}
+          </span>
         }
       >
         <div role="group" aria-label="Squads" className="pitch-seg">
@@ -419,6 +438,7 @@ export function HomeModeSelector() {
         </div>
         <Link
           href={buildPlayHref("classic", era)}
+          prefetch={false}
           onClick={() => {
             playUiClick();
             startClassic(era)();
@@ -491,6 +511,7 @@ export function HomeModeSelector() {
             <div className="flex items-stretch gap-2" role="group" aria-label="Daily Challenge">
               <Link
                 href={getDailyChallengeHref()}
+                prefetch={linkPrefetch(getDailyChallengeHref())}
                 onClick={() => playUiClick()}
                 aria-label={`${daily?.done ? "Play again for practice" : daily?.used ? "Practice today's Daily" : "Play today's Daily"}: ${daily?.scenario.ruleTitle ?? "today's rule"}`}
                 className={`btn-press fl-pressable flex min-h-[64px] min-w-0 flex-1 items-center gap-3 rounded-tile bg-pitch-900 p-2.5 pl-3 text-left hover:bg-pitch-800 ${FOCUS}`}
@@ -540,6 +561,7 @@ export function HomeModeSelector() {
             <div className="relative min-w-0 rounded-tile bg-pitch-900">
               <Link
                 href={weeklyHref}
+                prefetch={linkPrefetch(weeklyHref)}
                 onClick={() => playUiClick()}
                 aria-label={`Weekly Challenge: ${weekly?.scenario.ruleTitle ?? "this week's rule"}. ${weeklyStatus}${weekly ? `, ${weekly.resetsIn} left` : ""}`}
                 className={`btn-press fl-pressable flex h-full min-h-[72px] flex-col justify-center gap-1 rounded-tile p-3 pr-12 text-left hover:bg-pitch-800 ${FOCUS}`}

@@ -6,7 +6,9 @@ import { getActiveSuperLeagueClubNames } from "../clubs/super-league-display";
 import { isSuperLeagueEligiblePlayer } from "./super-league-eligibility";
 import { isHiddenPlayer } from "./goat";
 import { isGameplayYearCard, isYearPinnedPlayer } from "./year-card";
-import { applyPlayerRegistry, buildPlayerRegistry } from "./registry";
+import { applyPlayerRegistry, buildPlayerRegistry, buildPlayerRegistryInSlices } from "./registry";
+// Installs the registry-aware placement profile into player-positions (see placement-profile.ts).
+import "./placement-profile";
 
 const store = {
   all: [] as Player[],
@@ -61,7 +63,49 @@ export function ensurePlayersLoaded(): Promise<void> {
   return clientLoadPromise;
 }
 
-bootstrapRegistryFromSync();
+/**
+ * /play sets this flag (players/defer-registry.ts) before this module first loads, so the
+ * registry is built in slices by loadPlayersInSlices() instead of in one long task during
+ * hydration. Anything that reads a player before then still gets the synchronous build.
+ */
+const DEFER_REGISTRY_FLAG = "__27_0_deferPlayerRegistry";
+
+function isRegistryDeferred(): boolean {
+  return typeof window !== "undefined" && (globalThis as Record<string, unknown>)[DEFER_REGISTRY_FLAG] === true;
+}
+
+function yieldToMain(): Promise<void> {
+  const sched = (globalThis as { scheduler?: { yield?: () => Promise<void> } }).scheduler;
+  if (sched && typeof sched.yield === "function") return sched.yield();
+  return new Promise((resolve) => setTimeout(resolve, 0));
+}
+
+let sliceLoadPromise: Promise<void> | null = null;
+
+/** Builds the registry without blocking the page (falls back to the one-shot build on error). */
+export function loadPlayersInSlices(): Promise<void> {
+  if (store.byId.size > 0) {
+    clientLoadComplete = true;
+    return Promise.resolve();
+  }
+  if (!sliceLoadPromise) {
+    sliceLoadPromise = (async () => {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const { getSyncRawPlayerRows } = require("./sync-bootstrap") as typeof import("./sync-bootstrap");
+      const raw = getSyncRawPlayerRows();
+      await yieldToMain();
+      const registry = await buildPlayerRegistryInSlices(raw.current, raw.historic, raw.legends, yieldToMain);
+      // Something may have needed a player meanwhile and built it synchronously: keep that one.
+      if (store.byId.size === 0) applyPlayerRegistry(store, registry);
+      clientLoadComplete = true;
+    })().catch(() => {
+      bootstrapRegistryFromSync();
+    });
+  }
+  return sliceLoadPromise;
+}
+
+if (!isRegistryDeferred()) bootstrapRegistryFromSync();
 
 export const PLAYER_POOL = store.all;
 export const CURRENT_PLAYERS = store.current;
@@ -69,6 +113,7 @@ export const HISTORIC_PLAYERS = store.historic;
 export const LEGEND_PLAYERS = store.legends;
 
 export function getAllDatabasePlayers(): Player[] {
+  ensureRegistrySync();
   return [...store.byId.values()];
 }
 
@@ -85,6 +130,7 @@ export function getPlayersByPosition(
 }
 
 export function getPlayersByCategory(category: PlayerCategory): Player[] {
+  ensureRegistrySync();
   switch (category) {
     case "current":
       return CURRENT_PLAYERS;
@@ -97,12 +143,14 @@ export function getPlayersByCategory(category: PlayerCategory): Player[] {
 
 /** All database players assigned to a club (current, historic, legends). */
 export function getPlayersByClub(club: string): Player[] {
+  ensureRegistrySync();
   const canonical = getClubByName(club)?.name ?? club;
   return PLAYER_POOL.filter((p) => clubsMatch(p.club, canonical));
 }
 
 /** Active Super League clubs that have at least one player in the database. */
 export function getClubsWithPlayers(): string[] {
+  ensureRegistrySync();
   const withPlayers = new Set(
     PLAYER_POOL.map((p) => getClubByName(p.club)?.name ?? p.club)
   );
@@ -171,6 +219,7 @@ export function isAvailableInGame(player: Player): boolean {
 
 /** Public player pool — includes year cards and canonical career records. */
 export function getShowcasePlayers(): Player[] {
+  ensureRegistrySync();
   return PLAYER_POOL.filter(
     (p) =>
       !isHiddenPlayer(p) &&
@@ -180,6 +229,7 @@ export function getShowcasePlayers(): Player[] {
 
 /** Players eligible for recruitment / draft offers — year-pinned only. */
 export function getRecruitablePlayers(): Player[] {
+  ensureRegistrySync();
   return PLAYER_POOL.filter(
     (p) =>
       !isHiddenPlayer(p) &&

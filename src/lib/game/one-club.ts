@@ -20,7 +20,7 @@ import { getAverageSquadRating } from "../squad-analysis";
 import { computeChemistry } from "./chemistry";
 import { getSpinTeamYearPoolsCached } from "./player-pool-eligibility";
 import type { SpinRuleFilter } from "./daily-rule-filter";
-import { SIM_FORMULA_MODE_SCALE, type SimFormulaModeScale } from "./sim-formula";
+import { GAUNTLET_ERA_ELITE_RATING, SIM_FORMULA_MODE_SCALE, type SimFormulaModeScale } from "./sim-formula";
 import { ONE_CLUB_SCALE } from "./one-club-scale";
 
 /** Clubs need at least this many seasons in the spin pools to have an "all-time" XI. */
@@ -78,7 +78,8 @@ export function getOneClubRuleFilter(club: string): SpinRuleFilter {
 
 /** Draft ladder for a club (falls back to the Era ladder for a club missing from the table). */
 export function getOneClubScale(club: string): SimFormulaModeScale {
-  return ONE_CLUB_SCALE[club] ?? SIM_FORMULA_MODE_SCALE.era;
+  // Clubs without their own scale: the Era ladder as it was before the v1.70 27-0 retune.
+  return ONE_CLUB_SCALE[club] ?? { ...SIM_FORMULA_MODE_SCALE.era, eliteRating: GAUNTLET_ERA_ELITE_RATING };
 }
 
 /** Where a one-club squad rating sits on its club's ladder (0 typical, 1 near-perfect). */

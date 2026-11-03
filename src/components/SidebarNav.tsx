@@ -9,6 +9,7 @@ import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { useAuth } from "@/lib/auth-context";
 import { useModalA11y } from "@/hooks/useModalA11y";
 import { buildPlayHref, isPlayModeActive } from "@/lib/play-links";
+import { linkPrefetch } from "@/lib/heavy-routes";
 import { getDailyChallengeHref } from "@/lib/daily-challenge";
 import { getWeeklyChallengeHref } from "@/lib/weekly-challenge";
 import { setNormalEraVariant } from "@/lib/storage/preferences";
@@ -379,6 +380,7 @@ function MenuLink({
   return (
     <Link
       href={href}
+      prefetch={linkPrefetch(href)}
       onClick={onClick}
       aria-current={active ? "page" : undefined}
       className={`${MENU_ROW} ${active ? MENU_ROW_ACTIVE : MENU_ROW_IDLE}`}

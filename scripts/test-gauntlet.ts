@@ -19,7 +19,7 @@ import {
   runGauntlet,
 } from "../src/lib/game/gauntlet";
 import { getSpinTeamYearPoolsCached } from "../src/lib/game/player-pool-eligibility";
-import { getTeamStrength, winProbability } from "../src/lib/game/sim-formula";
+import { GAUNTLET_ERA_ELITE_RATING, getTeamStrength, winProbability } from "../src/lib/game/sim-formula";
 import { getAverageSquadRating } from "../src/lib/squad-analysis";
 import { applyGauntletRun, emptyModeRecords } from "../src/lib/storage/mode-records";
 import { draftSquad } from "./lib/sim-draft";
@@ -50,7 +50,13 @@ for (const side of opponents) {
   check(pools.some((p) => p.team === side.club && p.year === String(side.year)), `${side.label} is a real team-year pool`);
   const xiii = getTeamYearBestXiii(side.club, String(side.year));
   check(Math.abs(getAverageSquadRating(xiii) - side.squadRating) < 1e-9, `${side.label}: rating is its best XIII (${side.squadRating})`);
-  const expected = getTeamStrength({ avgRating: side.squadRating, mode: side.ladder }) - GAUNTLET_FIELD_OFFSET;
+  // v1.70: the Gauntlet keeps the pre-retune Era ladder.
+  const expected =
+    getTeamStrength({
+      avgRating: side.squadRating,
+      mode: side.ladder,
+      eliteRating: side.ladder === "era" ? GAUNTLET_ERA_ELITE_RATING : undefined,
+    }) - GAUNTLET_FIELD_OFFSET;
   check(Math.abs(side.strength - expected) < 1e-9, `${side.label}: strength from its actual rating`);
   check(side.ladder === (side.year === 2026 ? "classic-spin" : "era"), `${side.label}: read on the right ladder`);
 }
