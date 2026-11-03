@@ -40,6 +40,15 @@ async function noSidewaysScroll(page, where) {
   if (sw > cw + 1) errors.push(`${where}: page scrolls sideways (${sw}px content in ${cw}px screen)`);
 }
 
+/** Hub pop-ups (legend signings, random events, the World Club Challenge) sit over the page; Escape takes the default. */
+async function dismissEvents(page) {
+  for (let i = 0; i < 4; i++) {
+    if (!(await page.getByTestId("career-event").isVisible().catch(() => false))) return;
+    await page.keyboard.press("Escape");
+    await page.waitForTimeout(300);
+  }
+}
+
 async function startCareer(page, division, index = 0) {
   await page.goto(`${BASE}/manager`, { waitUntil: "networkidle" });
   await page.getByRole("heading", { name: "Pick your club" }).waitFor({ timeout });
@@ -145,9 +154,11 @@ try {
   if (lpAfter !== lpBefore) errors.push(`reloading the review re-banked Legacy (${lpBefore} → ${lpAfter})`);
   step("Reloading the review screen doesn't re-award Legacy");
 
+  await dismissEvents(page);
   await page.getByRole("button", { name: "Next: retirements and contracts" }).click();
   await page.getByRole("heading", { name: "Comings and goings" }).waitFor({ timeout });
   await noSidewaysScroll(page, "departures @320");
+  await dismissEvents(page);
   // Double-tap the exit: must land on the window once, not skip past it.
   await page.getByRole("button", { name: /^(Open the transfer window|Continue to the window)$/ }).dblclick();
   // v1.18: the release list is confirmed in a sheet; double-tap the confirm too.
