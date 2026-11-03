@@ -1,0 +1,4269 @@
+{
+ "about": "International (Test) representatives: Australia and New Zealand Test debutants 1995+ and the NRL players in the 2021 RLWC / 2025 Pacific Championships squads (all nations). Used for nationality / representative nation on cards and as a rating anchor.",
+ "generatedAt": "2026-11-03",
+ "notes": [
+  "The Australia list gives surnames only; a surname is matched to the player with that surname who played that season (null when ambiguous)."
+ ],
+ "testDebuts": [
+  {
+   "nation": "Australia",
+   "name": "Wayne Bartrim",
+   "listedAs": "Bartrim",
+   "debut": 1995,
+   "playerId": "nrl-wayne-bartrim",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Mark Coyne",
+   "listedAs": "Coyne",
+   "debut": 1995,
+   "playerId": "nrl-mark-coyne",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Brett Dallas",
+   "listedAs": "Dallas",
+   "debut": 1995,
+   "playerId": "nrl-brett-dallas",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Gillmeister",
+   "listedAs": "Gillmeister",
+   "debut": 1995,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Gary Larson",
+   "listedAs": "Larson",
+   "debut": 1995,
+   "playerId": "nrl-gary-larson",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Moore",
+   "listedAs": "Moore",
+   "debut": 1995,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Moore",
+   "listedAs": "Moore",
+   "debut": 1995,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Adam Muir",
+   "listedAs": "Muir",
+   "debut": 1995,
+   "playerId": "nrl-adam-muir",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Robbie O'Davis",
+   "listedAs": "O'Davis",
+   "debut": 1995,
+   "playerId": "nrl-robbie-odavis",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Andrew Johns",
+   "listedAs": "Johns",
+   "debut": 1995,
+   "playerId": "nrl-andrew-johns",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Matthew Johns",
+   "listedAs": "Johns",
+   "debut": 1995,
+   "playerId": "nrl-matthew-johns",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Matt Sing",
+   "listedAs": "Sing",
+   "debut": 1995,
+   "playerId": "nrl-matt-sing",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Jamie Ainscough",
+   "listedAs": "Ainscough",
+   "debut": 1995,
+   "playerId": "nrl-jamie-ainscough",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Jim Dymock",
+   "listedAs": "Dymock",
+   "debut": 1995,
+   "playerId": "nrl-jim-dymock",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "John Hopoate",
+   "listedAs": "Hopoate",
+   "debut": 1995,
+   "playerId": "nrl-john-hopoate",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Nik Kosef",
+   "listedAs": "Kosef",
+   "debut": 1995,
+   "playerId": "nrl-nik-kosef",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Aaron Raper",
+   "listedAs": "Raper",
+   "debut": 1995,
+   "playerId": "nrl-aaron-raper",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Michael Buettner",
+   "listedAs": "Buettner",
+   "debut": 1996,
+   "playerId": "nrl-michael-buettner",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Daniel Gartner",
+   "listedAs": "Gartner",
+   "debut": 1996,
+   "playerId": "nrl-daniel-gartner",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Walker",
+   "listedAs": "Walker",
+   "debut": 1996,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Simon",
+   "listedAs": "Simon",
+   "debut": 1997,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Rodney Howe",
+   "listedAs": "Howe",
+   "debut": 1998,
+   "playerId": "nrl-rodney-howe",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Darren Lockyer",
+   "listedAs": "Lockyer",
+   "debut": 1998,
+   "playerId": "nrl-darren-lockyer",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Mat Rogers",
+   "listedAs": "Rogers",
+   "debut": 1998,
+   "playerId": "nrl-mat-rogers",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Brad Thorn",
+   "listedAs": "Thorn",
+   "debut": 1998,
+   "playerId": "nrl-brad-thorn",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Darren Britt",
+   "listedAs": "Britt",
+   "debut": 1998,
+   "playerId": "nrl-darren-britt",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Ben Ikin",
+   "listedAs": "Ikin",
+   "debut": 1998,
+   "playerId": "nrl-ben-ikin",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Robbie Kearns",
+   "listedAs": "Kearns",
+   "debut": 1998,
+   "playerId": "nrl-robbie-kearns",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Steven Price",
+   "listedAs": "Price",
+   "debut": 1998,
+   "playerId": "nrl-steven-price-cb",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Smith",
+   "listedAs": "Smith",
+   "debut": 1998,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Gorden Tallis",
+   "listedAs": "Tallis",
+   "debut": 1998,
+   "playerId": "nrl-gorden-tallis",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Shane Webcke",
+   "listedAs": "Webcke",
+   "debut": 1998,
+   "playerId": "nrl-shane-webcke",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Jason Hetherington",
+   "listedAs": "Hetherington",
+   "debut": 1998,
+   "playerId": "nrl-jason-hetherington",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Bryan Fletcher",
+   "listedAs": "Fletcher",
+   "debut": 1999,
+   "playerId": "nrl-bryan-fletcher",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Matthew Gidley",
+   "listedAs": "Gidley",
+   "debut": 1999,
+   "playerId": "nrl-matthew-gidley",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Craig Gower",
+   "listedAs": "Gower",
+   "debut": 1999,
+   "playerId": "nrl-craig-gower",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Brett Kimmorley",
+   "listedAs": "Kimmorley",
+   "debut": 1999,
+   "playerId": "nrl-brett-kimmorley",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Russell Richardson",
+   "listedAs": "Richardson",
+   "debut": 1999,
+   "playerId": "nrl-russell-richardson",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Robbie Ross",
+   "listedAs": "Ross",
+   "debut": 1999,
+   "playerId": "nrl-robbie-ross",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Jason Stevens",
+   "listedAs": "Stevens",
+   "debut": 1999,
+   "playerId": "nrl-jason-stevens",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Michael Vella",
+   "listedAs": "Vella",
+   "debut": 1999,
+   "playerId": "nrl-michael-vella",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Ryan Girdler",
+   "listedAs": "Girdler",
+   "debut": 1999,
+   "playerId": "nrl-ryan-girdler",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Shaun Timmins",
+   "listedAs": "Timmins",
+   "debut": 1999,
+   "playerId": "nrl-shaun-timmins",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Scott Hill",
+   "listedAs": "Hill",
+   "debut": 2000,
+   "playerId": "nrl-scott-hill",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Chris McKenna",
+   "listedAs": "McKenna",
+   "debut": 2000,
+   "playerId": "nrl-chris-mckenna",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Jason Croker",
+   "listedAs": "Croker",
+   "debut": 2000,
+   "playerId": "nrl-jason-croker-cn",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Adam MacDougall",
+   "listedAs": "MacDougall",
+   "debut": 2000,
+   "playerId": "nrl-adam-macdougall",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Trent Barrett",
+   "listedAs": "Barrett",
+   "debut": 2000,
+   "playerId": "nrl-trent-barrett",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Nathan Hindmarsh",
+   "listedAs": "Hindmarsh",
+   "debut": 2000,
+   "playerId": "nrl-nathan-hindmarsh",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Ben Kennedy",
+   "listedAs": "Kennedy",
+   "debut": 2000,
+   "playerId": "nrl-ben-kennedy",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Danny Buderus",
+   "listedAs": "Buderus",
+   "debut": 2001,
+   "playerId": "nrl-danny-buderus",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Dane Carlaw",
+   "listedAs": "Carlaw",
+   "debut": 2001,
+   "playerId": "nrl-dane-carlaw",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Petero Civoniceva",
+   "listedAs": "Civoniceva",
+   "debut": 2001,
+   "playerId": "nrl-petero-civoniceva",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Brad Meyers",
+   "listedAs": "Meyers",
+   "debut": 2001,
+   "playerId": "nrl-brad-meyers",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Lote Tuqiri",
+   "listedAs": "Tuqiri",
+   "debut": 2001,
+   "playerId": "nrl-lote-tuqiri",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Braith Anasta",
+   "listedAs": "Anasta",
+   "debut": 2001,
+   "playerId": "nrl-braith-anasta",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Nathan Blacklock",
+   "listedAs": "Blacklock",
+   "debut": 2001,
+   "playerId": "nrl-nathan-blacklock",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Mark Gasnier",
+   "listedAs": "Gasnier",
+   "debut": 2001,
+   "playerId": "nrl-mark-gasnier",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Jamie Lyon",
+   "listedAs": "Lyon",
+   "debut": 2001,
+   "playerId": "nrl-jamie-lyon",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Jason Ryles",
+   "listedAs": "Ryles",
+   "debut": 2001,
+   "playerId": "nrl-jason-ryles",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Willie Mason",
+   "listedAs": "Mason",
+   "debut": 2002,
+   "playerId": "nrl-willie-mason",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Steve Simpson",
+   "listedAs": "Simpson",
+   "debut": 2002,
+   "playerId": "nrl-steve-simpson",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Timana Tahu",
+   "listedAs": "Tahu",
+   "debut": 2002,
+   "playerId": "nrl-timana-tahu",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Brent Tate",
+   "listedAs": "Tate",
+   "debut": 2002,
+   "playerId": "nrl-brent-tate",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Hazem El Masri",
+   "listedAs": "El Masri",
+   "debut": 2002,
+   "playerId": "nrl-hazem-el-masri",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Craig Fitzgibbon",
+   "listedAs": "Fitzgibbon",
+   "debut": 2002,
+   "playerId": "nrl-craig-fitzgibbon",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Craig Wing",
+   "listedAs": "Wing",
+   "debut": 2002,
+   "playerId": "nrl-craig-wing",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Phil Bailey",
+   "listedAs": "Bailey",
+   "debut": 2003,
+   "playerId": "nrl-phil-bailey",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Luke Bailey",
+   "listedAs": "Bailey",
+   "debut": 2003,
+   "playerId": "nrl-luke-bailey",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Shannon Hegarty",
+   "listedAs": "Hegarty",
+   "debut": 2003,
+   "playerId": "nrl-shannon-hegarty",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Anthony Minichiello",
+   "listedAs": "Minichiello",
+   "debut": 2003,
+   "playerId": "nrl-anthony-minichiello",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Luke Ricketson",
+   "listedAs": "Ricketson",
+   "debut": 2003,
+   "playerId": "nrl-luke-ricketson",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Michael De Vere",
+   "listedAs": "De Vere",
+   "debut": 2003,
+   "playerId": "nrl-michael-de-vere",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Richard Villasanti",
+   "listedAs": "Villasanti",
+   "debut": 2003,
+   "playerId": "nrl-richard-villasanti",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Joel Clinton",
+   "listedAs": "Clinton",
+   "debut": 2003,
+   "playerId": "nrl-joel-clinton",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Michael Crocker",
+   "listedAs": "Crocker",
+   "debut": 2003,
+   "playerId": "nrl-michael-crocker",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Luke Lewis",
+   "listedAs": "Lewis",
+   "debut": 2003,
+   "playerId": "nrl-luke-lewis",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Trent Waterhouse",
+   "listedAs": "Waterhouse",
+   "debut": 2003,
+   "playerId": "nrl-trent-waterhouse",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Shaun Berrigan",
+   "listedAs": "Berrigan",
+   "debut": 2004,
+   "playerId": "nrl-shaun-berrigan",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Matthew Bowen",
+   "listedAs": "Bowen",
+   "debut": 2004,
+   "playerId": "nrl-matthew-bowen",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Tonie Carroll",
+   "listedAs": "Carroll",
+   "debut": 2004,
+   "playerId": "nrl-tonie-carroll",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Matt Cooper",
+   "listedAs": "Cooper",
+   "debut": 2004,
+   "playerId": "nrl-matt-cooper",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Mark O'Meley",
+   "listedAs": "O'Meley",
+   "debut": 2004,
+   "playerId": "nrl-mark-omeley",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Luke Rooney",
+   "listedAs": "Rooney",
+   "debut": 2004,
+   "playerId": "nrl-luke-rooney",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Andrew Ryan",
+   "listedAs": "Ryan",
+   "debut": 2004,
+   "playerId": "nrl-andrew-ryan",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Willie Tonga",
+   "listedAs": "Tonga",
+   "debut": 2004,
+   "playerId": "nrl-willie-tonga",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Luke Priddis",
+   "listedAs": "Priddis",
+   "debut": 2005,
+   "playerId": "nrl-luke-priddis",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Ben Creagh",
+   "listedAs": "Creagh",
+   "debut": 2005,
+   "playerId": "nrl-ben-creagh",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "King",
+   "listedAs": "King",
+   "debut": 2005,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Luke O'Donnell",
+   "listedAs": "O'Donnell",
+   "debut": 2005,
+   "playerId": "nrl-luke-odonnell",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Scott Prince",
+   "listedAs": "Prince",
+   "debut": 2005,
+   "playerId": "nrl-scott-prince",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Eric Grothe",
+   "listedAs": "Grothe",
+   "debut": 2005,
+   "playerId": "nrl-eric-grothe-p1",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Johnathan Thurston",
+   "listedAs": "Thurston",
+   "debut": 2006,
+   "playerId": "nrl-johnathan-thurston",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Karmichael Hunt",
+   "listedAs": "Hunt",
+   "debut": 2006,
+   "playerId": "nrl-karmichael-hunt",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Brent Kite",
+   "listedAs": "Kite",
+   "debut": 2006,
+   "playerId": "nrl-brent-kite",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Jarryd Hayne",
+   "listedAs": "Hayne",
+   "debut": 2006,
+   "playerId": "nrl-jarryd-hayne",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Justin Hodges",
+   "listedAs": "Hodges",
+   "debut": 2006,
+   "playerId": "nrl-justin-hodges",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Ben Hornby",
+   "listedAs": "Hornby",
+   "debut": 2006,
+   "playerId": "nrl-ben-hornby",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Greg Inglis",
+   "listedAs": "Inglis",
+   "debut": 2006,
+   "playerId": "nrl-greg-inglis",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Smith",
+   "listedAs": "Smith",
+   "debut": 2006,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Sam Thaiday",
+   "listedAs": "Thaiday",
+   "debut": 2006,
+   "playerId": "nrl-sam-thaiday",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Anthony Tupou",
+   "listedAs": "Tupou",
+   "debut": 2006,
+   "playerId": "nrl-anthony-tupou",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Reni Maitua",
+   "listedAs": "Maitua",
+   "debut": 2006,
+   "playerId": "nrl-reni-maitua",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Antonio Kaufusi",
+   "listedAs": "Kaufusi",
+   "debut": 2006,
+   "playerId": "nrl-antonio-kaufusi",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Greg Bird",
+   "listedAs": "Bird",
+   "debut": 2007,
+   "playerId": "nrl-greg-bird",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Cooper Cronk",
+   "listedAs": "Cronk",
+   "debut": 2007,
+   "playerId": "nrl-cooper-cronk",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Israel Folau",
+   "listedAs": "Folau",
+   "debut": 2007,
+   "playerId": "nrl-israel-folau",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Dallas Johnson",
+   "listedAs": "Johnson",
+   "debut": 2007,
+   "playerId": "nrl-dallas-johnson",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Kurt Gidley",
+   "listedAs": "Gidley",
+   "debut": 2007,
+   "playerId": "nrl-kurt-gidley",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Ryan Hoffman",
+   "listedAs": "Hoffman",
+   "debut": 2007,
+   "playerId": "nrl-ryan-hoffman",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Stewart",
+   "listedAs": "Stewart",
+   "debut": 2007,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Paul Gallen",
+   "listedAs": "Gallen",
+   "debut": 2008,
+   "playerId": "nrl-paul-gallen",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Billy Slater",
+   "listedAs": "Slater",
+   "debut": 2008,
+   "playerId": "nrl-billy-slater",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Carl Webb",
+   "listedAs": "Webb",
+   "debut": 2008,
+   "playerId": "nrl-carl-webb",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Terry Campese",
+   "listedAs": "Campese",
+   "debut": 2008,
+   "playerId": "nrl-terry-campese",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Anthony Laffranchi",
+   "listedAs": "Laffranchi",
+   "debut": 2008,
+   "playerId": "nrl-anthony-laffranchi",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Joel Monaghan",
+   "listedAs": "Monaghan",
+   "debut": 2008,
+   "playerId": "nrl-joel-monaghan",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Josh Perry",
+   "listedAs": "Perry",
+   "debut": 2008,
+   "playerId": "nrl-josh-perry",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Stewart",
+   "listedAs": "Stewart",
+   "debut": 2008,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Anthony Watmough",
+   "listedAs": "Watmough",
+   "debut": 2008,
+   "playerId": "nrl-anthony-watmough",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Williams",
+   "listedAs": "Williams",
+   "debut": 2008,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Darius Boyd",
+   "listedAs": "Boyd",
+   "debut": 2008,
+   "playerId": "nrl-darius-boyd",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Robbie Farah",
+   "listedAs": "Farah",
+   "debut": 2009,
+   "playerId": "nrl-robbie-farah",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Ben Hannant",
+   "listedAs": "Hannant",
+   "debut": 2009,
+   "playerId": "nrl-ben-hannant",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Michael Jennings",
+   "listedAs": "Jennings",
+   "debut": 2009,
+   "playerId": "nrl-michael-jennings",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Josh Morris",
+   "listedAs": "Morris",
+   "debut": 2009,
+   "playerId": "nrl-josh-morris",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Brett Morris",
+   "listedAs": "Morris",
+   "debut": 2009,
+   "playerId": "nrl-brett-morris",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "David Shillington",
+   "listedAs": "Shillington",
+   "debut": 2009,
+   "playerId": "nrl-david-shillington",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Brett White",
+   "listedAs": "White",
+   "debut": 2009,
+   "playerId": "nrl-brett-white",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Michael Weyman",
+   "listedAs": "Weyman",
+   "debut": 2010,
+   "playerId": "nrl-michael-weyman",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Nate Myles",
+   "listedAs": "Myles",
+   "debut": 2010,
+   "playerId": "nrl-nate-myles",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Tom Learoyd-Lahrs",
+   "listedAs": "Learoyd-Lahrs",
+   "debut": 2010,
+   "playerId": "nrl-tom-learoyd-lahrs",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Chris Lawrence",
+   "listedAs": "Lawrence",
+   "debut": 2010,
+   "playerId": "nrl-chris-lawrence",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Todd Carney",
+   "listedAs": "Carney",
+   "debut": 2010,
+   "playerId": "nrl-todd-carney",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Scott",
+   "listedAs": "Scott",
+   "debut": 2010,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Dean Young",
+   "listedAs": "Young",
+   "debut": 2010,
+   "playerId": "nrl-dean-young",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Jharal Yow Yeh",
+   "listedAs": "Yow Yeh",
+   "debut": 2011,
+   "playerId": "nrl-jharal-yow-yeh",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Jamal Idris",
+   "listedAs": "Idris",
+   "debut": 2011,
+   "playerId": "nrl-jamal-idris",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Kade Snowden",
+   "listedAs": "Snowden",
+   "debut": 2011,
+   "playerId": "nrl-kade-snowden",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Akuila Uate",
+   "listedAs": "Uate",
+   "debut": 2011,
+   "playerId": "nrl-akuila-uate",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Keith Galloway",
+   "listedAs": "Galloway",
+   "debut": 2011,
+   "playerId": "nrl-keith-galloway",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Williams",
+   "listedAs": "Williams",
+   "debut": 2011,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Daly Cherry-Evans",
+   "listedAs": "Cherry-Evans",
+   "debut": 2011,
+   "playerId": "nrl-daly-cherry-evans",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Corey Parker",
+   "listedAs": "Parker",
+   "debut": 2011,
+   "playerId": "nrl-corey-parker",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Scott",
+   "listedAs": "Scott",
+   "debut": 2011,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "James Tamou",
+   "listedAs": "Tamou",
+   "debut": 2012,
+   "playerId": "nrl-james-tamou",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Dave Taylor",
+   "listedAs": "Taylor",
+   "debut": 2012,
+   "playerId": "nrl-dave-taylor",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Andrew Fifita",
+   "listedAs": "Fifita",
+   "debut": 2013,
+   "playerId": "nrl-andrew-fifita",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Boyd Cordner",
+   "listedAs": "Cordner",
+   "debut": 2013,
+   "playerId": "nrl-boyd-cordner",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Josh Papalii",
+   "listedAs": "Papalii",
+   "debut": 2013,
+   "playerId": "nrl-josh-papalii",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Matt Gillett",
+   "listedAs": "Gillett",
+   "debut": 2014,
+   "playerId": "nrl-matt-gillett",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Josh Mansour",
+   "listedAs": "Mansour",
+   "debut": 2014,
+   "playerId": "nrl-josh-mansour",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Tupou",
+   "listedAs": "Tupou",
+   "debut": 2014,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Dylan Walker",
+   "listedAs": "Walker",
+   "debut": 2014,
+   "playerId": "nrl-dylan-walker",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Aaron Woods",
+   "listedAs": "Woods",
+   "debut": 2014,
+   "playerId": "nrl-aaron-woods",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Aidan Guerra",
+   "listedAs": "Guerra",
+   "debut": 2014,
+   "playerId": "nrl-aidan-guerra",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Mata'utia",
+   "listedAs": "Mata'utia",
+   "debut": 2014,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Ben Hunt",
+   "listedAs": "Hunt",
+   "debut": 2014,
+   "playerId": "nrl-ben-hunt",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "David Klemmer",
+   "listedAs": "Klemmer",
+   "debut": 2014,
+   "playerId": "nrl-david-klemmer",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Josh Jackson",
+   "listedAs": "Jackson",
+   "debut": 2014,
+   "playerId": "nrl-josh-jackson",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Will Chambers",
+   "listedAs": "Chambers",
+   "debut": 2015,
+   "playerId": "nrl-will-chambers",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Josh Dugan",
+   "listedAs": "Dugan",
+   "debut": 2015,
+   "playerId": "nrl-josh-dugan",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Alex Johnston",
+   "listedAs": "Johnston",
+   "debut": 2015,
+   "playerId": "nrl-alex-johnston",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Trent Merrin",
+   "listedAs": "Merrin",
+   "debut": 2015,
+   "playerId": "nrl-trent-merrin",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Blake Ferguson",
+   "listedAs": "Ferguson",
+   "debut": 2016,
+   "playerId": "nrl-blake-ferguson",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Semi Radradra",
+   "listedAs": "Radradra",
+   "debut": 2016,
+   "playerId": "nrl-semi-radradra",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Josh McGuire",
+   "listedAs": "McGuire",
+   "debut": 2016,
+   "playerId": "nrl-josh-mcguire",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Michael Morgan",
+   "listedAs": "Morgan",
+   "debut": 2016,
+   "playerId": "nrl-michael-morgan",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Darius Boyd",
+   "listedAs": "Boyd",
+   "debut": 2016,
+   "playerId": "nrl-darius-boyd",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Valentine Holmes",
+   "listedAs": "Holmes",
+   "debut": 2016,
+   "playerId": "nrl-valentine-holmes",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Tyson Frizell",
+   "listedAs": "Frizell",
+   "debut": 2016,
+   "playerId": "nrl-tyson-frizell",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "James Maloney",
+   "listedAs": "Maloney",
+   "debut": 2016,
+   "playerId": "nrl-james-maloney",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Matt Moylan",
+   "listedAs": "Moylan",
+   "debut": 2016,
+   "playerId": "nrl-matt-moylan",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Justin O'Neill",
+   "listedAs": "O'Neill",
+   "debut": 2016,
+   "playerId": "nrl-justin-oneill",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Trbojevic",
+   "listedAs": "Trbojevic",
+   "debut": 2016,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Jake Friend",
+   "listedAs": "Friend",
+   "debut": 2016,
+   "playerId": "nrl-jake-friend",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Dane Gagai",
+   "listedAs": "Gagai",
+   "debut": 2017,
+   "playerId": "nrl-dane-gagai",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Graham",
+   "listedAs": "Graham",
+   "debut": 2017,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Jordan McLean",
+   "listedAs": "McLean",
+   "debut": 2017,
+   "playerId": "nrl-jordan-mclean",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Reagan Campbell-Gillard",
+   "listedAs": "Campbell-Gillard",
+   "debut": 2017,
+   "playerId": "nrl-reagan-campbell-gillard",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Trbojevic",
+   "listedAs": "Trbojevic",
+   "debut": 2017,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Felise Kaufusi",
+   "listedAs": "Kaufusi",
+   "debut": 2017,
+   "playerId": "nrl-felise-kaufusi",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Cameron Munster",
+   "listedAs": "Munster",
+   "debut": 2017,
+   "playerId": "nrl-cameron-munster",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Damien Cook",
+   "listedAs": "Cook",
+   "debut": 2018,
+   "playerId": "nrl-damien-cook",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Luke Keary",
+   "listedAs": "Keary",
+   "debut": 2018,
+   "playerId": "nrl-luke-keary",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Latrell Mitchell",
+   "listedAs": "Mitchell",
+   "debut": 2018,
+   "playerId": "nrl-latrell-mitchell",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "James Tedesco",
+   "listedAs": "Tedesco",
+   "debut": 2018,
+   "playerId": "nrl-james-tedesco",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Josh Addo-Carr",
+   "listedAs": "Addo-Carr",
+   "debut": 2019,
+   "playerId": "nrl-josh-addo-carr",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Jack Wighton",
+   "listedAs": "Wighton",
+   "debut": 2019,
+   "playerId": "nrl-jack-wighton",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Nick Cotric",
+   "listedAs": "Cotric",
+   "debut": 2019,
+   "playerId": "nrl-nick-cotric",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Payne Haas",
+   "listedAs": "Haas",
+   "debut": 2019,
+   "playerId": "nrl-payne-haas",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Paul Vaughan",
+   "listedAs": "Vaughan",
+   "debut": 2019,
+   "playerId": "nrl-paul-vaughan",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Cameron Murray",
+   "listedAs": "Murray",
+   "debut": 2019,
+   "playerId": "nrl-cameron-murray",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Crichton",
+   "listedAs": "Crichton",
+   "debut": 2022,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Tino Fa'asuamaleaui",
+   "listedAs": "Fa'asuamaleaui",
+   "debut": 2022,
+   "playerId": "nrl-tino-faasuamaleaui",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Jeremiah Nanai",
+   "listedAs": "Nanai",
+   "debut": 2022,
+   "playerId": "nrl-jeremiah-nanai",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Murray Taulagi",
+   "listedAs": "Taulagi",
+   "debut": 2022,
+   "playerId": "nrl-murray-taulagi",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Patrick Carrigan",
+   "listedAs": "Carrigan",
+   "debut": 2022,
+   "playerId": "nrl-patrick-carrigan",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Reuben Cotter",
+   "listedAs": "Cotter",
+   "debut": 2022,
+   "playerId": "nrl-reuben-cotter",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Harry Grant",
+   "listedAs": "Grant",
+   "debut": 2022,
+   "playerId": "nrl-harry-grant",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Matt Burton",
+   "listedAs": "Burton",
+   "debut": 2022,
+   "playerId": "nrl-matt-burton",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Nathan Cleary",
+   "listedAs": "Cleary",
+   "debut": 2022,
+   "playerId": "nrl-nathan-cleary",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Wade Graham",
+   "listedAs": "Graham",
+   "debut": 2022,
+   "playerId": "nrl-wade-graham",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Liam Martin",
+   "listedAs": "Martin",
+   "debut": 2022,
+   "playerId": "nrl-liam-martin",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Isaah Yeo",
+   "listedAs": "Yeo",
+   "debut": 2022,
+   "playerId": "nrl-isaah-yeo",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Lindsay Collins",
+   "listedAs": "Collins",
+   "debut": 2022,
+   "playerId": "nrl-lindsay-collins",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Selwyn Cobbo",
+   "listedAs": "Cobbo",
+   "debut": 2023,
+   "playerId": "nrl-selwyn-cobbo",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Dylan Edwards",
+   "listedAs": "Edwards",
+   "debut": 2023,
+   "playerId": "nrl-dylan-edwards",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Kotoni Staggs",
+   "listedAs": "Staggs",
+   "debut": 2023,
+   "playerId": "nrl-kotoni-staggs",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Hamiso Tabuai-Fidow",
+   "listedAs": "Tabuai-Fidow",
+   "debut": 2023,
+   "playerId": "nrl-hamiso-tabuai-fidow",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Thomas Flegler",
+   "listedAs": "Flegler",
+   "debut": 2023,
+   "playerId": "nrl-thomas-flegler",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Nicho Hynes",
+   "listedAs": "Hynes",
+   "debut": 2023,
+   "playerId": "nrl-nicho-hynes",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Mitchell Barnett",
+   "listedAs": "Barnett",
+   "debut": 2024,
+   "playerId": "nrl-mitchell-barnett",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Xavier Coates",
+   "listedAs": "Coates",
+   "debut": 2024,
+   "playerId": "nrl-xavier-coates",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Tom Dearden",
+   "listedAs": "Dearden",
+   "debut": 2024,
+   "playerId": "nrl-tom-dearden",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Zac Lomax",
+   "listedAs": "Lomax",
+   "debut": 2024,
+   "playerId": "nrl-zac-lomax",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Mitchell Moses",
+   "listedAs": "Moses",
+   "debut": 2024,
+   "playerId": "nrl-mitchell-moses",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Hudson Young",
+   "listedAs": "Young",
+   "debut": 2024,
+   "playerId": "nrl-hudson-young",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Brandon Smith",
+   "listedAs": "Smith",
+   "debut": 2024,
+   "playerId": "nrl-brandon-smith",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "Australia",
+   "name": "Reece Walsh",
+   "listedAs": "Walsh",
+   "debut": 2024,
+   "playerId": "nrl-reece-walsh",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Australia_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Syd Eru",
+   "debut": 1995,
+   "playerId": "nrl-syd-eru",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "John Timu",
+   "debut": 1995,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Tony Tuimavave",
+   "debut": 1995,
+   "playerId": "nrl-tony-tuimavave",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Richie Barnett",
+   "debut": 1995,
+   "playerId": "nrl-richie-barnett",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Stacey Jones",
+   "debut": 1995,
+   "playerId": "nrl-stacey-jones",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Grant Young",
+   "debut": 1996,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Marc Ellis",
+   "debut": 1996,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Joe Vagana",
+   "debut": 1996,
+   "playerId": "nrl-joe-vagana",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Logan Swann",
+   "debut": 1996,
+   "playerId": "nrl-logan-swann",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Anthony Swann",
+   "debut": 1996,
+   "playerId": "nrl-anthony-swann",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Robbie Paul",
+   "debut": 1997,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Nigel Vagana",
+   "debut": 1998,
+   "playerId": "nrl-nigel-vagana",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Nathan Cayless",
+   "debut": 1998,
+   "playerId": "nrl-nathan-cayless",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Tony Puletua",
+   "debut": 1998,
+   "playerId": "nrl-tony-puletua",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Craig Smith",
+   "debut": 1998,
+   "playerId": "nrl-craig-smith-ms",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Lesley Vainikolo",
+   "debut": 1998,
+   "playerId": "nrl-lesley-vainikolo",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Ali Lauitiiti",
+   "debut": 1998,
+   "playerId": "nrl-ali-lauitiiti",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Willie Talau",
+   "debut": 1999,
+   "playerId": "nrl-willie-talau",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "David Kidwell",
+   "debut": 1999,
+   "playerId": "nrl-david-kidwell",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Richard Swain",
+   "debut": 1999,
+   "playerId": "nrl-richard-swain",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Matt Rua",
+   "debut": 1999,
+   "playerId": "nrl-matt-rua",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Brian Jellick",
+   "debut": 1999,
+   "playerId": "nrl-brian-jellick",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Tasesa Lavea",
+   "debut": 2000,
+   "playerId": "nrl-tasesa-lavea",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Tonie Carroll",
+   "debut": 2000,
+   "playerId": "nrl-tonie-carroll",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "David Vaealiki",
+   "debut": 2000,
+   "playerId": "nrl-david-vaealiki",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Motu Tony",
+   "debut": 2001,
+   "playerId": "nrl-motu-tony",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Henry Fa'afili",
+   "debut": 2001,
+   "playerId": "nrl-henry-faafili",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Clinton Toopi",
+   "debut": 2001,
+   "playerId": "nrl-clinton-toopi",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Francis Meli",
+   "debut": 2001,
+   "playerId": "nrl-francis-meli",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Henry Perenara",
+   "debut": 2001,
+   "playerId": "nrl-henry-perenara",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Monty Betham",
+   "debut": 2001,
+   "playerId": "nrl-monty-betham",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Jerry Seuseu",
+   "debut": 2001,
+   "playerId": "nrl-jerry-seu-seu",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "David Solomona",
+   "debut": 2001,
+   "playerId": "nrl-david-solomona",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Matt Utai",
+   "debut": 2002,
+   "playerId": "nrl-matthew-utai",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Lance Hohaia",
+   "debut": 2002,
+   "playerId": "nrl-lance-hohaia",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Paul Rauhihi",
+   "debut": 2002,
+   "playerId": "nrl-paul-rauhihi",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Andrew Lomu",
+   "debut": 2002,
+   "playerId": "nrl-andrew-lomu",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Awen Guttenbeil",
+   "debut": 2002,
+   "playerId": "nrl-awen-guttenbeil",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Jason Cayless",
+   "debut": 2002,
+   "playerId": "nrl-jason-cayless",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Michael Smith",
+   "debut": 2002,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Joe Galuvao",
+   "debut": 2003,
+   "playerId": "nrl-joe-galuvao",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Vinnie Anderson",
+   "debut": 2003,
+   "playerId": "nrl-vinnie-anderson",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Sione Faumuina",
+   "debut": 2003,
+   "playerId": "nrl-sione-faumuina",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Thomas Leuluai",
+   "debut": 2003,
+   "playerId": "nrl-thomas-leuluai",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Paul Whatuira",
+   "debut": 2004,
+   "playerId": "nrl-paul-whatuira",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Sonny Bill Williams",
+   "debut": 2004,
+   "playerId": "nrl-sonny-bill-williams",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Tevita Latu",
+   "debut": 2004,
+   "playerId": "nrl-tevita-latu",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Brent Webb",
+   "debut": 2004,
+   "playerId": "nrl-brent-webb",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Louis Anderson",
+   "debut": 2004,
+   "playerId": "nrl-louis-anderson",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Roy Asotasi",
+   "debut": 2004,
+   "playerId": "nrl-roy-asotasi",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Shontayne Hape",
+   "debut": 2004,
+   "playerId": "nrl-shontayne-hape",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Jamahl Lolesi",
+   "debut": 2004,
+   "playerId": "nrl-jamaal-lolesi",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Dene Halatau",
+   "debut": 2004,
+   "playerId": "nrl-dene-halatau",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Alex Chan",
+   "debut": 2004,
+   "playerId": "nrl-alex-chan",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Wairangi Koopu",
+   "debut": 2004,
+   "playerId": "nrl-wairangi-koopu",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Jerome Ropati",
+   "debut": 2005,
+   "playerId": "nrl-jerome-ropati",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Benji Marshall",
+   "debut": 2005,
+   "playerId": "nrl-benji-marshall",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Frank Pritchard",
+   "debut": 2005,
+   "playerId": "nrl-frank-pritchard",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Jake Webster",
+   "debut": 2005,
+   "playerId": "nrl-jake-webster",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Manu Vatuvei",
+   "debut": 2005,
+   "playerId": "nrl-manu-vatuvei",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "David Faiumu",
+   "debut": 2005,
+   "playerId": "nrl-david-faiumu",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Iafeta Paleaaesina",
+   "debut": 2005,
+   "playerId": "nrl-iafeta-paleaaesina",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Bronson Harrison",
+   "debut": 2005,
+   "playerId": "nrl-bronson-harrison",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Willie Poching",
+   "debut": 2005,
+   "playerId": "nrl-willie-poching",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Tame Tupou",
+   "debut": 2006,
+   "playerId": "nrl-tame-tupou",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "David Fa'alogo",
+   "debut": 2006,
+   "playerId": "nrl-david-faalogo",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Ben Roberts",
+   "debut": 2006,
+   "playerId": "nrl-ben-roberts",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Harrison Hansen",
+   "debut": 2006,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Iosia Soliola",
+   "debut": 2006,
+   "playerId": "nrl-iosia-soliola",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Steve Matai",
+   "debut": 2006,
+   "playerId": "nrl-steve-matai",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Simon Mannering",
+   "debut": 2006,
+   "playerId": "nrl-simon-mannering",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Adam Blair",
+   "debut": 2006,
+   "playerId": "nrl-adam-blair",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Nathan Fien",
+   "debut": 2006,
+   "playerId": "nrl-nathan-fien",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Epalahame Lauaki",
+   "debut": 2007,
+   "playerId": "nrl-epalahame-lauaki",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Krisnan Inu",
+   "debut": 2007,
+   "playerId": "nrl-krisnan-inu",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Sam Rapira",
+   "debut": 2007,
+   "playerId": "nrl-sam-rapira",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Greg Eastwood",
+   "debut": 2007,
+   "playerId": "nrl-greg-eastwood",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Luke Covell",
+   "debut": 2007,
+   "playerId": "nrl-luke-covell",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Taniela Tuiaki",
+   "debut": 2007,
+   "playerId": "nrl-taniela-tuiaki",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Jeremy Smith",
+   "debut": 2007,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Fuifui Moimoi",
+   "debut": 2007,
+   "playerId": "nrl-fuifui-moimoi",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Jeff Lima",
+   "debut": 2007,
+   "playerId": "nrl-jeff-lima",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Sam Perrett",
+   "debut": 2007,
+   "playerId": "nrl-sam-perrett",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Chase Stanley",
+   "debut": 2007,
+   "playerId": "nrl-chase-stanley",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Shaun Kenny-Dowall",
+   "debut": 2007,
+   "playerId": "nrl-shaun-kenny-dowall",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Jason Nightingale",
+   "debut": 2008,
+   "playerId": "nrl-jason-nightingale",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Setaimata Sa",
+   "debut": 2008,
+   "playerId": "nrl-setaimata-sa",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Issac Luke",
+   "debut": 2008,
+   "playerId": "nrl-issac-luke",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Sika Manu",
+   "debut": 2008,
+   "playerId": "nrl-sika-manu",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Evarn Tuimavave",
+   "debut": 2008,
+   "playerId": "nrl-evarn-tuimavave",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Bryson Goodwin",
+   "debut": 2009,
+   "playerId": "nrl-bryson-goodwin",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Junior Sa'u",
+   "debut": 2009,
+   "playerId": "nrl-junior-sau",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Frank-Paul Nu'uausala",
+   "debut": 2009,
+   "playerId": "nrl-frank-paul-nuuausala",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Jared Waerea-Hargreaves",
+   "debut": 2009,
+   "playerId": "nrl-jared-waerea-hargreaves",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Ben Matulino",
+   "debut": 2009,
+   "playerId": "nrl-ben-matulino",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Kieran Foran",
+   "debut": 2009,
+   "playerId": "nrl-kieran-foran",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Kevin Locke",
+   "debut": 2009,
+   "playerId": "nrl-kevin-locke",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Eddy Pettybourne",
+   "debut": 2009,
+   "playerId": "nrl-eddy-pettybourne",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Aaron Heremaia",
+   "debut": 2010,
+   "playerId": "nrl-aaron-heremaia",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Zeb Taia",
+   "debut": 2010,
+   "playerId": "nrl-zeb-taia",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Lewis Brown",
+   "debut": 2010,
+   "playerId": "nrl-lewis-brown",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Sam McKendry",
+   "debut": 2010,
+   "playerId": "nrl-sam-mckendry",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Antonio Winterstein",
+   "debut": 2010,
+   "playerId": "nrl-antonio-winterstein",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Matt Duffie",
+   "debut": 2011,
+   "playerId": "nrl-matthew-duffie",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Kalifa Faifai Loa",
+   "debut": 2011,
+   "playerId": "nrl-kalifa-faifai-loa",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Gerard Beale",
+   "debut": 2011,
+   "playerId": "nrl-gerard-beale",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Russell Packer",
+   "debut": 2011,
+   "playerId": "nrl-russell-packer",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Alex Glenn",
+   "debut": 2011,
+   "playerId": "nrl-alex-glenn",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Elijah Taylor",
+   "debut": 2011,
+   "playerId": "nrl-elijah-taylor",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Kevin Proctor",
+   "debut": 2011,
+   "playerId": "nrl-kevin-proctor",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Bill Tupou",
+   "debut": 2011,
+   "playerId": "nrl-bill-tupou",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Josh Hoffman",
+   "debut": 2012,
+   "playerId": "nrl-josh-hoffman",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Shaun Johnson",
+   "debut": 2012,
+   "playerId": "nrl-shaun-johnson",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Jesse Bromwich",
+   "debut": 2012,
+   "playerId": "nrl-jesse-bromwich",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Dean Whare",
+   "debut": 2012,
+   "playerId": "nrl-dean-whare",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Sam Kasiano",
+   "debut": 2012,
+   "playerId": "nrl-sam-kasiano",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Tohu Harris",
+   "debut": 2013,
+   "playerId": "nrl-tohu-harris",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Roger Tuivasa-Sheck",
+   "debut": 2013,
+   "playerId": "nrl-roger-tuivasa-sheck",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Sam Moa",
+   "debut": 2013,
+   "playerId": "nrl-sam-moa",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Peta Hiku",
+   "debut": 2014,
+   "playerId": "nrl-peta-hiku",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Isaac John",
+   "debut": 2014,
+   "playerId": "nrl-isaac-john",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Ben Henry",
+   "debut": 2014,
+   "playerId": "nrl-ben-henry",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Siliva Havili",
+   "debut": 2014,
+   "playerId": "nrl-siliva-havili",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Martin Taupau",
+   "debut": 2014,
+   "playerId": "nrl-martin-taupau",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Jason Taumalolo",
+   "debut": 2014,
+   "playerId": "nrl-jason-taumalolo",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Suaia Matagi",
+   "debut": 2014,
+   "playerId": "nrl-suaia-matagi",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Sosaia Feki",
+   "debut": 2014,
+   "playerId": "nrl-sosaia-feki",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Bodene Thompson",
+   "debut": 2014,
+   "playerId": "nrl-bodene-thompson",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Jordan Kahu",
+   "debut": 2015,
+   "playerId": "nrl-jordan-kahu",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Tuimoala Lolohea",
+   "debut": 2015,
+   "playerId": "nrl-tuimoala-lolohea",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Sio Siua Taukeiaho",
+   "debut": 2015,
+   "playerId": "nrl-siosiua-taukeiaho",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Kodi Nikorima",
+   "debut": 2015,
+   "playerId": "nrl-kodi-nikorima",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Isaac Liu",
+   "debut": 2015,
+   "playerId": "nrl-isaac-liu",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Dallin Watene-Zelezniak",
+   "debut": 2016,
+   "playerId": "nrl-dallin-watene-zelezniak",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Manu Ma'u",
+   "debut": 2016,
+   "playerId": "nrl-manu-mau",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Kenny Bromwich",
+   "debut": 2016,
+   "playerId": "nrl-kenny-bromwich",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Solomone Kata",
+   "debut": 2016,
+   "playerId": "nrl-solomone-kata",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Jordan Rapana",
+   "debut": 2016,
+   "playerId": "nrl-jordan-rapana",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "David Fusitu'a",
+   "debut": 2016,
+   "playerId": "nrl-david-fusitua",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Joseph Tapine",
+   "debut": 2016,
+   "playerId": "nrl-joseph-tapine",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "James Fisher-Harris",
+   "debut": 2016,
+   "playerId": "nrl-james-fisher-harris",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Te Maire Martin",
+   "debut": 2016,
+   "playerId": "nrl-temaire-martin",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Brad Takairangi",
+   "debut": 2017,
+   "playerId": "nrl-brad-takairangi",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Nelson Asofa-Solomona",
+   "debut": 2017,
+   "playerId": "nrl-nelson-asofa-solomona",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Danny Levi",
+   "debut": 2017,
+   "playerId": "nrl-danny-levi",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Addin Fonua-Blake",
+   "debut": 2017,
+   "playerId": "nrl-addin-fonua-blake",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Jamayne Isaako",
+   "debut": 2018,
+   "playerId": "nrl-jamayne-isaako",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Esan Marsters",
+   "debut": 2018,
+   "playerId": "nrl-esan-marsters",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Ken Maumalo",
+   "debut": 2018,
+   "playerId": "nrl-ken-maumalo",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Raymond Faitala-Mariner",
+   "debut": 2018,
+   "playerId": "nrl-raymond-faitala-mariner",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Leeson Ah Mau",
+   "debut": 2018,
+   "playerId": "nrl-leeson-ah-mau",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Herman Ese'ese",
+   "debut": 2018,
+   "playerId": "nrl-herman-eseese",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Slade Griffin",
+   "debut": 2018,
+   "playerId": "nrl-slade-griffin",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Joseph Manu",
+   "debut": 2018,
+   "playerId": "nrl-joseph-manu",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Brandon Smith",
+   "debut": 2018,
+   "playerId": "nrl-brandon-smith",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Isaiah Papali'i",
+   "debut": 2018,
+   "playerId": "nrl-isaiah-papalii",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Briton Nikora",
+   "debut": 2019,
+   "playerId": "nrl-briton-nikora",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Jahrome Hughes",
+   "debut": 2019,
+   "playerId": "nrl-jahrome-hughes",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Charnze Nicoll-Klokstad",
+   "debut": 2019,
+   "playerId": "nrl-charnze-nicoll-klokstad",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Zane Tetevano",
+   "debut": 2019,
+   "playerId": "nrl-zane-tetevano",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Braden Hamlin-Uele",
+   "debut": 2019,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Corey Harawira-Naera",
+   "debut": 2019,
+   "playerId": "nrl-corey-harawira-naera",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Ronaldo Mulitalo",
+   "debut": 2022,
+   "playerId": "nrl-ronaldo-mulitalo",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Marata Niukore",
+   "debut": 2022,
+   "playerId": "nrl-marata-niukore",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Dylan Brown",
+   "debut": 2022,
+   "playerId": "nrl-dylan-brown",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Moses Leota",
+   "debut": 2022,
+   "playerId": "nrl-moses-leota",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_Zealand_national_rugby_league_team_players"
+  }
+ ],
+ "tournamentSquads": [
+  {
+   "nation": "Australia",
+   "name": "Josh Addo-Carr",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-josh-addo-carr",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Australia",
+   "name": "Matt Burton",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-matt-burton",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Australia",
+   "name": "Reagan Campbell-Gillard",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-reagan-campbell-gillard",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Australia",
+   "name": "Patrick Carrigan",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-patrick-carrigan",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Australia",
+   "name": "Daly Cherry-Evans",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-daly-cherry-evans",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Australia",
+   "name": "Nathan Cleary",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-nathan-cleary",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Australia",
+   "name": "Lindsay Collins",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-lindsay-collins",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Australia",
+   "name": "Reuben Cotter",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-reuben-cotter",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Australia",
+   "name": "Angus Crichton",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-angus-crichton",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Australia",
+   "name": "Tino Fa'asuamaleaui",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-tino-faasuamaleaui",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Australia",
+   "name": "Campbell Graham",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-campbell-graham",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Australia",
+   "name": "Harry Grant",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-harry-grant",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Australia",
+   "name": "Valentine Holmes",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-valentine-holmes",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Australia",
+   "name": "Ben Hunt",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-ben-hunt",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Australia",
+   "name": "Liam Martin",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-liam-martin",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Australia",
+   "name": "Latrell Mitchell",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-latrell-mitchell",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Australia",
+   "name": "Cameron Munster",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-cameron-munster",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Australia",
+   "name": "Cameron Murray",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-cameron-murray",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Australia",
+   "name": "Jeremiah Nanai",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-jeremiah-nanai",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Australia",
+   "name": "Murray Taulagi",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-murray-taulagi",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Australia",
+   "name": "James Tedesco",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-james-tedesco",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Australia",
+   "name": "Jake Trbojevic",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-jake-trbojevic",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Australia",
+   "name": "Jack Wighton",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-jack-wighton",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Australia",
+   "name": "Isaah Yeo",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-isaah-yeo",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Nelson Asofa-Solomona",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-nelson-asofa-solomona",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Jesse Bromwich",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-jesse-bromwich",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Kenny Bromwich",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-kenny-bromwich",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Dylan Brown",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-dylan-brown",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "James Fisher-Harris",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-james-fisher-harris",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Kieran Foran",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-kieran-foran",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Peta Hiku",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-peta-hiku",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Jahrome Hughes",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-jahrome-hughes",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Sebastian Kris",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-sebastian-kris",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Moses Leota",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-moses-leota",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Isaac Liu",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-isaac-liu",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Joseph Manu",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-joseph-manu",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Jeremy Marshall-King",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-jeremy-marshall-king",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Ronaldo Mulitalo",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-ronaldo-mulitalo",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Charnze Nicoll-Klokstad",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-charnze-nicoll-klokstad",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Briton Nikora",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-briton-nikora",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Marata Niukore",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-marata-niukore",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Isaiah Papali'i",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-isaiah-papalii",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Jordan Rapana",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-jordan-rapana",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Brandon Smith",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-brandon-smith",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Scott Sorensen",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-scott-sorensen",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Joseph Tapine",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-joseph-tapine",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Jared Waerea-Hargreaves",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-jared-waerea-hargreaves",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Dallin Watene-Zelezniak",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-dallin-watene-zelezniak",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Tonga",
+   "name": "Talatau Amone",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-talatau-amone",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Tonga",
+   "name": "David Fifita",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-david-fifita-br",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Tonga",
+   "name": "Addin Fonua-Blake",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-addin-fonua-blake",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Tonga",
+   "name": "Moeaki Fotuaika",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-moeaki-fotuaika",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Tonga",
+   "name": "Siliva Havili",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-siliva-havili",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Tonga",
+   "name": "Will Hopoate",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-william-hopoate",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Tonga",
+   "name": "Konrad Hurrell",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-konrad-hurrell",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Tonga",
+   "name": "Isaiya Katoa",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-isaiya-katoa",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Tonga",
+   "name": "Sione Katoa",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-sione-katoa-cs",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Tonga",
+   "name": "Felise Kaufusi",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-felise-kaufusi",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Tonga",
+   "name": "Keaon Koloamatangi",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-keaon-koloamatangi",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Tonga",
+   "name": "Tolutau Koula",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-tolutau-koula",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Tonga",
+   "name": "Tuimoala Lolohea",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-tuimoala-lolohea",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Tonga",
+   "name": "Soni Luke",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-soni-luke",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Tonga",
+   "name": "Ben Murdoch-Masila",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-ben-murdoch-masila",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Tonga",
+   "name": "Tesi Niu",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-tesi-niu",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Tonga",
+   "name": "Haumole Olakau'atu",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-haumole-olakauatu",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Tonga",
+   "name": "Will Penisini",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-will-penisini",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Tonga",
+   "name": "Moses Suli",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-moses-suli",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Tonga",
+   "name": "Siosifa Talakai",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-siosifa-talakai",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Tonga",
+   "name": "Tevita Tatola",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-tevita-tatola",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Tonga",
+   "name": "Siosiua Taukeiaho",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-siosiua-taukeiaho",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Tonga",
+   "name": "Jason Taumalolo",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-jason-taumalolo",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Tonga",
+   "name": "Daniel Tupou",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-daniel-tupou",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "England",
+   "name": "Herbie Farnworth",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-herbie-farnworth",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "England",
+   "name": "Tom Burgess",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-thomas-burgess",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "England",
+   "name": "Victor Radley",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-victor-radley",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "England",
+   "name": "Luke Thompson",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-luke-thompson",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "England",
+   "name": "Elliott Whitehead",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-elliott-whitehead",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "England",
+   "name": "Dom Young",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Greece",
+   "name": "Lachlan Ilias",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-lachlan-ilias",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Greece",
+   "name": "Peter Mamouzelos",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-peter-mamouzelos",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Greece",
+   "name": "Nick Mougios",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Greece",
+   "name": "Siteni Taukamo",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Josh Aloiai",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-josh-aloiai",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Fa'amanu Brown",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-faamanu-brown",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Stephen Crichton",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-stephen-crichton",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Mathew Feagai",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-mathew-feagai",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Braden Hamlin-Uele",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Chanel Harris-Tavita",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-chanel-harris-tavita",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Royce Hunt",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-royce-hunt",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Oregon Kaufusi",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-oregon-kaufusi",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Spencer Leniu",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-spencer-leniu",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Jarome Luai",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-jarome-luai",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Taylan May",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-taylan-may",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Anthony Milford",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-anthony-milford",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Josh Papali'i",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-josh-papalii",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Junior Paulo",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-junior-paulo-p1",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Jaydn Su'A",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-jaydn-sua",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Joseph Suaalii",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-joseph-suaalii",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Hamiso Tabuai-Fidow",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-hamiso-tabuai-fidow",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Izack Tago",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-izack-tago",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Martin Taupau",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-martin-taupau",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Brian To'o",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-brian-too",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Kelma Tuilagi",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-kelma-tuilagi",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Fiji",
+   "name": "Tui Kamikamica",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-tui-kamikamica",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Fiji",
+   "name": "Vuate Karawalevu",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Fiji",
+   "name": "Viliame Kikau",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-viliame-kikau",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Fiji",
+   "name": "Apisai Koroisau",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-apisai-koroisau",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Fiji",
+   "name": "Isaac Lumelume",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-isaac-lumelume",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Fiji",
+   "name": "Kevin Naiqama",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-kevin-naiqama",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Fiji",
+   "name": "Taniela Sadrugu",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Fiji",
+   "name": "Maika Sivo",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-maika-sivo",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Fiji",
+   "name": "Penioni Tagituimua",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Fiji",
+   "name": "Tevita Toloi",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Fiji",
+   "name": "Sunia Turuva",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-sunia-turuva",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Fiji",
+   "name": "Semi Valemei",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-semi-valemei",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Fiji",
+   "name": "Brandon Wakeham",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-brandon-wakeham",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Fiji",
+   "name": "Siua Wong",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-siua-wong",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Italy",
+   "name": "Nathan Brown",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-nathan-brown-wt",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Italy",
+   "name": "Jack Campagnolo",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Italy",
+   "name": "Luca Moretti",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-luca-moretti",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Italy",
+   "name": "Kyle Pickering",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Scotland",
+   "name": "Euan Aitken",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-euan-aitken",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Scotland",
+   "name": "Bailey Hayward",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-bailey-hayward",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Ireland",
+   "name": "Josh Cook",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Ireland",
+   "name": "Jaimin Jolliffe",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-jaimin-jolliffe",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Ireland",
+   "name": "Luke Keary",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-luke-keary",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Lebanon",
+   "name": "Adam Doueihi",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-adam-doueihi",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Lebanon",
+   "name": "Jacob Kiraz",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-jacob-kiraz",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Lebanon",
+   "name": "Josh Mansour",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-josh-mansour",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Lebanon",
+   "name": "Mitchell Moses",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-mitchell-moses",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Lebanon",
+   "name": "Jaxson Rahme",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Lebanon",
+   "name": "Khaled Rajab",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Cook Islands",
+   "name": "Kayal Iro",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-kayal-iro",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Cook Islands",
+   "name": "Makahesi Makatoa",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-makahesi-makatoa",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Cook Islands",
+   "name": "Esan Marsters",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-esan-marsters",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Cook Islands",
+   "name": "Davvy Moale",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-davvy-moale",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Cook Islands",
+   "name": "Tepai Moeroa",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-tepai-moeroa",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Cook Islands",
+   "name": "Pride Petterson-Robati",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Cook Islands",
+   "name": "Brendan Piakura",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-brendan-piakura",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Papua New Guinea",
+   "name": "Jacob Alick",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Papua New Guinea",
+   "name": "Xavier Coates",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-xavier-coates",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Papua New Guinea",
+   "name": "Alex Johnston",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-alex-johnston",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "Papua New Guinea",
+   "name": "Justin Olam",
+   "year": 2022,
+   "event": "2021 Rugby League World Cup (2022)",
+   "playerId": "nrl-justin-olam",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2021_Men%27s_Rugby_League_World_Cup_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Zach Dockar-Clay",
+   "year": 2025,
+   "event": "2025 Pacific Championships",
+   "playerId": "nrl-zach-dockar-clay",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2025_Rugby_League_Pacific_Championships_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Josiah Karapani",
+   "year": 2025,
+   "event": "2025 Pacific Championships",
+   "playerId": "nrl-josiah-karapani",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2025_Rugby_League_Pacific_Championships_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Erin Clark",
+   "year": 2025,
+   "event": "2025 Pacific Championships",
+   "playerId": "nrl-erin-clark",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2025_Rugby_League_Pacific_Championships_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Jamayne Isaako",
+   "year": 2025,
+   "event": "2025 Pacific Championships",
+   "playerId": "nrl-jamayne-isaako",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2025_Rugby_League_Pacific_Championships_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Xavier Willison",
+   "year": 2025,
+   "event": "2025 Pacific Championships",
+   "playerId": "nrl-xavier-willison",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2025_Rugby_League_Pacific_Championships_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Naufahu Whyte",
+   "year": 2025,
+   "event": "2025 Pacific Championships",
+   "playerId": "nrl-naufahu-whyte",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2025_Rugby_League_Pacific_Championships_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Casey McLean",
+   "year": 2025,
+   "event": "2025 Pacific Championships",
+   "playerId": "nrl-casey-mclean",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2025_Rugby_League_Pacific_Championships_squads"
+  },
+  {
+   "nation": "New Zealand",
+   "name": "Te Maire Martin",
+   "year": 2025,
+   "event": "2025 Pacific Championships",
+   "playerId": "nrl-temaire-martin",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2025_Rugby_League_Pacific_Championships_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Jazz Tevaga",
+   "year": 2025,
+   "event": "2025 Pacific Championships",
+   "playerId": "nrl-jazz-tevaga",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2025_Rugby_League_Pacific_Championships_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Ata Mariota",
+   "year": 2025,
+   "event": "2025 Pacific Championships",
+   "playerId": "nrl-ata-mariota",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2025_Rugby_League_Pacific_Championships_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Clayton Faulalo",
+   "year": 2025,
+   "event": "2025 Pacific Championships",
+   "playerId": "nrl-clayton-faulalo",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2025_Rugby_League_Pacific_Championships_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Ativalu Lisati",
+   "year": 2025,
+   "event": "2025 Pacific Championships",
+   "playerId": "nrl-ativalu-lisati",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2025_Rugby_League_Pacific_Championships_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Francis Molo",
+   "year": 2025,
+   "event": "2025 Pacific Championships",
+   "playerId": "nrl-francis-molo",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2025_Rugby_League_Pacific_Championships_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Roger Tuivasa-Sheck",
+   "year": 2025,
+   "event": "2025 Pacific Championships",
+   "playerId": "nrl-roger-tuivasa-sheck",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2025_Rugby_League_Pacific_Championships_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Payne Haas",
+   "year": 2025,
+   "event": "2025 Pacific Championships",
+   "playerId": "nrl-payne-haas",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2025_Rugby_League_Pacific_Championships_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Jeremiah Nanai",
+   "year": 2025,
+   "event": "2025 Pacific Championships",
+   "playerId": "nrl-jeremiah-nanai",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2025_Rugby_League_Pacific_Championships_squads"
+  },
+  {
+   "nation": "Samoa",
+   "name": "Murray Taulagi",
+   "year": 2025,
+   "event": "2025 Pacific Championships",
+   "playerId": "nrl-murray-taulagi",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2025_Rugby_League_Pacific_Championships_squads"
+  },
+  {
+   "nation": "Tonga",
+   "name": "Stefano Utoikamanu",
+   "year": 2025,
+   "event": "2025 Pacific Championships",
+   "playerId": "nrl-stefano-utoikamanu",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2025_Rugby_League_Pacific_Championships_squads"
+  },
+  {
+   "nation": "Tonga",
+   "name": "Robert Toia",
+   "year": 2025,
+   "event": "2025 Pacific Championships",
+   "playerId": "nrl-robert-toia",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2025_Rugby_League_Pacific_Championships_squads"
+  },
+  {
+   "nation": "Tonga",
+   "name": "Siua Wong",
+   "year": 2025,
+   "event": "2025 Pacific Championships",
+   "playerId": "nrl-siua-wong",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2025_Rugby_League_Pacific_Championships_squads"
+  },
+  {
+   "nation": "Fiji",
+   "name": "Mark Nawaqanitawase",
+   "year": 2025,
+   "event": "2025 Pacific Championships",
+   "playerId": "nrl-mark-nawaqanitawase",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2025_Rugby_League_Pacific_Championships_squads"
+  },
+  {
+   "nation": "Fiji",
+   "name": "Ronald Philitoga",
+   "year": 2025,
+   "event": "2025 Pacific Championships",
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2025_Rugby_League_Pacific_Championships_squads"
+  },
+  {
+   "nation": "Cook Islands",
+   "name": "Brad Takairangi",
+   "year": 2025,
+   "event": "2025 Pacific Championships",
+   "playerId": "nrl-brad-takairangi",
+   "sourceUrl": "https://en.wikipedia.org/wiki/2025_Rugby_League_Pacific_Championships_squads"
+  },
+  {
+   "nation": "Cook Islands",
+   "name": "Rhys Dakin",
+   "year": 2025,
+   "event": "2025 Pacific Championships",
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/2025_Rugby_League_Pacific_Championships_squads"
+  }
+ ]
+}

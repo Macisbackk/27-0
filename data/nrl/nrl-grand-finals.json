@@ -1,0 +1,388 @@
+{
+ "about": "NRL grand finals 1998-2026: premiers, runners-up, score, Clive Churchill Medal (man of the match). 2026 score/medal not on the source page at fetch time.",
+ "generatedAt": "2026-11-03",
+ "notes": [
+  "Melbourne's 2007 and 2009 premierships were stripped (salary cap breaches): stripped=true."
+ ],
+ "grandFinals": [
+  {
+   "season": 1998,
+   "premiers": "Brisbane Broncos",
+   "premiersClubId": "nrl-brisbane-broncos",
+   "score": "38–12",
+   "runnersUp": "Canterbury-Bankstown Bulldogs",
+   "runnersUpClubId": "nrl-canterbury-bulldogs",
+   "cliveChurchillMedal": {
+    "name": "Gorden Tallis",
+    "playerId": "nrl-gorden-tallis"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/NRL_Grand_Final"
+  },
+  {
+   "season": 1999,
+   "premiers": "Melbourne Storm",
+   "premiersClubId": "nrl-melbourne-storm",
+   "score": "20–18",
+   "runnersUp": "St. George Illawarra Dragons",
+   "runnersUpClubId": "nrl-st-george-illawarra-dragons",
+   "cliveChurchillMedal": {
+    "name": "Brett Kimmorley",
+    "playerId": "nrl-brett-kimmorley"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/NRL_Grand_Final"
+  },
+  {
+   "season": 2000,
+   "premiers": "Brisbane Broncos",
+   "premiersClubId": "nrl-brisbane-broncos",
+   "score": "14–6",
+   "runnersUp": "Sydney Roosters",
+   "runnersUpClubId": "nrl-sydney-roosters",
+   "cliveChurchillMedal": {
+    "name": "Darren Lockyer",
+    "playerId": "nrl-darren-lockyer"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/NRL_Grand_Final"
+  },
+  {
+   "season": 2001,
+   "premiers": "Newcastle Knights",
+   "premiersClubId": "nrl-newcastle-knights",
+   "score": "30–24",
+   "runnersUp": "Parramatta Eels",
+   "runnersUpClubId": "nrl-parramatta-eels",
+   "cliveChurchillMedal": {
+    "name": "Andrew Johns",
+    "playerId": "nrl-andrew-johns"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/NRL_Grand_Final"
+  },
+  {
+   "season": 2002,
+   "premiers": "Sydney Roosters",
+   "premiersClubId": "nrl-sydney-roosters",
+   "score": "30–8",
+   "runnersUp": "New Zealand Warriors",
+   "runnersUpClubId": "nrl-new-zealand-warriors",
+   "cliveChurchillMedal": {
+    "name": "Craig Fitzgibbon",
+    "playerId": "nrl-craig-fitzgibbon"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/NRL_Grand_Final"
+  },
+  {
+   "season": 2003,
+   "premiers": "Penrith Panthers",
+   "premiersClubId": "nrl-penrith-panthers",
+   "score": "18–6",
+   "runnersUp": "Sydney Roosters",
+   "runnersUpClubId": "nrl-sydney-roosters",
+   "cliveChurchillMedal": {
+    "name": "Luke Priddis",
+    "playerId": "nrl-luke-priddis"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/NRL_Grand_Final"
+  },
+  {
+   "season": 2004,
+   "premiers": "Canterbury-Bankstown Bulldogs",
+   "premiersClubId": "nrl-canterbury-bulldogs",
+   "score": "16–13",
+   "runnersUp": "Sydney Roosters",
+   "runnersUpClubId": "nrl-sydney-roosters",
+   "cliveChurchillMedal": {
+    "name": "Willie Mason",
+    "playerId": "nrl-willie-mason"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/NRL_Grand_Final"
+  },
+  {
+   "season": 2005,
+   "premiers": "Wests Tigers",
+   "premiersClubId": "nrl-wests-tigers",
+   "score": "30–16",
+   "runnersUp": "North Queensland Cowboys",
+   "runnersUpClubId": "nrl-north-queensland-cowboys",
+   "cliveChurchillMedal": {
+    "name": "Scott Prince",
+    "playerId": "nrl-scott-prince"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/NRL_Grand_Final"
+  },
+  {
+   "season": 2006,
+   "premiers": "Brisbane Broncos",
+   "premiersClubId": "nrl-brisbane-broncos",
+   "score": "15–8",
+   "runnersUp": "Melbourne Storm",
+   "runnersUpClubId": "nrl-melbourne-storm",
+   "cliveChurchillMedal": {
+    "name": "Shaun Berrigan",
+    "playerId": "nrl-shaun-berrigan"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/NRL_Grand_Final"
+  },
+  {
+   "season": 2007,
+   "premiers": "Melbourne Storm",
+   "premiersClubId": "nrl-melbourne-storm",
+   "score": "34–8",
+   "runnersUp": "Manly Warringah Sea Eagles",
+   "runnersUpClubId": "nrl-manly-sea-eagles",
+   "stripped": true,
+   "cliveChurchillMedal": {
+    "name": "Greg Inglis",
+    "playerId": "nrl-greg-inglis"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/NRL_Grand_Final"
+  },
+  {
+   "season": 2008,
+   "premiers": "Manly Warringah Sea Eagles",
+   "premiersClubId": "nrl-manly-sea-eagles",
+   "score": "40–0",
+   "runnersUp": "Melbourne Storm",
+   "runnersUpClubId": "nrl-melbourne-storm",
+   "cliveChurchillMedal": {
+    "name": "Brent Kite",
+    "playerId": "nrl-brent-kite"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/NRL_Grand_Final"
+  },
+  {
+   "season": 2009,
+   "premiers": "Melbourne Storm",
+   "premiersClubId": "nrl-melbourne-storm",
+   "score": "23–16",
+   "runnersUp": "Parramatta Eels",
+   "runnersUpClubId": "nrl-parramatta-eels",
+   "stripped": true,
+   "cliveChurchillMedal": {
+    "name": "Billy Slater",
+    "playerId": "nrl-billy-slater"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/NRL_Grand_Final"
+  },
+  {
+   "season": 2010,
+   "premiers": "St. George Illawarra Dragons",
+   "premiersClubId": "nrl-st-george-illawarra-dragons",
+   "score": "32–8",
+   "runnersUp": "Sydney Roosters",
+   "runnersUpClubId": "nrl-sydney-roosters",
+   "cliveChurchillMedal": {
+    "name": "Darius Boyd",
+    "playerId": "nrl-darius-boyd"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/NRL_Grand_Final"
+  },
+  {
+   "season": 2011,
+   "premiers": "Manly Warringah Sea Eagles",
+   "premiersClubId": "nrl-manly-sea-eagles",
+   "score": "24–10",
+   "runnersUp": "New Zealand Warriors",
+   "runnersUpClubId": "nrl-new-zealand-warriors",
+   "cliveChurchillMedal": {
+    "name": "Glenn Stewart",
+    "playerId": "nrl-glenn-stewart"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/NRL_Grand_Final"
+  },
+  {
+   "season": 2012,
+   "premiers": "Melbourne Storm",
+   "premiersClubId": "nrl-melbourne-storm",
+   "score": "14–4",
+   "runnersUp": "Canterbury-Bankstown Bulldogs",
+   "runnersUpClubId": "nrl-canterbury-bulldogs",
+   "cliveChurchillMedal": {
+    "name": "Cooper Cronk",
+    "playerId": "nrl-cooper-cronk"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/NRL_Grand_Final"
+  },
+  {
+   "season": 2013,
+   "premiers": "Sydney Roosters",
+   "premiersClubId": "nrl-sydney-roosters",
+   "score": "26–18",
+   "runnersUp": "Manly Warringah Sea Eagles",
+   "runnersUpClubId": "nrl-manly-sea-eagles",
+   "cliveChurchillMedal": {
+    "name": "Daly Cherry-Evans",
+    "playerId": "nrl-daly-cherry-evans"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/NRL_Grand_Final"
+  },
+  {
+   "season": 2014,
+   "premiers": "South Sydney Rabbitohs",
+   "premiersClubId": "nrl-south-sydney-rabbitohs",
+   "score": "30–6",
+   "runnersUp": "Canterbury-Bankstown Bulldogs",
+   "runnersUpClubId": "nrl-canterbury-bulldogs",
+   "cliveChurchillMedal": {
+    "name": "Sam Burgess",
+    "playerId": "nrl-sam-burgess"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/NRL_Grand_Final"
+  },
+  {
+   "season": 2015,
+   "premiers": "North Queensland Cowboys",
+   "premiersClubId": "nrl-north-queensland-cowboys",
+   "score": "17–16",
+   "runnersUp": "Brisbane Broncos",
+   "runnersUpClubId": "nrl-brisbane-broncos",
+   "cliveChurchillMedal": {
+    "name": "Johnathan Thurston",
+    "playerId": "nrl-johnathan-thurston"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/NRL_Grand_Final"
+  },
+  {
+   "season": 2016,
+   "premiers": "Cronulla-Sutherland Sharks",
+   "premiersClubId": "nrl-cronulla-sharks",
+   "score": "14–12",
+   "runnersUp": "Melbourne Storm",
+   "runnersUpClubId": "nrl-melbourne-storm",
+   "cliveChurchillMedal": {
+    "name": "Luke Lewis",
+    "playerId": "nrl-luke-lewis"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/NRL_Grand_Final"
+  },
+  {
+   "season": 2017,
+   "premiers": "Melbourne Storm",
+   "premiersClubId": "nrl-melbourne-storm",
+   "score": "34–6",
+   "runnersUp": "North Queensland Cowboys",
+   "runnersUpClubId": "nrl-north-queensland-cowboys",
+   "cliveChurchillMedal": {
+    "name": "Billy Slater",
+    "playerId": "nrl-billy-slater"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/NRL_Grand_Final"
+  },
+  {
+   "season": 2018,
+   "premiers": "Sydney Roosters",
+   "premiersClubId": "nrl-sydney-roosters",
+   "score": "21–6",
+   "runnersUp": "Melbourne Storm",
+   "runnersUpClubId": "nrl-melbourne-storm",
+   "cliveChurchillMedal": {
+    "name": "Luke Keary",
+    "playerId": "nrl-luke-keary"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/NRL_Grand_Final"
+  },
+  {
+   "season": 2019,
+   "premiers": "Sydney Roosters",
+   "premiersClubId": "nrl-sydney-roosters",
+   "score": "14–8",
+   "runnersUp": "Canberra Raiders",
+   "runnersUpClubId": "nrl-canberra-raiders",
+   "cliveChurchillMedal": {
+    "name": "Jack Wighton",
+    "playerId": "nrl-jack-wighton"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/NRL_Grand_Final"
+  },
+  {
+   "season": 2020,
+   "premiers": "Melbourne Storm",
+   "premiersClubId": "nrl-melbourne-storm",
+   "score": "26–20",
+   "runnersUp": "Penrith Panthers",
+   "runnersUpClubId": "nrl-penrith-panthers",
+   "cliveChurchillMedal": {
+    "name": "Ryan Papenhuyzen",
+    "playerId": "nrl-ryan-papenhuyzen"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/NRL_Grand_Final"
+  },
+  {
+   "season": 2021,
+   "premiers": "Penrith Panthers",
+   "premiersClubId": "nrl-penrith-panthers",
+   "score": "14–12",
+   "runnersUp": "South Sydney Rabbitohs",
+   "runnersUpClubId": "nrl-south-sydney-rabbitohs",
+   "cliveChurchillMedal": {
+    "name": "Nathan Cleary",
+    "playerId": "nrl-nathan-cleary"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/NRL_Grand_Final"
+  },
+  {
+   "season": 2022,
+   "premiers": "Penrith Panthers",
+   "premiersClubId": "nrl-penrith-panthers",
+   "score": "28–12",
+   "runnersUp": "Parramatta Eels",
+   "runnersUpClubId": "nrl-parramatta-eels",
+   "cliveChurchillMedal": {
+    "name": "Dylan Edwards",
+    "playerId": "nrl-dylan-edwards"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/NRL_Grand_Final"
+  },
+  {
+   "season": 2023,
+   "premiers": "Penrith Panthers",
+   "premiersClubId": "nrl-penrith-panthers",
+   "score": "26–24",
+   "runnersUp": "Brisbane Broncos",
+   "runnersUpClubId": "nrl-brisbane-broncos",
+   "cliveChurchillMedal": {
+    "name": "Nathan Cleary",
+    "playerId": "nrl-nathan-cleary"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/NRL_Grand_Final"
+  },
+  {
+   "season": 2024,
+   "premiers": "Penrith Panthers",
+   "premiersClubId": "nrl-penrith-panthers",
+   "score": "14–6",
+   "runnersUp": "Melbourne Storm",
+   "runnersUpClubId": "nrl-melbourne-storm",
+   "cliveChurchillMedal": {
+    "name": "Liam Martin",
+    "playerId": "nrl-liam-martin"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/NRL_Grand_Final"
+  },
+  {
+   "season": 2025,
+   "premiers": "Brisbane Broncos",
+   "premiersClubId": "nrl-brisbane-broncos",
+   "score": "26–22",
+   "runnersUp": "Melbourne Storm",
+   "runnersUpClubId": "nrl-melbourne-storm",
+   "cliveChurchillMedal": {
+    "name": "Reece Walsh",
+    "playerId": "nrl-reece-walsh"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/NRL_Grand_Final"
+  },
+  {
+   "season": 2026,
+   "premiers": "Sydney Roosters",
+   "premiersClubId": "nrl-sydney-roosters",
+   "score": null,
+   "runnersUp": "Newcastle Knights",
+   "runnersUpClubId": "nrl-newcastle-knights",
+   "cliveChurchillMedal": {
+    "name": null,
+    "playerId": null
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/2026_NRL_season"
+  }
+ ]
+}

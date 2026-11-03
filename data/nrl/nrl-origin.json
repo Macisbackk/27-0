@@ -1,0 +1,2796 @@
+{
+ "about": "State of Origin series 1998-2026 with the Wally Lewis Medal, and Origin players who debuted 1995+ (from the NSW and QLD player lists).",
+ "generatedAt": "2026-11-03",
+ "series": [
+  {
+   "season": 1998,
+   "winner": "QLD",
+   "games": "1-2 (0)",
+   "wallyLewisMedal": {
+    "name": "Allan Langer",
+    "playerId": "nrl-allan-langer",
+    "note": "Queensland-only award until 2003"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  },
+  {
+   "season": 1999,
+   "winner": "Drawn (Queensland retained)",
+   "games": "1-1 (1)",
+   "wallyLewisMedal": {
+    "name": "Jason Hetherington",
+    "playerId": "nrl-jason-hetherington",
+    "note": "Queensland-only award until 2003"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  },
+  {
+   "season": 2000,
+   "winner": "NSW",
+   "games": "3-0 (0)",
+   "wallyLewisMedal": {
+    "name": "Darren Smith",
+    "playerId": "nrl-darren-smith",
+    "note": "Queensland-only award until 2003"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  },
+  {
+   "season": 2001,
+   "winner": "QLD",
+   "games": "1-2 (0)",
+   "wallyLewisMedal": {
+    "name": "Darren Lockyer",
+    "playerId": "nrl-darren-lockyer",
+    "note": "Queensland-only award until 2003"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  },
+  {
+   "season": 2002,
+   "winner": "Drawn (Queensland retained)",
+   "games": "1-1 (1)",
+   "wallyLewisMedal": {
+    "name": "Shane Webcke",
+    "playerId": "nrl-shane-webcke",
+    "note": "Queensland-only award until 2003"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  },
+  {
+   "season": 2003,
+   "winner": "NSW",
+   "games": "2-1 (0)",
+   "wallyLewisMedal": {
+    "name": "Darren Lockyer",
+    "playerId": "nrl-darren-lockyer",
+    "note": "Queensland-only award until 2003"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  },
+  {
+   "season": 2004,
+   "winner": "NSW",
+   "games": "2-1 (0)",
+   "wallyLewisMedal": {
+    "name": "Craig Fitzgibbon",
+    "playerId": "nrl-craig-fitzgibbon"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  },
+  {
+   "season": 2005,
+   "winner": "NSW",
+   "games": "2-1 (0)",
+   "wallyLewisMedal": {
+    "name": "Anthony Minichiello",
+    "playerId": "nrl-anthony-minichiello"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  },
+  {
+   "season": 2006,
+   "winner": "QLD",
+   "games": "1-2 (0)",
+   "wallyLewisMedal": {
+    "name": "Darren Lockyer",
+    "playerId": "nrl-darren-lockyer"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  },
+  {
+   "season": 2007,
+   "winner": "QLD",
+   "games": "1-2 (0)",
+   "wallyLewisMedal": {
+    "name": "Cameron Smith",
+    "playerId": "nrl-cameron-smith"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  },
+  {
+   "season": 2008,
+   "winner": "QLD",
+   "games": "1-2 (0)",
+   "wallyLewisMedal": {
+    "name": "Johnathan Thurston",
+    "playerId": "nrl-johnathan-thurston"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  },
+  {
+   "season": 2009,
+   "winner": "QLD",
+   "games": "1-2 (0)",
+   "wallyLewisMedal": {
+    "name": "Greg Inglis",
+    "playerId": "nrl-greg-inglis"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  },
+  {
+   "season": 2010,
+   "winner": "QLD",
+   "games": "0-3 (0)",
+   "wallyLewisMedal": {
+    "name": "Billy Slater",
+    "playerId": "nrl-billy-slater"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  },
+  {
+   "season": 2011,
+   "winner": "QLD",
+   "games": "1-2 (0)",
+   "wallyLewisMedal": {
+    "name": "Cameron Smith",
+    "playerId": "nrl-cameron-smith"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  },
+  {
+   "season": 2012,
+   "winner": "QLD",
+   "games": "1-2 (0)",
+   "wallyLewisMedal": {
+    "name": "Nate Myles",
+    "playerId": "nrl-nate-myles"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  },
+  {
+   "season": 2013,
+   "winner": "QLD",
+   "games": "1-2 (0)",
+   "wallyLewisMedal": {
+    "name": "Cameron Smith",
+    "playerId": "nrl-cameron-smith"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  },
+  {
+   "season": 2014,
+   "winner": "NSW",
+   "games": "2-1 (0)",
+   "wallyLewisMedal": {
+    "name": "Paul Gallen",
+    "playerId": "nrl-paul-gallen"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  },
+  {
+   "season": 2015,
+   "winner": "QLD",
+   "games": "1-2 (0)",
+   "wallyLewisMedal": {
+    "name": "Corey Parker",
+    "playerId": "nrl-corey-parker"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  },
+  {
+   "season": 2016,
+   "winner": "QLD",
+   "games": "1-2 (0)",
+   "wallyLewisMedal": {
+    "name": "Cameron Smith",
+    "playerId": "nrl-cameron-smith"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  },
+  {
+   "season": 2017,
+   "winner": "QLD",
+   "games": "1-2 (0)",
+   "wallyLewisMedal": {
+    "name": "Dane Gagai",
+    "playerId": "nrl-dane-gagai"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  },
+  {
+   "season": 2018,
+   "winner": "NSW",
+   "games": "2-1 (0)",
+   "wallyLewisMedal": {
+    "name": "Billy Slater",
+    "playerId": "nrl-billy-slater"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  },
+  {
+   "season": 2019,
+   "winner": "NSW",
+   "games": "2-1 (0)",
+   "wallyLewisMedal": {
+    "name": "James Tedesco",
+    "playerId": "nrl-james-tedesco"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  },
+  {
+   "season": 2020,
+   "winner": "QLD",
+   "games": "1-2 (0)",
+   "wallyLewisMedal": {
+    "name": "Cameron Munster",
+    "playerId": "nrl-cameron-munster"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  },
+  {
+   "season": 2021,
+   "winner": "NSW",
+   "games": "2-1 (0)",
+   "wallyLewisMedal": {
+    "name": "Tom Trbojevic",
+    "playerId": "nrl-tom-trbojevic"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  },
+  {
+   "season": 2022,
+   "winner": "QLD",
+   "games": "1-2 (0)",
+   "wallyLewisMedal": {
+    "name": "Patrick Carrigan",
+    "playerId": "nrl-patrick-carrigan"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  },
+  {
+   "season": 2023,
+   "winner": "QLD",
+   "games": "1-2 (0)",
+   "wallyLewisMedal": {
+    "name": "Reuben Cotter",
+    "playerId": "nrl-reuben-cotter"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  },
+  {
+   "season": 2024,
+   "winner": "NSW",
+   "games": "2-1 (0)",
+   "wallyLewisMedal": {
+    "name": "Angus Crichton",
+    "playerId": "nrl-angus-crichton"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  },
+  {
+   "season": 2025,
+   "winner": "QLD",
+   "games": "1-2 (0)",
+   "wallyLewisMedal": {
+    "name": "Tom Dearden",
+    "playerId": "nrl-tom-dearden"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  },
+  {
+   "season": 2026,
+   "winner": "NSW",
+   "games": "2-1 (0)",
+   "wallyLewisMedal": {
+    "name": "Nathan Cleary",
+    "playerId": "nrl-nathan-cleary"
+   },
+   "sourceUrl": "https://en.wikipedia.org/wiki/State_of_Origin_results_and_statistics"
+  }
+ ],
+ "players": [
+  {
+   "name": "Mark Carroll",
+   "side": "NSW",
+   "debut": 1995,
+   "playerId": "nrl-mark-carroll",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Craig Hancock",
+   "side": "NSW",
+   "debut": 1995,
+   "playerId": "nrl-craig-hancock",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Andrew Johns",
+   "side": "NSW",
+   "debut": 1995,
+   "playerId": "nrl-andrew-johns",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Matthew Johns",
+   "side": "NSW",
+   "debut": 1995,
+   "playerId": "nrl-matthew-johns",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Steve Menzies",
+   "side": "NSW",
+   "debut": 1995,
+   "playerId": "nrl-steve-menzies",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Jim Serdaris",
+   "side": "NSW",
+   "debut": 1995,
+   "playerId": "nrl-jim-serdaris",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Adam Muir",
+   "side": "NSW",
+   "debut": 1995,
+   "playerId": "nrl-adam-muir",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Matt Seers",
+   "side": "NSW",
+   "debut": 1995,
+   "playerId": "nrl-matt-seers",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "John Hopoate",
+   "side": "NSW",
+   "debut": 1995,
+   "playerId": "nrl-john-hopoate",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Brett Rodwell",
+   "side": "NSW",
+   "debut": 1995,
+   "playerId": "nrl-brett-rodwell",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "David Hall",
+   "side": "NSW",
+   "debut": 1995,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "David Furner",
+   "side": "NSW",
+   "debut": 1996,
+   "playerId": "nrl-david-furner",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Jamie Ainscough",
+   "side": "NSW",
+   "debut": 1996,
+   "playerId": "nrl-jamie-ainscough",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Jim Dymock",
+   "side": "NSW",
+   "debut": 1996,
+   "playerId": "nrl-jim-dymock",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Nik Kosef",
+   "side": "NSW",
+   "debut": 1997,
+   "playerId": "nrl-nik-kosef",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Ken McGuinness",
+   "side": "NSW",
+   "debut": 1997,
+   "playerId": "nrl-ken-mcguinness",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Trent Barrett",
+   "side": "NSW",
+   "debut": 1997,
+   "playerId": "nrl-trent-barrett",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Michael Buettner",
+   "side": "NSW",
+   "debut": 1997,
+   "playerId": "nrl-michael-buettner",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Rodney Howe",
+   "side": "NSW",
+   "debut": 1998,
+   "playerId": "nrl-rodney-howe",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Adam MacDougall",
+   "side": "NSW",
+   "debut": 1998,
+   "playerId": "nrl-adam-macdougall",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Tony Butterfield",
+   "side": "NSW",
+   "debut": 1998,
+   "playerId": "nrl-tony-butterfield",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Robbie Kearns",
+   "side": "NSW",
+   "debut": 1998,
+   "playerId": "nrl-robbie-kearns",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Darren Albert",
+   "side": "NSW",
+   "debut": 1999,
+   "playerId": "nrl-darren-albert",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Bryan Fletcher",
+   "side": "NSW",
+   "debut": 1999,
+   "playerId": "nrl-bryan-fletcher",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Matt Geyer",
+   "side": "NSW",
+   "debut": 1999,
+   "playerId": "nrl-matt-geyer",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Craig Gower",
+   "side": "NSW",
+   "debut": 2001,
+   "playerId": "nrl-craig-gower",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Robbie Ross",
+   "side": "NSW",
+   "debut": 1999,
+   "playerId": "nrl-robbie-ross",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Jason Stevens",
+   "side": "NSW",
+   "debut": 2000,
+   "playerId": "nrl-jason-stevens",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Ryan Girdler",
+   "side": "NSW",
+   "debut": 1999,
+   "playerId": "nrl-ryan-girdler",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Anthony Mundine",
+   "side": "NSW",
+   "debut": 1999,
+   "playerId": "nrl-anthony-mundine",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Luke Ricketson",
+   "side": "NSW",
+   "debut": 1999,
+   "playerId": "nrl-luke-ricketson",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Ben Kennedy",
+   "side": "NSW",
+   "debut": 1999,
+   "playerId": "nrl-ben-kennedy",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Michael Vella",
+   "side": "NSW",
+   "debut": 1999,
+   "playerId": "nrl-michael-vella",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Brett Kimmorley",
+   "side": "NSW",
+   "debut": 2000,
+   "playerId": "nrl-brett-kimmorley",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "David Peachey",
+   "side": "NSW",
+   "debut": 2000,
+   "playerId": "nrl-david-peachey",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Shaun Timmins",
+   "side": "NSW",
+   "debut": 2000,
+   "playerId": "nrl-shaun-timmins",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Scott Hill",
+   "side": "NSW",
+   "debut": 2000,
+   "playerId": "nrl-scott-hill",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Matthew Gidley",
+   "side": "NSW",
+   "debut": 2000,
+   "playerId": "nrl-matthew-gidley",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Michael De Vere",
+   "side": "NSW",
+   "debut": 2001,
+   "playerId": "nrl-michael-de-vere",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Nathan Hindmarsh",
+   "side": "NSW",
+   "debut": 2001,
+   "playerId": "nrl-nathan-hindmarsh",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Mark Hughes",
+   "side": "NSW",
+   "debut": 2001,
+   "playerId": "nrl-mark-hughes-nc",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Luke Priddis",
+   "side": "NSW",
+   "debut": 2001,
+   "playerId": "nrl-luke-priddis",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Mark O'Meley",
+   "side": "NSW",
+   "debut": 2001,
+   "playerId": "nrl-mark-omeley",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Matt Adamson",
+   "side": "NSW",
+   "debut": 2001,
+   "playerId": "nrl-matt-adamson",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Andrew Ryan",
+   "side": "NSW",
+   "debut": 2001,
+   "playerId": "nrl-andrew-ryan",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Luke Bailey",
+   "side": "NSW",
+   "debut": 2002,
+   "playerId": "nrl-luke-bailey",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Danny Buderus",
+   "side": "NSW",
+   "debut": 2002,
+   "playerId": "nrl-danny-buderus",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Brett Hodgson",
+   "side": "NSW",
+   "debut": 2002,
+   "playerId": "nrl-brett-hodgson",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Jamie Lyon",
+   "side": "NSW",
+   "debut": 2002,
+   "playerId": "nrl-jamie-lyon",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Jason Moodie",
+   "side": "NSW",
+   "debut": 2002,
+   "playerId": "nrl-jason-moodie",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Steve Simpson",
+   "side": "NSW",
+   "debut": 2002,
+   "playerId": "nrl-steve-simpson",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Timana Tahu",
+   "side": "NSW",
+   "debut": 2002,
+   "playerId": "nrl-timana-tahu",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Braith Anasta",
+   "side": "NSW",
+   "debut": 2002,
+   "playerId": "nrl-braith-anasta",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Jason Ryles",
+   "side": "NSW",
+   "debut": 2002,
+   "playerId": "nrl-jason-ryles",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Craig Fitzgibbon",
+   "side": "NSW",
+   "debut": 2003,
+   "playerId": "nrl-craig-fitzgibbon",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Anthony Minichiello",
+   "side": "NSW",
+   "debut": 2003,
+   "playerId": "nrl-anthony-minichiello",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Phil Bailey",
+   "side": "NSW",
+   "debut": 2003,
+   "playerId": "nrl-phil-bailey",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Josh Perry",
+   "side": "NSW",
+   "debut": 2003,
+   "playerId": "nrl-josh-perry",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Craig Wing",
+   "side": "NSW",
+   "debut": 2003,
+   "playerId": "nrl-craig-wing",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Willie Mason",
+   "side": "NSW",
+   "debut": 2003,
+   "playerId": "nrl-willie-mason",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Ben Hornby",
+   "side": "NSW",
+   "debut": 2004,
+   "playerId": "nrl-ben-hornby",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Luke Lewis",
+   "side": "NSW",
+   "debut": 2004,
+   "playerId": "nrl-luke-lewis",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Ryan O'Hara",
+   "side": "NSW",
+   "debut": 2004,
+   "playerId": "nrl-ryan-ohara",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Luke Rooney",
+   "side": "NSW",
+   "debut": 2004,
+   "playerId": "nrl-luke-rooney",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Brent Kite",
+   "side": "NSW",
+   "debut": 2004,
+   "playerId": "nrl-brent-kite",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Trent Waterhouse",
+   "side": "NSW",
+   "debut": 2004,
+   "playerId": "nrl-trent-waterhouse",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Brett Finch",
+   "side": "NSW",
+   "debut": 2004,
+   "playerId": "nrl-brett-finch",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Matt Cooper",
+   "side": "NSW",
+   "debut": 2004,
+   "playerId": "nrl-matt-cooper",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Mark Gasnier",
+   "side": "NSW",
+   "debut": 2004,
+   "playerId": "nrl-mark-gasnier",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Matt King",
+   "side": "NSW",
+   "debut": 2005,
+   "playerId": "nrl-matt-king",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Anthony Watmough",
+   "side": "NSW",
+   "debut": 2005,
+   "playerId": "nrl-anthony-watmough",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Eric Grothe Jr",
+   "side": "NSW",
+   "debut": 2006,
+   "playerId": "nrl-eric-grothe-p1",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Luke O'Donnell",
+   "side": "NSW",
+   "debut": 2006,
+   "playerId": "nrl-luke-odonnell",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Paul Gallen",
+   "side": "NSW",
+   "debut": 2006,
+   "playerId": "nrl-paul-gallen",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Jarryd Hayne",
+   "side": "NSW",
+   "debut": 2007,
+   "playerId": "nrl-jarryd-hayne",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Jarrod Mullen",
+   "side": "NSW",
+   "debut": 2007,
+   "playerId": "nrl-jarrod-mullen",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Brett White",
+   "side": "NSW",
+   "debut": 2007,
+   "playerId": "nrl-brett-white",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Kurt Gidley",
+   "side": "NSW",
+   "debut": 2007,
+   "playerId": "nrl-kurt-gidley",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Anthony Tupou",
+   "side": "NSW",
+   "debut": 2007,
+   "playerId": "nrl-anthony-tupou",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Brett Stewart",
+   "side": "NSW",
+   "debut": 2007,
+   "playerId": "nrl-brett-stewart",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Greg Bird",
+   "side": "NSW",
+   "debut": 2007,
+   "playerId": "nrl-greg-bird",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Ryan Hoffman",
+   "side": "NSW",
+   "debut": 2007,
+   "playerId": "nrl-ryan-hoffman",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Hazem El Masri",
+   "side": "NSW",
+   "debut": 2007,
+   "playerId": "nrl-hazem-el-masri",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Ben Cross",
+   "side": "NSW",
+   "debut": 2008,
+   "playerId": "nrl-ben-cross",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Anthony Quinn",
+   "side": "NSW",
+   "debut": 2008,
+   "playerId": "nrl-anthony-quinn",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Peter Wallace",
+   "side": "NSW",
+   "debut": 2008,
+   "playerId": "nrl-peter-wallace",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Anthony Laffranchi",
+   "side": "NSW",
+   "debut": 2008,
+   "playerId": "nrl-anthony-laffranchi",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Steve Turner",
+   "side": "NSW",
+   "debut": 2008,
+   "playerId": "nrl-steve-turner",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Joel Monaghan",
+   "side": "NSW",
+   "debut": 2008,
+   "playerId": "nrl-joel-monaghan",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Mitchell Pearce",
+   "side": "NSW",
+   "debut": 2008,
+   "playerId": "nrl-mitchell-pearce",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Michael Jennings",
+   "side": "NSW",
+   "debut": 2009,
+   "playerId": "nrl-michael-jennings",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "James McManus",
+   "side": "NSW",
+   "debut": 2009,
+   "playerId": "nrl-james-mcmanus",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Terry Campese",
+   "side": "NSW",
+   "debut": 2009,
+   "playerId": "nrl-terry-campese",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Robbie Farah",
+   "side": "NSW",
+   "debut": 2009,
+   "playerId": "nrl-robbie-farah",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Ben Creagh",
+   "side": "NSW",
+   "debut": 2009,
+   "playerId": "nrl-ben-creagh",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Justin Poore",
+   "side": "NSW",
+   "debut": 2009,
+   "playerId": "nrl-justin-poore",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Glenn Stewart",
+   "side": "NSW",
+   "debut": 2009,
+   "playerId": "nrl-glenn-stewart",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Michael Weyman",
+   "side": "NSW",
+   "debut": 2009,
+   "playerId": "nrl-michael-weyman",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "David Williams",
+   "side": "NSW",
+   "debut": 2009,
+   "playerId": "nrl-david-williams",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Josh Morris",
+   "side": "NSW",
+   "debut": 2009,
+   "playerId": "nrl-josh-morris",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Michael Ennis",
+   "side": "NSW",
+   "debut": 2009,
+   "playerId": "nrl-michael-ennis",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Tom Learoyd-Lahrs",
+   "side": "NSW",
+   "debut": 2009,
+   "playerId": "nrl-tom-learoyd-lahrs",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Brett Morris",
+   "side": "NSW",
+   "debut": 2010,
+   "playerId": "nrl-brett-morris",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Jamal Idris",
+   "side": "NSW",
+   "debut": 2010,
+   "playerId": "nrl-jamal-idris",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Beau Scott",
+   "side": "NSW",
+   "debut": 2010,
+   "playerId": "nrl-beau-scott",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Michael Gordon",
+   "side": "NSW",
+   "debut": 2010,
+   "playerId": "nrl-michael-gordon",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Jason King",
+   "side": "NSW",
+   "debut": 2010,
+   "playerId": "nrl-jason-king",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Kade Snowden",
+   "side": "NSW",
+   "debut": 2010,
+   "playerId": "nrl-kade-snowden",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Tim Mannah",
+   "side": "NSW",
+   "debut": 2010,
+   "playerId": "nrl-tim-mannah",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Josh Dugan",
+   "side": "NSW",
+   "debut": 2011,
+   "playerId": "nrl-josh-dugan",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Trent Merrin",
+   "side": "NSW",
+   "debut": 2011,
+   "playerId": "nrl-trent-merrin",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Jamie Soward",
+   "side": "NSW",
+   "debut": 2011,
+   "playerId": "nrl-jamie-soward",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Akuila Uate",
+   "side": "NSW",
+   "debut": 2011,
+   "playerId": "nrl-akuila-uate",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Dean Young",
+   "side": "NSW",
+   "debut": 2011,
+   "playerId": "nrl-dean-young",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Will Hopoate",
+   "side": "NSW",
+   "debut": 2011,
+   "playerId": "nrl-william-hopoate",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Keith Galloway",
+   "side": "NSW",
+   "debut": 2011,
+   "playerId": "nrl-keith-galloway",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Todd Carney",
+   "side": "NSW",
+   "debut": 2012,
+   "playerId": "nrl-todd-carney",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "James Tamou",
+   "side": "NSW",
+   "debut": 2012,
+   "playerId": "nrl-james-tamou",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Jamie Buhrer",
+   "side": "NSW",
+   "debut": 2012,
+   "playerId": "nrl-jamie-buhrer",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Tony Williams",
+   "side": "NSW",
+   "debut": 2012,
+   "playerId": "nrl-tony-williams",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Tim Grant",
+   "side": "NSW",
+   "debut": 2012,
+   "playerId": "nrl-tim-grant",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Blake Ferguson",
+   "side": "NSW",
+   "debut": 2013,
+   "playerId": "nrl-blake-ferguson",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "James Maloney",
+   "side": "NSW",
+   "debut": 2013,
+   "playerId": "nrl-james-maloney",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Andrew Fifita",
+   "side": "NSW",
+   "debut": 2013,
+   "playerId": "nrl-andrew-fifita",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Josh Reynolds",
+   "side": "NSW",
+   "debut": 2013,
+   "playerId": "nrl-josh-reynolds",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Nathan Merritt",
+   "side": "NSW",
+   "debut": 2013,
+   "playerId": "nrl-nathan-merritt",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Aaron Woods",
+   "side": "NSW",
+   "debut": 2013,
+   "playerId": "nrl-aaron-woods",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Boyd Cordner",
+   "side": "NSW",
+   "debut": 2013,
+   "playerId": "nrl-boyd-cordner",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Trent Hodkinson",
+   "side": "NSW",
+   "debut": 2014,
+   "playerId": "nrl-trent-hodkinson",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Daniel Tupou",
+   "side": "NSW",
+   "debut": 2014,
+   "playerId": "nrl-daniel-tupou",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Josh Jackson",
+   "side": "NSW",
+   "debut": 2015,
+   "playerId": "nrl-josh-jackson",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "David Klemmer",
+   "side": "NSW",
+   "debut": 2015,
+   "playerId": "nrl-david-klemmer",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Matt Moylan",
+   "side": "NSW",
+   "debut": 2016,
+   "playerId": "nrl-matt-moylan",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Josh Mansour",
+   "side": "NSW",
+   "debut": 2016,
+   "playerId": "nrl-josh-mansour",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Adam Reynolds",
+   "side": "NSW",
+   "debut": 2016,
+   "playerId": "nrl-adam-reynolds",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Dylan Walker",
+   "side": "NSW",
+   "debut": 2016,
+   "playerId": "nrl-dylan-walker",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Tyson Frizell",
+   "side": "NSW",
+   "debut": 2016,
+   "playerId": "nrl-tyson-frizell",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Jack Bird",
+   "side": "NSW",
+   "debut": 2016,
+   "playerId": "nrl-jack-bird",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "James Tedesco",
+   "side": "NSW",
+   "debut": 2016,
+   "playerId": "nrl-james-tedesco",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Wade Graham",
+   "side": "NSW",
+   "debut": 2016,
+   "playerId": "nrl-wade-graham",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Nathan Peats",
+   "side": "NSW",
+   "debut": 2017,
+   "playerId": "nrl-nathan-peats",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Jake Trbojevic",
+   "side": "NSW",
+   "debut": 2017,
+   "playerId": "nrl-jake-trbojevic",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Tom Trbojevic",
+   "side": "NSW",
+   "debut": 2018,
+   "playerId": "nrl-tom-trbojevic",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Latrell Mitchell",
+   "side": "NSW",
+   "debut": 2018,
+   "playerId": "nrl-latrell-mitchell",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "James Roberts",
+   "side": "NSW",
+   "debut": 2018,
+   "playerId": "nrl-james-roberts",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Josh Addo-Carr",
+   "side": "NSW",
+   "debut": 2018,
+   "playerId": "nrl-josh-addo-carr",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Nathan Cleary",
+   "side": "NSW",
+   "debut": 2018,
+   "playerId": "nrl-nathan-cleary",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Damien Cook",
+   "side": "NSW",
+   "debut": 2018,
+   "playerId": "nrl-damien-cook",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Reagan Campbell-Gillard",
+   "side": "NSW",
+   "debut": 2018,
+   "playerId": "nrl-reagan-campbell-gillard",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Jack de Belin",
+   "side": "NSW",
+   "debut": 2018,
+   "playerId": "nrl-jack-de-belin",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Paul Vaughan",
+   "side": "NSW",
+   "debut": 2018,
+   "playerId": "nrl-paul-vaughan",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Angus Crichton",
+   "side": "NSW",
+   "debut": 2018,
+   "playerId": "nrl-angus-crichton",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Tyrone Peachey",
+   "side": "NSW",
+   "debut": 2018,
+   "playerId": "nrl-tyrone-peachey",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Matt Prior",
+   "side": "NSW",
+   "debut": 2018,
+   "playerId": "nrl-matt-prior",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Tariq Sims",
+   "side": "NSW",
+   "debut": 2018,
+   "playerId": "nrl-tariq-sims",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Nick Cotric",
+   "side": "NSW",
+   "debut": 2019,
+   "playerId": "nrl-nick-cotric",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Cody Walker",
+   "side": "NSW",
+   "debut": 2019,
+   "playerId": "nrl-cody-walker",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Jack Wighton",
+   "side": "NSW",
+   "debut": 2019,
+   "playerId": "nrl-jack-wighton",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Payne Haas",
+   "side": "NSW",
+   "debut": 2019,
+   "playerId": "nrl-payne-haas",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Cameron Murray",
+   "side": "NSW",
+   "debut": 2019,
+   "playerId": "nrl-cameron-murray",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Daniel Saifiti",
+   "side": "NSW",
+   "debut": 2019,
+   "playerId": "nrl-daniel-saifiti",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Dale Finucane",
+   "side": "NSW",
+   "debut": 2019,
+   "playerId": "nrl-dale-finucane",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Clinton Gutherson",
+   "side": "NSW",
+   "debut": 2020,
+   "playerId": "nrl-clint-gutherson",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Luke Keary",
+   "side": "NSW",
+   "debut": 2020,
+   "playerId": "nrl-luke-keary",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Junior Paulo",
+   "side": "NSW",
+   "debut": 2020,
+   "playerId": "nrl-junior-paulo-p1",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Nathan Brown",
+   "side": "NSW",
+   "debut": 2020,
+   "playerId": "nrl-nathan-brown-wt",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Isaah Yeo",
+   "side": "NSW",
+   "debut": 2020,
+   "playerId": "nrl-isaah-yeo",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Jarome Luai",
+   "side": "NSW",
+   "debut": 2021,
+   "playerId": "nrl-jarome-luai",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Brian To'o",
+   "side": "NSW",
+   "debut": 2021,
+   "playerId": "nrl-brian-too",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Liam Martin",
+   "side": "NSW",
+   "debut": 2021,
+   "playerId": "nrl-liam-martin",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Mitchell Moses",
+   "side": "NSW",
+   "debut": 2021,
+   "playerId": "nrl-mitchell-moses",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Apisai Koroisau",
+   "side": "NSW",
+   "debut": 2021,
+   "playerId": "nrl-apisai-koroisau",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Kotoni Staggs",
+   "side": "NSW",
+   "debut": 2022,
+   "playerId": "nrl-kotoni-staggs",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Stephen Crichton",
+   "side": "NSW",
+   "debut": 2022,
+   "playerId": "nrl-stephen-crichton",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Ryan Matterson",
+   "side": "NSW",
+   "debut": 2022,
+   "playerId": "nrl-ryan-matterson",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Matt Burton",
+   "side": "NSW",
+   "debut": 2022,
+   "playerId": "nrl-matt-burton",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Siosifa Talakai",
+   "side": "NSW",
+   "debut": 2022,
+   "playerId": "nrl-siosifa-talakai",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Jacob Saifiti",
+   "side": "NSW",
+   "debut": 2022,
+   "playerId": "nrl-jacob-saifiti",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Tevita Pangai Junior",
+   "side": "NSW",
+   "debut": 2023,
+   "playerId": "nrl-tevita-pangai",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Hudson Young",
+   "side": "NSW",
+   "debut": 2023,
+   "playerId": "nrl-hudson-young",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Nicholas Hynes",
+   "side": "NSW",
+   "debut": 2023,
+   "playerId": "nrl-nicho-hynes",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Stefano Utoikamanu",
+   "side": "NSW",
+   "debut": 2023,
+   "playerId": "nrl-stefano-utoikamanu",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Reece Robson",
+   "side": "NSW",
+   "debut": 2023,
+   "playerId": "nrl-reece-robson",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Bradman Best",
+   "side": "NSW",
+   "debut": 2023,
+   "playerId": "nrl-bradman-best",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Keaon Koloamatangi",
+   "side": "NSW",
+   "debut": 2023,
+   "playerId": "nrl-keaon-koloamatangi",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Joseph Sua'ali'i",
+   "side": "NSW",
+   "debut": 2024,
+   "playerId": "nrl-joseph-suaalii",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Zac Lomax",
+   "side": "NSW",
+   "debut": 2024,
+   "playerId": "nrl-zac-lomax",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Cameron McInnes",
+   "side": "NSW",
+   "debut": 2024,
+   "playerId": "nrl-cameron-mcinnes",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Haumole Olakau'atu",
+   "side": "NSW",
+   "debut": 2024,
+   "playerId": "nrl-haumole-olakauatu",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Spencer Leniu",
+   "side": "NSW",
+   "debut": 2024,
+   "playerId": "nrl-spencer-leniu",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Dylan Edwards",
+   "side": "NSW",
+   "debut": 2024,
+   "playerId": "nrl-dylan-edwards",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Connor Watson",
+   "side": "NSW",
+   "debut": 2024,
+   "playerId": "nrl-connor-watson",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Mitchell Barnett",
+   "side": "NSW",
+   "debut": 2024,
+   "playerId": "nrl-mitchell-barnett",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Max King",
+   "side": "NSW",
+   "debut": 2025,
+   "playerId": "nrl-max-king",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Toluta'u Koula",
+   "side": "NSW",
+   "debut": 2026,
+   "playerId": "nrl-tolutau-koula",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Addin Fonua-Blake",
+   "side": "NSW",
+   "debut": 2026,
+   "playerId": "nrl-addin-fonua-blake",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Victor Radley",
+   "side": "NSW",
+   "debut": 2026,
+   "playerId": "nrl-victor-radley",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Blayke Brailey",
+   "side": "NSW",
+   "debut": 2026,
+   "playerId": "nrl-blayke-brailey",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Ethan Strange",
+   "side": "NSW",
+   "debut": 2026,
+   "playerId": "nrl-ethan-strange",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Casey McLean",
+   "side": "NSW",
+   "debut": 2026,
+   "playerId": "nrl-casey-mclean",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Mark Nawaqanitawase",
+   "side": "NSW",
+   "debut": 2026,
+   "playerId": "nrl-mark-nawaqanitawase",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Dylan Lucas",
+   "side": "NSW",
+   "debut": 2026,
+   "playerId": "nrl-dylan-lucas",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Jack Bostock",
+   "side": "NSW",
+   "debut": 2026,
+   "playerId": "nrl-jack-bostock",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_New_South_Wales_State_of_Origin_players"
+  },
+  {
+   "name": "Robbie O'Davis",
+   "side": "QLD",
+   "debut": 1995,
+   "playerId": "nrl-robbie-odavis",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Danny Moore",
+   "side": "QLD",
+   "debut": 1995,
+   "playerId": "nrl-danny-moore",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Matt Sing",
+   "side": "QLD",
+   "debut": 1995,
+   "playerId": "nrl-matt-sing",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Adrian Lam",
+   "side": "QLD",
+   "debut": 1995,
+   "playerId": "nrl-adrian-lam",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Tony Hearn",
+   "side": "QLD",
+   "debut": 1995,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Wayne Bartrim",
+   "side": "QLD",
+   "debut": 1995,
+   "playerId": "nrl-wayne-bartrim",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Ben Ikin",
+   "side": "QLD",
+   "debut": 1995,
+   "playerId": "nrl-ben-ikin",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Terry Cook",
+   "side": "QLD",
+   "debut": 1995,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Craig Teevan",
+   "side": "QLD",
+   "debut": 1995,
+   "playerId": "nrl-craig-teevan",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Wendell Sailor",
+   "side": "QLD",
+   "debut": 1996,
+   "playerId": "nrl-wendell-sailor",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Brad Thorn",
+   "side": "QLD",
+   "debut": 1996,
+   "playerId": "nrl-brad-thorn",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Alan Cann",
+   "side": "QLD",
+   "debut": 1996,
+   "playerId": "nrl-alan-cann",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Craig Greenhill",
+   "side": "QLD",
+   "debut": 1996,
+   "playerId": "nrl-craig-greenhill",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Owen Cunningham",
+   "side": "QLD",
+   "debut": 1996,
+   "playerId": "nrl-owen-cunningham",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Craig Smith",
+   "side": "QLD",
+   "debut": 1997,
+   "playerId": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Jamie Goddard",
+   "side": "QLD",
+   "debut": 1997,
+   "playerId": "nrl-jamie-goddard",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Neil Tierney",
+   "side": "QLD",
+   "debut": 1997,
+   "playerId": "nrl-neil-tierney",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Jeremy Schloss",
+   "side": "QLD",
+   "debut": 1997,
+   "playerId": "nrl-jeremy-schloss",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Stuart Kelly",
+   "side": "QLD",
+   "debut": 1997,
+   "playerId": "nrl-stuart-kelly",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Clinton O'Brien",
+   "side": "QLD",
+   "debut": 1997,
+   "playerId": "nrl-clinton-obrien",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Darren Lockyer",
+   "side": "QLD",
+   "debut": 1998,
+   "playerId": "nrl-darren-lockyer",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Shane Webcke",
+   "side": "QLD",
+   "debut": 1998,
+   "playerId": "nrl-shane-webcke",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Jason Hetherington",
+   "side": "QLD",
+   "debut": 1998,
+   "playerId": "nrl-jason-hetherington",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Peter Ryan",
+   "side": "QLD",
+   "debut": 1998,
+   "playerId": "nrl-peter-ryan-br",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Steve Price",
+   "side": "QLD",
+   "debut": 1998,
+   "playerId": "nrl-steven-price-cb",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Martin Lang",
+   "side": "QLD",
+   "debut": 1998,
+   "playerId": "nrl-martin-lang",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Tonie Carroll",
+   "side": "QLD",
+   "debut": 1998,
+   "playerId": "nrl-tonie-carroll",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Mat Rogers",
+   "side": "QLD",
+   "debut": 1999,
+   "playerId": "nrl-mat-rogers",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Chris McKenna",
+   "side": "QLD",
+   "debut": 1999,
+   "playerId": "nrl-chris-mckenna",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Paul Green",
+   "side": "QLD",
+   "debut": 1999,
+   "playerId": "nrl-paul-green",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Russell Bawden",
+   "side": "QLD",
+   "debut": 2000,
+   "playerId": "nrl-russell-bawden",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Paul Bowman",
+   "side": "QLD",
+   "debut": 2000,
+   "playerId": "nrl-paul-bowman",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Lote Tuqiri",
+   "side": "QLD",
+   "debut": 2001,
+   "playerId": "nrl-lote-tuqiri",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Daniel Wagon",
+   "side": "QLD",
+   "debut": 2001,
+   "playerId": "nrl-daniel-wagon",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "John Doyle",
+   "side": "QLD",
+   "debut": 2001,
+   "playerId": "nrl-john-doyle",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "John Buttigieg",
+   "side": "QLD",
+   "debut": 2001,
+   "playerId": "nrl-john-buttigieg",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Petero Civoniceva",
+   "side": "QLD",
+   "debut": 2001,
+   "playerId": "nrl-petero-civoniceva",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Kevin Campion",
+   "side": "QLD",
+   "debut": 2001,
+   "playerId": "nrl-kevin-campion",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Chris Walker",
+   "side": "QLD",
+   "debut": 2001,
+   "playerId": "nrl-chris-walker",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Chris Beattie",
+   "side": "QLD",
+   "debut": 2001,
+   "playerId": "nrl-chris-beattie",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Carl Webb",
+   "side": "QLD",
+   "debut": 2001,
+   "playerId": "nrl-carl-webb",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Brad Meyers",
+   "side": "QLD",
+   "debut": 2001,
+   "playerId": "nrl-brad-meyers",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Nathan Fien",
+   "side": "QLD",
+   "debut": 2001,
+   "playerId": "nrl-nathan-fien",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Dane Carlaw",
+   "side": "QLD",
+   "debut": 2001,
+   "playerId": "nrl-dane-carlaw",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Clinton Schifcofske",
+   "side": "QLD",
+   "debut": 2002,
+   "playerId": "nrl-clinton-schifcofske",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Shaun Berrigan",
+   "side": "QLD",
+   "debut": 2002,
+   "playerId": "nrl-shaun-berrigan",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Justin Hodges",
+   "side": "QLD",
+   "debut": 2002,
+   "playerId": "nrl-justin-hodges",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "PJ Marsh",
+   "side": "QLD",
+   "debut": 2002,
+   "playerId": "nrl-pj-marsh",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Travis Norton",
+   "side": "QLD",
+   "debut": 2002,
+   "playerId": "nrl-travis-norton",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Chris Flannery",
+   "side": "QLD",
+   "debut": 2002,
+   "playerId": "nrl-chris-flannery",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Brent Tate",
+   "side": "QLD",
+   "debut": 2002,
+   "playerId": "nrl-brent-tate",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Shannon Hegarty",
+   "side": "QLD",
+   "debut": 2003,
+   "playerId": "nrl-shannon-hegarty",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Michael Crocker",
+   "side": "QLD",
+   "debut": 2003,
+   "playerId": "nrl-michael-crocker",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Scott Sattler",
+   "side": "QLD",
+   "debut": 2003,
+   "playerId": "nrl-scott-sattler",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Matt Bowen",
+   "side": "QLD",
+   "debut": 2003,
+   "playerId": "nrl-matthew-bowen",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Josh Hannay",
+   "side": "QLD",
+   "debut": 2003,
+   "playerId": "nrl-josh-hannay",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Cameron Smith",
+   "side": "QLD",
+   "debut": 2003,
+   "playerId": "nrl-cameron-smith",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Rhys Wesser",
+   "side": "QLD",
+   "debut": 2004,
+   "playerId": "nrl-rhys-wesser",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Billy Slater",
+   "side": "QLD",
+   "debut": 2004,
+   "playerId": "nrl-billy-slater",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Scott Prince",
+   "side": "QLD",
+   "debut": 2004,
+   "playerId": "nrl-scott-prince",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Ben Ross",
+   "side": "QLD",
+   "debut": 2004,
+   "playerId": "nrl-ben-ross",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Willie Tonga",
+   "side": "QLD",
+   "debut": 2004,
+   "playerId": "nrl-willie-tonga",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Corey Parker",
+   "side": "QLD",
+   "debut": 2004,
+   "playerId": "nrl-corey-parker",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Ty Williams",
+   "side": "QLD",
+   "debut": 2005,
+   "playerId": "nrl-ty-williams",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Johnathan Thurston",
+   "side": "QLD",
+   "debut": 2005,
+   "playerId": "nrl-johnathan-thurston",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Casey McGuire",
+   "side": "QLD",
+   "debut": 2005,
+   "playerId": "nrl-casey-mcguire",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Danny Nutley",
+   "side": "QLD",
+   "debut": 2005,
+   "playerId": "nrl-danny-nutley",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Ashley Harrison",
+   "side": "QLD",
+   "debut": 2005,
+   "playerId": "nrl-ashley-harrison",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Greg Inglis",
+   "side": "QLD",
+   "debut": 2006,
+   "playerId": "nrl-greg-inglis",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Steven Bell",
+   "side": "QLD",
+   "debut": 2006,
+   "playerId": "nrl-steven-bell",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "David Stagg",
+   "side": "QLD",
+   "debut": 2006,
+   "playerId": "nrl-david-stagg",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Matthew Scott",
+   "side": "QLD",
+   "debut": 2006,
+   "playerId": "nrl-matthew-scott",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Dallas Johnson",
+   "side": "QLD",
+   "debut": 2006,
+   "playerId": "nrl-dallas-johnson",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Sam Thaiday",
+   "side": "QLD",
+   "debut": 2006,
+   "playerId": "nrl-sam-thaiday",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Nate Myles",
+   "side": "QLD",
+   "debut": 2006,
+   "playerId": "nrl-nate-myles",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Karmichael Hunt",
+   "side": "QLD",
+   "debut": 2006,
+   "playerId": "nrl-karmichael-hunt",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Adam Mogg",
+   "side": "QLD",
+   "debut": 2006,
+   "playerId": "nrl-adam-mogg",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Jacob Lillyman",
+   "side": "QLD",
+   "debut": 2006,
+   "playerId": "nrl-jacob-lillyman",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Neville Costigan",
+   "side": "QLD",
+   "debut": 2007,
+   "playerId": "nrl-neville-costigan",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Antonio Kaufusi",
+   "side": "QLD",
+   "debut": 2007,
+   "playerId": "nrl-antonio-kaufusi",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Israel Folau",
+   "side": "QLD",
+   "debut": 2008,
+   "playerId": "nrl-israel-folau",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Ben Hannant",
+   "side": "QLD",
+   "debut": 2008,
+   "playerId": "nrl-ben-hannant",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Darius Boyd",
+   "side": "QLD",
+   "debut": 2008,
+   "playerId": "nrl-darius-boyd",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "David Shillington",
+   "side": "QLD",
+   "debut": 2009,
+   "playerId": "nrl-david-shillington",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Cooper Cronk",
+   "side": "QLD",
+   "debut": 2010,
+   "playerId": "nrl-cooper-cronk",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "David Taylor",
+   "side": "QLD",
+   "debut": 2010,
+   "playerId": "nrl-dave-taylor",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Matt Ballin",
+   "side": "QLD",
+   "debut": 2010,
+   "playerId": "nrl-matt-ballin",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Dane Nielsen",
+   "side": "QLD",
+   "debut": 2011,
+   "playerId": "nrl-dane-nielsen",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Jharal Yow Yeh",
+   "side": "QLD",
+   "debut": 2011,
+   "playerId": "nrl-jharal-yow-yeh",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Matt Gillett",
+   "side": "QLD",
+   "debut": 2012,
+   "playerId": "nrl-matt-gillett",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Ben Te'o",
+   "side": "QLD",
+   "debut": 2012,
+   "playerId": "nrl-ben-teo",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Chris McQueen",
+   "side": "QLD",
+   "debut": 2013,
+   "playerId": "nrl-chris-mcqueen",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Daly Cherry-Evans",
+   "side": "QLD",
+   "debut": 2013,
+   "playerId": "nrl-daly-cherry-evans",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Josh Papalii",
+   "side": "QLD",
+   "debut": 2013,
+   "playerId": "nrl-josh-papalii",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Aidan Guerra",
+   "side": "QLD",
+   "debut": 2014,
+   "playerId": "nrl-aidan-guerra",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Will Chambers",
+   "side": "QLD",
+   "debut": 2014,
+   "playerId": "nrl-will-chambers",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Josh McGuire",
+   "side": "QLD",
+   "debut": 2015,
+   "playerId": "nrl-josh-mcguire",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Michael Morgan",
+   "side": "QLD",
+   "debut": 2015,
+   "playerId": "nrl-michael-morgan",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Dane Gagai",
+   "side": "QLD",
+   "debut": 2015,
+   "playerId": "nrl-dane-gagai",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Corey Oates",
+   "side": "QLD",
+   "debut": 2016,
+   "playerId": "nrl-corey-oates",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Justin O'Neill",
+   "side": "QLD",
+   "debut": 2016,
+   "playerId": "nrl-justin-oneill",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Gavin Cooper",
+   "side": "QLD",
+   "debut": 2016,
+   "playerId": "nrl-gavin-cooper",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Anthony Milford",
+   "side": "QLD",
+   "debut": 2017,
+   "playerId": "nrl-anthony-milford",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Dylan Napa",
+   "side": "QLD",
+   "debut": 2017,
+   "playerId": "nrl-dylan-napa",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Valentine Holmes",
+   "side": "QLD",
+   "debut": 2017,
+   "playerId": "nrl-valentine-holmes",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Jarrod Wallace",
+   "side": "QLD",
+   "debut": 2017,
+   "playerId": "nrl-jarrod-wallace",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Coen Hess",
+   "side": "QLD",
+   "debut": 2017,
+   "playerId": "nrl-coen-hess",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Tim Glasby",
+   "side": "QLD",
+   "debut": 2017,
+   "playerId": "nrl-tim-glasby",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Cameron Munster",
+   "side": "QLD",
+   "debut": 2017,
+   "playerId": "nrl-cameron-munster",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Ben Hunt",
+   "side": "QLD",
+   "debut": 2017,
+   "playerId": "nrl-ben-hunt",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Andrew McCullough",
+   "side": "QLD",
+   "debut": 2018,
+   "playerId": "nrl-andrew-mccullough",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Felise Kaufusi",
+   "side": "QLD",
+   "debut": 2018,
+   "playerId": "nrl-felise-kaufusi",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Jai Arrow",
+   "side": "QLD",
+   "debut": 2018,
+   "playerId": "nrl-jai-arrow",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Kalyn Ponga",
+   "side": "QLD",
+   "debut": 2018,
+   "playerId": "nrl-kalyn-ponga",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Moses Mbye",
+   "side": "QLD",
+   "debut": 2019,
+   "playerId": "nrl-moses-mbye",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Joe Ofahengaue",
+   "side": "QLD",
+   "debut": 2019,
+   "playerId": "nrl-joe-ofahengaue",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "David Fifita",
+   "side": "QLD",
+   "debut": 2019,
+   "playerId": "nrl-david-fifita-br",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Corey Norman",
+   "side": "QLD",
+   "debut": 2019,
+   "playerId": "nrl-corey-norman",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Christian Welch",
+   "side": "QLD",
+   "debut": 2019,
+   "playerId": "nrl-christian-welch",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Ethan Lowe",
+   "side": "QLD",
+   "debut": 2019,
+   "playerId": "nrl-ethan-lowe",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "AJ Brimson",
+   "side": "QLD",
+   "debut": 2020,
+   "playerId": "nrl-aj-brimson",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Xavier Coates",
+   "side": "QLD",
+   "debut": 2020,
+   "playerId": "nrl-xavier-coates",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Phillip Sami",
+   "side": "QLD",
+   "debut": 2020,
+   "playerId": "nrl-phillip-sami",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Kurt Capewell",
+   "side": "QLD",
+   "debut": 2020,
+   "playerId": "nrl-kurt-capewell",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Jake Friend",
+   "side": "QLD",
+   "debut": 2020,
+   "playerId": "nrl-jake-friend",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Tino Fa'asuamaleaui",
+   "side": "QLD",
+   "debut": 2020,
+   "playerId": "nrl-tino-faasuamaleaui",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Lindsay Collins",
+   "side": "QLD",
+   "debut": 2020,
+   "playerId": "nrl-lindsay-collins",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Jaydn Su'A",
+   "side": "QLD",
+   "debut": 2020,
+   "playerId": "nrl-jaydn-sua",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Dunamis Lui",
+   "side": "QLD",
+   "debut": 2020,
+   "playerId": "nrl-dunamis-lui",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Moeaki Fotuaika",
+   "side": "QLD",
+   "debut": 2020,
+   "playerId": "nrl-moeaki-fotuaika",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Corey Allan",
+   "side": "QLD",
+   "debut": 2020,
+   "playerId": "nrl-corey-allan",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Edrick Lee",
+   "side": "QLD",
+   "debut": 2020,
+   "playerId": "nrl-edrick-lee",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Brenko Lee",
+   "side": "QLD",
+   "debut": 2020,
+   "playerId": "nrl-brenko-lee",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Harry Grant",
+   "side": "QLD",
+   "debut": 2020,
+   "playerId": "nrl-harry-grant",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Kyle Feldt",
+   "side": "QLD",
+   "debut": 2021,
+   "playerId": "nrl-kyle-feldt",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Francis Molo",
+   "side": "QLD",
+   "debut": 2021,
+   "playerId": "nrl-francis-molo",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Hamiso Tabuai-Fidow",
+   "side": "QLD",
+   "debut": 2021,
+   "playerId": "nrl-hamiso-tabuai-fidow",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Thomas Flegler",
+   "side": "QLD",
+   "debut": 2021,
+   "playerId": "nrl-thomas-flegler",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Selwyn Cobbo",
+   "side": "QLD",
+   "debut": 2022,
+   "playerId": "nrl-selwyn-cobbo",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Reuben Cotter",
+   "side": "QLD",
+   "debut": 2022,
+   "playerId": "nrl-reuben-cotter",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Patrick Carrigan",
+   "side": "QLD",
+   "debut": 2022,
+   "playerId": "nrl-patrick-carrigan",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Jeremiah Nanai",
+   "side": "QLD",
+   "debut": 2022,
+   "playerId": "nrl-jeremiah-nanai",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Murray Taulagi",
+   "side": "QLD",
+   "debut": 2022,
+   "playerId": "nrl-murray-taulagi",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Tom Dearden",
+   "side": "QLD",
+   "debut": 2022,
+   "playerId": "nrl-tom-dearden",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Tom Gilbert",
+   "side": "QLD",
+   "debut": 2022,
+   "playerId": "nrl-tom-gilbert",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Reece Walsh",
+   "side": "QLD",
+   "debut": 2023,
+   "playerId": "nrl-reece-walsh",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Corey Horsburgh",
+   "side": "QLD",
+   "debut": 2023,
+   "playerId": "nrl-corey-horsburgh",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "J'maine Hopgood",
+   "side": "QLD",
+   "debut": 2024,
+   "playerId": "nrl-jmaine-hopgood",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Robert Toia",
+   "side": "QLD",
+   "debut": 2025,
+   "playerId": "nrl-robert-toia",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Beau Fermor",
+   "side": "QLD",
+   "debut": 2025,
+   "playerId": "nrl-beau-fermor",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Trent Loiero",
+   "side": "QLD",
+   "debut": 2025,
+   "playerId": "nrl-trent-loiero",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Kurt Mann",
+   "side": "QLD",
+   "debut": 2025,
+   "playerId": "nrl-kurt-mann",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  },
+  {
+   "name": "Gehamat Shibasaki",
+   "side": "QLD",
+   "debut": 2025,
+   "playerId": "nrl-gehamat-shibasaki",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_Queensland_State_of_Origin_players"
+  }
+ ]
+}
