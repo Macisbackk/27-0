@@ -11,6 +11,7 @@
  * your players and fresh names on the market land as it runs. The window shuts at 0:00.
  * Everything is deterministic per save + round (+ half-hour slot), so reloading never re-rolls a deal.
  */
+import { noteUserDeal } from "./club-mood";
 import { LINEUP_SLOTS, SQUAD_MAX, SQUAD_MIN, effectiveRating, formatMoney, playerValue, transferFee, wageBill, wagesDueNow } from "./players";
 import { buyersFor } from "./buyers";
 import { tagNews, withDealDivisions } from "./news";
@@ -360,6 +361,8 @@ export function seasonDeals(state: CareerState): TransferDeal[] {
 /** Add a deal to the world's transfer log (newest first, capped). */
 export function recordDeal(state: CareerState, deal: TransferDeal) {
   state.transfers = [withDealDivisions(state, deal), ...(state.transfers ?? [])].slice(0, 120);
+  // The user's own deals: kept on the season's record (past the cap) and judged by the fans.
+  noteUserDeal(state, deal);
 }
 
 function dealLine(state: CareerState, d: TransferDeal): string {

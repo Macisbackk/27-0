@@ -59,16 +59,33 @@ export function prestigeRatingCap(prestige: number): number {
   return Math.round(79 + prestige * 2.5);
 }
 
-function developPlayer(rngRoll: () => number, p: CareerPlayer) {
+/** Season appearances that count as a full season of game time for development. */
+export const FULL_SEASON_APPS = 16;
+
+/**
+ * How much game time a player had last season, 0–1 (v1.66): young men grow with games.
+ * Academy prospects train without first-team games and count as part-time.
+ */
+export function gameTimeShare(p: Pick<CareerPlayer, "apps">, academyProspect = false): number {
+  if (academyProspect) return 0.55;
+  return Math.max(0, Math.min(1, (p.apps ?? 0) / FULL_SEASON_APPS));
+}
+
+/**
+ * A summer older. Young players (23 and under) grow towards their potential, faster with games:
+ * a regular gets up to about 1.2× the old rate, a man who barely played about 0.4×.
+ */
+export function developPlayer(rngRoll: () => number, p: CareerPlayer, share = gameTimeShare(p)) {
   p.age += 1;
   if (p.age <= 23) {
     const room = Math.max(0, p.potential - p.rating);
     // Academy kids who got first-team games last season come on faster.
     const games = p.academy && p.age <= 22 ? (p.apps >= 12 ? 2 : p.apps >= 5 ? 1 : 0) : 0;
-    p.rating += Math.min(room, Math.floor(rngRoll() * 4) + (room > 6 ? 1 : 0) + games);
+    const base = Math.floor(rngRoll() * 4) + (room > 6 ? 1 : 0);
+    p.rating += Math.min(room, Math.round(base * (0.4 + 0.8 * share)) + games);
   } else if (p.age <= 28) {
     const room = Math.max(0, p.potential - p.rating);
-    if (room > 0 && rngRoll() < 0.4) p.rating += 1;
+    if (room > 0 && rngRoll() < 0.25 + 0.25 * share) p.rating += 1;
   } else if (p.age <= 31) {
     if (rngRoll() < 0.5) p.rating -= 1;
   } else {
@@ -141,6 +158,9 @@ export function beginOffseason(state: CareerState): CareerState {
   const legendNews: string[] = [];
   const legendNewsClubs: string[] = [];
 
+  // Last summer's +N comes off; the user's men get this summer's.
+  for (const p of Object.values(s.players)) delete p.grew;
+  const growth: NonNullable<NonNullable<CareerState["departures"]>["growth"]> = [];
   for (const club of Object.values(s.clubs)) {
     club.squad = club.squad.filter((id) => {
       const p = s.players[id];
@@ -169,11 +189,16 @@ export function beginOffseason(state: CareerState): CareerState {
         delete s.players[id];
         return false;
       }
+      const from = p.rating;
       developPlayer(rng, p);
       if (retires(rng, p)) {
         if (club.id === s.userClubId) retired.push({ name: p.name, pos: p.pos, age: p.age, rating: p.rating });
         delete s.players[id];
         return false;
+      }
+      if (club.id === s.userClubId && p.rating !== from) {
+        p.grew = p.rating - from;
+        if (p.age <= 24 || p.grew >= 2) growth.push({ name: p.name, pos: p.pos, age: p.age, from, to: p.rating, apps: p.apps });
       }
       return true;
     });
@@ -196,7 +221,7 @@ export function beginOffseason(state: CareerState): CareerState {
   // Academy prospects grow too (the new intake arrives in pre-season); 20-year-olds still there leave.
   for (const id of s.academy ?? []) {
     const p = s.players[id];
-    if (p) developPlayer(rng, p);
+    if (p) developPlayer(rng, p, gameTimeShare(p, true));
   }
   const academyLeft = academySummer(s);
 
@@ -205,7 +230,8 @@ export function beginOffseason(state: CareerState): CareerState {
   // Last season's team sheets would show retired and departed men: club sheets start afresh.
   s.lastLineups = undefined;
 
-  s.departures = { year: s.year, retired, expiring, academy: [] };
+  growth.sort((a, b) => b.to - b.from - (a.to - a.from) || b.to - a.to);
+  s.departures = { year: s.year, retired, expiring, academy: [], growth: growth.filter((g) => g.to > g.from).slice(0, 8) };
   s.year += 1;
   s.seasonNumber += 1;
   fixTeam(s);

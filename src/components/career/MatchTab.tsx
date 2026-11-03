@@ -28,7 +28,12 @@ import {
   userStreak,
   type CareerState,
   type Fixture,
-  type Tactic,
+  type TacticSettings,
+  ATTACK_OPTIONS,
+  DEFENCE_OPTIONS,
+  KICKING_OPTIONS,
+  tacticSummary,
+  tacticsOf,
 } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
 import { playAutofill, playCupProgress, playFullTime, playSimulateRound, playTryScored, playUiClick } from "@/lib/sound";
@@ -41,11 +46,44 @@ import { PlayoffsCard } from "./TableTab";
 import { WccResult } from "./SeasonStory";
 import { Card, ClubBadge, Eyebrow, FixtureTags, FormDots } from "./bits";
 
-const TACTICS: Array<{ id: Tactic; label: string; hint: string }> = [
-  { id: "attack", label: "Attack", hint: "More tries for you — and for them." },
-  { id: "balanced", label: "Balanced", hint: "No frills. Let the better XIII win." },
-  { id: "defend", label: "Defend", hint: "Grind it out. Fewer points both ways." },
-];
+/**
+ * The game plan (v1.66): three compact pill rows — attacking style, defensive line, kicking game —
+ * and one line saying what the mix does.
+ */
+function GamePlan() {
+  const { state, setTactics } = useCareer();
+  const t = tacticsOf(state!);
+  const rows = [
+    { key: "attack" as const, label: "Attack", options: ATTACK_OPTIONS, value: t.attack },
+    { key: "defence" as const, label: "Defence", options: DEFENCE_OPTIONS, value: t.defence },
+    { key: "kicking" as const, label: "Kicking", options: KICKING_OPTIONS, value: t.kicking },
+  ];
+  return (
+    <section aria-label="Game plan" data-testid="game-plan" className="rounded-card bg-pitch-900 px-3 py-2.5">
+      <p className="text-center text-[11px] font-bold uppercase tracking-wide text-gray-400">Game plan</p>
+      <div className="mt-1.5 flex flex-col gap-1.5">
+        {rows.map((r) => (
+          <div key={r.key} className="flex flex-col items-stretch gap-0.5 sm:flex-row sm:items-center sm:gap-2">
+            <span className="text-center text-[10px] font-semibold uppercase tracking-wide text-gray-500 sm:w-16 sm:shrink-0 sm:text-left sm:text-[11px]">{r.label}</span>
+            <div className="game-plan-row min-w-0 flex-1">
+              <GameSegmentedControl<string>
+                options={r.options.map((o) => ({ id: o.id, label: o.label }))}
+                value={r.value}
+                onChange={(v) => setTactics({ [r.key]: v } as Partial<TacticSettings>)}
+                fullWidth
+                compact
+                ariaLabel={`${r.label} plan`}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+      <p className="mt-1.5 text-center text-xs text-gray-400" data-testid="game-plan-summary">
+        {tacticSummary(t)} {rows.map((r) => r.options.find((o) => o.id === r.value)!).filter((o) => o.id !== "balanced").map((o) => o.hint).join(" ")}
+      </p>
+    </section>
+  );
+}
 
 function lastUserFixture(state: CareerState): Fixture | undefined {
   for (let i = state.matchdayIndex - 1; i >= 0; i--) {
@@ -272,7 +310,7 @@ function StageBar({ label, onClick }: { label: string; onClick: () => void }) {
 }
 
 export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
-  const { state, play, playLive, setTactic, passStage, autoPick } = useCareer();
+  const { state, play, playLive, passStage, autoPick } = useCareer();
   // Places moved and challenges completed by the last tap (kept while this tab is open).
   const before = useRef<{ index: number; pos: number; done: string[] } | null>(null);
   const [flash, setFlash] = useState<ResultFlash | null>(null);
@@ -509,16 +547,7 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
         ) : null}
       </Card>
 
-      {fixture ? (
-        <GameSegmentedControl<Tactic>
-          label="Game plan"
-          options={TACTICS.map((t) => ({ id: t.id, label: t.label }))}
-          value={s.tactic}
-          onChange={(t) => setTactic(t)}
-          fullWidth
-        />
-      ) : null}
-      {fixture ? <p className="-mt-2 text-center text-xs text-gray-400">{TACTICS.find((t) => t.id === s.tactic)!.hint}</p> : null}
+      {fixture ? <GamePlan /> : null}
       {fixture && bestGain >= 0.3 ? (
         <section aria-label="Stronger team available" className="flex items-center gap-3 rounded-card bg-pitch-900 p-3 ring-1 ring-theme-primary/40">
           <p className="min-w-0 flex-1 text-[13px] text-gray-300">
