@@ -1,0 +1,10 @@
+0 problem(s)
+
+
+Checks:
+Crawled 26 routes @320
+Crawled 26 routes @375
+Crawled 26 routes @desktop
+Bottom nav: items, visibility and no overlap
+Locked modes: URLs redirect to /modes, which shows the challenges
+Checked 78 internal links
