@@ -145,6 +145,8 @@ try {
   {
     const plan = page.getByRole("region", { name: "Game plan" });
     await plan.waitFor({ timeout });
+    // Pre-season pop-ups (e.g. the World Club Challenge) can sit over the hub.
+    await dismissEvents();
     await plan.getByRole("tablist", { name: "Attack plan" }).getByRole("tab", { name: "Expansive" }).click();
     await plan.getByRole("tablist", { name: "Kicking plan" }).getByRole("tab", { name: "Territory" }).click();
     if ((await plan.getByRole("tab", { selected: true }).count()) !== 3) throw new Error("Game plan should have one pick per row");
