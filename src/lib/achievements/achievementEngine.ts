@@ -17,6 +17,7 @@ import {
   type UnlockedAchievement,
 } from "./achievementStorage";
 import { awardClubFundsLines } from "../storage/club-funds";
+import { syncAchievementKits } from "../achievement-kits";
 import { getPrizeForQuestionNumber } from "../quiz/prizes";
 import {
   ACHIEVEMENTS_BASELINE_VERSION,
@@ -419,6 +420,8 @@ export function unlockAchievement(id: string): AchievementUnlockResult | null {
   }
 
   saveAchievements(next);
+  // Achievement kits (27-0, 29-0, Manager Grand Final): grant the shirt with the achievement.
+  syncAchievementKits();
   return { id, definition: def, unlockedAt, unlockEventId, rewardAmount };
 }
 
