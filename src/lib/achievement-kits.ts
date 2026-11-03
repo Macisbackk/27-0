@@ -57,7 +57,7 @@ export const ACHIEVEMENT_KITS: readonly AchievementKit[] = [
     : []),
   {
     id: KIT_MANAGER_GF_ID,
-    earn: "Win the Super League Grand Final in Manager Mode.",
+    earn: "Win a Grand Final in Manager Mode.",
     earned: (e) => e.achievements.includes("manager-old-trafford"),
   },
 ];

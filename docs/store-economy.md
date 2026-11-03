@@ -49,4 +49,4 @@ Earned kits are granted from the achievement and Daily streak data the game alre
 | 29-0 kit | Go 27-0, then win both play-off games (the 29-0 achievement) |
 | Month of Dailies | Reach a 30-day Daily streak |
 | Centurion kit | Reach a 100-day Daily streak |
-| Old Trafford kit | Win the Super League Grand Final in Manager Mode (the Old Trafford achievement) |
+| Old Trafford kit | Win a Grand Final in Manager Mode (the Old Trafford achievement: Super League Grand Final or NRL premiership) |
