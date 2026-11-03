@@ -165,7 +165,9 @@ export function getGeneratedClubSquadStrength(
   // challenge without Era-level mid-table lottery; not a free ride.
   const squadWeight = options.currentSeasonOnly ? 0.38 : 0.35;
   const tierWeight = options.currentSeasonOnly ? 0.62 : 0.65;
-  const currentEase = options.currentSeasonOnly ? -0.8 : 0;
+  // Nov 2026: current cards moved to 70–99, which pulls a random club squad's average down
+  // ~1.4; −0.8 → −0.3 keeps current-season opponent strength where it was (mean ≈ 78.0).
+  const currentEase = options.currentSeasonOnly ? -0.3 : 0;
   const strength = Math.round(
     (rawAvg * squadWeight +
       baseTier * tierWeight +

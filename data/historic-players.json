@@ -7178,6 +7178,7 @@
   },
   {
     "id": "hull-fc-hist-masi-matongo",
+    "availableInGame": false,
     "name": "Masi Matongo",
     "position": "PROP",
     "club": "Hull FC",
@@ -24672,6 +24673,7 @@
   },
   {
     "id": "catalans-hist-eloi-pelissier",
+    "availableInGame": false,
     "name": "Éloi Pélissier",
     "position": "HOOKER",
     "club": "Catalans Dragons",
@@ -26884,6 +26886,7 @@
   },
   {
     "id": "wakefield-hist-sitaleki-akauola",
+    "availableInGame": false,
     "name": "Sitaleki Akauola",
     "position": "PROP",
     "club": "Wakefield Trinity",
@@ -41793,6 +41796,7 @@
   },
   {
     "id": "leeds-hist-james-donaldson",
+    "availableInGame": false,
     "name": "James Donaldson",
     "position": "LOOSE_FORWARD",
     "club": "Leeds Rhinos",
@@ -44424,6 +44428,7 @@
   },
   {
     "id": "wakefield-hist-harvey-livett",
+    "availableInGame": false,
     "name": "Harvey Livett",
     "position": "SECOND_ROW",
     "club": "Wakefield Trinity",
@@ -46339,6 +46344,7 @@
   },
   {
     "id": "wakefield-hist-joe-arundel",
+    "availableInGame": false,
     "name": "Joe Arundel",
     "position": "CENTRE",
     "club": "Wakefield Trinity",
@@ -54507,6 +54513,7 @@
   },
   {
     "id": "leigh-hist-ricky-leutele",
+    "availableInGame": false,
     "name": "Ricky Leutele",
     "position": "CENTRE",
     "club": "Leigh Leopards",
@@ -60577,6 +60584,7 @@
   },
   {
     "id": "st-helens-hist-jordan-turner",
+    "availableInGame": false,
     "name": "Jordan Turner",
     "position": "CENTRE",
     "club": "St Helens",
@@ -62553,6 +62561,7 @@
   },
   {
     "id": "wakefield-hist-mat-ashurst",
+    "availableInGame": false,
     "name": "Mat Ashurst",
     "position": "SECOND_ROW",
     "club": "Wakefield Trinity",
@@ -66975,6 +66984,7 @@
   },
   {
     "id": "wakefield-hist-tom-lineham",
+    "availableInGame": false,
     "name": "Tom Lineham",
     "position": "WING",
     "club": "Wakefield Trinity",

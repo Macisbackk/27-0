@@ -8,13 +8,16 @@ import { PLAYER_RATING_OVERRIDES } from "../data/player-rating-overrides";
 import { PLAYER_RATING_AUDIT } from "../data/player-rating-audit";
 import ERA_SEASON_RATINGS from "../data/era-season-ratings.json";
 import SEASON_2026_RATINGS from "../data/season-2026-ratings.json";
+import CURRENT_RATINGS_2026 from "../data/current-ratings-2026.json";
 
 // Later, documented layers in normalize.ts replace a manual override on purpose: the career-arc
-// audit, the era card audit and the 2026 season re-rate. Those count as superseded, not errors.
+// audit, the era card audit, the 2026 season re-rate and the Nov 2026 current-card rescale (70–99).
+// Those count as superseded, not errors.
 const LATER_LAYERS: Array<[string, Record<string, unknown>]> = [
   ["career-arc audit", PLAYER_RATING_AUDIT],
   ["era card audit", ERA_SEASON_RATINGS],
   ["2026 season ratings", SEASON_2026_RATINGS],
+  ["current-card rescale", CURRENT_RATINGS_2026],
 ];
 import { normalizePlayer } from "../src/lib/players/normalize";
 

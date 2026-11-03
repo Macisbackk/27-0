@@ -1,0 +1,3906 @@
+{
+  "barrow-cur-ellis-robson": {
+    "to": 72,
+    "from": 80,
+    "name": "Ellis Robson",
+    "club": "Barrow Raiders",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 14 career apps; 14 career apps, age 28"
+  },
+  "bradford-cur-alfie-leake": {
+    "to": 75,
+    "from": 80,
+    "name": "Alfie Leake",
+    "club": "Bradford Bulls",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 45 pts, £50k; sheet 75 (Academy / Extended); 0 career apps, age 20"
+  },
+  "bradford-cur-andy-ackers": {
+    "to": 89,
+    "from": 87,
+    "name": "Andy Ackers",
+    "club": "Bradford Bulls",
+    "band": "first-team",
+    "why": "researched 87 (2026 evidence +0.3); 2026 fantasy 1211 pts, £110k; sheet 86 (First Team / Rotation); 113 career apps, age 33"
+  },
+  "bradford-cur-brandon-douglas": {
+    "to": 79,
+    "from": 81,
+    "name": "Brandon Douglas",
+    "club": "Bradford Bulls",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.6); 2026 fantasy 147 pts, £90k; sheet 75 (Squad); 0 career apps, age 29"
+  },
+  "bradford-cur-caleb-aekins": {
+    "to": 86,
+    "from": 84,
+    "name": "Caleb Aekins",
+    "club": "Bradford Bulls",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence +0.6); 2026 fantasy 995 pts, £110k; sheet 84 (First Team); 147 career apps, age 29"
+  },
+  "bradford-cur-cameron-bate": {
+    "to": 72,
+    "from": 80,
+    "name": "Cameron Bate",
+    "club": "Bradford Bulls",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; 2026 fantasy 0 pts, £50k; sheet 75 (Academy / Extended); 0 career apps, age 22"
+  },
+  "bradford-cur-connor-wynne": {
+    "to": 83,
+    "from": 83,
+    "name": "Connor Wynne",
+    "club": "Bradford Bulls",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence -0.6); 2026 fantasy 596 pts, £90k; sheet 75 (Squad); 0 career apps, age 25"
+  },
+  "bradford-cur-dan-russell": {
+    "to": 81,
+    "from": 81,
+    "name": "Dan Russell",
+    "club": "Bradford Bulls",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence +0.4); 2026 fantasy 551 pts, £110k; sheet 78 (First Team); 33 career apps, age 31"
+  },
+  "bradford-cur-ebon-scurr": {
+    "to": 80,
+    "from": 81,
+    "name": "Ebon Scurr",
+    "club": "Bradford Bulls",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence +0.1); 2026 fantasy 550 pts, £80k; sheet 77 (Rotation); 16 career apps, age 26"
+  },
+  "bradford-cur-ed-chamberlain": {
+    "to": 81,
+    "from": 81,
+    "name": "Ed Chamberlain",
+    "club": "Bradford Bulls",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence +0.4); 2026 fantasy 445 pts, £100k; sheet 80 (Rotation); 5 career apps, age 30"
+  },
+  "bradford-cur-eliot-peposhi": {
+    "to": 80,
+    "from": 81,
+    "name": "Eliot Peposhi",
+    "club": "Bradford Bulls",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.3); 2026 fantasy 447 pts, £80k; sheet 75 (Development); 0 career apps, age 22"
+  },
+  "bradford-cur-eribe-doro": {
+    "to": 80,
+    "from": 81,
+    "name": "Eribe Doro",
+    "club": "Bradford Bulls",
+    "band": "rotation",
+    "why": "researched 81; 2026 fantasy 437 pts, £100k; sheet 77 (Rotation); 25 career apps, age 25"
+  },
+  "bradford-cur-esan-marsters": {
+    "to": 82,
+    "from": 82,
+    "name": "Esan Marsters",
+    "club": "Bradford Bulls",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.3); 2026 fantasy 306 pts, £120k; sheet 83 (First Team / Rotation); 71 career apps, age 30"
+  },
+  "bradford-cur-ethan-ryan": {
+    "to": 84,
+    "from": 84,
+    "name": "Ethan Ryan",
+    "club": "Bradford Bulls",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence -0.4); 2026 fantasy 732 pts, £100k; sheet 78 (First Team); 77 career apps, age 30"
+  },
+  "bradford-cur-guy-armitage": {
+    "to": 79,
+    "from": 80,
+    "name": "Guy Armitage",
+    "club": "Bradford Bulls",
+    "band": "rotation",
+    "why": "old floor 80: some 2026 games; 2026 fantasy 272 pts, £90k; sheet 78 (Squad); 0 career apps, age 35"
+  },
+  "bradford-cur-jack-ormondroyd": {
+    "to": 72,
+    "from": 80,
+    "name": "Jack Ormondroyd",
+    "club": "Bradford Bulls",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; sheet 77 (Rotation); 0 career apps, age 35"
+  },
+  "bradford-cur-jamie-gill": {
+    "to": 77,
+    "from": 80,
+    "name": "Jamie Gill",
+    "club": "Bradford Bulls",
+    "band": "rotation",
+    "why": "old floor 80: some 2026 games; 2026 fantasy 296 pts, £50k; sheet 75 (Development); 0 career apps, age 21"
+  },
+  "bradford-cur-jayden-nikorima": {
+    "to": 83,
+    "from": 83,
+    "name": "Jayden Nikorima",
+    "club": "Bradford Bulls",
+    "band": "first-team",
+    "why": "researched 83; 2026 fantasy 480 pts, £120k; sheet 80 (First Team / Rotation); 37 career apps, age 30"
+  },
+  "bradford-cur-jayden-okunbor": {
+    "to": 79,
+    "from": 81,
+    "name": "Jayden Okunbor",
+    "club": "Bradford Bulls",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.5); 2026 fantasy 114 pts, £100k; sheet 78 (First Team); 104 career apps, age 29"
+  },
+  "bradford-cur-joe-keyes": {
+    "to": 79,
+    "from": 81,
+    "name": "Joe Keyes",
+    "club": "Bradford Bulls",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.6); 2026 fantasy 74 pts, £100k; sheet 78 (Rotation); 0 career apps, age 31"
+  },
+  "bradford-cur-joe-mellor": {
+    "to": 91,
+    "from": 89,
+    "name": "Joe Mellor",
+    "club": "Bradford Bulls",
+    "band": "first-team",
+    "why": "researched 89 (2026 evidence +0.4); 2026 fantasy 1459 pts, £110k; sheet 87 (First Team / Rotation); 204 career apps, age 36"
+  },
+  "bradford-cur-leon-ruan": {
+    "to": 78,
+    "from": 80,
+    "name": "Leon Ruan",
+    "club": "Bradford Bulls",
+    "band": "rotation",
+    "why": "old floor 80: some 2026 games; 2026 fantasy 254 pts, £80k; sheet 75 (Development); 0 career apps, age 23"
+  },
+  "bradford-cur-loghan-lewis": {
+    "to": 82,
+    "from": 82,
+    "name": "Loghan Lewis",
+    "club": "Bradford Bulls",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.2); 2026 fantasy 512 pts, £90k; sheet 81 (First Team); 33 career apps, age 24"
+  },
+  "bradford-cur-luke-hooley": {
+    "to": 80,
+    "from": 81,
+    "name": "Luke Hooley",
+    "club": "Bradford Bulls",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.1); 2026 fantasy 520 pts, £90k; sheet 75 (Squad); 0 career apps, age 28"
+  },
+  "bradford-cur-mitch-souter": {
+    "to": 81,
+    "from": 82,
+    "name": "Mitch Souter",
+    "club": "Bradford Bulls",
+    "band": "rotation",
+    "why": "researched 82 (2026 evidence -0.6); 2026 fantasy 185 pts, £80k; sheet 77 (Rotation); 0 career apps, age 25"
+  },
+  "bradford-cur-phoenix-steinwede": {
+    "to": 72,
+    "from": 80,
+    "name": "Phoenix Steinwede",
+    "club": "Bradford Bulls",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; sheet 75 (Academy / Extended); 0 career apps, age 22"
+  },
+  "bradford-cur-riley-dean": {
+    "to": 72,
+    "from": 80,
+    "name": "Riley Dean",
+    "club": "Bradford Bulls",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; sheet 75 (Squad); 0 career apps, age 25"
+  },
+  "bradford-cur-rowan-milnes": {
+    "to": 80,
+    "from": 81,
+    "name": "Rowan Milnes",
+    "club": "Bradford Bulls",
+    "band": "rotation",
+    "why": "researched 81; 2026 fantasy 325 pts, £100k; sheet 78 (First Team); 117 career apps, age 27"
+  },
+  "bradford-cur-ryan-sutton": {
+    "to": 88,
+    "from": 87,
+    "name": "Ryan Sutton",
+    "club": "Bradford Bulls",
+    "band": "first-team",
+    "why": "researched 87 (2026 evidence -0.3); 2026 fantasy 1092 pts, £120k; sheet 81 (First Team / Rotation); 214 career apps, age 31"
+  },
+  "bradford-cur-sam-hallas": {
+    "to": 72,
+    "from": 80,
+    "name": "Sam Hallas",
+    "club": "Bradford Bulls",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 11 career apps; 2026 fantasy 0 pts, £90k; sheet 75 (Squad); 11 career apps, age 30"
+  },
+  "bradford-cur-waqa-blake": {
+    "to": 85,
+    "from": 84,
+    "name": "Waqa Blake",
+    "club": "Bradford Bulls",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence -0.1); 2026 fantasy 679 pts, £100k; sheet 81 (First Team / Rotation); 31 career apps, age 32"
+  },
+  "bradford-cur-will-gardiner": {
+    "to": 79,
+    "from": 80,
+    "name": "Will Gardiner",
+    "club": "Bradford Bulls",
+    "band": "rotation",
+    "why": "old floor 80: regular 2026 minutes; 2026 fantasy 426 pts, £80k; sheet 75 (Squad); 0 career apps, age 25"
+  },
+  "bradford-cur-zac-fulton": {
+    "to": 83,
+    "from": 82,
+    "name": "Zac Fulton",
+    "club": "Bradford Bulls",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.6); 2026 fantasy 794 pts, £80k; sheet 83 (First Team); 10 career apps, age 25"
+  },
+  "castleford-cur-aiden-doolan": {
+    "to": 75,
+    "from": 80,
+    "name": "Aiden Doolan",
+    "club": "Castleford Tigers",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 51 pts, £50k; sheet 75 (Squad); 0 career apps, age 23"
+  },
+  "castleford-cur-alex-mellor": {
+    "to": 84,
+    "from": 83,
+    "name": "Alex Mellor",
+    "club": "Castleford Tigers",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence +0.3); 2026 fantasy 963 pts, £120k; sheet 78 (First Team); 199 career apps, age 32"
+  },
+  "castleford-cur-alfie-lindsey": {
+    "to": 71,
+    "from": 80,
+    "name": "Alfie Lindsey",
+    "club": "Castleford Tigers",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; 2026 fantasy 0 pts, £80k; sheet 75 (Development); 0 career apps, age 20"
+  },
+  "castleford-cur-ashton-golding": {
+    "to": 73,
+    "from": 80,
+    "name": "Ashton Golding",
+    "club": "Castleford Tigers",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; sheet 79 (First-Team Squad); 0 career apps, age 30"
+  },
+  "castleford-cur-blake-taaffe": {
+    "to": 76,
+    "from": 80,
+    "name": "Blake Taaffe",
+    "club": "Castleford Tigers",
+    "band": "fringe",
+    "why": "old floor 80: a 2026 cameo; 2026 fantasy 13 pts, £130k; sheet 80 (First Team / Rotation); 1 career apps, age 27"
+  },
+  "castleford-cur-brad-singleton": {
+    "to": 79,
+    "from": 81,
+    "name": "Brad Singleton",
+    "club": "Barrow Raiders",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.6); 2026 fantasy 17 pts, £100k; sheet 77 (Squad); 0 career apps, age 34"
+  },
+  "castleford-cur-brock-greacen": {
+    "to": 80,
+    "from": 80,
+    "name": "Brock Greacen",
+    "club": "Castleford Tigers",
+    "band": "rotation",
+    "why": "old floor 80: regular 2026 minutes; 2026 fantasy 346 pts, £100k; sheet 77 (Rotation); 0 career apps, age 24"
+  },
+  "castleford-cur-cain-robb": {
+    "to": 78,
+    "from": 80,
+    "name": "Cain Robb",
+    "club": "Castleford Tigers",
+    "band": "rotation",
+    "why": "old floor 80: some 2026 games; 2026 fantasy 291 pts, £90k; sheet 75 (Development); 58 career apps, age 23"
+  },
+  "castleford-cur-chris-atkin": {
+    "to": 83,
+    "from": 82,
+    "name": "Chris Atkin",
+    "club": "Bradford Bulls",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.6); 2026 fantasy 883 pts, £120k; sheet 83 (Rotation); 0 career apps, age 33"
+  },
+  "castleford-cur-daejarn-asi": {
+    "to": 86,
+    "from": 84,
+    "name": "Daejarn Asi",
+    "club": "Castleford Tigers",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence +0.6); 2026 fantasy 973 pts, £130k; sheet 84 (First Team); 82 career apps, age 26"
+  },
+  "castleford-cur-darnell-mcintosh": {
+    "to": 82,
+    "from": 82,
+    "name": "Darnell McIntosh",
+    "club": "Castleford Tigers",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence -0.2); 2026 fantasy 419 pts, £100k; sheet 78 (First Team); 195 career apps, age 29"
+  },
+  "castleford-cur-fletcher-rooney": {
+    "to": 75,
+    "from": 80,
+    "name": "Fletcher Rooney",
+    "club": "Castleford Tigers",
+    "band": "fringe",
+    "why": "old floor 80: a 2026 cameo; 2026 fantasy 25 pts, £90k; sheet 80 (Rotation); 0 career apps, age 20"
+  },
+  "castleford-cur-george-hill": {
+    "to": 73,
+    "from": 80,
+    "name": "George Hill",
+    "club": "Castleford Tigers",
+    "band": "fringe",
+    "why": "old floor 80: no 2026 Super League minutes, 26 career apps; 2026 fantasy 0 pts, £80k; sheet 75 (Development); 26 career apps, age 22"
+  },
+  "castleford-cur-george-lawler": {
+    "to": 86,
+    "from": 85,
+    "name": "George Lawler",
+    "club": "Castleford Tigers",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence -0.2); 2026 fantasy 1157 pts, £110k; sheet 78 (First Team); 168 career apps, age 31"
+  },
+  "castleford-cur-jack-ashworth": {
+    "to": 80,
+    "from": 81,
+    "name": "Jack Ashworth",
+    "club": "Leigh Leopards",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.1); 2026 fantasy 233 pts, £110k; sheet 78 (Rotation); 0 career apps, age 31"
+  },
+  "castleford-cur-jason-qareqare": {
+    "to": 85,
+    "from": 85,
+    "name": "Jason Qareqare",
+    "club": "Castleford Tigers",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence -0.6); 2026 fantasy 746 pts, £80k; sheet 76 (Squad); 53 career apps, age 22"
+  },
+  "castleford-cur-jenson-windley": {
+    "to": 77,
+    "from": 80,
+    "name": "Jenson Windley",
+    "club": "Castleford Tigers",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 118 pts, £80k; sheet 79 (Squad); 0 career apps, age 20"
+  },
+  "castleford-cur-joe-stimson": {
+    "to": 81,
+    "from": 81,
+    "name": "Joe Stimson",
+    "club": "Castleford Tigers",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence +0.6); 2026 fantasy 960 pts, £90k; sheet 78 (First Team); 32 career apps, age 31"
+  },
+  "castleford-cur-joe-westerman": {
+    "to": 81,
+    "from": 82,
+    "name": "Joe Westerman",
+    "club": "Castleford Tigers",
+    "band": "rotation",
+    "why": "researched 82 (2026 evidence -0.5); 2026 fantasy 212 pts, £110k; sheet 78 (Rotation); 395 career apps, age 37"
+  },
+  "castleford-cur-jordan-lane": {
+    "to": 82,
+    "from": 82,
+    "name": "Jordan Lane",
+    "club": "Castleford Tigers",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.3); 2026 fantasy 886 pts, £100k; sheet 78 (First Team); 163 career apps, age 29"
+  },
+  "castleford-cur-krystian-mapapalangi": {
+    "to": 85,
+    "from": 85,
+    "name": "Krystian Mapapalangi",
+    "club": "Castleford Tigers",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence -0.6); 2026 fantasy 872 pts, £100k; sheet 75 (Development); 11 career apps, age 24"
+  },
+  "castleford-cur-liam-hood": {
+    "to": 83,
+    "from": 83,
+    "name": "Liam Hood",
+    "club": "Castleford Tigers",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence -0.3); 2026 fantasy 479 pts, £110k; sheet 78 (First Team); 122 career apps, age 34"
+  },
+  "castleford-cur-louis-senior": {
+    "to": 80,
+    "from": 81,
+    "name": "Louis Senior",
+    "club": "Castleford Tigers",
+    "band": "rotation",
+    "why": "researched 81; 2026 fantasy 334 pts, £100k; sheet 78 (Squad); 89 career apps, age 26"
+  },
+  "castleford-cur-mikaele-ravalawa": {
+    "to": 80,
+    "from": 80,
+    "name": "Mikaele Ravalawa",
+    "club": "Castleford Tigers",
+    "band": "rotation",
+    "why": "old floor 80: regular 2026 minutes; 2026 fantasy 361 pts, £120k; sheet 80 (First Team / Rotation); 13 career apps, age 29"
+  },
+  "castleford-cur-phoenix-laulu-togagae": {
+    "to": 82,
+    "from": 82,
+    "name": "Phoenix Laulu-Togaga'e",
+    "club": "Castleford Tigers",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.2); 2026 fantasy 967 pts, £80k; sheet 77 (Rotation); 0 career apps, age 23"
+  },
+  "castleford-cur-renouf-atoni": {
+    "to": 84,
+    "from": 83,
+    "name": "Renouf Atoni",
+    "club": "Castleford Tigers",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence +0.2); 2026 fantasy 674 pts, £100k; sheet 81 (First Team); 121 career apps, age 31"
+  },
+  "castleford-cur-sam-hall": {
+    "to": 80,
+    "from": 81,
+    "name": "Sam Hall",
+    "club": "Castleford Tigers",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.1); 2026 fantasy 570 pts, £90k; sheet 75 (Development); 63 career apps, age 24"
+  },
+  "castleford-cur-semi-valemei": {
+    "to": 79,
+    "from": 80,
+    "name": "Semi Valemei",
+    "club": "Castleford Tigers",
+    "band": "rotation",
+    "why": "old floor 80: some 2026 games; 2026 fantasy 196 pts, £120k; sheet 78 (First Team); 3 career apps, age 27"
+  },
+  "castleford-cur-tom-weaver": {
+    "to": 81,
+    "from": 81,
+    "name": "Tom Weaver",
+    "club": "Castleford Tigers",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence +0.4); 2026 fantasy 888 pts, £50k; sheet 78 (First Team); 24 career apps, age 23"
+  },
+  "castleford-cur-tyler-dupree": {
+    "to": 86,
+    "from": 85,
+    "name": "Tyler Dupree",
+    "club": "Castleford Tigers",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence -0.1); 2026 fantasy 824 pts, £110k; sheet 82 (First Team / Rotation); 108 career apps, age 26"
+  },
+  "castleford-cur-zac-cini": {
+    "to": 82,
+    "from": 82,
+    "name": "Zac Cini",
+    "club": "Castleford Tigers",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.1); 2026 fantasy 349 pts, £120k; sheet 81 (First Team); 29 career apps, age 26"
+  },
+  "catalans-cur-adrian-delarose": {
+    "to": 72,
+    "from": 80,
+    "name": "Adrian Delarose",
+    "club": "Catalans Dragons",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; sheet 75 (Academy / Extended); 0 career apps, age 22"
+  },
+  "catalans-cur-alexis-lis": {
+    "to": 77,
+    "from": 80,
+    "name": "Alexis Lis",
+    "club": "Catalans Dragons",
+    "band": "rotation",
+    "why": "old floor 80: some 2026 games; 2026 fantasy 209 pts, £50k; sheet 75 (Development); 13 career apps, age 21"
+  },
+  "catalans-cur-alrix-da-costa": {
+    "to": 80,
+    "from": 81,
+    "name": "Alrix Da Costa",
+    "club": "Catalans Dragons",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.1); 2026 fantasy 319 pts, £110k; sheet 77 (Rotation); 153 career apps, age 29"
+  },
+  "catalans-cur-bayley-sironen": {
+    "to": 85,
+    "from": 84,
+    "name": "Bayley Sironen",
+    "club": "Catalans Dragons",
+    "band": "first-team",
+    "why": "researched 84; 41 career apps, age 30"
+  },
+  "catalans-cur-ben-condon": {
+    "to": 83,
+    "from": 82,
+    "name": "Ben Condon",
+    "club": "Catalans Dragons",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.6); 2026 fantasy 819 pts, £100k; sheet 83 (First Team); 23 career apps, age 26"
+  },
+  "catalans-cur-benjamin-garcia": {
+    "to": 86,
+    "from": 85,
+    "name": "Benjamin Garcia",
+    "club": "Catalans Dragons",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence -0.2); 2026 fantasy 671 pts, £130k; sheet 82 (First Team / Rotation); 247 career apps, age 33"
+  },
+  "catalans-cur-cesar-rouge": {
+    "to": 84,
+    "from": 84,
+    "name": "César Rougé",
+    "club": "Toulouse Olympique",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence -0.6); 2026 fantasy 917 pts, £100k; sheet 75 (Development); 55 career apps, age 24"
+  },
+  "catalans-cur-charlie-staines": {
+    "to": 90,
+    "from": 88,
+    "name": "Charlie Staines",
+    "club": "Catalans Dragons",
+    "band": "first-team",
+    "why": "researched 88; 2026 fantasy 1181 pts, £140k; sheet 89 (First Team / Rotation); 12 career apps, age 26"
+  },
+  "catalans-cur-chris-satae": {
+    "to": 83,
+    "from": 83,
+    "name": "Chris Satae",
+    "club": "Catalans Dragons",
+    "band": "first-team",
+    "why": "researched 83; 2026 fantasy 423 pts, £120k; sheet 81 (First Team / Rotation); 146 career apps, age 34"
+  },
+  "catalans-cur-clement-martin": {
+    "to": 78,
+    "from": 80,
+    "name": "Clement Martin",
+    "club": "Catalans Dragons",
+    "band": "rotation",
+    "why": "old floor 80: some 2026 games; 2026 fantasy 174 pts, £80k; sheet 75 (Development); 10 career apps, age 21"
+  },
+  "catalans-cur-edenn-rogers-smith": {
+    "to": 72,
+    "from": 80,
+    "name": "Edenn Rogers-Smith",
+    "club": "Catalans Dragons",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; sheet 75 (Academy / Extended); 0 career apps, age 22"
+  },
+  "catalans-cur-franck-maria": {
+    "to": 80,
+    "from": 80,
+    "name": "Franck Maria",
+    "club": "Catalans Dragons",
+    "band": "rotation",
+    "why": "old floor 80: regular 2026 minutes; 2026 fantasy 414 pts, £80k; sheet 78 (First Team); 36 career apps, age 29"
+  },
+  "catalans-cur-giovanni-descalzi": {
+    "to": 75,
+    "from": 80,
+    "name": "Giovanni Descalzi",
+    "club": "Catalans Dragons",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 77 pts, £50k; sheet 75 (Development); 4 career apps, age 20"
+  },
+  "catalans-cur-guillermo-aispuro-bichet": {
+    "to": 84,
+    "from": 83,
+    "name": "Guillermo Aispuro-Bichet",
+    "club": "Catalans Dragons",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence +0.1); 2026 fantasy 647 pts, £110k; sheet 80 (Squad); 39 career apps, age 21"
+  },
+  "catalans-cur-harvey-wilson": {
+    "to": 80,
+    "from": 81,
+    "name": "Harvey Wilson",
+    "club": "Catalans Dragons",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.1); 2026 fantasy 399 pts, £90k; sheet 77 (Rotation); 41 career apps, age 22"
+  },
+  "catalans-cur-iszac-faasuamaleaui": {
+    "to": 79,
+    "from": 80,
+    "name": "Iszac Fa'asuamaleaui",
+    "club": "Catalans Dragons",
+    "band": "rotation",
+    "why": "old floor 80: some 2026 games; 2026 fantasy 294 pts, £120k; sheet 77 (Rotation); 8 career apps, age 25"
+  },
+  "catalans-cur-jordan-dezaria": {
+    "to": 80,
+    "from": 81,
+    "name": "Jordan Dezaria",
+    "club": "Catalans Dragons",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.3); 2026 fantasy 270 pts, £100k; sheet 76 (Squad); 99 career apps, age 30"
+  },
+  "catalans-cur-josh-allen": {
+    "to": 85,
+    "from": 84,
+    "name": "Josh Allen",
+    "club": "Catalans Dragons",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence +0.5); 2026 fantasy 933 pts, £100k; sheet 84 (Rotation); 25 career apps, age 25"
+  },
+  "catalans-cur-julian-bousquet": {
+    "to": 85,
+    "from": 84,
+    "name": "Julian Bousquet",
+    "club": "Catalans Dragons",
+    "band": "first-team",
+    "why": "researched 84; 2026 fantasy 633 pts, £110k; sheet 82 (First Team / Rotation); 272 career apps, age 35"
+  },
+  "catalans-cur-kruise-leeming": {
+    "to": 85,
+    "from": 84,
+    "name": "Kruise Leeming",
+    "club": "Catalans Dragons",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence +0.3); 2026 fantasy 1007 pts, £120k; sheet 81 (First Team / Rotation); 250 career apps, age 31"
+  },
+  "catalans-cur-lenny-marc": {
+    "to": 75,
+    "from": 80,
+    "name": "Lenny Marc",
+    "club": "Catalans Dragons",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 117 pts, £50k; sheet 75 (Development); 6 career apps, age 20"
+  },
+  "catalans-cur-leo-darrelatour": {
+    "to": 83,
+    "from": 83,
+    "name": "Leo Darrelatour",
+    "club": "Catalans Dragons",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence -0.6); 2026 fantasy 533 pts, £50k; sheet 75 (Development); 0 career apps, age 26"
+  },
+  "catalans-cur-lewis-dodd": {
+    "to": 84,
+    "from": 83,
+    "name": "Lewis Dodd",
+    "club": "Catalans Dragons",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence +0.6); 2026 fantasy 922 pts, £140k; sheet 84 (First Team / Rotation); 104 career apps, age 24"
+  },
+  "catalans-cur-manase-kaho": {
+    "to": 72,
+    "from": 80,
+    "name": "Manase Kaho",
+    "club": "Catalans Dragons",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; 2026 fantasy 0 pts, £100k; sheet 75 (Academy / Extended); 0 career apps, age 25"
+  },
+  "catalans-cur-matthieu-laguerre": {
+    "to": 80,
+    "from": 81,
+    "name": "Matthieu Laguerre",
+    "club": "Catalans Dragons",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.2); 2026 fantasy 398 pts, £110k; sheet 75 (Squad); 78 career apps, age 27"
+  },
+  "catalans-cur-nick-cotric": {
+    "to": 86,
+    "from": 84,
+    "name": "Nick Čotrić",
+    "club": "Catalans Dragons",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence +0.6); 2026 fantasy 897 pts, £140k; sheet 84 (First Team / Rotation); 30 career apps, age 28"
+  },
+  "catalans-cur-paul-seguier": {
+    "to": 82,
+    "from": 82,
+    "name": "Paul Séguier",
+    "club": "Catalans Dragons",
+    "band": "first-team",
+    "why": "researched 82; 107 career apps, age 29"
+  },
+  "catalans-cur-romain-navarette": {
+    "to": 85,
+    "from": 85,
+    "name": "Romain Navarrete",
+    "club": "Catalans Dragons",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence -0.6); 2026 fantasy 640 pts, £110k; sheet 78 (Rotation); 186 career apps, age 32"
+  },
+  "catalans-cur-solomona-faataape": {
+    "to": 83,
+    "from": 83,
+    "name": "Solomona Faataape",
+    "club": "Catalans Dragons",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence -0.1); 2026 fantasy 671 pts, £110k; sheet 78 (First Team); 20 career apps, age 26"
+  },
+  "catalans-cur-toby-sexton": {
+    "to": 91,
+    "from": 89,
+    "name": "Toby Sexton",
+    "club": "Catalans Dragons",
+    "band": "first-team",
+    "why": "researched 89; 2026 fantasy 1144 pts, £150k; sheet 84 (First Team / Rotation); 26 career apps, age 25"
+  },
+  "catalans-cur-tommy-makinson": {
+    "to": 85,
+    "from": 85,
+    "name": "Tommy Makinson",
+    "club": "Catalans Dragons",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence -0.5); 2026 fantasy 433 pts, £120k; sheet 82 (First Team / Rotation); 381 career apps, age 35"
+  },
+  "catalans-cur-ugo-tison": {
+    "to": 78,
+    "from": 80,
+    "name": "Ugo Tison",
+    "club": "Catalans Dragons",
+    "band": "rotation",
+    "why": "old floor 80: some 2026 games; 2026 fantasy 231 pts, £80k; sheet 75 (Development); 37 career apps, age 25"
+  },
+  "catalans-cur-zac-lipowicz": {
+    "to": 86,
+    "from": 84,
+    "name": "Zac Lipowicz",
+    "club": "Wakefield Trinity",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence +0.6); 2026 fantasy 1123 pts, £100k; sheet 86 (Squad); 29 career apps, age 24"
+  },
+  "catalans-hist-eloi-pelissier": {
+    "to": 76,
+    "from": 85,
+    "name": "Éloi Pélissier",
+    "club": "Catalans Dragons",
+    "band": "fringe",
+    "why": "career card (was 85), not in a 2026 registered squad: no 2026 Super League minutes, 194 career apps; 194 career apps, age 35"
+  },
+  "huddersfield-cur-adam-clune": {
+    "to": 82,
+    "from": 82,
+    "name": "Adam Clune",
+    "club": "Huddersfield Giants",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence -0.2); 2026 fantasy 356 pts, £110k; sheet 79 (First Team / Rotation); 34 career apps, age 31"
+  },
+  "huddersfield-cur-adam-swift": {
+    "to": 83,
+    "from": 83,
+    "name": "Adam Swift",
+    "club": "Huddersfield Giants",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence -0.4); 2026 fantasy 375 pts, £120k; sheet 78 (First Team); 203 career apps, age 33"
+  },
+  "huddersfield-cur-archie-sykes": {
+    "to": 73,
+    "from": 80,
+    "name": "Archie Sykes",
+    "club": "Huddersfield Giants",
+    "band": "fringe",
+    "why": "old floor 80: a 2026 cameo; 2026 fantasy 21 pts, £50k; sheet 75 (Development); 0 career apps, age 19"
+  },
+  "huddersfield-cur-asher-odonnell": {
+    "to": 82,
+    "from": 82,
+    "name": "Asher O'Donnell",
+    "club": "Huddersfield Giants",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.1); 2026 fantasy 713 pts, £80k; sheet 79 (First Team); 0 career apps, age 23"
+  },
+  "huddersfield-cur-chris-patolo": {
+    "to": 82,
+    "from": 82,
+    "name": "Chris Patolo",
+    "club": "Huddersfield Giants",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence -0.2); 2026 fantasy 719 pts, £100k; sheet 75 (Squad); 19 career apps, age 25"
+  },
+  "huddersfield-cur-cole-geyer": {
+    "to": 72,
+    "from": 80,
+    "name": "Cole Geyer",
+    "club": "Huddersfield Giants",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; sheet 75 (Academy / Extended); 0 career apps, age 22"
+  },
+  "huddersfield-cur-connor-carr": {
+    "to": 75,
+    "from": 80,
+    "name": "Connor Carr",
+    "club": "Huddersfield Giants",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 43 pts, £50k; sheet 75 (Squad); 0 career apps, age 23"
+  },
+  "huddersfield-cur-fenton-rogers": {
+    "to": 83,
+    "from": 83,
+    "name": "Fenton Rogers",
+    "club": "Huddersfield Giants",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence -0.1); 2026 fantasy 789 pts, £100k; sheet 77 (Rotation); 25 career apps, age 23"
+  },
+  "huddersfield-cur-george-flanagan-jr": {
+    "to": 84,
+    "from": 83,
+    "name": "George Flanagan Jr",
+    "club": "Huddersfield Giants",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence +0.6); 2026 fantasy 622 pts, £130k; sheet 83 (Squad); 39 career apps, age 22"
+  },
+  "huddersfield-cur-george-king": {
+    "to": 83,
+    "from": 83,
+    "name": "George King",
+    "club": "Huddersfield Giants",
+    "band": "first-team",
+    "why": "researched 83; 2026 fantasy 650 pts, £100k; sheet 79 (Rotation); 221 career apps, age 31"
+  },
+  "huddersfield-cur-harry-rushton": {
+    "to": 83,
+    "from": 82,
+    "name": "Harry Rushton",
+    "club": "Huddersfield Giants",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.5); 2026 fantasy 964 pts, £120k; sheet 78 (First Team); 61 career apps, age 25"
+  },
+  "huddersfield-cur-jack-billington": {
+    "to": 78,
+    "from": 80,
+    "name": "Jack Billington",
+    "club": "Huddersfield Giants",
+    "band": "rotation",
+    "why": "old floor 80: some 2026 games; 2026 fantasy 126 pts, £80k; sheet 76 (Squad); 0 career apps, age 22"
+  },
+  "huddersfield-cur-jacob-algar": {
+    "to": 71,
+    "from": 80,
+    "name": "Jacob Algar",
+    "club": "Huddersfield Giants",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 1 career apps; 2026 fantasy 0 pts, £50k; sheet 75 (Development); 1 career apps, age 20"
+  },
+  "huddersfield-cur-jacob-gagai": {
+    "to": 89,
+    "from": 87,
+    "name": "Jacob Gagai",
+    "club": "Huddersfield Giants",
+    "band": "first-team",
+    "why": "researched 87 (2026 evidence +0.1); 2026 fantasy 1055 pts, £120k; sheet 85 (First Team); 37 career apps, age 31"
+  },
+  "huddersfield-cur-joe-greenwood": {
+    "to": 81,
+    "from": 82,
+    "name": "Joe Greenwood",
+    "club": "Huddersfield Giants",
+    "band": "rotation",
+    "why": "researched 82 (2026 evidence -0.3); 2026 fantasy 407 pts, £120k; sheet 77 (Rotation); 200 career apps, age 33"
+  },
+  "huddersfield-cur-kieran-rush": {
+    "to": 80,
+    "from": 80,
+    "name": "Kieran Rush",
+    "club": "Huddersfield Giants",
+    "band": "rotation",
+    "why": "old floor 80: regular 2026 minutes; 2026 fantasy 334 pts, £90k; sheet 77 (Rotation); 37 career apps, age 24"
+  },
+  "huddersfield-cur-logan-blacker": {
+    "to": 70,
+    "from": 80,
+    "name": "Logan Blacker",
+    "club": "Huddersfield Giants",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; 2026 fantasy 0 pts, £50k; sheet 75 (Development); 0 career apps, age 19"
+  },
+  "huddersfield-cur-marshall-land": {
+    "to": 70,
+    "from": 80,
+    "name": "Marshall Land",
+    "club": "Huddersfield Giants",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 2 career apps; 2026 fantasy 0 pts, £50k; sheet 75 (Development); 2 career apps, age 19"
+  },
+  "huddersfield-cur-mathieu-cozza": {
+    "to": 82,
+    "from": 82,
+    "name": "Mathieu Cozza",
+    "club": "Huddersfield Giants",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence -0.1); 2026 fantasy 735 pts, £100k; sheet 76 (Squad); 48 career apps, age 26"
+  },
+  "huddersfield-cur-matty-english": {
+    "to": 80,
+    "from": 81,
+    "name": "Matty English",
+    "club": "York Knights",
+    "band": "rotation",
+    "why": "researched 81; 2026 fantasy 215 pts, £100k; 143 career apps, age 29"
+  },
+  "huddersfield-cur-matty-hanley": {
+    "to": 72,
+    "from": 80,
+    "name": "Matty Hanley",
+    "club": "Huddersfield Giants",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; sheet 75 (Academy / Extended); 0 career apps, age 22"
+  },
+  "huddersfield-cur-niall-evalds": {
+    "to": 83,
+    "from": 83,
+    "name": "Niall Evalds",
+    "club": "Huddersfield Giants",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence -0.1); 2026 fantasy 355 pts, £110k; sheet 81 (First Team / Rotation); 194 career apps, age 33"
+  },
+  "huddersfield-cur-oliver-russell": {
+    "to": 83,
+    "from": 83,
+    "name": "Oliver Russell",
+    "club": "Huddersfield Giants",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence -0.3); 2026 fantasy 482 pts, £90k; sheet 79 (First-Team Squad); 124 career apps, age 28"
+  },
+  "huddersfield-cur-oliver-wilson": {
+    "to": 83,
+    "from": 83,
+    "name": "Oliver Wilson",
+    "club": "Huddersfield Giants",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence -0.6); 2026 fantasy 0 pts, £100k; sheet 82 (Squad); 104 career apps, age 26"
+  },
+  "huddersfield-cur-sam-halsall": {
+    "to": 80,
+    "from": 81,
+    "name": "Sam Halsall",
+    "club": "Huddersfield Giants",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence +0.2); 2026 fantasy 322 pts, £100k; sheet 80 (First Team / Rotation); 75 career apps, age 25"
+  },
+  "huddersfield-cur-sam-hewitt": {
+    "to": 80,
+    "from": 81,
+    "name": "Sam Hewitt",
+    "club": "Huddersfield Giants",
+    "band": "rotation",
+    "why": "researched 81; 2026 fantasy 357 pts, £100k; sheet 78 (First Team); 100 career apps, age 27"
+  },
+  "huddersfield-cur-taane-milne": {
+    "to": 86,
+    "from": 84,
+    "name": "Taane Milne",
+    "club": "Huddersfield Giants",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence +0.6); 2026 fantasy 897 pts, £110k; sheet 85 (First Team / Rotation); 32 career apps, age 31"
+  },
+  "huddersfield-cur-thomas-burgess": {
+    "to": 80,
+    "from": 80,
+    "name": "Thomas Burgess",
+    "club": "Huddersfield Giants",
+    "band": "rotation",
+    "why": "old floor 80: regular 2026 minutes; 2026 fantasy 354 pts, £110k; sheet 81 (First Team / Rotation); 75 career apps, age 34"
+  },
+  "huddersfield-cur-tristan-powell": {
+    "to": 84,
+    "from": 83,
+    "name": "Tristan Powell",
+    "club": "Huddersfield Giants",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence +0.2); 2026 fantasy 979 pts, £100k; sheet 78 (First Team); 40 career apps, age 25"
+  },
+  "huddersfield-cur-tui-lolohea": {
+    "to": 85,
+    "from": 84,
+    "name": "Tui Lolohea",
+    "club": "Huddersfield Giants",
+    "band": "first-team",
+    "why": "researched 84; sheet 84 (First Team / Rotation); 153 career apps, age 31"
+  },
+  "huddersfield-cur-zac-woolford": {
+    "to": 87,
+    "from": 86,
+    "name": "Zac Woolford",
+    "club": "Huddersfield Giants",
+    "band": "first-team",
+    "why": "researched 86 (2026 evidence -0.1); 2026 fantasy 1165 pts, £120k; sheet 82 (First Team); 33 career apps, age 30"
+  },
+  "hull-fc-cur-aidan-sezer": {
+    "to": 84,
+    "from": 83,
+    "name": "Aidan Sezer",
+    "club": "Hull FC",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence +0.6); 2026 fantasy 816 pts, £140k; sheet 83 (First Team / Rotation); 91 career apps, age 35"
+  },
+  "hull-fc-cur-amir-bourouh": {
+    "to": 83,
+    "from": 82,
+    "name": "Amir Bourouh",
+    "club": "Hull FC",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.6); 2026 fantasy 825 pts, £100k; sheet 84 (First Team); 88 career apps, age 25"
+  },
+  "hull-fc-cur-arthur-romano": {
+    "to": 81,
+    "from": 82,
+    "name": "Arthur Romano",
+    "club": "Hull FC",
+    "band": "rotation",
+    "why": "researched 82 (2026 evidence -0.4); 2026 fantasy 364 pts, £100k; sheet 77 (Squad); 99 career apps, age 29"
+  },
+  "hull-fc-cur-ben-johnson": {
+    "to": 73,
+    "from": 80,
+    "name": "Ben Johnson",
+    "club": "Hull FC",
+    "band": "fringe",
+    "why": "old floor 80: a 2026 cameo; 2026 fantasy 12 pts, £50k; sheet 75 (Academy / Extended); 0 career apps, age 20"
+  },
+  "hull-fc-cur-brad-fash": {
+    "to": 81,
+    "from": 82,
+    "name": "Brad Fash",
+    "club": "Hull FC",
+    "band": "rotation",
+    "why": "researched 82 (2026 evidence -0.5); 2026 fantasy 279 pts, £100k; sheet 78 (Squad); 187 career apps, age 30"
+  },
+  "hull-fc-cur-cade-cust": {
+    "to": 83,
+    "from": 82,
+    "name": "Cade Cust",
+    "club": "Hull FC",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.4); 2026 fantasy 698 pts, £120k; sheet 79 (Rotation); 87 career apps, age 28"
+  },
+  "hull-fc-cur-callum-kemp": {
+    "to": 75,
+    "from": 80,
+    "name": "Callum Kemp",
+    "club": "Hull FC",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 96 pts, £80k; sheet 75 (Development); 0 career apps, age 20"
+  },
+  "hull-fc-cur-connor-bailey": {
+    "to": 80,
+    "from": 81,
+    "name": "Connor Bailey",
+    "club": "Hull FC",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.1); 2026 fantasy 379 pts, £70k; sheet 78 (Squad); 0 career apps, age 26"
+  },
+  "hull-fc-cur-davy-litten": {
+    "to": 84,
+    "from": 84,
+    "name": "Davy Litten",
+    "club": "Hull FC",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence -0.3); 2026 fantasy 877 pts, £100k; sheet 78 (First Team); 30 career apps, age 23"
+  },
+  "hull-fc-cur-harvey-barron": {
+    "to": 83,
+    "from": 82,
+    "name": "Harvey Barron",
+    "club": "Hull FC",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.5); 2026 fantasy 611 pts, £120k; sheet 81 (First Team / Rotation); 41 career apps, age 23"
+  },
+  "hull-fc-cur-harvie-hill": {
+    "to": 84,
+    "from": 83,
+    "name": "Harvie Hill",
+    "club": "Hull FC",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence +0.3); 2026 fantasy 1118 pts, £100k; sheet 78 (First Team); 71 career apps, age 23"
+  },
+  "hull-fc-cur-herman-eseese": {
+    "to": 88,
+    "from": 86,
+    "name": "Herman Ese'ese",
+    "club": "Hull FC",
+    "band": "first-team",
+    "why": "researched 86 (2026 evidence +0.3); 2026 fantasy 560 pts, £150k; sheet 89 (First Team / Rotation); 49 career apps, age 32"
+  },
+  "hull-fc-cur-hugo-salabio": {
+    "to": 78,
+    "from": 80,
+    "name": "Hugo Salabio",
+    "club": "Hull FC",
+    "band": "rotation",
+    "why": "old floor 80: some 2026 games; 2026 fantasy 228 pts, £80k; sheet 76 (Development); 35 career apps, age 26"
+  },
+  "hull-fc-cur-jake-arthur": {
+    "to": 87,
+    "from": 85,
+    "name": "Jake Arthur",
+    "club": "Hull FC",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence +0.6); 2026 fantasy 1051 pts, £130k; sheet 85 (First Team); 23 career apps, age 24"
+  },
+  "hull-fc-cur-james-bell": {
+    "to": 81,
+    "from": 81,
+    "name": "James Bell",
+    "club": "Hull FC",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence +0.6); 2026 fantasy 690 pts, £90k; sheet 81 (Rotation); 98 career apps, age 32"
+  },
+  "hull-fc-cur-jed-cartwright": {
+    "to": 81,
+    "from": 81,
+    "name": "Jed Cartwright",
+    "club": "St Helens",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence +0.4); 2026 fantasy 300 pts, £100k; sheet 82 (First Team); 17 career apps, age 30"
+  },
+  "hull-fc-cur-joe-batchelor": {
+    "to": 85,
+    "from": 84,
+    "name": "Joe Batchelor",
+    "club": "Hull FC",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence +0.2); 2026 fantasy 719 pts, £100k; sheet 83 (First Team / Rotation); 171 career apps, age 32"
+  },
+  "hull-fc-cur-joe-phillips": {
+    "to": 72,
+    "from": 80,
+    "name": "Joe Phillips",
+    "club": "Hull FC",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; 2026 fantasy 0 pts, £50k; sheet 75 (Development); 0 career apps, age 22"
+  },
+  "hull-fc-cur-joe-ward": {
+    "to": 72,
+    "from": 80,
+    "name": "Joe Ward",
+    "club": "Hull FC",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; 2026 fantasy 0 pts, £50k; sheet 75 (Academy / Extended); 0 career apps, age 21"
+  },
+  "hull-fc-cur-john-asiata": {
+    "to": 84,
+    "from": 84,
+    "name": "John Asiata",
+    "club": "Hull FC",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence -0.6); 2026 fantasy 226 pts, £130k; sheet 79 (First Team / Rotation); 19 career apps, age 33"
+  },
+  "hull-fc-cur-lennon-clark": {
+    "to": 77,
+    "from": 80,
+    "name": "Lennon Clark",
+    "club": "Hull FC",
+    "band": "rotation",
+    "why": "old floor 80: some 2026 games; 2026 fantasy 150 pts, £50k; sheet 76 (Academy / Extended); 0 career apps, age 21"
+  },
+  "hull-fc-cur-lewis-martin": {
+    "to": 83,
+    "from": 82,
+    "name": "Lewis Martin",
+    "club": "Hull FC",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.6); 2026 fantasy 632 pts, £130k; sheet 84 (First Team / Rotation); 66 career apps, age 22"
+  },
+  "hull-fc-cur-liam-knight": {
+    "to": 84,
+    "from": 84,
+    "name": "Liam Knight",
+    "club": "Hull FC",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence -0.6); 2026 fantasy 128 pts, £120k; sheet 78 (Rotation); 20 career apps, age 31"
+  },
+  "hull-fc-cur-ligi-sao": {
+    "to": 82,
+    "from": 82,
+    "name": "Ligi Sao",
+    "club": "Hull FC",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence -0.2); 2026 fantasy 391 pts, £110k; sheet 78 (Rotation); 102 career apps, age 34"
+  },
+  "hull-fc-cur-lloyd-kemp": {
+    "to": 77,
+    "from": 80,
+    "name": "Lloyd Kemp",
+    "club": "Hull FC",
+    "band": "rotation",
+    "why": "old floor 80: some 2026 games; 2026 fantasy 154 pts, £50k; sheet 75 (Academy / Extended); 0 career apps, age 20"
+  },
+  "hull-fc-cur-logan-moy": {
+    "to": 85,
+    "from": 84,
+    "name": "Logan Moy",
+    "club": "Hull FC",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence -0.1); 2026 fantasy 763 pts, £70k; sheet 82 (Squad); 0 career apps, age 21"
+  },
+  "hull-fc-cur-matty-laidlaw": {
+    "to": 76,
+    "from": 80,
+    "name": "Matty Laidlaw",
+    "club": "Hull FC",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 111 pts, £90k; sheet 75 (Development); 0 career apps, age 22"
+  },
+  "hull-fc-cur-roman-dawson": {
+    "to": 71,
+    "from": 80,
+    "name": "Roman Dawson",
+    "club": "Hull FC",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; 2026 fantasy 0 pts, £50k; sheet 75 (Academy / Extended); 0 career apps, age 20"
+  },
+  "hull-fc-cur-sam-lisone": {
+    "to": 81,
+    "from": 81,
+    "name": "Sam Lisone",
+    "club": "Hull FC",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence +0.4); 2026 fantasy 353 pts, £120k; sheet 80 (First Team / Rotation); 81 career apps, age 32"
+  },
+  "hull-fc-cur-tom-briscoe": {
+    "to": 84,
+    "from": 83,
+    "name": "Tom Briscoe",
+    "club": "Hull FC",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence +0.4); 2026 fantasy 704 pts, £110k; sheet 82 (Squad); 400 career apps, age 36"
+  },
+  "hull-fc-cur-will-hutchinson": {
+    "to": 75,
+    "from": 80,
+    "name": "Will Hutchinson",
+    "club": "Hull FC",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 102 pts, £50k; sheet 75 (Development); 0 career apps, age 20"
+  },
+  "hull-fc-cur-will-kirby": {
+    "to": 75,
+    "from": 80,
+    "name": "Will Kirby",
+    "club": "Hull FC",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 113 pts, £50k; sheet 75 (Development); 0 career apps, age 20"
+  },
+  "hull-fc-cur-will-pryce": {
+    "to": 82,
+    "from": 82,
+    "name": "Will Pryce",
+    "club": "Hull FC",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.2); 2026 fantasy 102 pts, £150k; sheet 85 (First Team / Rotation); 45 career apps, age 24"
+  },
+  "hull-fc-cur-yusuf-aydin": {
+    "to": 83,
+    "from": 83,
+    "name": "Yusuf Aydin",
+    "club": "Hull FC",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence -0.1); 2026 fantasy 434 pts, £100k; sheet 81 (Squad); 86 career apps, age 26"
+  },
+  "hull-fc-cur-zak-hardaker": {
+    "to": 85,
+    "from": 84,
+    "name": "Zak Hardaker",
+    "club": "Hull FC",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence +0.3); 2026 fantasy 879 pts, £140k; sheet 81 (First Team / Rotation); 313 career apps, age 35"
+  },
+  "hull-fc-hist-masi-matongo": {
+    "to": 73,
+    "from": 81,
+    "name": "Masi Matongo",
+    "club": "Hull FC",
+    "band": "fringe",
+    "why": "career card (was 81), not in a 2026 registered squad: no 2026 Super League minutes, 54 career apps; 54 career apps, age 30"
+  },
+  "hull-kr-cur-arthur-mourgue": {
+    "to": 81,
+    "from": 81,
+    "name": "Arthur Mourgue",
+    "club": "Hull KR",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence +0.6); 2026 fantasy 315 pts, £130k; sheet 83 (First Team / Rotation); 131 career apps, age 27"
+  },
+  "hull-kr-cur-bill-leyland": {
+    "to": 80,
+    "from": 81,
+    "name": "Bill Leyland",
+    "club": "Hull KR",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.2); 2026 fantasy 371 pts, £90k; sheet 76 (Squad); 25 career apps, age 23"
+  },
+  "hull-kr-cur-cobie-wainhouse": {
+    "to": 71,
+    "from": 80,
+    "name": "Cobie Wainhouse",
+    "club": "Hull KR",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 1 career apps; 2026 fantasy 0 pts, £50k; sheet 75 (Development); 1 career apps, age 20"
+  },
+  "hull-kr-cur-dean-hadley": {
+    "to": 86,
+    "from": 85,
+    "name": "Dean Hadley",
+    "club": "Hull KR",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence +0.2); 2026 fantasy 1013 pts, £130k; sheet 82 (First Team / Rotation); 225 career apps, age 34"
+  },
+  "hull-kr-cur-declan-murphy": {
+    "to": 72,
+    "from": 80,
+    "name": "Declan Murphy",
+    "club": "Hull KR",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; 2026 fantasy -1 pts, £80k; sheet 75 (Academy / Extended); 0 career apps, age 22"
+  },
+  "hull-kr-cur-elliot-minchella": {
+    "to": 88,
+    "from": 86,
+    "name": "Elliot Minchella",
+    "club": "Hull KR",
+    "band": "first-team",
+    "why": "researched 86 (2026 evidence +0.3); 2026 fantasy 1026 pts, £150k; sheet 85 (First Team / Rotation); 131 career apps, age 30"
+  },
+  "hull-kr-cur-flynn-holden": {
+    "to": 72,
+    "from": 80,
+    "name": "Flynn Holden",
+    "club": "Hull KR",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; 0 career apps, age 22"
+  },
+  "hull-kr-cur-frankie-dearlove": {
+    "to": 75,
+    "from": 80,
+    "name": "Frankie Dearlove",
+    "club": "Hull KR",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 60 pts, £50k; sheet 75 (Academy / Extended); 0 career apps, age 19"
+  },
+  "hull-kr-cur-harvey-horne": {
+    "to": 75,
+    "from": 80,
+    "name": "Harvey Horne",
+    "club": "Hull KR",
+    "band": "fringe",
+    "why": "old floor 80: a 2026 cameo; 2026 fantasy 8 pts, £50k; sheet 79 (Development); 0 career apps, age 21"
+  },
+  "hull-kr-cur-jack-broadbent": {
+    "to": 86,
+    "from": 84,
+    "name": "Jack Broadbent",
+    "club": "Hull KR",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence +0.6); 2026 fantasy 878 pts, £130k; sheet 84 (First Team / Rotation); 121 career apps, age 26"
+  },
+  "hull-kr-cur-jack-brown": {
+    "to": 81,
+    "from": 81,
+    "name": "Jack Brown",
+    "club": "Castleford Tigers",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence +0.6); 2026 fantasy 668 pts, £90k; sheet 80 (Rotation); 99 career apps, age 26"
+  },
+  "hull-kr-cur-jack-charles": {
+    "to": 81,
+    "from": 82,
+    "name": "Jack Charles",
+    "club": "Hull KR",
+    "band": "rotation",
+    "why": "researched 82 (2026 evidence -0.6); 2026 fantasy 62 pts, £80k; sheet 79 (Squad); 0 career apps, age 20"
+  },
+  "hull-kr-cur-jai-whitbread": {
+    "to": 85,
+    "from": 84,
+    "name": "Jai Whitbread",
+    "club": "Hull KR",
+    "band": "first-team",
+    "why": "researched 84; 2026 fantasy 841 pts, £130k; sheet 79 (Rotation); 104 career apps, age 28"
+  },
+  "hull-kr-cur-james-batchelor": {
+    "to": 86,
+    "from": 85,
+    "name": "James Batchelor",
+    "club": "Hull KR",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence +0.3); 2026 fantasy 903 pts, £120k; sheet 84 (First Team / Rotation); 166 career apps, age 28"
+  },
+  "hull-kr-cur-jez-litten": {
+    "to": 91,
+    "from": 89,
+    "name": "Jez Litten",
+    "club": "Hull KR",
+    "band": "first-team",
+    "why": "researched 89; 2026 fantasy 1257 pts, £160k; sheet 83 (First Team / Rotation); 18 career apps, age 28"
+  },
+  "hull-kr-cur-joe-burgess": {
+    "to": 87,
+    "from": 86,
+    "name": "Joe Burgess",
+    "club": "Hull KR",
+    "band": "first-team",
+    "why": "researched 86 (2026 evidence -0.4); 2026 fantasy 706 pts, £140k; sheet 82 (First Team); 201 career apps, age 32"
+  },
+  "hull-kr-cur-jumah-sambou": {
+    "to": 72,
+    "from": 80,
+    "name": "Jumah Sambou",
+    "club": "Hull KR",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 1 career apps; 2026 fantasy 0 pts, £80k; sheet 75 (Academy / Extended); 1 career apps, age 25"
+  },
+  "hull-kr-cur-kelepi-tanginoa": {
+    "to": 85,
+    "from": 84,
+    "name": "Kelepi Tanginoa",
+    "club": "Hull KR",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence -0.1); 2026 fantasy 640 pts, £120k; sheet 81 (First Team / Rotation); 157 career apps, age 32"
+  },
+  "hull-kr-cur-lee-kershaw": {
+    "to": 79,
+    "from": 81,
+    "name": "Lee Kershaw",
+    "club": "Hull KR",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.6); 2026 fantasy 190 pts, £90k; sheet 76 (Squad); 83 career apps, age 27"
+  },
+  "hull-kr-cur-louix-gorman": {
+    "to": 76,
+    "from": 80,
+    "name": "Louix Gorman",
+    "club": "Hull KR",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 52 pts, £80k; sheet 75 (Development); 0 career apps, age 21"
+  },
+  "hull-kr-cur-mikey-lewis": {
+    "to": 93,
+    "from": 90,
+    "name": "Mikey Lewis",
+    "club": "Hull KR",
+    "band": "elite",
+    "why": "researched 90 (2026 evidence +0.6); 2026 fantasy 1081 pts, £170k; sheet 92 (First Team / Rotation); 120 career apps, age 25"
+  },
+  "hull-kr-cur-noah-booth": {
+    "to": 78,
+    "from": 80,
+    "name": "Noah Booth",
+    "club": "Hull KR",
+    "band": "rotation",
+    "why": "old floor 80: some 2026 games; 2026 fantasy 125 pts, £80k; sheet 77 (Squad); 13 career apps, age 22"
+  },
+  "hull-kr-cur-oliver-gildart": {
+    "to": 85,
+    "from": 84,
+    "name": "Oliver Gildart",
+    "club": "Hull KR",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence -0.2); 2026 fantasy 540 pts, £120k; sheet 81 (First Team); 160 career apps, age 30"
+  },
+  "hull-kr-cur-peta-hiku": {
+    "to": 87,
+    "from": 85,
+    "name": "Peta Hiku",
+    "club": "Hull KR",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence +0.6); 2026 fantasy 964 pts, £140k; sheet 86 (First Team / Rotation); 82 career apps, age 34"
+  },
+  "hull-kr-cur-rhyse-martin": {
+    "to": 87,
+    "from": 86,
+    "name": "Rhyse Martin",
+    "club": "Hull KR",
+    "band": "first-team",
+    "why": "researched 86; 2026 fantasy 1069 pts, £110k; sheet 84 (First Team / Rotation); 161 career apps, age 33"
+  },
+  "hull-kr-cur-ryan-hampshire": {
+    "to": 72,
+    "from": 80,
+    "name": "Ryan Hampshire",
+    "club": "Hull KR",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; sheet 78 (Squad); 0 career apps, age 32"
+  },
+  "hull-kr-cur-ryan-westerman": {
+    "to": 71,
+    "from": 80,
+    "name": "Ryan Westerman",
+    "club": "Hull KR",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; 2026 fantasy 0 pts, £50k; sheet 75 (Academy / Extended); 0 career apps, age 20"
+  },
+  "hull-kr-cur-sam-luckley": {
+    "to": 83,
+    "from": 83,
+    "name": "Sam Luckley",
+    "club": "Hull KR",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence -0.1); 2026 fantasy 577 pts, £110k; sheet 79 (Rotation); 128 career apps, age 31"
+  },
+  "hull-kr-cur-sauaso-sue": {
+    "to": 85,
+    "from": 84,
+    "name": "Sauaso Sue",
+    "club": "Hull KR",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence -0.1); 2026 fantasy 482 pts, £120k; sheet 82 (First Team / Rotation); 74 career apps, age 34"
+  },
+  "hull-kr-cur-tevita-pangai-junior": {
+    "to": 80,
+    "from": 81,
+    "name": "Tevita Pangai Junior",
+    "club": "Hull KR",
+    "band": "rotation",
+    "why": "researched 81; sheet 86 (First Team / Rotation); 0 career apps, age 30"
+  },
+  "hull-kr-cur-tom-amone": {
+    "to": 86,
+    "from": 85,
+    "name": "Tom Amone",
+    "club": "Hull KR",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence +0.3); 2026 fantasy 983 pts, £110k; sheet 84 (First Team / Rotation); 127 career apps, age 30"
+  },
+  "hull-kr-cur-tom-davies": {
+    "to": 87,
+    "from": 85,
+    "name": "Tom Davies",
+    "club": "Hull KR",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence +0.5); 2026 fantasy 909 pts, £130k; sheet 85 (First Team / Rotation); 187 career apps, age 29"
+  },
+  "hull-kr-cur-tom-whitehead": {
+    "to": 76,
+    "from": 80,
+    "name": "Tom Whitehead",
+    "club": "Hull KR",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 38 pts, £80k; sheet 75 (Development); 17 career apps, age 24"
+  },
+  "hull-kr-cur-tyrone-may": {
+    "to": 91,
+    "from": 89,
+    "name": "Tyrone May",
+    "club": "Hull KR",
+    "band": "first-team",
+    "why": "researched 89 (2026 evidence +0.1); 2026 fantasy 1184 pts, £120k; sheet 86 (First Team / Rotation); 100 career apps, age 30"
+  },
+  "hull-kr-cur-zach-fishwick": {
+    "to": 74,
+    "from": 80,
+    "name": "Zach Fishwick",
+    "club": "Hull KR",
+    "band": "fringe",
+    "why": "old floor 80: a 2026 cameo; 2026 fantasy 19 pts, £80k; sheet 75 (Development); 0 career apps, age 21"
+  },
+  "leeds-cur-alfie-edgell": {
+    "to": 76,
+    "from": 80,
+    "name": "Alfie Edgell",
+    "club": "Leeds Rhinos",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 103 pts, £90k; sheet 75 (Squad); 27 career apps, age 22"
+  },
+  "leeds-cur-ash-handley": {
+    "to": 91,
+    "from": 89,
+    "name": "Ash Handley",
+    "club": "Leeds Rhinos",
+    "band": "first-team",
+    "why": "researched 89 (2026 evidence -0.1); 2026 fantasy 964 pts, £130k; sheet 86 (First Team / Rotation); 212 career apps, age 30"
+  },
+  "leeds-cur-ben-littlewood": {
+    "to": 76,
+    "from": 80,
+    "name": "Ben Littlewood",
+    "club": "Leeds Rhinos",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 117 pts, £80k; sheet 75 (Development); 0 career apps, age 21"
+  },
+  "leeds-cur-brodie-croft": {
+    "to": 95,
+    "from": 93,
+    "name": "Brodie Croft",
+    "club": "Leeds Rhinos",
+    "band": "elite",
+    "why": "researched 93; 2026 fantasy 1386 pts, £150k; sheet 90 (First Team / Rotation); 110 career apps, age 29"
+  },
+  "leeds-cur-cameron-smith": {
+    "to": 87,
+    "from": 86,
+    "name": "Cameron Smith",
+    "club": "Leeds Rhinos",
+    "band": "first-team",
+    "why": "researched 86; 2026 fantasy 1155 pts, £120k; 166 career apps, age 28"
+  },
+  "leeds-cur-chris-hankinson": {
+    "to": 86,
+    "from": 85,
+    "name": "Chris Hankinson",
+    "club": "Leeds Rhinos",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence -0.3); 2026 fantasy 1085 pts, £100k; sheet 79 (Rotation); 110 career apps, age 33"
+  },
+  "leeds-cur-cooper-jenkins": {
+    "to": 85,
+    "from": 84,
+    "name": "Cooper Jenkins",
+    "club": "Leeds Rhinos",
+    "band": "first-team",
+    "why": "researched 84; 2026 fantasy 888 pts, £100k; sheet 80 (Rotation); 31 career apps, age 25"
+  },
+  "leeds-cur-danny-levi": {
+    "to": 83,
+    "from": 82,
+    "name": "Danny Levi",
+    "club": "Leeds Rhinos",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.6); 2026 fantasy 722 pts, £110k; sheet 81 (First Team / Rotation); 0 career apps, age 31"
+  },
+  "leeds-cur-harry-newman": {
+    "to": 87,
+    "from": 85,
+    "name": "Harry Newman",
+    "club": "Leeds Rhinos",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence +0.6); 2026 fantasy 962 pts, £140k; sheet 85 (First Team / Rotation); 127 career apps, age 26"
+  },
+  "leeds-cur-jake-connor": {
+    "to": 95,
+    "from": 93,
+    "name": "Jake Connor",
+    "club": "Leeds Rhinos",
+    "band": "elite",
+    "why": "researched 93; 2026 fantasy 1222 pts, £170k; sheet 91 (First Team / Rotation); 249 career apps, age 32"
+  },
+  "leeds-cur-james-bentley": {
+    "to": 81,
+    "from": 81,
+    "name": "James Bentley",
+    "club": "Leeds Rhinos",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence +0.6); 2026 fantasy 656 pts, £120k; sheet 80 (First Team / Rotation); 137 career apps, age 29"
+  },
+  "leeds-cur-james-mcdonnell": {
+    "to": 92,
+    "from": 90,
+    "name": "James McDonnell",
+    "club": "Leeds Rhinos",
+    "band": "elite",
+    "why": "researched 90 (2026 evidence +0.1); 2026 fantasy 1185 pts, £130k; sheet 89 (First Team / Rotation); 93 career apps, age 26"
+  },
+  "leeds-cur-jarrod-o-connor": {
+    "to": 87,
+    "from": 85,
+    "name": "Jarrod O'Connor",
+    "club": "Leeds Rhinos",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence +0.6); 2026 fantasy 1033 pts, £130k; sheet 85 (First Team / Rotation); 129 career apps, age 25"
+  },
+  "leeds-cur-jeremiah-matautia": {
+    "to": 78,
+    "from": 80,
+    "name": "Jeremiah Mata'utia",
+    "club": "Leeds Rhinos",
+    "band": "rotation",
+    "why": "old floor 80: some 2026 games; 2026 fantasy 251 pts, £110k; sheet 75 (Squad); 10 career apps, age 22"
+  },
+  "leeds-cur-kallum-watkins": {
+    "to": 89,
+    "from": 87,
+    "name": "Kallum Watkins",
+    "club": "Leeds Rhinos",
+    "band": "first-team",
+    "why": "researched 87 (2026 evidence +0.3); 2026 fantasy 1064 pts, £140k; sheet 85 (First Team / Rotation); 357 career apps, age 35"
+  },
+  "leeds-cur-keenan-palasia": {
+    "to": 86,
+    "from": 85,
+    "name": "Keenan Palasia",
+    "club": "Leeds Rhinos",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence -0.3); 2026 fantasy 615 pts, £120k; sheet 82 (First Team / Rotation); 43 career apps, age 29"
+  },
+  "leeds-cur-lachie-miller": {
+    "to": 94,
+    "from": 92,
+    "name": "Lachie Miller",
+    "club": "Leeds Rhinos",
+    "band": "elite",
+    "why": "researched 92; 50 career apps, age 32"
+  },
+  "leeds-cur-maika-sivo": {
+    "to": 93,
+    "from": 91,
+    "name": "Maika Sivo",
+    "club": "Leeds Rhinos",
+    "band": "elite",
+    "why": "researched 91 (2026 evidence +0.1); 2026 fantasy 922 pts, £140k; sheet 91 (First Team / Rotation); 20 career apps, age 33"
+  },
+  "leeds-cur-matt-lodge": {
+    "to": 80,
+    "from": 81,
+    "name": "Matt Lodge",
+    "club": "Leeds Rhinos",
+    "band": "rotation",
+    "why": "researched 81; 0 career apps, age 31"
+  },
+  "leeds-cur-max-simpson": {
+    "to": 73,
+    "from": 80,
+    "name": "Max Simpson",
+    "club": "Leeds Rhinos",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; 2026 fantasy 0 pts, £80k; sheet 80 (Rotation); 0 career apps, age 22"
+  },
+  "leeds-cur-mikolaj-oledzki": {
+    "to": 86,
+    "from": 85,
+    "name": "Mikolaj Oledzki",
+    "club": "Leeds Rhinos",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence +0.2); 2026 fantasy 844 pts, £120k; sheet 84 (First Team / Rotation); 167 career apps, age 28"
+  },
+  "leeds-cur-morgan-gannon": {
+    "to": 83,
+    "from": 83,
+    "name": "Morgan Gannon",
+    "club": "Leeds Rhinos",
+    "band": "first-team",
+    "why": "researched 83; 68 career apps, age 23"
+  },
+  "leeds-cur-ned-mccormack": {
+    "to": 76,
+    "from": 80,
+    "name": "Ned McCormack",
+    "club": "Leeds Rhinos",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 58 pts, £50k; sheet 78 (Squad); 7 career apps, age 21"
+  },
+  "leeds-cur-presley-cassell": {
+    "to": 80,
+    "from": 81,
+    "name": "Presley Cassell",
+    "club": "Leeds Rhinos",
+    "band": "rotation",
+    "why": "researched 81; 2026 fantasy 411 pts, £90k; sheet 77 (Squad); 23 career apps, age 22"
+  },
+  "leeds-cur-riley-lumb": {
+    "to": 79,
+    "from": 80,
+    "name": "Riley Lumb",
+    "club": "Leeds Rhinos",
+    "band": "rotation",
+    "why": "old floor 80: some 2026 games; 2026 fantasy 190 pts, £100k; sheet 80 (Squad); 24 career apps, age 22"
+  },
+  "leeds-cur-ryan-hall": {
+    "to": 84,
+    "from": 83,
+    "name": "Ryan Hall",
+    "club": "Leeds Rhinos",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence +0.6); 2026 fantasy 643 pts, £130k; sheet 83 (First Team / Rotation); 425 career apps, age 39"
+  },
+  "leeds-cur-sam-lisone": {
+    "to": 82,
+    "from": 82,
+    "name": "Sam Lisone",
+    "club": "Leeds Rhinos",
+    "band": "first-team",
+    "why": "researched 82; 2026 fantasy 353 pts, £120k; sheet 80 (First Team / Rotation); 0 career apps, age 32"
+  },
+  "leeds-cur-tom-holroyd": {
+    "to": 86,
+    "from": 85,
+    "name": "Tom Holroyd",
+    "club": "Leeds Rhinos",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence -0.1); 2026 fantasy 824 pts, £110k; sheet 82 (First Team / Rotation); 79 career apps, age 25"
+  },
+  "leeds-cur-tom-nicholson-watton": {
+    "to": 76,
+    "from": 80,
+    "name": "Tom Nicholson-Watton",
+    "club": "Leeds Rhinos",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 69 pts, £80k; sheet 75 (Development); 0 career apps, age 24"
+  },
+  "leeds-hist-james-donaldson": {
+    "to": 76,
+    "from": 88,
+    "name": "James Donaldson",
+    "club": "Leeds Rhinos",
+    "band": "fringe",
+    "why": "career card (was 88), not in a 2026 registered squad: no 2026 Super League minutes, 225 career apps; 225 career apps, age 35"
+  },
+  "leigh-cur-aaron-pene": {
+    "to": 83,
+    "from": 83,
+    "name": "Aaron Pene",
+    "club": "Leigh Leopards",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence -0.6); 2026 fantasy 132 pts, £90k; sheet 79 (Rotation); 25 career apps, age 31"
+  },
+  "leigh-cur-adam-cook": {
+    "to": 89,
+    "from": 88,
+    "name": "Adam Cook",
+    "club": "Leigh Leopards",
+    "band": "first-team",
+    "why": "researched 88 (2026 evidence -0.1); 2026 fantasy 1337 pts, £120k; sheet 88 (First Team); 28 career apps, age 26"
+  },
+  "leigh-cur-aj-towse": {
+    "to": 79,
+    "from": 81,
+    "name": "AJ Towse",
+    "club": "Leigh Leopards",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.6); 2026 fantasy 165 pts, £80k; sheet 76 (Squad); 8 career apps, age 23"
+  },
+  "leigh-cur-andrew-badrock": {
+    "to": 78,
+    "from": 80,
+    "name": "Andrew Badrock",
+    "club": "Leigh Leopards",
+    "band": "rotation",
+    "why": "old floor 80: some 2026 games; 2026 fantasy 191 pts, £90k; sheet 76 (Squad); 20 career apps, age 26"
+  },
+  "leigh-cur-bailey-hodgson": {
+    "to": 81,
+    "from": 82,
+    "name": "Bailey Hodgson",
+    "club": "Leigh Leopards",
+    "band": "rotation",
+    "why": "researched 82 (2026 evidence -0.4); 2026 fantasy 340 pts, £120k; sheet 77 (Rotation); 36 career apps, age 24"
+  },
+  "leigh-cur-ben-mcnamara": {
+    "to": 78,
+    "from": 80,
+    "name": "Ben McNamara",
+    "club": "Castleford Tigers",
+    "band": "rotation",
+    "why": "old floor 80: some 2026 games; 2026 fantasy 292 pts, £80k; sheet 75 (Squad); 67 career apps, age 25"
+  },
+  "leigh-cur-darnell-mcintosh": {
+    "to": 80,
+    "from": 79,
+    "name": "Darnell McIntosh",
+    "club": "Leigh Leopards",
+    "band": "rotation",
+    "why": "old floor 79: regular 2026 minutes; 2026 fantasy 419 pts, £100k; sheet 78 (First Team); 181 career apps, age 29"
+  },
+  "leigh-cur-david-armstrong": {
+    "to": 86,
+    "from": 86,
+    "name": "David Armstrong",
+    "club": "Leigh Leopards",
+    "band": "first-team",
+    "why": "researched 86 (2026 evidence -0.6); 2026 fantasy 540 pts, £150k; sheet 81 (First Team / Rotation); 14 career apps, age 25"
+  },
+  "leigh-cur-edwin-ipape": {
+    "to": 88,
+    "from": 86,
+    "name": "Edwin Ipape",
+    "club": "Leigh Leopards",
+    "band": "first-team",
+    "why": "researched 86 (2026 evidence +0.3); 2026 fantasy 704 pts, £160k; sheet 87 (First Team / Rotation); 114 career apps, age 27"
+  },
+  "leigh-cur-ethan-o-neill": {
+    "to": 83,
+    "from": 82,
+    "name": "Ethan O'Neill",
+    "club": "Hull FC",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.6); 2026 fantasy 741 pts, £120k; sheet 81 (Rotation); 36 career apps, age 27"
+  },
+  "leigh-cur-frankie-halton": {
+    "to": 84,
+    "from": 83,
+    "name": "Frankie Halton",
+    "club": "Leigh Leopards",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence +0.4); 2026 fantasy 862 pts, £110k; sheet 80 (First Team); 83 career apps, age 30"
+  },
+  "leigh-cur-gareth-o-brien": {
+    "to": 81,
+    "from": 82,
+    "name": "Gareth O'Brien",
+    "club": "Leigh Leopards",
+    "band": "rotation",
+    "why": "researched 82 (2026 evidence -0.4); 2026 fantasy 306 pts, £110k; sheet 78 (Squad); 215 career apps, age 35"
+  },
+  "leigh-cur-innes-senior": {
+    "to": 86,
+    "from": 85,
+    "name": "Innes Senior",
+    "club": "Leigh Leopards",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence -0.2); 2026 fantasy 1008 pts, £100k; sheet 80 (Squad); 153 career apps, age 26"
+  },
+  "leigh-cur-isaac-liu": {
+    "to": 86,
+    "from": 85,
+    "name": "Isaac Liu",
+    "club": "Leigh Leopards",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence +0.3); 2026 fantasy 982 pts, £130k; sheet 83 (First Team / Rotation); 40 career apps, age 35"
+  },
+  "leigh-cur-jack-hughes": {
+    "to": 84,
+    "from": 84,
+    "name": "Jack Hughes",
+    "club": "Leigh Leopards",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence -0.3); 2026 fantasy 692 pts, £100k; sheet 79 (Squad); 330 career apps, age 34"
+  },
+  "leigh-cur-jacob-alick-wiencke": {
+    "to": 86,
+    "from": 85,
+    "name": "Jacob Alick-Wiencke",
+    "club": "Leigh Leopards",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence +0.4); 2026 fantasy 1047 pts, £100k; sheet 85 (Rotation); 24 career apps, age 27"
+  },
+  "leigh-cur-joe-ofahengaue": {
+    "to": 91,
+    "from": 90,
+    "name": "Joe Ofahengaue",
+    "club": "Leigh Leopards",
+    "band": "first-team",
+    "why": "researched 90 (2026 evidence -0.6); 2026 fantasy 1027 pts, £130k; sheet 83 (First Team / Rotation); 26 career apps, age 31"
+  },
+  "leigh-cur-josh-charnley": {
+    "to": 88,
+    "from": 87,
+    "name": "Josh Charnley",
+    "club": "Leigh Leopards",
+    "band": "first-team",
+    "why": "researched 87 (2026 evidence -0.1); 2026 fantasy 915 pts, £110k; sheet 85 (First Team / Rotation); 347 career apps, age 35"
+  },
+  "leigh-cur-kai-o-donnell": {
+    "to": 85,
+    "from": 84,
+    "name": "Kai O'Donnell",
+    "club": "Leigh Leopards",
+    "band": "first-team",
+    "why": "researched 84; 49 career apps, age 27"
+  },
+  "leigh-cur-kavan-rothwell": {
+    "to": 72,
+    "from": 80,
+    "name": "Kavan Rothwell",
+    "club": "Leigh Leopards",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; 2026 fantasy 0 pts, £50k; sheet 75 (Development); 0 career apps, age 23"
+  },
+  "leigh-cur-keanan-brand": {
+    "to": 80,
+    "from": 81,
+    "name": "Keanan Brand",
+    "club": "Castleford Tigers",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.1); 2026 fantasy 227 pts, £110k; sheet 78 (First Team); 109 career apps, age 27"
+  },
+  "leigh-cur-lachlan-lam": {
+    "to": 89,
+    "from": 87,
+    "name": "Lachlan Lam",
+    "club": "Leigh Leopards",
+    "band": "first-team",
+    "why": "researched 87 (2026 evidence +0.3); 2026 fantasy 866 pts, £160k; sheet 86 (First Team / Rotation); 93 career apps, age 28"
+  },
+  "leigh-cur-lazarus-vaalepu": {
+    "to": 73,
+    "from": 80,
+    "name": "Lazarus Vaalepu",
+    "club": "Castleford Tigers",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; sheet 78 (First-Team Squad); 0 career apps, age 27"
+  },
+  "leigh-cur-liam-horne": {
+    "to": 82,
+    "from": 82,
+    "name": "Liam Horne",
+    "club": "Leigh Leopards",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.2); 2026 fantasy 747 pts, £110k; sheet 78 (First-Team Squad); 76 career apps, age 28"
+  },
+  "leigh-cur-louis-brogan": {
+    "to": 84,
+    "from": 83,
+    "name": "Louis Brogan",
+    "club": "Leigh Leopards",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence +0.2); 2026 fantasy 719 pts, £80k; sheet 81 (Development); 34 career apps, age 26"
+  },
+  "leigh-cur-matt-davis": {
+    "to": 83,
+    "from": 83,
+    "name": "Matt Davis",
+    "club": "Leigh Leopards",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence -0.3); 2026 fantasy 415 pts, £100k; sheet 79 (Rotation); 150 career apps, age 30"
+  },
+  "leigh-cur-nathan-wilde": {
+    "to": 72,
+    "from": 80,
+    "name": "Nathan Wilde",
+    "club": "Leigh Leopards",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 11 career apps; 2026 fantasy 0 pts, £50k; sheet 75 (Development); 11 career apps, age 27"
+  },
+  "leigh-cur-oliver-polec": {
+    "to": 71,
+    "from": 80,
+    "name": "Oliver Polec",
+    "club": "Leigh Leopards",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; 2026 fantasy 0 pts, £50k; sheet 75 (Development); 0 career apps, age 20"
+  },
+  "leigh-cur-owen-trout": {
+    "to": 86,
+    "from": 85,
+    "name": "Owen Trout",
+    "club": "Leigh Leopards",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence -0.1); 2026 fantasy 874 pts, £140k; sheet 80 (First Team); 61 career apps, age 27"
+  },
+  "leigh-cur-robbie-mulhern": {
+    "to": 84,
+    "from": 83,
+    "name": "Robbie Mulhern",
+    "club": "Leigh Leopards",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence +0.6); 2026 fantasy 857 pts, £120k; sheet 83 (First Team / Rotation); 192 career apps, age 32"
+  },
+  "leigh-cur-ryan-brown": {
+    "to": 75,
+    "from": 80,
+    "name": "Ryan Brown",
+    "club": "Leigh Leopards",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 105 pts, £50k; sheet 76 (Development); 0 career apps, age 22"
+  },
+  "leigh-cur-tesi-niu": {
+    "to": 81,
+    "from": 81,
+    "name": "Tesi Niu",
+    "club": "Leigh Leopards",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence +0.6); 2026 fantasy 479 pts, £130k; sheet 82 (First Team / Rotation); 34 career apps, age 25"
+  },
+  "leigh-cur-umyla-hanley": {
+    "to": 90,
+    "from": 89,
+    "name": "Umyla Hanley",
+    "club": "Leigh Leopards",
+    "band": "first-team",
+    "why": "researched 89 (2026 evidence -0.3); 2026 fantasy 769 pts, £130k; sheet 86 (First Team / Rotation); 63 career apps, age 24"
+  },
+  "leigh-cur-will-brough": {
+    "to": 75,
+    "from": 80,
+    "name": "Will Brough",
+    "club": "Leigh Leopards",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 37 pts, £50k; sheet 75 (Development); 1 career apps, age 20"
+  },
+  "leigh-hist-ricky-leutele": {
+    "to": 76,
+    "from": 88,
+    "name": "Ricky Leutele",
+    "club": "Leigh Leopards",
+    "band": "fringe",
+    "why": "career card (was 88), not in a 2026 registered squad: no 2026 Super League minutes, 85 career apps; 85 career apps, age 36"
+  },
+  "london-cur-harry-aldous": {
+    "to": 72,
+    "from": 80,
+    "name": "Harry Aldous",
+    "club": "London Broncos",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; 0 career apps, age 22"
+  },
+  "london-cur-jack-campagnolo": {
+    "to": 85,
+    "from": 84,
+    "name": "Jack Campagnolo",
+    "club": "London Broncos",
+    "band": "first-team",
+    "why": "researched 84; 14 career apps, age 28"
+  },
+  "london-cur-jacob-jones": {
+    "to": 73,
+    "from": 80,
+    "name": "Jacob Jones",
+    "club": "London Broncos",
+    "band": "fringe",
+    "why": "old floor 80: no 2026 Super League minutes, 25 career apps; 25 career apps, age 27"
+  },
+  "london-cur-jeremiah-simbiken": {
+    "to": 83,
+    "from": 83,
+    "name": "Jeremiah Simbiken",
+    "club": "London Broncos",
+    "band": "first-team",
+    "why": "researched 83; 13 career apps, age 26"
+  },
+  "london-cur-jimmy-meadows": {
+    "to": 83,
+    "from": 83,
+    "name": "Jimmy Meadows",
+    "club": "London Broncos",
+    "band": "first-team",
+    "why": "researched 83; 18 career apps, age 27"
+  },
+  "london-cur-lewis-bienek": {
+    "to": 80,
+    "from": 81,
+    "name": "Lewis Bienek",
+    "club": "London Broncos",
+    "band": "rotation",
+    "why": "researched 81; 30 career apps, age 28"
+  },
+  "london-cur-robbie-storey": {
+    "to": 85,
+    "from": 84,
+    "name": "Robbie Storey",
+    "club": "London Broncos",
+    "band": "first-team",
+    "why": "researched 84; 16 career apps, age 27"
+  },
+  "london-cur-sam-davis": {
+    "to": 80,
+    "from": 81,
+    "name": "Sam Davis",
+    "club": "London Broncos",
+    "band": "rotation",
+    "why": "researched 81; 34 career apps, age 28"
+  },
+  "london-hist-alex-walker": {
+    "to": 74,
+    "from": 84,
+    "name": "Alex Walker",
+    "club": "London Broncos",
+    "band": "fringe",
+    "why": "career card (was 84), not in a 2026 registered squad: no 2026 Super League minutes, 48 career apps; 48 career apps, age 31"
+  },
+  "london-hist-sadiq-adebiyi": {
+    "to": 73,
+    "from": 82,
+    "name": "Sadiq Adebiyi",
+    "club": "London Broncos",
+    "band": "fringe",
+    "why": "career card (was 82), not in a 2026 registered squad: no 2026 Super League minutes, 37 career apps; 37 career apps, age 29"
+  },
+  "london-hist-will-lovell": {
+    "to": 74,
+    "from": 84,
+    "name": "Will Lovell",
+    "club": "London Broncos",
+    "band": "fringe",
+    "why": "career card (was 84), not in a 2026 registered squad: no 2026 Super League minutes, 76 career apps; 76 career apps, age 33"
+  },
+  "midlands-cur-liam-sutcliffe": {
+    "to": 76,
+    "from": 80,
+    "name": "Liam Sutcliffe",
+    "club": "Midlands Hurricanes",
+    "band": "fringe",
+    "why": "old floor 80: no 2026 Super League minutes, 236 career apps; 2026 fantasy 0 pts, £100k; sheet 79 (Squad); 236 career apps, age 32"
+  },
+  "midlands-cur-toby-warren": {
+    "to": 80,
+    "from": 81,
+    "name": "Toby Warren",
+    "club": "Midlands Hurricanes",
+    "band": "rotation",
+    "why": "researched 81; 15 career apps, age 23"
+  },
+  "midlands-cur-zach-jebson": {
+    "to": 83,
+    "from": 83,
+    "name": "Zach Jebson",
+    "club": "Midlands Hurricanes",
+    "band": "first-team",
+    "why": "researched 83; 11 career apps, age 22"
+  },
+  "oldham-cur-jake-bibby": {
+    "to": 83,
+    "from": 83,
+    "name": "Jake Bibby",
+    "club": "Oldham RLFC",
+    "band": "first-team",
+    "why": "researched 83; 195 career apps, age 30"
+  },
+  "oldham-cur-jonty-gorley": {
+    "to": 72,
+    "from": 80,
+    "name": "Jonty Gorley",
+    "club": "Oldham RLFC",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; 0 career apps, age 22"
+  },
+  "oldham-cur-josh-simm": {
+    "to": 76,
+    "from": 80,
+    "name": "Josh Simm",
+    "club": "Oldham RLFC",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 91 pts, £100k; sheet 76 (Squad); 53 career apps, age 25"
+  },
+  "sheffield-cur-joe-brown": {
+    "to": 82,
+    "from": 82,
+    "name": "Joe Brown",
+    "club": "Sheffield Eagles",
+    "band": "first-team",
+    "why": "researched 82; 0 career apps, age 27"
+  },
+  "sheffield-cur-jordan-lilley": {
+    "to": 82,
+    "from": 82,
+    "name": "Jordan Lilley",
+    "club": "Sheffield Eagles",
+    "band": "first-team",
+    "why": "researched 82; 247 career apps, age 30"
+  },
+  "sheffield-cur-kai-morgan": {
+    "to": 72,
+    "from": 80,
+    "name": "Kai Morgan",
+    "club": "Sheffield Eagles",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 15 career apps; 15 career apps, age 22"
+  },
+  "sheffield-cur-matty-marsh": {
+    "to": 85,
+    "from": 84,
+    "name": "Matty Marsh",
+    "club": "Sheffield Eagles",
+    "band": "first-team",
+    "why": "researched 84; 22 career apps, age 31"
+  },
+  "st-helens-cur-agnatius-paasi": {
+    "to": 81,
+    "from": 82,
+    "name": "Agnatius Paasi",
+    "club": "St Helens",
+    "band": "rotation",
+    "why": "researched 82 (2026 evidence -0.6); 2026 fantasy 70 pts, £110k; sheet 80 (First Team / Rotation); 99 career apps, age 35"
+  },
+  "st-helens-cur-alex-walmsley": {
+    "to": 85,
+    "from": 84,
+    "name": "Alex Walmsley",
+    "club": "St Helens",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence +0.5); 2026 fantasy 862 pts, £120k; sheet 84 (First Team / Rotation); 279 career apps, age 36"
+  },
+  "st-helens-cur-alfie-sinclair": {
+    "to": 75,
+    "from": 80,
+    "name": "Alfie Sinclair",
+    "club": "St Helens",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 60 pts, £50k; sheet 75 (Development); 4 career apps, age 22"
+  },
+  "st-helens-cur-curtis-sironen": {
+    "to": 80,
+    "from": 80,
+    "name": "Curtis Sironen",
+    "club": "St Helens",
+    "band": "rotation",
+    "why": "old floor 80: regular 2026 minutes; 2026 fantasy 494 pts, £120k; sheet 84 (First Team / Rotation); 81 career apps, age 33"
+  },
+  "st-helens-cur-daryl-clark": {
+    "to": 87,
+    "from": 85,
+    "name": "Daryl Clark",
+    "club": "St Helens",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence +0.5); 2026 fantasy 788 pts, £140k; sheet 86 (First Team / Rotation); 347 career apps, age 33"
+  },
+  "st-helens-cur-david-klemmer": {
+    "to": 84,
+    "from": 83,
+    "name": "David Klemmer",
+    "club": "St Helens",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence +0.6); 2026 fantasy 787 pts, £130k; sheet 83 (First Team / Rotation); 12 career apps, age 33"
+  },
+  "st-helens-cur-deon-cross": {
+    "to": 80,
+    "from": 81,
+    "name": "Deon Cross",
+    "club": "St Helens",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence +0.2); 2026 fantasy 372 pts, £100k; sheet 79 (First Team); 197 career apps, age 30"
+  },
+  "st-helens-cur-george-delaney": {
+    "to": 83,
+    "from": 82,
+    "name": "George Delaney",
+    "club": "St Helens",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.5); 2026 fantasy 663 pts, £100k; sheet 82 (First Team / Rotation); 86 career apps, age 22"
+  },
+  "st-helens-cur-george-whitby": {
+    "to": 80,
+    "from": 81,
+    "name": "George Whitby",
+    "club": "St Helens",
+    "band": "rotation",
+    "why": "researched 81; 2026 fantasy 166 pts, £100k; sheet 81 (Rotation); 15 career apps, age 20"
+  },
+  "st-helens-cur-harry-robertson": {
+    "to": 90,
+    "from": 89,
+    "name": "Harry Robertson",
+    "club": "St Helens",
+    "band": "first-team",
+    "why": "researched 89 (2026 evidence -0.6); 2026 fantasy 1070 pts, £140k; sheet 80 (First Team / Rotation); 43 career apps, age 21"
+  },
+  "st-helens-cur-jack-welsby": {
+    "to": 88,
+    "from": 86,
+    "name": "Jack Welsby",
+    "club": "St Helens",
+    "band": "first-team",
+    "why": "researched 86 (2026 evidence +0.5); 2026 fantasy 945 pts, £160k; sheet 87 (First Team / Rotation); 166 career apps, age 25"
+  },
+  "st-helens-cur-jackson-hastings": {
+    "to": 92,
+    "from": 90,
+    "name": "Jackson Hastings",
+    "club": "St Helens",
+    "band": "elite",
+    "why": "researched 90 (2026 evidence +0.2); 2026 fantasy 1036 pts, £160k; sheet 89 (First Team / Rotation); 88 career apps, age 30"
+  },
+  "st-helens-cur-jacob-douglas": {
+    "to": 81,
+    "from": 82,
+    "name": "Jacob Douglas",
+    "club": "St Helens",
+    "band": "rotation",
+    "why": "researched 82 (2026 evidence -0.6); 2026 fantasy 373 pts, £80k; sheet 75 (Development); 0 career apps, age 22"
+  },
+  "st-helens-cur-jacob-host": {
+    "to": 80,
+    "from": 80,
+    "name": "Jacob Host",
+    "club": "St Helens",
+    "band": "rotation",
+    "why": "old floor 80: regular 2026 minutes; 2026 fantasy 495 pts, £110k; sheet 80 (First Team / Rotation); 16 career apps, age 30"
+  },
+  "st-helens-cur-jake-burns": {
+    "to": 78,
+    "from": 80,
+    "name": "Jake Burns",
+    "club": "St Helens",
+    "band": "rotation",
+    "why": "old floor 80: some 2026 games; 2026 fantasy 125 pts, £80k; sheet 76 (Squad); 22 career apps, age 26"
+  },
+  "st-helens-cur-jake-davies": {
+    "to": 83,
+    "from": 83,
+    "name": "Jake Davies",
+    "club": "St Helens",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence -0.6); 2026 fantasy 559 pts, £50k; sheet 75 (Development); 0 career apps, age 20"
+  },
+  "st-helens-cur-jake-wingfield": {
+    "to": 79,
+    "from": 81,
+    "name": "Jake Wingfield",
+    "club": "St Helens",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.4); 2026 fantasy 121 pts, £100k; sheet 78 (Rotation); 65 career apps, age 25"
+  },
+  "st-helens-cur-joe-shorrocks": {
+    "to": 83,
+    "from": 82,
+    "name": "Joe Shorrocks",
+    "club": "St Helens",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.6); 2026 fantasy 1022 pts, £100k; sheet 80 (First Team / Rotation); 0 career apps, age 27"
+  },
+  "st-helens-cur-jonny-lomax": {
+    "to": 82,
+    "from": 82,
+    "name": "Jonny Lomax",
+    "club": "St Helens",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.1); 2026 fantasy 174 pts, £140k; sheet 83 (First Team / Rotation); 329 career apps, age 36"
+  },
+  "st-helens-cur-kyle-feldt": {
+    "to": 83,
+    "from": 83,
+    "name": "Kyle Feldt",
+    "club": "St Helens",
+    "band": "first-team",
+    "why": "researched 83; 2026 fantasy 291 pts, £120k; sheet 83 (First Team / Rotation); 25 career apps, age 34"
+  },
+  "st-helens-cur-leon-cowen": {
+    "to": 72,
+    "from": 80,
+    "name": "Leon Cowen",
+    "club": "St Helens",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 2 career apps; 2026 fantasy 0 pts, £50k; sheet 75 (Development); 2 career apps, age 22"
+  },
+  "st-helens-cur-lewis-murphy": {
+    "to": 82,
+    "from": 82,
+    "name": "Lewis Murphy",
+    "club": "St Helens",
+    "band": "first-team",
+    "why": "researched 82; 2026 fantasy 473 pts, £80k; sheet 80 (First Team / Rotation); 39 career apps, age 24"
+  },
+  "st-helens-cur-mark-percival": {
+    "to": 84,
+    "from": 83,
+    "name": "Mark Percival",
+    "club": "St Helens",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence +0.2); 2026 fantasy 185 pts, £120k; sheet 86 (First Team / Rotation); 267 career apps, age 32"
+  },
+  "st-helens-cur-matt-whitley": {
+    "to": 82,
+    "from": 82,
+    "name": "Matt Whitley",
+    "club": "St Helens",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.1); 2026 fantasy 399 pts, £110k; sheet 81 (First Team / Rotation); 52 career apps, age 30"
+  },
+  "st-helens-cur-matty-lees": {
+    "to": 85,
+    "from": 84,
+    "name": "Matty Lees",
+    "club": "St Helens",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence -0.2); 2026 fantasy 116 pts, £150k; sheet 86 (First Team / Rotation); 194 career apps, age 28"
+  },
+  "st-helens-cur-morgan-knowles": {
+    "to": 88,
+    "from": 87,
+    "name": "Morgan Knowles",
+    "club": "St Helens",
+    "band": "first-team",
+    "why": "researched 87; 222 career apps, age 30"
+  },
+  "st-helens-cur-nene-macdonald": {
+    "to": 85,
+    "from": 84,
+    "name": "Nene Macdonald",
+    "club": "St Helens",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence +0.1); 2026 fantasy 415 pts, £140k; sheet 84 (First Team / Rotation); 63 career apps, age 32"
+  },
+  "st-helens-cur-noah-stephens": {
+    "to": 78,
+    "from": 80,
+    "name": "Noah Stephens",
+    "club": "St Helens",
+    "band": "rotation",
+    "why": "old floor 80: some 2026 games; 2026 fantasy 289 pts, £80k; sheet 75 (Squad); 31 career apps, age 22"
+  },
+  "st-helens-cur-owen-dagnall": {
+    "to": 80,
+    "from": 81,
+    "name": "Owen Dagnall",
+    "club": "St Helens",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.2); 2026 fantasy 448 pts, £100k; sheet 75 (Development); 25 career apps, age 21"
+  },
+  "st-helens-cur-shane-wright": {
+    "to": 84,
+    "from": 83,
+    "name": "Shane Wright",
+    "club": "St Helens",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence +0.5); 2026 fantasy 1020 pts, £100k; sheet 80 (First Team); 83 career apps, age 30"
+  },
+  "st-helens-cur-tristan-sailor": {
+    "to": 94,
+    "from": 91,
+    "name": "Tristan Sailor",
+    "club": "St Helens",
+    "band": "elite",
+    "why": "researched 91 (2026 evidence +0.5); 2026 fantasy 1361 pts, £160k; sheet 90 (First Team / Rotation); 43 career apps, age 28"
+  },
+  "st-helens-hist-jordan-turner": {
+    "to": 76,
+    "from": 90,
+    "name": "Jordan Turner",
+    "club": "St Helens",
+    "band": "fringe",
+    "why": "career card (was 90), not in a 2026 registered squad: no 2026 Super League minutes, 320 career apps; 320 career apps, age 37"
+  },
+  "toulouse-cur-aj-wallace": {
+    "to": 79,
+    "from": 80,
+    "name": "AJ Wallace",
+    "club": "Toulouse Olympique",
+    "band": "rotation",
+    "why": "old floor 80: regular 2026 minutes; 2026 fantasy 347 pts, £90k; sheet 75 (Squad); 0 career apps, age 23"
+  },
+  "toulouse-cur-anthony-marion": {
+    "to": 84,
+    "from": 83,
+    "name": "Anthony Marion",
+    "club": "Toulouse Olympique",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence +0.2); 2026 fantasy 792 pts, £110k; sheet 79 (First Team); 33 career apps, age 32"
+  },
+  "toulouse-cur-baptiste-rodriguez": {
+    "to": 76,
+    "from": 80,
+    "name": "Baptiste Rodriguez",
+    "club": "Toulouse Olympique",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 47 pts, £50k; sheet 77 (Rotation); 0 career apps, age 23"
+  },
+  "toulouse-cur-benjamin-laguerre": {
+    "to": 85,
+    "from": 85,
+    "name": "Benjamin Laguerre",
+    "club": "Toulouse Olympique",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence -0.6); 2026 fantasy 879 pts, £100k; sheet 78 (First Team); 61 career apps, age 25"
+  },
+  "toulouse-cur-brendan-hands": {
+    "to": 86,
+    "from": 86,
+    "name": "Brendan Hands",
+    "club": "Toulouse Olympique",
+    "band": "first-team",
+    "why": "researched 86 (2026 evidence -0.6); 2026 fantasy 1092 pts, £100k; sheet 79 (First Team); 24 career apps, age 27"
+  },
+  "toulouse-cur-calum-gahan": {
+    "to": 79,
+    "from": 81,
+    "name": "Calum Gahan",
+    "club": "Toulouse Olympique",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.6); 2026 fantasy 0 pts, £90k; sheet 77 (Rotation); 62 career apps, age 29"
+  },
+  "toulouse-cur-ellis-gillam": {
+    "to": 76,
+    "from": 80,
+    "name": "Ellis Gillam",
+    "club": "Toulouse Olympique",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 119 pts, £80k; sheet 75 (Squad); 5 career apps, age 29"
+  },
+  "toulouse-cur-eloi-pelissier": {
+    "to": 82,
+    "from": 82,
+    "name": "Eloi Pelissier",
+    "club": "Toulouse Olympique",
+    "band": "first-team",
+    "why": "researched 82; 194 career apps, age 35"
+  },
+  "toulouse-cur-henry-okane": {
+    "to": 80,
+    "from": 81,
+    "name": "Henry O'Kane",
+    "club": "Toulouse Olympique",
+    "band": "rotation",
+    "why": "researched 81; 2026 fantasy 646 pts, £90k; sheet 75 (Squad); 0 career apps, age 24"
+  },
+  "toulouse-cur-hugo-garrigues": {
+    "to": 75,
+    "from": 80,
+    "name": "Hugo Garrigues",
+    "club": "Toulouse Olympique",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 89 pts, £50k; sheet 75 (Development); 0 career apps, age 21"
+  },
+  "toulouse-cur-jake-shorrocks": {
+    "to": 84,
+    "from": 83,
+    "name": "Jake Shorrocks",
+    "club": "Toulouse Olympique",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence +0.1); 2026 fantasy 510 pts, £100k; sheet 82 (First Team / Rotation); 147 career apps, age 31"
+  },
+  "toulouse-cur-james-roumanos": {
+    "to": 82,
+    "from": 82,
+    "name": "James Roumanos",
+    "club": "Toulouse Olympique",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.1); 2026 fantasy 713 pts, £90k; sheet 78 (First Team); 9 career apps, age 27"
+  },
+  "toulouse-cur-joe-bretherton": {
+    "to": 79,
+    "from": 80,
+    "name": "Joe Bretherton",
+    "club": "Toulouse Olympique",
+    "band": "rotation",
+    "why": "old floor 80: some 2026 games; 2026 fantasy 159 pts, £100k; sheet 77 (Rotation); 39 career apps, age 31"
+  },
+  "toulouse-cur-joe-cator": {
+    "to": 84,
+    "from": 83,
+    "name": "Joe Cator",
+    "club": "Toulouse Olympique",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence +0.6); 2026 fantasy 826 pts, £110k; sheet 83 (Rotation); 85 career apps, age 28"
+  },
+  "toulouse-cur-john-toleafoa": {
+    "to": 72,
+    "from": 80,
+    "name": "John Toleafoa",
+    "club": "Toulouse Olympique",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 13 career apps; sheet 75 (Academy / Extended); 13 career apps, age 27"
+  },
+  "toulouse-cur-justin-sangare": {
+    "to": 84,
+    "from": 84,
+    "name": "Justin Sangaré",
+    "club": "Toulouse Olympique",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence -0.6); 2026 fantasy 207 pts, £110k; sheet 78 (Rotation); 95 career apps, age 28"
+  },
+  "toulouse-cur-lambert-belmas": {
+    "to": 81,
+    "from": 81,
+    "name": "Lambert Belmas",
+    "club": "Toulouse Olympique",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence +0.6); 2026 fantasy 609 pts, £100k; sheet 80 (First Team); 58 career apps, age 29"
+  },
+  "toulouse-cur-luke-polselli": {
+    "to": 82,
+    "from": 82,
+    "name": "Luke Polselli",
+    "club": "Toulouse Olympique",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence -0.2); 2026 fantasy 703 pts, £100k; sheet 75 (Development); 22 career apps, age 28"
+  },
+  "toulouse-cur-mathieu-jussaume": {
+    "to": 93,
+    "from": 91,
+    "name": "Mathieu Jussaume",
+    "club": "Toulouse Olympique",
+    "band": "elite",
+    "why": "researched 91 (2026 evidence -0.2); 2026 fantasy 1315 pts, £90k; sheet 88 (First Team); 24 career apps, age 27"
+  },
+  "toulouse-cur-mathieu-pons": {
+    "to": 75,
+    "from": 80,
+    "name": "Mathieu Pons",
+    "club": "Toulouse Olympique",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 32 pts, £50k; sheet 75 (Development); 0 career apps, age 24"
+  },
+  "toulouse-cur-maxime-stefani": {
+    "to": 81,
+    "from": 81,
+    "name": "Maxime Stefani",
+    "club": "Toulouse Olympique",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence +0.3); 2026 fantasy 510 pts, £100k; sheet 78 (First Team); 72 career apps, age 28"
+  },
+  "toulouse-cur-olly-ashall-bott": {
+    "to": 89,
+    "from": 87,
+    "name": "Olly Ashall-Bott",
+    "club": "Toulouse Olympique",
+    "band": "first-team",
+    "why": "researched 87 (2026 evidence +0.3); 2026 fantasy 963 pts, £120k; sheet 87 (First Team / Rotation); 97 career apps, age 29"
+  },
+  "toulouse-cur-paul-marcon": {
+    "to": 79,
+    "from": 81,
+    "name": "Paul Marcon",
+    "club": "Toulouse Olympique",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.6); 2026 fantasy 0 pts, £110k; sheet 78 (First Team); 16 career apps, age 31"
+  },
+  "toulouse-cur-paul-ulberg": {
+    "to": 85,
+    "from": 84,
+    "name": "Paul Ulberg",
+    "club": "Toulouse Olympique",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence -0.1); 2026 fantasy 787 pts, £110k; sheet 80 (First Team / Rotation); 104 career apps, age 31"
+  },
+  "toulouse-cur-pierrejean-lima": {
+    "to": 75,
+    "from": 80,
+    "name": "Pierre-Jean Lima",
+    "club": "Toulouse Olympique",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 66 pts, £50k; sheet 75 (Squad); 0 career apps, age 26"
+  },
+  "toulouse-cur-reubenn-rennie": {
+    "to": 82,
+    "from": 82,
+    "name": "Reubenn Rennie",
+    "club": "Toulouse Olympique",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence -0.1); 2026 fantasy 420 pts, £100k; sheet 79 (First Team); 57 career apps, age 31"
+  },
+  "toulouse-cur-rob-butler": {
+    "to": 81,
+    "from": 81,
+    "name": "Rob Butler",
+    "club": "Toulouse Olympique",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence +0.5); 2026 fantasy 515 pts, £100k; sheet 80 (Rotation); 89 career apps, age 28"
+  },
+  "toulouse-cur-romeo-tropis": {
+    "to": 80,
+    "from": 81,
+    "name": "Romeo Tropis",
+    "club": "Toulouse Olympique",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.3); 2026 fantasy 559 pts, £50k; sheet 75 (Squad); 0 career apps, age 21"
+  },
+  "toulouse-cur-thomas-lacans": {
+    "to": 81,
+    "from": 81,
+    "name": "Thomas Lacans",
+    "club": "Toulouse Olympique",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence +0.5); 2026 fantasy 742 pts, £100k; sheet 78 (First Team); 8 career apps, age 26"
+  },
+  "toulouse-cur-trevor-chiffolleau": {
+    "to": 72,
+    "from": 80,
+    "name": "Trevor Chiffolleau",
+    "club": "Toulouse Olympique",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; sheet 75 (Development); 0 career apps, age 21"
+  },
+  "wakefield-cur-caius-faatili": {
+    "to": 88,
+    "from": 87,
+    "name": "Caius Faatili",
+    "club": "Wakefield Trinity",
+    "band": "first-team",
+    "why": "researched 87 (2026 evidence -0.4); 2026 fantasy 1048 pts, £130k; sheet 80 (Rotation); 52 career apps, age 25"
+  },
+  "wakefield-cur-caleb-hamlin-uele": {
+    "to": 93,
+    "from": 91,
+    "name": "Caleb Hamlin-Uele",
+    "club": "Wakefield Trinity",
+    "band": "elite",
+    "why": "researched 91; sheet 88 (First Team / Rotation); 52 career apps, age 27"
+  },
+  "wakefield-cur-cameron-scott": {
+    "to": 86,
+    "from": 85,
+    "name": "Cameron Scott",
+    "club": "Wakefield Trinity",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence -0.1); 2026 fantasy 823 pts, £110k; sheet 82 (First Team); 111 career apps, age 27"
+  },
+  "wakefield-cur-corey-hall": {
+    "to": 84,
+    "from": 83,
+    "name": "Corey Hall",
+    "club": "Wakefield Trinity",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence +0.3); 2026 fantasy 746 pts, £100k; sheet 81 (First Team / Rotation); 79 career apps, age 24"
+  },
+  "wakefield-cur-ellis-lingard": {
+    "to": 71,
+    "from": 80,
+    "name": "Ellis Lingard",
+    "club": "Wakefield Trinity",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; 2026 fantasy 0 pts, £70k; sheet 75 (Development); 0 career apps, age 20"
+  },
+  "wakefield-cur-emre-guler": {
+    "to": 72,
+    "from": 80,
+    "name": "Emre Guler",
+    "club": "Wakefield Trinity",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; 0 career apps, age 28"
+  },
+  "wakefield-cur-harvey-smith": {
+    "to": 82,
+    "from": 82,
+    "name": "Harvey Smith",
+    "club": "Wakefield Trinity",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence -0.2); 2026 fantasy 492 pts, £100k; sheet 77 (Rotation); 46 career apps, age 20"
+  },
+  "wakefield-cur-isaiah-vagana": {
+    "to": 88,
+    "from": 87,
+    "name": "Isaiah Vagana",
+    "club": "Wakefield Trinity",
+    "band": "first-team",
+    "why": "researched 87 (2026 evidence -0.5); 2026 fantasy 1081 pts, £100k; sheet 80 (Rotation); 38 career apps, age 26"
+  },
+  "wakefield-cur-jack-sinfield": {
+    "to": 83,
+    "from": 83,
+    "name": "Jack Sinfield",
+    "club": "Wakefield Trinity",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence -0.5); 2026 fantasy 680 pts, £80k; sheet 76 (Squad); 41 career apps, age 22"
+  },
+  "wakefield-cur-jake-trueman": {
+    "to": 91,
+    "from": 89,
+    "name": "Jake Trueman",
+    "club": "Wakefield Trinity",
+    "band": "first-team",
+    "why": "researched 89 (2026 evidence +0.2); 2026 fantasy 1193 pts, £110k; sheet 88 (First Team / Rotation); 156 career apps, age 27"
+  },
+  "wakefield-cur-jay-pitts": {
+    "to": 85,
+    "from": 84,
+    "name": "Jay Pitts",
+    "club": "Wakefield Trinity",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence +0.5); 2026 fantasy 895 pts, £120k; sheet 83 (First Team / Rotation); 215 career apps, age 37"
+  },
+  "wakefield-cur-jayden-myers": {
+    "to": 80,
+    "from": 81,
+    "name": "Jayden Myers",
+    "club": "Wakefield Trinity",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.2); 2026 fantasy 411 pts, £90k; sheet 76 (Squad); 19 career apps, age 23"
+  },
+  "wakefield-cur-jazz-tevaga": {
+    "to": 86,
+    "from": 85,
+    "name": "Jazz Tevaga",
+    "club": "Wakefield Trinity",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence +0.1); 2026 fantasy 828 pts, £120k; sheet 83 (First Team / Rotation); 8 career apps, age 31"
+  },
+  "wakefield-cur-jordan-williams": {
+    "to": 72,
+    "from": 80,
+    "name": "Jordan Williams",
+    "club": "Wakefield Trinity",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 14 career apps; 2026 fantasy 0 pts, £100k; sheet 75 (Development); 14 career apps, age 29"
+  },
+  "wakefield-cur-josh-rourke": {
+    "to": 83,
+    "from": 83,
+    "name": "Josh Rourke",
+    "club": "Wakefield Trinity",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence -0.3); 2026 fantasy 541 pts, £90k; sheet 78 (Squad); 44 career apps, age 27"
+  },
+  "wakefield-cur-kian-mcgann": {
+    "to": 73,
+    "from": 80,
+    "name": "Kian McGann",
+    "club": "Wakefield Trinity",
+    "band": "fringe",
+    "why": "old floor 80: a 2026 cameo; 2026 fantasy 1 pts, £50k; sheet 75 (Academy / Extended); 1 career apps, age 20"
+  },
+  "wakefield-cur-ky-rodwell": {
+    "to": 85,
+    "from": 84,
+    "name": "Ky Rodwell",
+    "club": "Wakefield Trinity",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence +0.2); 2026 fantasy 761 pts, £100k; sheet 83 (First Team / Rotation); 17 career apps, age 27"
+  },
+  "wakefield-cur-lachlan-walmsley": {
+    "to": 83,
+    "from": 83,
+    "name": "Lachlan Walmsley",
+    "club": "Wakefield Trinity",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence -0.6); 2026 fantasy 325 pts, £100k; sheet 76 (Squad); 21 career apps, age 28"
+  },
+  "wakefield-cur-liam-hood": {
+    "to": 82,
+    "from": 82,
+    "name": "Liam Hood",
+    "club": "Wakefield Trinity",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence -0.1); 2026 fantasy 479 pts, £110k; sheet 78 (First Team); 132 career apps, age 34"
+  },
+  "wakefield-cur-mason-lino": {
+    "to": 82,
+    "from": 82,
+    "name": "Mason Lino",
+    "club": "Wakefield Trinity",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.2); 2026 fantasy 280 pts, £140k; sheet 82 (First Team / Rotation); 99 career apps, age 32"
+  },
+  "wakefield-cur-matty-storton": {
+    "to": 81,
+    "from": 81,
+    "name": "Matty Storton",
+    "club": "Wakefield Trinity",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence +0.6); 2026 fantasy 672 pts, £100k; sheet 81 (First Team / Rotation); 122 career apps, age 27"
+  },
+  "wakefield-cur-max-jowitt": {
+    "to": 85,
+    "from": 84,
+    "name": "Max Jowitt",
+    "club": "Wakefield Trinity",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence +0.1); 2026 fantasy 419 pts, £120k; sheet 85 (First Team / Rotation); 136 career apps, age 29"
+  },
+  "wakefield-cur-mike-mcmeeken": {
+    "to": 92,
+    "from": 90,
+    "name": "Mike McMeeken",
+    "club": "Wakefield Trinity",
+    "band": "elite",
+    "why": "researched 90 (2026 evidence +0.1); 2026 fantasy 1137 pts, £150k; sheet 88 (First Team / Rotation); 301 career apps, age 32"
+  },
+  "wakefield-cur-myles-lawford": {
+    "to": 75,
+    "from": 80,
+    "name": "Myles Lawford",
+    "club": "Wakefield Trinity",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 44 pts, £50k; sheet 75 (Development); 0 career apps, age 23"
+  },
+  "wakefield-cur-neil-tchamambe": {
+    "to": 72,
+    "from": 80,
+    "name": "Neil Tchamambe",
+    "club": "Wakefield Trinity",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; 2026 fantasy 0 pts, £80k; 0 career apps, age 21"
+  },
+  "wakefield-cur-noah-high": {
+    "to": 72,
+    "from": 80,
+    "name": "Noah High",
+    "club": "Wakefield Trinity",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; 2026 fantasy 0 pts, £50k; sheet 75 (Development); 0 career apps, age 21"
+  },
+  "wakefield-cur-oliver-pratt": {
+    "to": 83,
+    "from": 82,
+    "name": "Oliver Pratt",
+    "club": "Wakefield Trinity",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.4); 2026 fantasy 596 pts, £120k; sheet 80 (First Team / Rotation); 74 career apps, age 22"
+  },
+  "wakefield-cur-renouf-atoni": {
+    "to": 84,
+    "from": 83,
+    "name": "Renouf Atoni",
+    "club": "Wakefield Trinity",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence +0.2); 2026 fantasy 674 pts, £100k; sheet 81 (First Team); 60 career apps, age 31"
+  },
+  "wakefield-cur-seth-nikotemo": {
+    "to": 82,
+    "from": 82,
+    "name": "Seth Nikotemo",
+    "club": "Wakefield Trinity",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence -0.1); 2026 fantasy 497 pts, £90k; sheet 79 (First Team); 23 career apps, age 22"
+  },
+  "wakefield-cur-tom-johnstone": {
+    "to": 90,
+    "from": 89,
+    "name": "Tom Johnstone",
+    "club": "Wakefield Trinity",
+    "band": "first-team",
+    "why": "researched 89 (2026 evidence -0.3); 2026 fantasy 799 pts, £130k; sheet 86 (First Team / Rotation); 195 career apps, age 31"
+  },
+  "wakefield-cur-tray-lolesio": {
+    "to": 80,
+    "from": 81,
+    "name": "Tray Lolesio",
+    "club": "Wakefield Trinity",
+    "band": "rotation",
+    "why": "researched 81; 2026 fantasy 470 pts, £110k; sheet 76 (Squad); 14 career apps, age 24"
+  },
+  "wakefield-cur-tyson-smoothy": {
+    "to": 91,
+    "from": 90,
+    "name": "Tyson Smoothy",
+    "club": "Wakefield Trinity",
+    "band": "first-team",
+    "why": "researched 90 (2026 evidence -0.6); 2026 fantasy 1207 pts, £120k; sheet 81 (First Team / Rotation); 11 career apps, age 27"
+  },
+  "wakefield-cur-will-tate": {
+    "to": 80,
+    "from": 81,
+    "name": "Will Tate",
+    "club": "Wakefield Trinity",
+    "band": "rotation",
+    "why": "researched 81; 2026 fantasy 325 pts, £90k; sheet 79 (Academy / Extended); 0 career apps, age 25"
+  },
+  "wakefield-hist-harvey-livett": {
+    "to": 76,
+    "from": 87,
+    "name": "Harvey Livett",
+    "club": "Wakefield Trinity",
+    "band": "fringe",
+    "why": "career card (was 87), not in a 2026 registered squad: no 2026 Super League minutes, 94 career apps; 94 career apps, age 29"
+  },
+  "wakefield-hist-joe-arundel": {
+    "to": 76,
+    "from": 87,
+    "name": "Joe Arundel",
+    "club": "Wakefield Trinity",
+    "band": "fringe",
+    "why": "career card (was 87), not in a 2026 registered squad: no 2026 Super League minutes, 166 career apps; 166 career apps, age 35"
+  },
+  "wakefield-hist-mat-ashurst": {
+    "to": 76,
+    "from": 91,
+    "name": "Mat Ashurst",
+    "club": "Wakefield Trinity",
+    "band": "fringe",
+    "why": "career card (was 91), not in a 2026 registered squad: no 2026 Super League minutes, 304 career apps; 304 career apps, age 37"
+  },
+  "wakefield-hist-sitaleki-akauola": {
+    "to": 74,
+    "from": 86,
+    "name": "Sitaleki Akauola",
+    "club": "Wakefield Trinity",
+    "band": "fringe",
+    "why": "career card (was 86), not in a 2026 registered squad: no 2026 Super League minutes, 79 career apps; 79 career apps, age 34"
+  },
+  "wakefield-hist-tom-lineham": {
+    "to": 76,
+    "from": 93,
+    "name": "Tom Lineham",
+    "club": "Wakefield Trinity",
+    "band": "fringe",
+    "why": "career card (was 93), not in a 2026 registered squad: no 2026 Super League minutes, 196 career apps; 196 career apps, age 35"
+  },
+  "warrington-cur-adam-holroyd": {
+    "to": 80,
+    "from": 80,
+    "name": "Adam Holroyd",
+    "club": "Warrington Wolves",
+    "band": "rotation",
+    "why": "old floor 80: some 2026 games; 2026 fantasy 186 pts, £100k; sheet 80 (First Team / Rotation); 47 career apps, age 22"
+  },
+  "warrington-cur-albert-hopoate": {
+    "to": 90,
+    "from": 89,
+    "name": "Albert Hopoate",
+    "club": "Warrington Wolves",
+    "band": "first-team",
+    "why": "researched 89 (2026 evidence -0.4); 2026 fantasy 1196 pts, £110k; sheet 82 (First Team); 11 career apps, age 25"
+  },
+  "warrington-cur-arron-lindop": {
+    "to": 79,
+    "from": 81,
+    "name": "Arron Lindop",
+    "club": "Warrington Wolves",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.4); 2026 fantasy 159 pts, £90k; sheet 78 (Squad); 21 career apps, age 20"
+  },
+  "warrington-cur-ben-currie": {
+    "to": 95,
+    "from": 92,
+    "name": "Ben Currie",
+    "club": "Warrington Wolves",
+    "band": "elite",
+    "why": "researched 92 (2026 evidence +0.6); 2026 fantasy 1429 pts, £140k; sheet 88 (First Team / Rotation); 278 career apps, age 32"
+  },
+  "warrington-cur-ben-hartill": {
+    "to": 74,
+    "from": 80,
+    "name": "Ben Hartill",
+    "club": "Warrington Wolves",
+    "band": "fringe",
+    "why": "old floor 80: a 2026 cameo; 2026 fantasy 6 pts, £50k; sheet 75 (Academy / Extended); 5 career apps, age 21"
+  },
+  "warrington-cur-cai-taylor-wray": {
+    "to": 80,
+    "from": 81,
+    "name": "Cai Taylor-Wray",
+    "club": "Warrington Wolves",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.1); 2026 fantasy 190 pts, £90k; sheet 80 (First Team / Rotation); 15 career apps, age 20"
+  },
+  "warrington-cur-danny-walker": {
+    "to": 91,
+    "from": 89,
+    "name": "Danny Walker",
+    "club": "Warrington Wolves",
+    "band": "first-team",
+    "why": "researched 89 (2026 evidence +0.3); 2026 fantasy 1290 pts, £130k; sheet 87 (First Team / Rotation); 182 career apps, age 27"
+  },
+  "warrington-cur-ewan-irwin": {
+    "to": 84,
+    "from": 84,
+    "name": "Ewan Irwin",
+    "club": "Warrington Wolves",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence -0.4); 2026 fantasy 827 pts, £80k; sheet 78 (Rotation); 22 career apps, age 18"
+  },
+  "warrington-cur-george-williams": {
+    "to": 88,
+    "from": 86,
+    "name": "George Williams",
+    "club": "Warrington Wolves",
+    "band": "first-team",
+    "why": "researched 86 (2026 evidence +0.3); 2026 fantasy 687 pts, £160k; sheet 87 (First Team / Rotation); 250 career apps, age 32"
+  },
+  "warrington-cur-jake-thewlis": {
+    "to": 81,
+    "from": 82,
+    "name": "Jake Thewlis",
+    "club": "Warrington Wolves",
+    "band": "rotation",
+    "why": "researched 82 (2026 evidence -0.6); 2026 fantasy 37 pts, £100k; sheet 75 (Development); 22 career apps, age 21"
+  },
+  "warrington-cur-james-harrison": {
+    "to": 86,
+    "from": 85,
+    "name": "James Harrison",
+    "club": "Warrington Wolves",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence -0.2); 2026 fantasy 902 pts, £120k; sheet 80 (First Team); 77 career apps, age 30"
+  },
+  "warrington-cur-joe-philbin": {
+    "to": 81,
+    "from": 81,
+    "name": "Joe Philbin",
+    "club": "Warrington Wolves",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence +0.5); 2026 fantasy 541 pts, £100k; sheet 80 (First Team / Rotation); 212 career apps, age 32"
+  },
+  "warrington-cur-jordy-crowther": {
+    "to": 80,
+    "from": 80,
+    "name": "Jordy Crowther",
+    "club": "Warrington Wolves",
+    "band": "rotation",
+    "why": "old floor 80: regular 2026 minutes; 2026 fantasy 480 pts, £100k; 0 career apps, age 29"
+  },
+  "warrington-cur-josh-smith": {
+    "to": 83,
+    "from": 83,
+    "name": "Josh Smith",
+    "club": "Warrington Wolves",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence -0.4); 2026 fantasy 752 pts, £100k; sheet 75 (Development); 20 career apps, age 25"
+  },
+  "warrington-cur-josh-thewlis": {
+    "to": 85,
+    "from": 84,
+    "name": "Josh Thewlis",
+    "club": "Warrington Wolves",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence +0.2); 2026 fantasy 670 pts, £120k; sheet 83 (First Team / Rotation); 112 career apps, age 24"
+  },
+  "warrington-cur-leon-hayes": {
+    "to": 80,
+    "from": 80,
+    "name": "Leon Hayes",
+    "club": "Warrington Wolves",
+    "band": "rotation",
+    "why": "old floor 80: regular 2026 minutes; 2026 fantasy 611 pts, £80k; sheet 80 (Squad); 0 career apps, age 22"
+  },
+  "warrington-cur-liam-byrne": {
+    "to": 85,
+    "from": 84,
+    "name": "Liam Byrne",
+    "club": "Warrington Wolves",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence +0.3); 2026 fantasy 764 pts, £110k; sheet 83 (First Team / Rotation); 166 career apps, age 27"
+  },
+  "warrington-cur-luke-thomas": {
+    "to": 79,
+    "from": 80,
+    "name": "Luke Thomas",
+    "club": "Warrington Wolves",
+    "band": "rotation",
+    "why": "old floor 80: regular 2026 minutes; 2026 fantasy 486 pts, £80k; sheet 75 (Development); 28 career apps, age 24"
+  },
+  "warrington-cur-luke-yates": {
+    "to": 84,
+    "from": 83,
+    "name": "Luke Yates",
+    "club": "Warrington Wolves",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence +0.2); 2026 fantasy 251 pts, £140k; sheet 84 (First Team / Rotation); 202 career apps, age 31"
+  },
+  "warrington-cur-marc-sneyd": {
+    "to": 84,
+    "from": 83,
+    "name": "Marc Sneyd",
+    "club": "Warrington Wolves",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence +0.6); 2026 fantasy 460 pts, £130k; sheet 85 (First Team / Rotation); 316 career apps, age 35"
+  },
+  "warrington-cur-matty-ashton": {
+    "to": 92,
+    "from": 90,
+    "name": "Matty Ashton",
+    "club": "Warrington Wolves",
+    "band": "elite",
+    "why": "researched 90; 2026 fantasy 1111 pts, £160k; sheet 87 (First Team / Rotation); 143 career apps, age 28"
+  },
+  "warrington-cur-matty-nicholson": {
+    "to": 83,
+    "from": 83,
+    "name": "Matty Nicholson",
+    "club": "Warrington Wolves",
+    "band": "first-team",
+    "why": "researched 83; 47 career apps, age 23"
+  },
+  "warrington-cur-max-wood": {
+    "to": 81,
+    "from": 82,
+    "name": "Max Wood",
+    "club": "Warrington Wolves",
+    "band": "rotation",
+    "why": "researched 82 (2026 evidence -0.6); 2026 fantasy 510 pts, £70k; sheet 75 (Development); 32 career apps, age 22"
+  },
+  "warrington-cur-oliver-leyland": {
+    "to": 83,
+    "from": 83,
+    "name": "Oliver Leyland",
+    "club": "Huddersfield Giants",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence -0.6); 2026 fantasy 0 pts, £80k; sheet 75 (Development); 32 career apps, age 25"
+  },
+  "warrington-cur-sam-powell": {
+    "to": 80,
+    "from": 80,
+    "name": "Sam Powell",
+    "club": "Warrington Wolves",
+    "band": "rotation",
+    "why": "old floor 80: some 2026 games; 2026 fantasy 245 pts, £100k; sheet 80 (First Team / Rotation); 291 career apps, age 34"
+  },
+  "warrington-cur-sam-stone": {
+    "to": 82,
+    "from": 82,
+    "name": "Sam Stone",
+    "club": "Warrington Wolves",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.3); 2026 fantasy 604 pts, £110k; sheet 80 (First Team); 60 career apps, age 29"
+  },
+  "warrington-cur-toafofoa-sipley": {
+    "to": 83,
+    "from": 83,
+    "name": "Toafofoa Sipley",
+    "club": "Warrington Wolves",
+    "band": "first-team",
+    "why": "researched 83; 2026 fantasy 736 pts, £110k; 17 career apps, age 31"
+  },
+  "warrington-cur-toby-king": {
+    "to": 87,
+    "from": 86,
+    "name": "Toby King",
+    "club": "Warrington Wolves",
+    "band": "first-team",
+    "why": "researched 86 (2026 evidence -0.3); 2026 fantasy 965 pts, £120k; sheet 82 (First Team / Rotation); 205 career apps, age 30"
+  },
+  "warrington-cur-tom-mckinney": {
+    "to": 71,
+    "from": 80,
+    "name": "Tom McKinney",
+    "club": "Warrington Wolves",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; 2026 fantasy 0 pts, £50k; sheet 75 (Development); 0 career apps, age 20"
+  },
+  "warrington-cur-tommy-rhodes": {
+    "to": 70,
+    "from": 80,
+    "name": "Tommy Rhodes",
+    "club": "Warrington Wolves",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; 2026 fantasy 0 pts, £50k; sheet 75 (Academy / Extended); 0 career apps, age 17"
+  },
+  "warrington-cur-zack-gardner": {
+    "to": 71,
+    "from": 80,
+    "name": "Zack Gardner",
+    "club": "Warrington Wolves",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 5 career apps; 2026 fantasy 0 pts, £50k; sheet 75 (Development); 5 career apps, age 20"
+  },
+  "widnes-cur-nathan-connell": {
+    "to": 73,
+    "from": 80,
+    "name": "Nathan Connell",
+    "club": "Widnes Vikings",
+    "band": "fringe",
+    "why": "old floor 80: no 2026 Super League minutes, 24 career apps; 24 career apps, age 23"
+  },
+  "wigan-cur-abbas-miski": {
+    "to": 79,
+    "from": 81,
+    "name": "Abbas Miski",
+    "club": "Wigan Warriors",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.6); 2026 fantasy 0 pts, £110k; sheet 81 (Rotation); 0 career apps, age 31"
+  },
+  "wigan-cur-adam-keighran": {
+    "to": 93,
+    "from": 92,
+    "name": "Adam Keighran",
+    "club": "Wigan Warriors",
+    "band": "elite",
+    "why": "researched 92 (2026 evidence -0.6); 2026 fantasy 1001 pts, £120k; sheet 82 (First Team / Rotation); 110 career apps, age 29"
+  },
+  "wigan-cur-bevan-french": {
+    "to": 92,
+    "from": 90,
+    "name": "Bevan French",
+    "club": "Wigan Warriors",
+    "band": "elite",
+    "why": "researched 90 (2026 evidence +0.4); 2026 fantasy 746 pts, £170k; sheet 93 (First Team / Rotation); 114 career apps, age 30"
+  },
+  "wigan-cur-brad-o-neill": {
+    "to": 97,
+    "from": 95,
+    "name": "Brad O'Neill",
+    "club": "Wigan Warriors",
+    "band": "elite",
+    "why": "researched 95; 2026 fantasy 965 pts, £120k; sheet 84 (First Team / Rotation); 78 career apps, age 24"
+  },
+  "wigan-cur-dayon-sambou": {
+    "to": 76,
+    "from": 80,
+    "name": "Dayon Sambou",
+    "club": "Wigan Warriors",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 47 pts, £80k; sheet 75 (Academy / Extended); 6 career apps, age 21"
+  },
+  "wigan-cur-ethan-havard": {
+    "to": 86,
+    "from": 85,
+    "name": "Ethan Havard",
+    "club": "Wigan Warriors",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence +0.4); 2026 fantasy 967 pts, £110k; sheet 85 (First Team / Rotation); 84 career apps, age 26"
+  },
+  "wigan-cur-finlay-yeomans": {
+    "to": 73,
+    "from": 80,
+    "name": "Finlay Yeomans",
+    "club": "Wigan Warriors",
+    "band": "fringe",
+    "why": "old floor 80: a 2026 cameo; 2026 fantasy 25 pts, £50k; sheet 75 (Academy / Extended); 1 career apps, age 19"
+  },
+  "wigan-cur-finn-mcmillan": {
+    "to": 74,
+    "from": 80,
+    "name": "Finn McMillan",
+    "club": "Wigan Warriors",
+    "band": "fringe",
+    "why": "old floor 80: a 2026 cameo; 2026 fantasy 25 pts, £50k; sheet 75 (Academy / Extended); 1 career apps, age 21"
+  },
+  "wigan-cur-george-hirst": {
+    "to": 81,
+    "from": 82,
+    "name": "George Hirst",
+    "club": "Castleford Tigers",
+    "band": "rotation",
+    "why": "researched 82 (2026 evidence -0.6); 2026 fantasy 617 pts, £50k; sheet 75 (Academy / Extended); 14 career apps, age 25"
+  },
+  "wigan-cur-george-oloughlin": {
+    "to": 75,
+    "from": 80,
+    "name": "George O'Loughlin",
+    "club": "Wigan Warriors",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 72 pts, £50k; sheet 75 (Academy / Extended); 4 career apps, age 20"
+  },
+  "wigan-cur-harry-smith": {
+    "to": 91,
+    "from": 89,
+    "name": "Harry Smith",
+    "club": "Wigan Warriors",
+    "band": "first-team",
+    "why": "researched 89 (2026 evidence +0.1); 2026 fantasy 1007 pts, £150k; sheet 86 (First Team / Rotation); 144 career apps, age 26"
+  },
+  "wigan-cur-harvey-makin": {
+    "to": 72,
+    "from": 80,
+    "name": "Harvey Makin",
+    "club": "Wigan Warriors",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; 2026 fantasy 0 pts, £80k; 0 career apps, age 23"
+  },
+  "wigan-cur-jack-farrimond": {
+    "to": 84,
+    "from": 83,
+    "name": "Jack Farrimond",
+    "club": "Wigan Warriors",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence +0.1); 2026 fantasy 498 pts, £90k; sheet 82 (Squad); 30 career apps, age 21"
+  },
+  "wigan-cur-jai-field": {
+    "to": 90,
+    "from": 88,
+    "name": "Jai Field",
+    "club": "Wigan Warriors",
+    "band": "first-team",
+    "why": "researched 88; 2026 fantasy 979 pts, £170k; sheet 89 (First Team / Rotation); 110 career apps, age 29"
+  },
+  "wigan-cur-jake-wardle": {
+    "to": 86,
+    "from": 85,
+    "name": "Jake Wardle",
+    "club": "Wigan Warriors",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence +0.1); 2026 fantasy 618 pts, £150k; sheet 84 (First Team / Rotation); 89 career apps, age 28"
+  },
+  "wigan-cur-jonny-vaughan": {
+    "to": 72,
+    "from": 75,
+    "name": "Jonny Vaughan",
+    "club": "Wigan Warriors",
+    "band": "academy",
+    "why": "old floor 75: no 2026 Super League minutes, 0 career apps; 2026 fantasy 0 pts, £90k; sheet 75 (Academy / Extended); 0 career apps, age 21"
+  },
+  "wigan-cur-junior-nsemba": {
+    "to": 87,
+    "from": 86,
+    "name": "Junior Nsemba",
+    "club": "Wigan Warriors",
+    "band": "first-team",
+    "why": "researched 86 (2026 evidence +0.2); 2026 fantasy 780 pts, £150k; sheet 86 (First Team / Rotation); 77 career apps, age 22"
+  },
+  "wigan-cur-kaide-ellis": {
+    "to": 91,
+    "from": 89,
+    "name": "Kaide Ellis",
+    "club": "Wigan Warriors",
+    "band": "first-team",
+    "why": "researched 89 (2026 evidence +0.4); 2026 fantasy 1202 pts, £120k; sheet 89 (First Team / Rotation); 104 career apps, age 30"
+  },
+  "wigan-cur-kian-mcdermott": {
+    "to": 81,
+    "from": 82,
+    "name": "Kian McDermott",
+    "club": "Wigan Warriors",
+    "band": "rotation",
+    "why": "researched 82 (2026 evidence -0.5); 2026 fantasy 409 pts, £50k; sheet 78 (Squad); 15 career apps, age 20"
+  },
+  "wigan-cur-liam-farrell": {
+    "to": 85,
+    "from": 84,
+    "name": "Liam Farrell",
+    "club": "Wigan Warriors",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence +0.2); 2026 fantasy 502 pts, £110k; sheet 85 (First Team / Rotation); 345 career apps, age 36"
+  },
+  "wigan-cur-liam-marshall": {
+    "to": 84,
+    "from": 83,
+    "name": "Liam Marshall",
+    "club": "Wigan Warriors",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence +0.6); 2026 fantasy 590 pts, £150k; sheet 86 (First Team / Rotation); 191 career apps, age 30"
+  },
+  "wigan-cur-lukas-mason": {
+    "to": 75,
+    "from": 80,
+    "name": "Lukas Mason",
+    "club": "Wigan Warriors",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 107 pts, £50k; sheet 76 (Development); 0 career apps, age 21"
+  },
+  "wigan-cur-luke-thompson": {
+    "to": 87,
+    "from": 85,
+    "name": "Luke Thompson",
+    "club": "Wigan Warriors",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence +0.5); 2026 fantasy 913 pts, £130k; sheet 85 (First Team / Rotation); 199 career apps, age 31"
+  },
+  "wigan-cur-nathan-lowe": {
+    "to": 75,
+    "from": 80,
+    "name": "Nathan Lowe",
+    "club": "Wigan Warriors",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 43 pts, £50k; sheet 75 (Development); 0 career apps, age 21"
+  },
+  "wigan-cur-noah-hodkinson": {
+    "to": 81,
+    "from": 82,
+    "name": "Noah Hodkinson",
+    "club": "Wigan Warriors",
+    "band": "rotation",
+    "why": "researched 82 (2026 evidence -0.6); 2026 fantasy 494 pts, £50k; sheet 76 (Development); 0 career apps, age 21"
+  },
+  "wigan-cur-oliver-partington": {
+    "to": 88,
+    "from": 86,
+    "name": "Oliver Partington",
+    "club": "Wigan Warriors",
+    "band": "first-team",
+    "why": "researched 86 (2026 evidence +0.3); 2026 fantasy 1094 pts, £130k; sheet 85 (First Team); 162 career apps, age 28"
+  },
+  "wigan-cur-oliver-wilson": {
+    "to": 81,
+    "from": 82,
+    "name": "Oliver Wilson",
+    "club": "Wigan Warriors",
+    "band": "rotation",
+    "why": "researched 82 (2026 evidence -0.6); 2026 fantasy 0 pts, £100k; sheet 82 (Squad); 105 career apps, age 26"
+  },
+  "wigan-cur-patrick-mago": {
+    "to": 83,
+    "from": 82,
+    "name": "Patrick Mago",
+    "club": "Wigan Warriors",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.5); 2026 fantasy 759 pts, £120k; sheet 80 (Rotation); 111 career apps, age 32"
+  },
+  "wigan-cur-sam-eseh": {
+    "to": 80,
+    "from": 81,
+    "name": "Sam Eseh",
+    "club": "Wigan Warriors",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.1); 2026 fantasy 452 pts, £90k; sheet 76 (Squad); 6 career apps, age 23"
+  },
+  "wigan-cur-sam-walters": {
+    "to": 81,
+    "from": 81,
+    "name": "Sam Walters",
+    "club": "Wigan Warriors",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence +0.6); 2026 fantasy 657 pts, £110k; sheet 80 (First Team / Rotation); 81 career apps, age 26"
+  },
+  "wigan-cur-taylor-kerr": {
+    "to": 81,
+    "from": 82,
+    "name": "Taylor Kerr",
+    "club": "Wigan Warriors",
+    "band": "rotation",
+    "why": "researched 82 (2026 evidence -0.6); 2026 fantasy 402 pts, £50k; sheet 76 (Development); 0 career apps, age 20"
+  },
+  "wigan-cur-tiaki-chan": {
+    "to": 85,
+    "from": 84,
+    "name": "Tiaki Chan",
+    "club": "Toulouse Olympique",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence -0.1); 2026 fantasy 674 pts, £90k; sheet 82 (First-Team Squad); 57 career apps, age 26"
+  },
+  "wigan-cur-tom-forber": {
+    "to": 78,
+    "from": 80,
+    "name": "Tom Forber",
+    "club": "Wigan Warriors",
+    "band": "rotation",
+    "why": "old floor 80: some 2026 games; 2026 fantasy 173 pts, £80k; sheet 78 (Squad); 0 career apps, age 23"
+  },
+  "wigan-cur-zach-eckersley": {
+    "to": 93,
+    "from": 91,
+    "name": "Zach Eckersley",
+    "club": "Wigan Warriors",
+    "band": "elite",
+    "why": "researched 91 (2026 evidence -0.4); 2026 fantasy 1055 pts, £90k; sheet 88 (First Team / Rotation); 47 career apps, age 23"
+  },
+  "wynnum-manly-cur-bayley-sironen": {
+    "to": 83,
+    "from": 83,
+    "name": "Bayley Sironen",
+    "club": "Wynnum Manly Seagulls",
+    "band": "first-team",
+    "why": "researched 83; 41 career apps, age 30"
+  },
+  "york-cur-ata-hingano": {
+    "to": 83,
+    "from": 82,
+    "name": "Ata Hingano",
+    "club": "York Knights",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.4); 2026 fantasy 709 pts, £110k; sheet 80 (First Team / Rotation); 28 career apps, age 29"
+  },
+  "york-cur-ben-jones-bishop": {
+    "to": 83,
+    "from": 83,
+    "name": "Ben Jones-Bishop",
+    "club": "York Knights",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence -0.6); 2026 fantasy 236 pts, £120k; sheet 78 (First Team); 215 career apps, age 38"
+  },
+  "york-cur-cody-hunter": {
+    "to": 83,
+    "from": 83,
+    "name": "Cody Hunter",
+    "club": "York Knights",
+    "band": "first-team",
+    "why": "researched 83; sheet 75 (Academy / Extended); 20 career apps, age 25"
+  },
+  "york-cur-danny-richardson": {
+    "to": 78,
+    "from": 80,
+    "name": "Danny Richardson",
+    "club": "York Knights",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 77 pts, £100k; sheet 80 (First Team / Rotation); 112 career apps, age 30"
+  },
+  "york-cur-david-nofoaluma": {
+    "to": 87,
+    "from": 86,
+    "name": "David Nofoaluma",
+    "club": "York Knights",
+    "band": "first-team",
+    "why": "researched 86; sheet 80 (First Team / Rotation); 23 career apps, age 33"
+  },
+  "york-cur-denive-balmforth": {
+    "to": 83,
+    "from": 82,
+    "name": "Denive Balmforth",
+    "club": "York Knights",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.5); 2026 fantasy 619 pts, £100k; sheet 82 (Rotation); 72 career apps, age 23"
+  },
+  "york-cur-jack-martin": {
+    "to": 85,
+    "from": 85,
+    "name": "Jack Martin",
+    "club": "York Knights",
+    "band": "first-team",
+    "why": "researched 85 (2026 evidence -0.5); 2026 fantasy 1116 pts, £80k; sheet 78 (First Team); 27 career apps, age 25"
+  },
+  "york-cur-jack-smith": {
+    "to": 72,
+    "from": 80,
+    "name": "Jack Smith",
+    "club": "York Knights",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; 2026 fantasy 0 pts, £70k; sheet 75 (Development); 0 career apps, age 21"
+  },
+  "york-cur-jesse-dee": {
+    "to": 81,
+    "from": 81,
+    "name": "Jesse Dee",
+    "club": "York Knights",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence +0.3); 2026 fantasy 563 pts, £90k; sheet 78 (First Team); 9 career apps, age 32"
+  },
+  "york-cur-john-sagaga": {
+    "to": 72,
+    "from": 80,
+    "name": "John Sagaga",
+    "club": "York Knights",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; 2026 fantasy 0 pts, £80k; sheet 75 (Squad); 0 career apps, age 23"
+  },
+  "york-cur-jonathan-bennison": {
+    "to": 80,
+    "from": 81,
+    "name": "Jon Bennison",
+    "club": "York Knights",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence +0.1); 2026 fantasy 462 pts, £90k; sheet 78 (Squad); 79 career apps, age 24"
+  },
+  "york-cur-jordan-lipp": {
+    "to": 79,
+    "from": 81,
+    "name": "Jordan Lipp",
+    "club": "York Knights",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.6); 2026 fantasy 0 pts, £80k; sheet 79 (First Team); 0 career apps, age 25"
+  },
+  "york-cur-jordan-thompson": {
+    "to": 82,
+    "from": 82,
+    "name": "Jordan Thompson",
+    "club": "York Knights",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.2); 2026 fantasy 671 pts, £110k; sheet 78 (First Team); 203 career apps, age 35"
+  },
+  "york-cur-josh-griffin": {
+    "to": 82,
+    "from": 82,
+    "name": "Josh Griffin",
+    "club": "York Knights",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.1); 2026 fantasy 328 pts, £110k; sheet 82 (First Team); 235 career apps, age 36"
+  },
+  "york-cur-justin-sangare": {
+    "to": 81,
+    "from": 82,
+    "name": "Justin Sangaré",
+    "club": "York Knights",
+    "band": "rotation",
+    "why": "researched 82 (2026 evidence -0.5); 2026 fantasy 207 pts, £110k; sheet 78 (Rotation); 95 career apps, age 28"
+  },
+  "york-cur-kieran-buchanan": {
+    "to": 80,
+    "from": 81,
+    "name": "Kieran Buchanan",
+    "club": "York Knights",
+    "band": "rotation",
+    "why": "researched 81 (2026 evidence -0.1); 2026 fantasy 362 pts, £80k; sheet 78 (Squad); 23 career apps, age 27"
+  },
+  "york-cur-kieran-hudson": {
+    "to": 76,
+    "from": 80,
+    "name": "Kieran Hudson",
+    "club": "York Knights",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 49 pts, £80k; sheet 77 (Rotation); 3 career apps, age 26"
+  },
+  "york-cur-king-vuniyayawa": {
+    "to": 74,
+    "from": 80,
+    "name": "King Vuniyayawa",
+    "club": "York Knights",
+    "band": "fringe",
+    "why": "old floor 80: no 2026 Super League minutes, 76 career apps; sheet 78 (First-Team Squad); 76 career apps, age 31"
+  },
+  "york-cur-liam-harris": {
+    "to": 82,
+    "from": 82,
+    "name": "Liam Harris",
+    "club": "York Knights",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.1); 2026 fantasy 353 pts, £100k; sheet 82 (First Team / Rotation); 190 career apps, age 29"
+  },
+  "york-cur-matty-foster": {
+    "to": 78,
+    "from": 80,
+    "name": "Matty Foster",
+    "club": "York Knights",
+    "band": "rotation",
+    "why": "old floor 80: some 2026 games; 2026 fantasy 167 pts, £100k; sheet 75 (Development); 33 career apps, age 25"
+  },
+  "york-cur-mitch-clark": {
+    "to": 74,
+    "from": 80,
+    "name": "Mitch Clark",
+    "club": "York Knights",
+    "band": "fringe",
+    "why": "old floor 80: no 2026 Super League minutes, 40 career apps; 2026 fantasy 0 pts, £100k; sheet 78 (First-Team Squad); 40 career apps, age 33"
+  },
+  "york-cur-nikau-williams": {
+    "to": 81,
+    "from": 82,
+    "name": "Nikau Williams",
+    "club": "York Knights",
+    "band": "rotation",
+    "why": "researched 82 (2026 evidence -0.4); 2026 fantasy 649 pts, £80k; sheet 75 (Development); 16 career apps, age 27"
+  },
+  "york-cur-oliver-field": {
+    "to": 83,
+    "from": 82,
+    "name": "Oliver Field",
+    "club": "York Knights",
+    "band": "first-team",
+    "why": "researched 82 (2026 evidence +0.6); 2026 fantasy 960 pts, £80k; sheet 84 (First-Team Squad); 25 career apps, age 24"
+  },
+  "york-cur-paul-mcshane": {
+    "to": 84,
+    "from": 84,
+    "name": "Paul McShane",
+    "club": "York Knights",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence -0.4); 2026 fantasy 625 pts, £110k; sheet 79 (First Team); 308 career apps, age 37"
+  },
+  "york-cur-paul-vaughan": {
+    "to": 91,
+    "from": 89,
+    "name": "Paul Vaughan",
+    "club": "York Knights",
+    "band": "first-team",
+    "why": "researched 89 (2026 evidence +0.2); 2026 fantasy 1158 pts, £130k; sheet 87 (First Team / Rotation); 79 career apps, age 35"
+  },
+  "york-cur-ryan-jackson": {
+    "to": 72,
+    "from": 80,
+    "name": "Ryan Jackson",
+    "club": "York Knights",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; 2026 fantasy 0 pts, £70k; sheet 75 (Development); 0 career apps, age 22"
+  },
+  "york-cur-sam-wood": {
+    "to": 84,
+    "from": 83,
+    "name": "Sam Wood",
+    "club": "York Knights",
+    "band": "first-team",
+    "why": "researched 83 (2026 evidence +0.1); 2026 fantasy 848 pts, £100k; sheet 78 (First Team); 128 career apps, age 29"
+  },
+  "york-cur-scott-galeano": {
+    "to": 84,
+    "from": 84,
+    "name": "Scott Galeano",
+    "club": "York Knights",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence -0.3); 2026 fantasy 821 pts, £100k; sheet 78 (First Team); 22 career apps, age 28"
+  },
+  "york-cur-taylor-pemberton": {
+    "to": 72,
+    "from": 80,
+    "name": "Taylor Pemberton",
+    "club": "York Knights",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 0 career apps; 2026 fantasy 0 pts, £80k; sheet 75 (Academy / Extended); 0 career apps, age 23"
+  },
+  "york-cur-toa-mataafa": {
+    "to": 84,
+    "from": 84,
+    "name": "Toa Mata'afa",
+    "club": "York Knights",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence -0.4); 2026 fantasy 710 pts, £100k; sheet 78 (First Team); 8 career apps, age 29"
+  },
+  "york-cur-tom-inman": {
+    "to": 72,
+    "from": 80,
+    "name": "Tom Inman",
+    "club": "York Knights",
+    "band": "academy",
+    "why": "old floor 80: no 2026 Super League minutes, 13 career apps; sheet 75 (Academy / Extended); 13 career apps, age 24"
+  },
+  "york-cur-tommy-doyle": {
+    "to": 78,
+    "from": 80,
+    "name": "Tommy Doyle",
+    "club": "York Knights",
+    "band": "rotation",
+    "why": "old floor 80: some 2026 games; 2026 fantasy 124 pts, £80k; 9 career apps, age 27"
+  },
+  "york-cur-will-dagger": {
+    "to": 77,
+    "from": 80,
+    "name": "Will Dagger",
+    "club": "York Knights",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 40 pts, £100k; sheet 78 (Squad); 67 career apps, age 27"
+  },
+  "york-cur-will-roberts": {
+    "to": 75,
+    "from": 80,
+    "name": "Will Roberts",
+    "club": "York Knights",
+    "band": "fringe",
+    "why": "old floor 80: a few 2026 appearances; 2026 fantasy 101 pts, £70k; sheet 75 (Academy / Extended); 0 career apps, age 21"
+  },
+  "york-cur-xavier-vaa": {
+    "to": 84,
+    "from": 84,
+    "name": "Xavier Va'a",
+    "club": "York Knights",
+    "band": "first-team",
+    "why": "researched 84 (2026 evidence -0.4); 2026 fantasy 795 pts, £110k; sheet 77 (Rotation); 15 career apps, age 23"
+  }
+}

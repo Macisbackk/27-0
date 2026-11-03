@@ -231,6 +231,20 @@ function getRatingBand(rating: number): RatingBand {
   return "b75_79";
 }
 
+/**
+ * Current cards run 70–99 (Nov 2026 rescale) where era cards run 80–99, so a current card is
+ * banded by its old-scale equivalent: the 70–85 squad/rotation cards stay in the 80–84 band
+ * (the old floor band), 86+ ≈ old 85+, 92+ ≈ old 90+, 96+ ≈ old 95+. Offers stay as before.
+ */
+function getPlayerRatingBand(player: Player): RatingBand {
+  if (player.category !== "current") return getRatingBand(player.peakRating);
+  const r = player.peakRating;
+  if (r >= 96) return "b95_99";
+  if (r >= 92) return "b90_94";
+  if (r >= 86) return "b85_89";
+  return "b80_84";
+}
+
 function rollBand(
   rng: () => number,
   weights: Record<RatingBand, number>
@@ -245,7 +259,7 @@ function rollBand(
 }
 
 function playersInBand(players: Player[], band: RatingBand): Player[] {
-  return players.filter((p) => getRatingBand(p.peakRating) === band);
+  return players.filter((p) => getPlayerRatingBand(p) === band);
 }
 
 function pickFromBandWithFallback(

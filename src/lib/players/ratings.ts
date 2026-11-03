@@ -1,15 +1,17 @@
 import type { PlayerCategory, Position } from "../types";
+import { CURRENT_HISTORIC_MAX_RATING, CURRENT_MIN_RATING, HISTORIC_MIN_RATING } from "./rating-floors";
 
 /**
- * Gameplay ratings for Current & Historic are stored 80–99
- * (see rating-floors.ts). Championship uses a separate 70–89 scale and
+ * Gameplay ratings: current (2026) cards 70–99, era (historic) and legend cards 80–99
+ * (see rating-floors.ts). Championship uses a separate 65–89 scale and
  * must not pass through this compressor.
  */
 export function compressPeakRating(
   rawRating: number,
-  _category: PlayerCategory
+  category: PlayerCategory
 ): number {
-  return Math.max(80, Math.min(99, Math.round(rawRating)));
+  const floor = category === "current" ? CURRENT_MIN_RATING : HISTORIC_MIN_RATING;
+  return Math.max(floor, Math.min(CURRENT_HISTORIC_MAX_RATING, Math.round(rawRating)));
 }
 
 function valueInBand(
@@ -32,8 +34,8 @@ export function ratingToValue(rating: number): number {
   if (rating >= 90) return valueInBand(rating, 90, 94, 250_000, 500_000);
   if (rating >= 85) return valueInBand(rating, 85, 89, 150_000, 280_000);
   if (rating >= 80) return valueInBand(rating, 80, 84, 90_000, 180_000);
-  // Championship-scale ratings (70–79) — cheaper than Super League floors.
-  if (rating >= 70) return valueInBand(rating, 70, 79, 12_000, 90_000);
+  // 70–79: current squad / fringe cards and Championship-scale ratings (79 stays under 80's 90k).
+  if (rating >= 70) return valueInBand(rating, 70, 79, 12_000, 84_000);
   return valueInBand(rating, 60, 69, 8_000, 12_000);
 }
 
