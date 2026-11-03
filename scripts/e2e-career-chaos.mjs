@@ -54,9 +54,11 @@ async function startCareer(page, division, index = 0) {
   await page.getByRole("button", { name: /Play match|Continue/ }).first().waitFor({ timeout });
 }
 
+let failPage = null;
 try {
   const context = await browser.newContext({ viewport: { width: 320, height: 640 }, isMobile: true, hasTouch: true });
   const page = await newPage(context);
+  failPage = page;
 
   // 1) Garbage and half-valid saves must fall back to the club picker, not crash.
   for (const [label, value] of [
@@ -173,6 +175,22 @@ try {
   await context.close();
 } catch (err) {
   errors.push(`step failed after [${steps.at(-1) ?? "start"}]: ${err instanceof Error ? err.message : String(err)}`);
+  // CI: what was on screen when it failed (published with the other e2e screenshots).
+  const page = failPage;
+  if (process.env.CI && page) {
+    try {
+      const { mkdirSync, writeFileSync } = await import("node:fs");
+      mkdirSync("e2e-shots", { recursive: true });
+      await page.screenshot({ path: "e2e-shots/chaos-fail.png", scale: "css" });
+      const text = await page.evaluate(() => {
+        const dialogs = [...document.querySelectorAll('[role="dialog"]')].map((d) => `DIALOG: ${d.textContent?.slice(0, 400)}`);
+        return [location.href, ...dialogs, document.body.innerText.slice(0, 3000)].join("\n---\n");
+      });
+      writeFileSync("e2e-shots/chaos-fail.txt", text);
+    } catch {
+      /* best effort */
+    }
+  }
 }
 
 await browser.close();
