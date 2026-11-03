@@ -44,7 +44,7 @@ import { getNormalEraVariant, setNormalEraVariant } from "@/lib/storage/preferen
 import { playModeClassicStart, playUiClick } from "@/lib/sound";
 import { formatClubFunds } from "@/lib/club-funds";
 import { loadLocalCareer } from "@/lib/career/storage";
-import { DIVISION_LABEL } from "@/lib/career/clubs";
+import type { Division } from "@/lib/career/types";
 import { getAllStats } from "@/lib/storage/stats";
 import { getPaidRunIds } from "@/lib/storage/club-funds";
 import { getLocalDateKey } from "@/lib/mini-games/date";
@@ -56,6 +56,13 @@ import { MODES_PAGE } from "@/lib/play-side-modes";
 import { PitchHero } from "@/components/ui/PitchHero";
 import { loadRunResume } from "@/lib/game/run-resume";
 import { TOTAL_SLOTS } from "@/lib/positions";
+
+// Same labels as DIVISION_LABEL in lib/career/clubs.ts, which also bundles the NRL club data.
+const DIVISION_LABEL: Record<Division, string> = {
+  "super-league": "Super League",
+  championship: "Championship",
+  nrl: "NRL",
+};
 
 /** Everything on the home hub that depends on this device (filled in after mount). */
 interface HubState {
