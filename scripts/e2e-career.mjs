@@ -46,6 +46,11 @@ const context = await browser.newContext({
     "Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Mobile Safari/537.36",
 });
 const page = await context.newPage();
+// Hub pop-ups (legend moves, injuries, board/fans, the World Club Challenge) can open at any
+// point; Escape takes the default, so they never block a step (Playwright locator handler).
+await page.addLocatorHandler(page.getByTestId("career-event"), async () => {
+  await page.keyboard.press("Escape");
+});
 page.on("pageerror", (err) => errors.push(`pageerror: ${err.message}`));
 page.on("response", (res) => {
   if (res.status() < 400) return;
