@@ -322,7 +322,11 @@ export function playedRounds(state: CareerState, division: Division = state.club
   const out: RoundResults[] = [];
   for (const md of state.calendar) {
     if (!md.played) continue;
-    const games = md.fixtures.filter((f) => f.result && (f.kind !== "league" || f.division === division)).map(toMini);
+    // Knockouts of your own game only: an NRL manager sees the WCC and the NRL finals, not the Cup or Super League's play-offs.
+    const nrl = division === "nrl";
+    const games = md.fixtures
+      .filter((f) => f.result && (f.kind === "league" ? f.division === division : nrl ? f.kind === "wcc" || f.kind === "nrl-final" || f.kind === "nrl-gf" : f.kind !== "nrl-final" && f.kind !== "nrl-gf"))
+      .map(toMini);
     if (games.length) out.push({ index: md.index, label: md.label, games });
   }
   return out;

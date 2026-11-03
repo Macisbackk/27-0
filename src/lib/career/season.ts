@@ -687,7 +687,7 @@ function trackUserResult(state: CareerState, f: Fixture, sheet: TeamSheet) {
   }
   if (isMagicWeekend(f) && won) {
     t.bonusLegacy = (t.bonusLegacy ?? 0) + MAGIC_WEEKEND_LEGACY;
-    addNews(state, `Magic Weekend win! +${MAGIC_WEEKEND_LEGACY} Legacy.`);
+    addNews(state, `${f.division === "nrl" ? "Magic Round" : "Magic Weekend"} win! +${MAGIC_WEEKEND_LEGACY} Legacy.`);
   }
 
   for (const c of state.challenges) {

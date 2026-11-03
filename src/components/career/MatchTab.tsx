@@ -180,7 +180,7 @@ export function ResultStrip({ state, fixture, flash }: { state: CareerState; fix
     });
   }
   if (isDerby(state, fixture)) chips.push({ text: result === "W" ? "Derby win" : result === "L" ? "Derby defeat" : "Derby draw", tone: pill });
-  if (isMagicWeekend(fixture)) chips.push({ text: "Magic Weekend", tone: "bg-violet-400/15 text-violet-200" });
+  if (isMagicWeekend(fixture)) chips.push({ text: fixture.division === "nrl" ? "Magic Round" : "Magic Weekend", tone: "bg-violet-400/15 text-violet-200" });
   if (flash && flash.moved > 0) chips.push({ text: `Up ${flash.moved} ${flash.moved === 1 ? "place" : "places"}`, tone: "bg-success/15 text-success" });
   if (flash && flash.moved < 0) chips.push({ text: `Down ${-flash.moved} ${flash.moved === -1 ? "place" : "places"}`, tone: "bg-danger/15 text-red-200" });
   return (
@@ -481,7 +481,7 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
             </div>
             {neutral || derby ? (
               <p data-testid="fixture-banner" className="mt-3 rounded-control bg-pitch-950 px-3 py-2 text-center text-[13px] text-gray-300">
-                {neutral ? `Magic Weekend: neutral venue, no home advantage. Win for +${MAGIC_WEEKEND_LEGACY} Legacy.` : ""}
+                {neutral ? `${myDiv === "nrl" ? "Magic Round" : "Magic Weekend"}: neutral venue, no home advantage. Win for +${MAGIC_WEEKEND_LEGACY} Legacy.` : ""}
                 {neutral && derby ? " " : ""}
                 {derby ? `Derby day. Win for +${formatMoney(derbyBonus(myDiv))} and +${DERBY_LEGACY} Legacy.` : ""}
               </p>

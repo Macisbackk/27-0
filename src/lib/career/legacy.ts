@@ -67,7 +67,8 @@ export function bankSeason(
     next.perfectSeasons += 1;
     breaks.perfect = true;
   }
-  if (outcome.division === "super-league" || outcome.division === "nrl") {
+  // Best season stays a Super League record (the "Best Season" leaderboard is Super League wins).
+  if (outcome.division === "super-league") {
     const best = next.bestSeason;
     const better = !best || outcome.won > best.wins || (outcome.won === best.wins && outcome.lost < best.losses);
     if (better) {

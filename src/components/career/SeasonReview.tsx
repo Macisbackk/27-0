@@ -254,7 +254,7 @@ export function SeasonReview() {
           <ul className="mt-2 space-y-1 text-sm text-white">
             {recordBreaks.fastestGlory ? <li>⚡ Championship to Grand Final in {recordBreaks.fastestGlory} seasons</li> : null}
             {recordBreaks.perfect ? <li>💯 A perfect season</li> : null}
-            {recordBreaks.bestSeason ? <li>📈 Best {o.division === "nrl" ? "NRL" : "Super League"} season: {o.won} wins</li> : null}
+            {recordBreaks.bestSeason ? <li>📈 Best Super League season: {o.won} wins</li> : null}
             {recordBreaks.biggestWin && legacy.biggestWin ? <li>💥 Biggest win: {legacy.biggestWin.score} v {legacy.biggestWin.opponent}</li> : null}
           </ul>
         </Card>

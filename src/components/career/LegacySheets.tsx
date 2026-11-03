@@ -131,7 +131,7 @@ export function RecordsSheet({ open, onClose }: { open: boolean; onClose: () => 
           <dd className="text-white">{legacy.fastestGlorySeasons ? `${legacy.fastestGlorySeasons} seasons` : "—"}</dd>
         </div>
         <div>
-          <dt className="text-[11px] uppercase tracking-wide text-gray-500">Best season</dt>
+          <dt className="text-[11px] uppercase tracking-wide text-gray-500">Best SL season</dt>
           <dd className="text-white">{legacy.bestSeason ? `${legacy.bestSeason.wins}–${legacy.bestSeason.losses} (${legacy.bestSeason.year})` : "—"}</dd>
         </div>
         <div>
