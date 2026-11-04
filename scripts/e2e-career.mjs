@@ -7,6 +7,7 @@
  */
 import { mkdirSync } from "node:fs";
 import { chromium } from "playwright";
+import { skipWelcome } from "./e2e-skip-welcome.mjs";
 
 const BASE = process.env.E2E_BASE_URL || "http://localhost:3000";
 const errors = [];
@@ -35,7 +36,7 @@ const IGNORED = [
 // /sounds/*.mp3 are optional: the sound manager probes once, then uses synth tones (public/sounds/README.md).
 const IGNORED_URLS = [/\/_vercel\//, /supabase/i, /favicon/i, /\/sounds\/[\w-]+\.mp3$/];
 
-const browser = await chromium.launch();
+const browser = skipWelcome(await chromium.launch());
 const context = await browser.newContext({
   viewport: { width: 375, height: 812 },
   deviceScaleFactor: 2,
@@ -45,6 +46,11 @@ const context = await browser.newContext({
     "Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Mobile Safari/537.36",
 });
 const page = await context.newPage();
+// Hub pop-ups (legend moves, injuries, board/fans, the World Club Challenge) can open at any
+// point; Escape takes the default, so they never block a step (Playwright locator handler).
+await page.addLocatorHandler(page.getByTestId("career-event"), async () => {
+  await page.keyboard.press("Escape");
+});
 page.on("pageerror", (err) => errors.push(`pageerror: ${err.message}`));
 page.on("response", (res) => {
   if (res.status() < 400) return;
@@ -183,6 +189,7 @@ try {
   await shot("result");
   await page.evaluate(() => window.scrollTo(0, 0));
 
+  await dismissEvents();
   await page.getByRole("tab", { name: "Team" }).click();
   await page.getByText("Starting XIII").waitFor({ timeout });
   const shirt1 = page.getByRole("button", { name: /Shirt 1,/ });
@@ -221,6 +228,7 @@ try {
   await shot("team-academy");
   step(`Captain on the Team tab; Academy with ${prospects} prospects`);
 
+  await dismissEvents();
   await page.getByRole("tab", { name: "Table" }).click();
   await page.locator("table").first().waitFor({ timeout });
   const rows = await page.locator("table tbody tr").count();
@@ -244,6 +252,7 @@ try {
   await page.locator("table tbody tr").first().waitFor({ timeout });
   step("Table tab: Results (your results + round results), Fixtures and Cup");
 
+  await dismissEvents();
   await page.getByRole("tab", { name: "Club" }).click();
   await page.getByText("Season challenges").waitFor({ timeout });
   await shot("club");
@@ -266,6 +275,7 @@ try {
   await page.keyboard.press("Escape");
   step("Club tab + Legend Vault");
 
+  await dismissEvents();
   await page.getByRole("tab", { name: "Match" }).click();
   let shotDeadline = false;
   let shotLeagueOver = false;
@@ -303,12 +313,14 @@ try {
       await shot("deadline-market");
       await page.getByRole("button", { name: /Back to Deadline Day/ }).click().catch(() => {});
       await page.waitForTimeout(500);
+      await dismissEvents();
       await page.getByRole("tab", { name: "Table" }).click();
       await page.waitForTimeout(300);
       await page.locator("table tbody tr").nth(2).getByRole("button").first().click().catch(() => {});
       await page.waitForTimeout(800);
       await shot("club-team-sheet");
       await page.keyboard.press("Escape");
+      await dismissEvents();
       await page.getByRole("tab", { name: "Club" }).click();
       await page.waitForTimeout(300);
       await page.getByRole("tab", { name: "Stats", exact: true }).click();
@@ -319,6 +331,7 @@ try {
       await page.getByRole("tab", { name: "News", exact: true }).click();
       await page.getByRole("region", { name: "Transfer round-up" }).waitFor({ timeout });
       await shot("transfer-round-up");
+      await dismissEvents();
       await page.getByRole("tab", { name: "Match" }).click();
       await page.waitForTimeout(300);
       await page.getByRole("button", { name: "Shut the window" }).first().click();
@@ -429,6 +442,7 @@ try {
   await page.waitForTimeout(800);
   await dismissEvents();
   // Club → Records: last season, tappable, told again.
+  await dismissEvents();
   await page.getByRole("tab", { name: "Club" }).click();
   await page.getByRole("tab", { name: "Records", exact: true }).click();
   const pastList = page.getByTestId("past-seasons");
@@ -440,6 +454,7 @@ try {
   await pastSheet.getByTestId("playoff-bracket").waitFor({ timeout });
   await shot("past-season");
   await page.keyboard.press("Escape");
+  await dismissEvents();
   await page.getByRole("tab", { name: "Match" }).click();
   step("Club → Records: a past season opens its story (honours, bracket, results)");
 
@@ -486,6 +501,7 @@ try {
   await shot("nrl-wcc-result");
   await dismissEvents();
   step("World Club Challenge: banner, played live, result");
+  await dismissEvents();
   await page.getByRole("tab", { name: "Table" }).click();
   await page.getByRole("tab", { name: "League", exact: true }).click();
   await page.locator("table tbody tr").first().waitFor({ timeout });
@@ -498,6 +514,7 @@ try {
   await page.getByTestId("nrl-byes").waitFor({ timeout });
   await page.getByRole("tab", { name: "League", exact: true }).click();
   step("NRL ladder (17), Finals view with the WCC, your byes");
+  await dismissEvents();
   await page.getByRole("tab", { name: "Match" }).click();
   await clickButton("Quick sim");
   await page.getByText(/Last result · Round/).first().waitFor({ timeout });

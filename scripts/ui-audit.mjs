@@ -5,10 +5,11 @@
  */
 import { mkdirSync } from "node:fs";
 import { chromium } from "playwright";
+import { skipWelcome } from "./e2e-skip-welcome.mjs";
 
 const BASE = process.env.E2E_BASE_URL || "http://localhost:3000";
 mkdirSync("e2e-shots", { recursive: true });
-const browser = await chromium.launch();
+const browser = skipWelcome(await chromium.launch());
 const log = [];
 let n = 0;
 

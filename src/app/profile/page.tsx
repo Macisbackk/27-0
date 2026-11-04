@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import { sendPasswordResetEmail } from "@/lib/auth";
 import { getAllStats, resetCareerStats } from "@/lib/storage/stats";
@@ -54,6 +55,7 @@ function tabFromHash(): ProfileTab {
 
 export default function ProfilePage() {
   const { loading, isLoggedIn, coachName, email, profile, signOut } = useAuth();
+  const router = useRouter();
   const cosmetics = useCosmetics();
   const squadBookCount = Object.keys(useSquadBookState().cards).length;
   const equippedTitle = titleName(cosmetics.equipped.title);
@@ -283,7 +285,7 @@ export default function ProfilePage() {
                 </SectionCard>
 
                 <div className={`${MANAGER.actionRow} mt-2`}>
-                  <GameButton variant="danger" size="sm" fullWidth={false} onClick={() => void signOut()}>
+                  <GameButton variant="danger" size="sm" fullWidth={false} onClick={() => void signOut().then(() => router.replace("/"))}>
                     Log out
                   </GameButton>
                 </div>

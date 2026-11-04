@@ -4,6 +4,7 @@
  * the screen (or scrolls inside), nothing sits on top of it. Writes preview-shots/popup-audit.txt.
  */
 import { chromium } from "playwright";
+import { skipWelcome } from "./e2e-skip-welcome.mjs";
 import fs from "node:fs";
 
 const BASE = process.env.BASE_URL || "http://localhost:3000";
@@ -11,7 +12,7 @@ const OUT = "preview-shots";
 fs.mkdirSync(OUT, { recursive: true });
 const lines = [];
 const problems = [];
-const browser = await chromium.launch();
+const browser = skipWelcome(await chromium.launch());
 
 async function audit(page, name, { escape = true, expectDialog = true } = {}) {
   await page.waitForTimeout(500);

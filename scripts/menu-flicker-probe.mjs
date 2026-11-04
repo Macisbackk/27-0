@@ -6,6 +6,7 @@
 import { execSync } from "node:child_process";
 import { mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { chromium, devices, webkit } from "playwright";
+import { skipWelcome } from "./e2e-skip-welcome.mjs";
 
 const BASE = process.env.E2E_BASE_URL || "http://localhost:3000";
 mkdirSync("e2e-shots", { recursive: true });
@@ -69,7 +70,7 @@ function analyse(label, frames) {
 }
 
 async function run(name, browserType, device, route) {
-  const browser = await browserType.launch();
+  const browser = skipWelcome(await browserType.launch());
   const ctx = await browser.newContext({ ...device, recordVideo: { dir: "/tmp/flicker-video", size: { width: device.viewport.width, height: device.viewport.height } } });
   const page = await ctx.newPage();
   await page.goto(`${BASE}${route}`, { waitUntil: "networkidle" }).catch(() => {});

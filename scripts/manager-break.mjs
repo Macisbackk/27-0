@@ -4,6 +4,7 @@
  * errors. Writes preview-shots/manager-break.txt (+ screenshots). Run against `next start` on :3000.
  */
 import { chromium } from "playwright";
+import { skipWelcome } from "./e2e-skip-welcome.mjs";
 import fs from "node:fs";
 
 const BASE = process.env.BASE_URL || "http://localhost:3000";
@@ -22,7 +23,7 @@ const fail = (m) => {
   console.log(`✗ ${m}`);
 };
 
-const browser = await chromium.launch();
+const browser = skipWelcome(await chromium.launch());
 const context = await browser.newContext({ viewport: { width: 320, height: 640 }, isMobile: true, hasTouch: true });
 const page = await context.newPage();
 const consoleErrors = [];

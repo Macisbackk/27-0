@@ -3,13 +3,14 @@
  * without deploying it. Each shot is independent: one failure doesn't stop the rest.
  */
 import { chromium } from "playwright";
+import { skipWelcome } from "./e2e-skip-welcome.mjs";
 import fs from "node:fs";
 
 const BASE = "http://localhost:3000";
 const OUT = "preview-shots";
 fs.mkdirSync(OUT, { recursive: true });
 
-const browser = await chromium.launch();
+const browser = skipWelcome(await chromium.launch());
 const phone = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
 const desktop = await browser.newContext({ viewport: { width: 1366, height: 900 } });
 

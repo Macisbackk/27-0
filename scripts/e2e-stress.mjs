@@ -8,6 +8,7 @@
  */
 import { mkdirSync } from "node:fs";
 import { chromium } from "playwright";
+import { skipWelcome } from "./e2e-skip-welcome.mjs";
 
 const BASE = process.env.E2E_BASE_URL || "http://localhost:3000";
 const SAVE_KEY = "27-0-career-v2-save";
@@ -24,7 +25,7 @@ const IGNORED = [/supabase/i, /Failed to fetch/i, /ERR_NAME_NOT_RESOLVED/i, /fet
 const IGNORED_URLS = [/\/_vercel\//, /supabase/i, /favicon/i, /\/sounds\/[\w-]+\.mp3$/];
 mkdirSync("e2e-shots", { recursive: true });
 
-const browser = await chromium.launch();
+const browser = skipWelcome(await chromium.launch());
 let where = "start";
 
 async function newPage(context) {

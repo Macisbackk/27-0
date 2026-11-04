@@ -9,6 +9,7 @@
  */
 import { appendFileSync, mkdirSync, writeFileSync } from "node:fs";
 import { chromium, devices } from "playwright";
+import { skipWelcome } from "./e2e-skip-welcome.mjs";
 
 const BASE = (process.argv[2] || process.env.PERF_BASE_URL || "https://www.27-0.co.uk").replace(/\/$/, "");
 const PAGES = ["/", "/play", "/manager", "/mini-games", "/store", "/squad-book", "/leaderboard"];
@@ -90,7 +91,7 @@ function summarizeProfile(path, profile) {
   const top = (m, n) => [...m.entries()].sort((a, b) => b[1] - a[1]).slice(0, n).map(([k, v]) => `  ${(v / 1000).toFixed(0).padStart(6)} ms  ${k}`);
   profiles.push([`CPU profile ${path} (busy ${(total / 1000).toFixed(0)} ms, self time by script):`, ...top(byUrl, 12), "  by function:", ...top(byFn, 15)].join("\n"));
 }
-const browser = await chromium.launch();
+const browser = skipWelcome(await chromium.launch());
 for (const profile of PROFILES) {
   for (const path of PAGES) {
     for (const visit of ["cold", "warm"]) {

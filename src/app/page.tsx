@@ -6,11 +6,15 @@ import { HowToPlaySection } from "@/components/HowToPlaySection";
 import { JoeMellorEasterEgg } from "@/components/JoeMellorEasterEgg";
 import { PageShell } from "@/components/ui/PageShell";
 import { HomeMoreLinks } from "@/components/HomeMoreLinks";
+import { WelcomeScreen } from "@/components/WelcomeScreen";
 
 export default function HomePage() {
   return (
-    <PageShell compact className="matchday-arena--flat">
-      <h1 className="sr-only">27-0 — rugby league manager and squad builder</h1>
+    <>
+    {/* First-visit welcome (hidden unless <html data-entry="welcome">, see src/lib/entry-gate.ts). */}
+    <WelcomeScreen />
+    <PageShell compact className="home-content matchday-arena--flat">
+      <h1 id="home-heading" tabIndex={-1} className="sr-only">27-0 — rugby league manager and squad builder</h1>
 
       <Suspense fallback={null}>
         <EmailConfirmedBanner />
@@ -39,5 +43,6 @@ export default function HomePage() {
         </div>
       </div>
     </PageShell>
+    </>
   );
 }

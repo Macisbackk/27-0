@@ -8,6 +8,7 @@
  * Fails on any page error or unexpected HTTP / console error.
  */
 import { chromium } from "playwright";
+import { skipWelcome } from "./e2e-skip-welcome.mjs";
 
 const BASE = process.env.E2E_BASE_URL || "http://localhost:3000";
 const SAVE_KEY = "27-0-career-v2-save";
@@ -21,10 +22,15 @@ const IGNORED = [/supabase/i, /Failed to fetch/i, /ERR_NAME_NOT_RESOLVED/i, /fet
 const IGNORED_URLS = [/\/_vercel\//, /supabase/i, /favicon/i, /\/sounds\/[\w-]+\.mp3$/];
 const timeout = 20_000;
 
-const browser = await chromium.launch();
+const browser = skipWelcome(await chromium.launch());
 
 async function newPage(context) {
   const page = await context.newPage();
+  // Hub pop-ups (legend moves, injuries, board/fans, the World Club Challenge) can open at any
+  // point; Escape takes the default, so they never block a step (Playwright locator handler).
+  await page.addLocatorHandler(page.getByTestId("career-event"), async () => {
+    await page.keyboard.press("Escape");
+  });
   page.on("pageerror", (err) => errors.push(`pageerror: ${err.message}`));
   page.on("console", (msg) => {
     if (msg.type() === "error" && !IGNORED.some((re) => re.test(msg.text()))) errors.push(`console: ${msg.text()}`);
