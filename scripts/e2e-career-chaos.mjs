@@ -28,9 +28,18 @@ async function newPage(context) {
   const page = await context.newPage();
   // Hub pop-ups (legend moves, injuries, board/fans, the World Club Challenge) can open at any
   // point; Escape takes the default, so they never block a step (Playwright locator handler).
-  await page.addLocatorHandler(page.getByTestId("career-event"), async () => {
-    await page.keyboard.press("Escape");
-  });
+  const hubEvent = page.getByTestId("career-event");
+  await page.addLocatorHandler(
+    hubEvent,
+    async () => {
+      // Several can queue up (one closes, the next opens): clear them all.
+      for (let i = 0; i < 8 && (await hubEvent.isVisible().catch(() => false)); i++) {
+        await page.keyboard.press("Escape");
+        await page.waitForTimeout(250);
+      }
+    },
+    { noWaitAfter: true }
+  );
   page.on("pageerror", (err) => errors.push(`pageerror: ${err.message}`));
   page.on("console", (msg) => {
     if (msg.type() === "error" && !IGNORED.some((re) => re.test(msg.text()))) errors.push(`console: ${msg.text()}`);
