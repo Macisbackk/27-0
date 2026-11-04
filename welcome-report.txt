@@ -1,0 +1,11 @@
+0 problem(s)
+
+
+Checks:
+Server HTML: homepage content + hidden welcome markup + bootstrap script
+First visit: welcome shown before paint, chrome hidden, fits 320 / 375 / desktop
+Guest: CONTINUE AS GUEST → homepage, progress kept, reload and in-app nav go straight home
+Existing players (27-0 progress on the device) go straight to the homepage
+LOG IN → /login?redirect=/ (chrome back); Back without signing in → welcome again
+Signed in → homepage (flag account); Settings → Log out → welcome (and after reload)
+Deep links never gated (11 routes) and email-link landings go straight in
