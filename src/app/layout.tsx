@@ -8,6 +8,7 @@ import "../styles/motion.css";
 import "../styles/matchnight.css";
 import "../styles/pitch.css";
 import "../styles/pitch-page.css";
+import "../styles/welcome.css";
 import { AuthProvider } from "@/lib/auth-context";
 import { CoachbeardMergeRunner } from "@/components/CoachbeardMergeRunner";
 import { ManagerDataPurgeRunner } from "@/components/ManagerDataPurgeRunner";
@@ -24,10 +25,13 @@ import { PwaSetup } from "@/components/PwaSetup";
 import { MotionProvider } from "@/components/MotionProvider";
 import { UI_THEME_BOOTSTRAP_SCRIPT } from "@/lib/ui/theme-bootstrap-script";
 import { DARK_MODE_BOOTSTRAP_SCRIPT } from "@/lib/ui/dark-mode";
+import { ENTRY_BOOTSTRAP_SCRIPT } from "@/lib/entry-gate";
+import { FIRST_RUN_BOOTSTRAP_SCRIPT } from "@/lib/ui/first-run-bootstrap";
 import { IS_APP_BUILD, NATIVE_CLASS_BOOTSTRAP_SCRIPT } from "@/lib/native/platform";
 import { OfflineBanner } from "@/components/OfflineBanner";
 import { ToastHost } from "@/components/ui/ToastHost";
 import { RouteSlot } from "@/components/RouteSlot";
+import { DeferredRoutePrefetch } from "@/components/DeferredRoutePrefetch";
 
 // Matchnight type: Barlow for reading (road-sign grotesque, northern-England plain speaking),
 // Barlow Condensed for headings and kit-tag labels, Anton kept for scores and the scoreboard mark.
@@ -103,6 +107,16 @@ export default function RootLayout({
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{ __html: DARK_MODE_BOOTSTRAP_SCRIPT }}
         />
+        {/* First visit to "/": sets data-entry="welcome" on <html> before paint (src/lib/entry-gate.ts).
+            A plain inline script, not next/script: it must run while the HTML is parsed, before the
+            first paint, or a first-time visitor would see the homepage flash before the welcome. */}
+        <script id="entry-bootstrap" dangerouslySetInnerHTML={{ __html: ENTRY_BOOTSTRAP_SCRIPT }} />
+        {/* Home hub: reserve the first-run title's second line before paint (no layout shift). */}
+        <Script
+          id="first-run-bootstrap"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: FIRST_RUN_BOOTSTRAP_SCRIPT }}
+        />
         {IS_APP_BUILD ? (
           <Script
             id="native-shell-bootstrap"
@@ -132,6 +146,7 @@ export default function RootLayout({
             <SiteFooter />
             <BottomNav />
             <ToastHost />
+            <DeferredRoutePrefetch />
             </MotionProvider>
           </AchievementProvider>
         </AuthProvider>

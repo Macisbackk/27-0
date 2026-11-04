@@ -60,6 +60,9 @@ jobs:
       - name: 27-0 season formula
         if: success() || failure()
         run: scripts/ci-run.sh "27-0 season formula" npm run test:sim
+      - name: Player registry (sliced build matches)
+        if: success() || failure()
+        run: scripts/ci-run.sh "Player registry (sliced build)" npm run test:registry-slices
       - name: Current card ratings (70–99)
         if: success() || failure()
         run: scripts/ci-run.sh "Current card ratings" npm run test:current-ratings
@@ -104,6 +107,9 @@ jobs:
       - name: Corrupted local storage
         if: success() || failure()
         run: scripts/ci-run.sh "Corrupted local storage" npm run test:storage
+      - name: Welcome screen gate
+        if: success() || failure()
+        run: scripts/ci-run.sh "Welcome screen gate" npm run test:entry-gate
 
   build:
     runs-on: ubuntu-latest
@@ -188,6 +194,9 @@ jobs:
         env:
           SITE_SHARD: ${{ matrix.suite == 'site-crawl' && 'crawl' || matrix.suite == 'site-play' && 'play' || 'rest' }}
         run: scripts/ci-run.sh "Site e2e ($SITE_SHARD)" node scripts/e2e-site.mjs
+      - name: Welcome screen e2e (first visit, guest, login, logout, deep links)
+        if: (success() || failure()) && matrix.suite == 'site-rest'
+        run: scripts/ci-run.sh "Welcome screen e2e" node scripts/e2e-welcome.mjs
       - name: Manager Mode end-to-end (mobile)
         if: matrix.suite == 'manager'
         run: |

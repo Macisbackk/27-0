@@ -42,7 +42,8 @@ import {
   type SimFormulaMode,
 } from "./sim-formula";
 
-export const GAUNTLET_LENGTH = 10;
+import { GAUNTLET_LENGTH } from "./gauntlet-constants";
+export { GAUNTLET_LENGTH };
 export const GAUNTLET_MAX_PER_CLUB = 3;
 /**
  * Strength points taken off every great side so a near-perfect draft has roughly the same

@@ -21,6 +21,7 @@ import {
   type UserProfile,
 } from "./auth";
 import { setAuthCache } from "./auth-session";
+import { isHeavyRoute } from "./heavy-routes";
 import { supabase, isSupabaseConfigured } from "./supabase";
 import {
   cleanAuthRedirectFromUrl,
@@ -40,6 +41,7 @@ import { mergeHiddenCoachesFromCloud } from "./storage/hidden-coaches";
 import { refreshBoostInventoryFromCloud } from "./boosts/boostInventory";
 import { refreshAchievementsFromCloud } from "./achievements/achievementStorage";
 import { claimDeviceForAccount } from "./storage/account-owner";
+import { markEntered, resetEntryAfterSignOut } from "./entry-gate";
 import { refundRetiredBoosts } from "./boosts/retired-boost-refund";
 import { refundRetiredClubThemes } from "./storage/ui-theme-store";
 import { mergeDailyFromCloud } from "./storage/daily-challenge-cloud";
@@ -132,10 +134,25 @@ async function hydrateAchievementsFromCloud(): Promise<void> {
   await refreshAchievementsFromCloud();
 }
 
-/** Squad Book (lazy: it pulls in the player registry, which the auth shell shouldn't load up front). */
+/**
+ * Squad Book (lazy: it pulls in the player registry, which the auth shell shouldn't load up front).
+ * On pages that don't already load the player database (lib/heavy-routes.ts) it waits for the
+ * browser to be idle (at most a few seconds), so signing in doesn't add a database download and
+ * registry build to every page's load.
+ */
 async function hydrateSquadBookFromCloud(): Promise<void> {
+  if (typeof window !== "undefined" && !isHeavyRoute(window.location.pathname)) await whenIdle(5000);
   const { mergeSquadBookFromCloud } = await import("./squad-book");
   await mergeSquadBookFromCloud();
+}
+
+function whenIdle(timeout: number): Promise<void> {
+  return new Promise((resolve) => {
+    const ric = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number })
+      .requestIdleCallback;
+    if (ric) ric(() => resolve(), { timeout });
+    else window.setTimeout(resolve, Math.min(timeout, 2000));
+  });
 }
 
 async function hydrateDailyChallengeFromCloud(): Promise<void> {
@@ -202,6 +219,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return;
       }
 
+      // Signed in on this device: the first-visit welcome screen is never shown again (entry-gate.ts).
+      markEntered("account");
+
       let nextProfile = await fetchProfile(nextUser.id);
       if (generation !== syncGenerationRef.current) return;
 
@@ -229,6 +249,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Signing in on a device that holds another account's progress: drop it first so it
       // isn't merged into (and uploaded to) this account.
       claimDeviceForAccount(nextUser.id);
+      // Squad Book merges on its own (it may wait for idle, see hydrateSquadBookFromCloud); it
+      // saves and announces its own change, so the sign-in below doesn't wait for it.
+      void hydrateSquadBookFromCloud().catch((err) => console.error("[auth] cloud hydrate step failed:", err));
       // allSettled: one bad cloud row must not stop the rest from loading.
       const [statsHydrate, fundsHydrate, themeHydrate, ...otherHydrates] = await Promise.allSettled([
         hydrateStatsFromCloud(),
@@ -238,7 +261,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         hydrateAchievementsFromCloud(),
         hydrateDailyChallengeFromCloud(),
         hydrateCareerFromCloud(),
-        hydrateSquadBookFromCloud(),
         mergeHiddenCoachesFromCloud(),
         mergeDarkModeFromCloud(),
         mergeDeviceStatsFromCloud(),
@@ -363,6 +385,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signOut = useCallback(async () => {
     await authSignOut();
+    // Signing out returns to the welcome screen on "/" (local progress stays on the device).
+    resetEntryAfterSignOut();
     hydratedSessionKey = null;
     userIdRef.current = null;
     profileIdRef.current = null;

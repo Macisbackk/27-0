@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/heavy-routes";
 import { useEffect, useState } from "react";
 import { StandardPageShell } from "@/components/ui/StandardPageShell";
 import { PAGE } from "@/lib/ui/design-system";
@@ -91,6 +92,7 @@ export function MiniGamesHub() {
               <li key={game.id}>
                 <Link
                   href={game.href}
+                  prefetch={linkPrefetch(game.href)}
                   onClick={() => playUiClick()}
                   className="btn-press fl-pressable fl-lift group flex h-full items-center gap-3 rounded-2xl border border-white/10 bg-pitch-900/80 p-3 text-left transition hover:border-theme-primary/50 hover:bg-pitch-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/60 sm:flex-col sm:items-start sm:p-4"
                 >

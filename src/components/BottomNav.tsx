@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/heavy-routes";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useEffect, type ReactNode } from "react";
@@ -126,7 +127,7 @@ export function BottomNav() {
         {ITEMS.map((item) => {
           const active = item.match(pathname);
           return (
-            <Link key={item.href} href={item.href} aria-current={active ? "page" : undefined} onClick={() => playUiClick()}>
+            <Link key={item.href} href={item.href} prefetch={linkPrefetch(item.href)} aria-current={active ? "page" : undefined} onClick={() => playUiClick()}>
               {active ? <ActivePill /> : null}
               <NavIcon>{item.icon}</NavIcon>
               {item.label}

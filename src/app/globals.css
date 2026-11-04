@@ -194,6 +194,19 @@ html[data-ui-overlay="1"] .site-footer {
   pointer-events: none;
 }
 
+/* /play's "Loading…" line (app/play/PlayLoading.tsx): keep the footer out until the board is
+   there, so the board doesn't push it down the screen (layout shift). */
+body:has(.play-loading) .site-footer {
+  display: none;
+}
+
+/* Home Classic card before the hub is read: a new player's title is two lines (see
+   lib/ui/first-run-bootstrap.ts), so keep that room from the first paint. */
+html[data-first-run="1"] .home-classic-title {
+  display: inline-block;
+  min-height: 2lh;
+}
+
 /* Drop the reserved gutter while locked so no empty scrollbar track shows. */
 html[data-ui-overlay="1"] {
   scrollbar-gutter: auto;

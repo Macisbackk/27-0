@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import type { UserStatsData } from "@/lib/types";
-import { formatValue } from "@/lib/players";
+import { formatValue } from "@/lib/players/format-value";
 import { useAuth } from "@/lib/auth-context";
 import {
   EMPTY_STATS,

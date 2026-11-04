@@ -8,6 +8,7 @@
  * Fails on any page error or unexpected HTTP / console error.
  */
 import { chromium } from "playwright";
+import { skipWelcome } from "./e2e-skip-welcome.mjs";
 
 const BASE = process.env.E2E_BASE_URL || "http://localhost:3000";
 const SAVE_KEY = "27-0-career-v2-save";
@@ -21,10 +22,15 @@ const IGNORED = [/supabase/i, /Failed to fetch/i, /ERR_NAME_NOT_RESOLVED/i, /fet
 const IGNORED_URLS = [/\/_vercel\//, /supabase/i, /favicon/i, /\/sounds\/[\w-]+\.mp3$/];
 const timeout = 20_000;
 
-const browser = await chromium.launch();
+const browser = skipWelcome(await chromium.launch());
 
 async function newPage(context) {
   const page = await context.newPage();
+  // Hub pop-ups (legend moves, injuries, board/fans, the World Club Challenge) can open at any
+  // point; Escape takes the default, so they never block a step (Playwright locator handler).
+  await page.addLocatorHandler(page.getByTestId("career-event"), async () => {
+    await page.keyboard.press("Escape");
+  });
   page.on("pageerror", (err) => errors.push(`pageerror: ${err.message}`));
   page.on("console", (msg) => {
     if (msg.type() === "error" && !IGNORED.some((re) => re.test(msg.text()))) errors.push(`console: ${msg.text()}`);
@@ -164,7 +170,17 @@ try {
   // v1.18: the release list is confirmed in a sheet; double-tap the confirm too.
   const confirmRelease = page.getByRole("button", { name: /^Let \d+ go · open the window$/ });
   if (await confirmRelease.waitFor({ state: "visible", timeout: 2_000 }).then(() => true, () => false)) await confirmRelease.dblclick().catch(() => {});
-  await page.getByRole("heading", { name: "Build your squad" }).waitFor({ timeout });
+  // A stray second tap can land on whatever moved under the finger (seen: the site Menu sheet).
+  // That's fine as long as the player can carry on: close it and take the window once more.
+  const windowHeading = page.getByRole("heading", { name: "Build your squad" });
+  if (!(await windowHeading.waitFor({ timeout: 5_000 }).then(() => true, () => false))) {
+    await page.keyboard.press("Escape");
+    await page.waitForTimeout(300);
+    const again = page.getByRole("button", { name: /^(Open the transfer window|Continue to the window)$/ });
+    if (await again.isVisible().catch(() => false)) await again.click();
+    if (await confirmRelease.waitFor({ state: "visible", timeout: 2_000 }).then(() => true, () => false)) await confirmRelease.click();
+  }
+  await windowHeading.waitFor({ timeout });
   await noSidewaysScroll(page, "transfers @320");
   // Try to sell the whole squad: must stop at the minimum without errors.
   await page.getByRole("tab", { name: "Sell" }).click();

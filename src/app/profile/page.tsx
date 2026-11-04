@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import { sendPasswordResetEmail } from "@/lib/auth";
 import { getAllStats, resetCareerStats } from "@/lib/storage/stats";
@@ -18,7 +19,7 @@ import { TYPO } from "@/lib/ui/typography";
 import { CoachCard } from "@/components/CoachCard";
 import { titleName } from "@/lib/cosmetics";
 import { useCosmetics } from "@/lib/storage/cosmetics-store";
-import { useSquadBook } from "@/lib/squad-book";
+import { useSquadBookState } from "@/lib/squad-book-state";
 import { PitchHero } from "@/components/ui/PitchHero";
 import { WhistleGlyph } from "@/components/icons/rugby-icons";
 
@@ -54,8 +55,9 @@ function tabFromHash(): ProfileTab {
 
 export default function ProfilePage() {
   const { loading, isLoggedIn, coachName, email, profile, signOut } = useAuth();
+  const router = useRouter();
   const cosmetics = useCosmetics();
-  const squadBookCount = Object.keys(useSquadBook().cards).length;
+  const squadBookCount = Object.keys(useSquadBookState().cards).length;
   const equippedTitle = titleName(cosmetics.equipped.title);
   const [tab, setTab] = useState<ProfileTab>("stats");
   const [resetBusy, setResetBusy] = useState(false);
@@ -283,7 +285,7 @@ export default function ProfilePage() {
                 </SectionCard>
 
                 <div className={`${MANAGER.actionRow} mt-2`}>
-                  <GameButton variant="danger" size="sm" fullWidth={false} onClick={() => void signOut()}>
+                  <GameButton variant="danger" size="sm" fullWidth={false} onClick={() => void signOut().then(() => router.replace("/"))}>
                     Log out
                   </GameButton>
                 </div>

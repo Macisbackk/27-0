@@ -52,7 +52,7 @@ export function arePositionsCompatible(a: Position, b: Position): boolean {
   );
 }
 
-type PositionEligibilityPlayer = Pick<
+export type PositionEligibilityPlayer = Pick<
   Player,
   "position" | "positions" | "primaryPosition" | "teamYearId" | "runClub"
 > & {
@@ -83,7 +83,7 @@ function parsePrimaryPositionAbbrev(
   return [...positions];
 }
 
-function collectEligiblePositions(
+export function collectEligiblePositions(
   player: PositionEligibilityPlayer
 ): Set<Position> {
   const collected = new Set<Position>();
@@ -108,70 +108,22 @@ function collectEligiblePositions(
   return collected;
 }
 
-function parseRunClubTeamYear(
-  runClub: string
-): { team: string; year: string } | null {
-  const match = runClub.match(/^(.+?)\s+'(\d{2})$/);
-  if (!match) return null;
-  return { team: match[1]!.trim(), year: `20${match[2]}` };
-}
+/**
+ * Full placement profile (registry + team-year roles) comes from players/placement-profile.ts,
+ * which players/index.ts installs when the player database loads. Keeping that lookup out of
+ * this module stops every page that shows a position label from bundling the whole database.
+ * Without the database on the page, a snapshot's own listed roles are used.
+ */
+let placementResolver: ((player: Player) => Player) | null = null;
 
-function resolveTeamYearContext(
-  player: PositionEligibilityPlayer
-): { team: string; year: string } | null {
-  if (player.teamYearId) {
-    const { getTeamYearPoolById } =
-      require("../game/team-year-pools") as typeof import("../game/team-year-pools");
-    const pool = getTeamYearPoolById(player.teamYearId);
-    if (pool) return { team: pool.team, year: pool.year };
-  }
-
-  if (player.runClub) {
-    return parseRunClubTeamYear(player.runClub);
-  }
-
-  return null;
+export function setPlacementResolver(resolver: (player: Player) => Player): void {
+  placementResolver = resolver;
 }
 
 /** Merge registry + team-year wiki roles so squad snapshots keep full dual eligibility. */
 export function resolvePlacementPlayer(player: Player): Player {
-  let merged = { ...player };
-  const collected = collectEligiblePositions(player);
-
-  if (player.id) {
-    const { getPlayerById } =
-      require("./index") as typeof import("./index");
-    const registry = getPlayerById(player.id);
-    if (registry) {
-      for (const pos of collectEligiblePositions(registry)) {
-        collected.add(pos);
-      }
-      merged = {
-        ...registry,
-        ...player,
-        position: player.position ?? registry.position,
-        primaryPosition: player.primaryPosition ?? registry.primaryPosition,
-      };
-    }
-  }
-
-  const teamYear = resolveTeamYearContext(merged);
-  if (teamYear) {
-    const { getTeamYearRecruitPositions } =
-      require("./team-year-roster-playable") as typeof import("./team-year-roster-playable");
-    for (const pos of getTeamYearRecruitPositions(
-      teamYear.team,
-      teamYear.year,
-      merged
-    )) {
-      collected.add(pos);
-    }
-  }
-
-  return {
-    ...merged,
-    positions: [...collected],
-  };
+  if (placementResolver) return placementResolver(player);
+  return { ...player, positions: [...collectEligiblePositions(player)] };
 }
 
 /** All positions a player may fill — dual roles, primaryPosition abbrev, legacy halfback pair. */

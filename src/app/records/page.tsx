@@ -7,9 +7,9 @@ import { GameTabs } from "@/components/ui/GameTabs";
 import { ActionButton } from "@/components/ui/ActionButton";
 import { PAGE, LINK } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { useSquadBook } from "@/lib/squad-book";
+import { useSquadBookState } from "@/lib/squad-book-state";
 import { getAllStats, refreshCareerStatsFromCloud } from "@/lib/storage/stats";
-import { loadRunHistory, RUN_HISTORY_CHANGED_EVENT } from "@/lib/storage/run-history";
+import { loadRunHistory, RUN_HISTORY_CHANGED_EVENT } from "@/lib/storage/run-history-store";
 import { deriveRecords, formatWinPct, type RecordLine, type RecordsSummary, type RunHistoryEntry } from "@/lib/records";
 import { formatSharePosition } from "@/lib/share-result";
 import { PitchHero } from "@/components/ui/PitchHero";
@@ -100,7 +100,7 @@ function RunSquad({ run }: { run: RunHistoryEntry }) {
 }
 
 export default function RecordsPage() {
-  const book = useSquadBook();
+  const book = useSquadBookState();
   const [summary, setSummary] = useState<RecordsSummary | null>(null);
   const [tab, setTab] = useState<SquadTab>("result");
   const [tick, setTick] = useState(0);

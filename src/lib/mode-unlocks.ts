@@ -23,7 +23,7 @@ import { SHOW_DAILY_CHALLENGE_UI } from "./feature-flags";
 import { countFinishedDailies } from "./daily-challenge";
 import type { RunHistoryCard, RunHistoryEntry } from "./records";
 import { getAllStats } from "./storage/stats";
-import { loadRunHistory } from "./storage/run-history";
+import { loadRunHistory } from "./storage/run-history-store";
 import { grantCosmetic, ownsCosmetic } from "./storage/cosmetics-store";
 
 export const ONE_CLUB_UNLOCK_WINS = 20;
