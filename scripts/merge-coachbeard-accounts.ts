@@ -1,6 +1,6 @@
 /**
- * One-time idempotent merge: coachbeard + coachbeard2 → coachbeard (macauley060897@live.co.uk)
- * Run: npm run merge:coachbeard-accounts
+ * One-time idempotent merge: coachbeard + coachbeard2 → coachbeard (the keeper account's email)
+ * Run: MERGE_TARGET_EMAIL=<email> npm run merge:coachbeard-accounts
  *
  * Storage architecture:
  * - Supabase: user_stats (stats bundles + club_funds), leaderboard, profiles, auth
@@ -19,7 +19,12 @@ import type { UserStatsData } from "../src/lib/types";
 
 const PRIMARY_COACH = "coachbeard";
 const SECONDARY_COACH = "coachbeard2";
-const TARGET_EMAIL = "macauley060897@live.co.uk";
+// Never hard-code the address: this repository is public.
+const TARGET_EMAIL = (process.env.MERGE_TARGET_EMAIL ?? "").trim();
+if (!TARGET_EMAIL) {
+  console.error("Set MERGE_TARGET_EMAIL to the keeper account's email.");
+  process.exit(1);
+}
 const MERGE_FLAG_PATH = join(__dirname, "..", "data", "coachbeard-merge-complete.json");
 
 const BUNDLE_KEY = "stats_bundle";

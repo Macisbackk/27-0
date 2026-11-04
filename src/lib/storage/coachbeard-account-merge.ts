@@ -6,7 +6,6 @@ import { STORAGE_KEYS } from "./keys";
 
 export const PRIMARY_COACH = "coachbeard";
 export const SECONDARY_COACH = "coachbeard2";
-export const TARGET_EMAIL = "macauley060897@live.co.uk";
 
 export { combineLeaderboardTrackerStats };
 
@@ -218,9 +217,9 @@ function mergeLocalStatsIfNeeded(
   email: string | null,
   hadOnlySecondary: boolean
 ): boolean {
-  const isTargetUser =
-    (coachName && isPrimaryName(coachName)) ||
-    email?.toLowerCase() === TARGET_EMAIL.toLowerCase();
+  // Matched by coach name only (no personal details in the shipped code).
+  void email;
+  const isTargetUser = Boolean(coachName && isPrimaryName(coachName));
 
   if (!isTargetUser && !hadOnlySecondary) return false;
 
