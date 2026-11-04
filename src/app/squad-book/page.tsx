@@ -67,8 +67,8 @@ function Bar({ have, of, colour }: { have: number; of: number; colour?: string }
 function Section({ title, intro, children }: { title: string; intro?: string; children: React.ReactNode }) {
   return (
     <section className="rounded-card bg-pitch-900 p-4 text-left">
-      <h2 className="text-center text-[17px] font-bold text-white sm:text-left">{title}</h2>
-      {intro ? <p className="mt-1 text-center text-sm text-[color:var(--fl-muted)] sm:text-left">{intro}</p> : null}
+      <h2 className="text-center text-[17px] font-bold text-white">{title}</h2>
+      {intro ? <p className="mt-1 text-center text-sm text-[color:var(--fl-muted)]">{intro}</p> : null}
       <div className="mt-3">{children}</div>
     </section>
   );
@@ -85,7 +85,11 @@ function RarityChip({ rarity, className = "" }: { rarity: CardRarity; className?
   );
 }
 
-/** One card tile: rarity-coloured edge when collected, a faint dashed one when not. */
+/**
+ * One card tile: rarity-coloured edge when collected, a faint dashed one when not. Nothing is
+ * truncated: the name, the club line and the meta line each wrap (up to two lines), the rating and
+ * rarity sit in their own column, and tiles stretch to the tallest in their grid row.
+ */
 function BookCard({
   card,
   collected,
@@ -95,6 +99,7 @@ function BookCard({
 }: {
   card: SquadBookCatalogCard;
   collected: boolean;
+  /** Third line: mode / appearances / slot / lock state. */
   sub: string;
   onClick?: () => void;
   /** Starred from the player profile. */
@@ -114,24 +119,31 @@ function BookCard({
         </span>
       )}
       <span className="min-w-0 flex-1 text-left">
-        <span className={`block truncate text-sm font-semibold ${collected ? "text-white" : "text-[color:var(--fl-muted)]"}`}>
+        <span
+          className={`line-clamp-2 break-words text-sm font-semibold leading-snug [overflow-wrap:anywhere] ${collected ? "text-white" : "text-[color:var(--fl-muted)]"}`}
+        >
           {favourite ? (
             <span className="mr-1 text-amber-300" aria-label="Favourite">
               ★
             </span>
           ) : null}
           {card.name}
-          {card.category !== "current" && card.year ? ` (${card.year})` : ""}
         </span>
-        <span className="mt-0.5 flex min-w-0 items-center gap-1.5">
+        <span className="mt-0.5 block break-words text-xs leading-snug text-[color:var(--fl-muted)]">
+          {card.club}
+          {card.year ? <span className="whitespace-nowrap"> · {card.year}</span> : null}
+        </span>
+        <span className="mt-1 flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-0.5">
           <RarityChip rarity={card.rarity} className={collected ? "" : "opacity-60"} />
-          <span className="truncate text-xs text-[color:var(--fl-muted)]">{sub}</span>
+          <span className="break-words text-[11px] leading-snug text-[color:var(--fl-muted)] opacity-80">{sub}</span>
         </span>
       </span>
-      {collected ? <span className="shrink-0 font-display text-base font-bold tabular-nums text-white">{card.rating}</span> : null}
+      <span className={`shrink-0 font-display text-xl font-bold leading-none tabular-nums ${collected ? "text-white" : "text-[color:var(--fl-muted)] opacity-60"}`}>
+        {collected ? card.rating : "?"}
+      </span>
     </>
   );
-  const cls = `flex w-full min-w-0 items-center gap-2 rounded-tile border-2 p-2.5 ${collected ? "bg-pitch-900" : "border-dashed bg-pitch-950/40"}`;
+  const cls = `flex h-full min-h-[64px] w-full min-w-0 items-start gap-2 rounded-tile border-2 p-2.5 ${collected ? "bg-pitch-900" : "border-dashed bg-pitch-950/40"}`;
   const style = collected
     ? { borderColor: colour, boxShadow: card.rarity === "legendary" ? `0 0 10px ${colour}55` : undefined }
     : { borderColor: `${colour}55` };
@@ -142,35 +154,6 @@ function BookCard({
   ) : (
     <div className={cls} style={style} data-rarity={card.rarity}>
       {body}
-    </div>
-  );
-}
-
-/** Reward chips for a group's milestones — ticked when paid. */
-function MilestoneChips({ milestones, value, claimed }: { milestones: SquadBookMilestone[]; value: (m: SquadBookMilestone) => number; claimed: string[] }) {
-  if (milestones.length === 0) return null;
-  return (
-    <div className="mt-2 flex flex-wrap gap-1.5">
-      {milestones.map((m) => {
-        const done = claimed.includes(m.id) || value(m) >= m.target;
-        return (
-          <span
-            key={m.id}
-            title={m.label}
-            className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold ${
-              done ? "bg-lime-300/15 text-lime-300" : "bg-pitch-800 text-[color:var(--fl-muted)]"
-            }`}
-          >
-            {done ? (
-              <>
-                <span aria-hidden>✓ </span>
-                <span className="sr-only">Done: </span>
-              </>
-            ) : null}
-            {m.id.includes("-squad-") ? "Full squad" : m.kind === "set" ? "Complete" : m.target} · {formatClubFunds(m.reward)}
-          </span>
-        );
-      })}
     </div>
   );
 }
@@ -307,8 +290,6 @@ export default function SquadBookPage() {
   const value = (m: SquadBookMilestone) => progress?.milestoneValue.get(m.id) ?? 0;
   const milestonesFor = (kind: SquadBookMilestone["kind"], group: string) =>
     catalog?.milestones.filter((m) => m.kind === kind && m.group === group) ?? [];
-  const totalMilestones = catalog?.milestones.filter((m) => m.kind === "total") ?? [];
-  const earned = catalog?.milestones.filter((m) => book.claimed.includes(m.id)).reduce((s, m) => s + m.reward, 0) ?? 0;
 
   const openClub = (c: string) => {
     setClubView(c);
@@ -349,10 +330,6 @@ export default function SquadBookPage() {
               ))}
             </ul>
           ) : null}
-          <div className="flex justify-center">
-            <MilestoneChips milestones={totalMilestones} value={value} claimed={book.claimed} />
-          </div>
-          {earned > 0 ? <p className="mt-2 text-xs text-[color:var(--fl-muted)]">{formatClubFunds(earned)} Club Funds earned from the book</p> : null}
           {paid.length ? (
             <p className="mt-2 text-sm font-semibold text-theme-primary" role="status">
               {paid.map((l) => `${l.label.replace(/^Squad Book: /, "")} +${formatClubFunds(l.amount)}`).join(" · ")}
@@ -410,7 +387,6 @@ export default function SquadBookPage() {
                           ) : null}
                         </span>
                       </button>
-                      <MilestoneChips milestones={milestonesFor("club", c)} value={value} claimed={book.claimed} />
                     </li>
                   );
                 })}
@@ -429,7 +405,7 @@ export default function SquadBookPage() {
                           setDecade(String(d));
                           setTab("cards");
                         }}
-                        className="w-full text-left"
+                        className="w-full text-center"
                       >
                         <span className="block font-display text-xl font-bold text-white">{decadeLabel(d)}</span>
                         <span className="block text-sm tabular-nums text-white">
@@ -440,7 +416,6 @@ export default function SquadBookPage() {
                           <Bar have={p.have} of={p.of} />
                         </span>
                       </button>
-                      <MilestoneChips milestones={milestonesFor("decade", decadeLabel(d))} value={value} claimed={book.claimed} />
                     </li>
                   );
                 })}
@@ -465,15 +440,7 @@ export default function SquadBookPage() {
                       <div className="mt-1.5">
                         <Bar have={p.have} of={s.target} />
                       </div>
-                      <p className={`mt-1.5 text-xs font-semibold ${done ? "text-lime-300" : "text-[color:var(--fl-muted)]"}`}>
-                        {done ? (
-                          <>
-                            <span aria-hidden>✓ </span>
-                            <span className="sr-only">Done: </span>
-                          </>
-                        ) : null}
-                        Reward {formatClubFunds(s.reward)}
-                      </p>
+                      {done ? <p className="mt-1.5 text-xs font-semibold text-lime-300">✓ Complete</p> : null}
                     </li>
                   );
                 })}
@@ -586,11 +553,11 @@ export default function SquadBookPage() {
                 </p>
                 <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
                   {clubRows.slice(0, clubShown).map((row) => (
-                    <li key={row.key}>
+                    <li key={row.key} className="flex">
                       <BookCard
                         card={row.card}
                         collected={row.collected}
-                        sub={row.collected ? `${row.have}/${row.cards} card${row.cards === 1 ? "" : "s"}` : row.cards > 1 ? `${row.cards} cards · locked` : "locked"}
+                        sub={row.collected ? `${row.have}/${row.cards} card${row.cards === 1 ? "" : "s"}` : row.cards > 1 ? `${row.cards} cards · locked` : "Locked"}
                         favourite={favouriteIds.has(row.card.id)}
                         onClick={() => setProfileId(row.card.id)}
                       />
@@ -666,11 +633,11 @@ export default function SquadBookPage() {
               {filtered.slice(0, shown).map((c) => {
                 const entry = book.cards[c.id];
                 return (
-                  <li key={c.id}>
+                  <li key={c.id} className="flex">
                     <BookCard
                       card={c}
                       collected={Boolean(entry)}
-                      sub={entry ? `${c.club} · ${SOURCE_LABEL[entry.source]}${entry.times > 1 ? ` · ×${entry.times}` : ""}` : `${c.club} · locked`}
+                      sub={entry ? `${SOURCE_LABEL[entry.source]}${entry.times > 1 ? ` · fielded ×${entry.times}` : ""}` : "Locked"}
                       favourite={favouriteIds.has(c.id)}
                       onClick={() => setProfileId(c.id)}
                     />
@@ -726,7 +693,7 @@ export default function SquadBookPage() {
                     </span>
                     <span className="min-w-0 flex-1">
                       {card ? (
-                        <BookCard card={card} collected sub={`${slot.label} · ${card.club}`} onClick={() => { setPickQuery(""); setPickSlot(i); }} />
+                        <BookCard card={card} collected sub={slot.label} onClick={() => { setPickQuery(""); setPickSlot(i); }} />
                       ) : (
                         <button
                           type="button"
@@ -778,7 +745,7 @@ export default function SquadBookPage() {
                     <BookCard
                       card={c}
                       collected
-                      sub={`${c.club}${book.dreamTeam.includes(c.id) ? " · in team" : ""}`}
+                      sub={book.dreamTeam.includes(c.id) ? "In your team" : "Collected"}
                       onClick={() => {
                         setDreamTeamSlot(pickSlot, c.id);
                         setPickSlot(null);
